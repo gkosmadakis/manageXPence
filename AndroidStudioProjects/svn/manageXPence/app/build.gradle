@@ -1,0 +1,98 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+
+
+    defaultConfig {
+        applicationId "uk.co.irokottaki.moneycontrol"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 31
+        versionName "5.1"
+
+        // Enabling multidex support.
+        multiDexEnabled true
+        testInstrumentationRunner = 'android.support.test.runner.AndroidJUnitRunner'
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        //Or, if you prefer, you can continue to check for errors in release builds
+        //but continue the build even when errors are found:
+        abortOnError false
+        disable 'InvalidPackage'
+    }
+    useLibrary 'org.apache.http.legacy'
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+        unitTests.returnDefaultValues = true
+
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/mpandroidchartlibrary-2-1-5.jar')
+    implementation project(':mm-ad-sdk')
+    implementation files('libs/itextpdf-5.5.9.jar')
+    implementation 'com.android.support:appcompat-v7:23.4.0'
+    implementation 'com.android.support:support-v4:23.4.0'
+    implementation 'com.google.android.gms:play-services:9.2.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.0-beta1'
+    implementation 'com.android.support:multidex:1.0.0'
+
+    implementation 'com.havenondemand:hodclient:2.1'
+    implementation 'com.havenondemand:hodresponseparser:2.1'
+
+    implementation 'com.dropbox.core:dropbox-core-sdk:2.0.1'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    //testImplementation 'com.android.support.test:rules:1.0.2'
+    testImplementation 'org.robolectric:robolectric:3.8'
+    testImplementation "org.robolectric:multidex:3.4.2"
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:2.2.1"
+
+    androidTestImplementation('com.schibsted.spain:barista:2.7.0') {
+        exclude group: 'com.android.support'
+
+    }
+
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:support-annotations:23.4.0'
+    }
+
+}
+
+apply plugin: "org.sonarqube"
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "ManageXpence"
+        property "sonar.projectKey", "uk.co.irokottaki.moneycontrol"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.language", "java"
+        property "sonar.sources", "src/main/"
+        property "sonar.login", "admin"
+        property "sonar.password", "admin"
+    }
+}

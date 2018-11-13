@@ -1,0 +1,3 @@
+include ':app', ':mm-ad-sdk', ':tess-two', ':tess-two'
+include ':library LVL'
+project(':tess-two').projectDir = new File('tess-two-master/tess-two-master/tess-two')

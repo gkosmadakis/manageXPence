@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="mm-ad-sdk-unspecified">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/manageXPence/mm-ad-sdk/unspecified/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/manageXPence/mm-ad-sdk/unspecified/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

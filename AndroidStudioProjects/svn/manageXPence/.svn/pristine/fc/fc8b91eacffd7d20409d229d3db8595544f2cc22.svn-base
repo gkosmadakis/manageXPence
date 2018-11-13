@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\icon_launcher.png",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\mipmap-xxhdpi\\icon_launcher.png"
+    }
+]

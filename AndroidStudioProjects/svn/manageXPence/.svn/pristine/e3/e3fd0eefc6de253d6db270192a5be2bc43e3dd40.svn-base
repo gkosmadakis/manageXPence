@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="hodresponseparser-2.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.havenondemand/hodresponseparser/2.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.havenondemand/hodresponseparser/2.1/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.havenondemand/hodresponseparser/2.1/jars/libs/gson-1.7.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.havenondemand/hodresponseparser/2.1/7e7bc128f8d0510fef3a9d7160e18d47d5c2b3bb/hodresponseparser-2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

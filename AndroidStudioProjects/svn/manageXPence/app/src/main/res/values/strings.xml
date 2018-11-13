@@ -1,0 +1,158 @@
+<resources>
+    <string name="app_name">ManageXPence</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_help">Help</string>
+    <string name="removeAds">Remove Ads</string>
+    <string name="descriptions">House Rent,Shopping,SuperMarket,Travel,Mortgage,Council Tax,House Bills,Entertainment</string>
+
+    <string-array name="descriptions">
+        <item>House Rent</item>
+        <item>Shopping</item>
+        <item>SuperMarket</item>
+        <item>Travel</item>
+        <item>Mortgage</item>
+        <item>Council Tax</item>
+        <item>House Bills</item>
+        <item>Entertainment</item>
+    </string-array>
+
+    <string name="title_activity_report">ReportActivity</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_chart">ChartActivity</string>
+    <string name="title_activity_bar_chart">BarChartActivity</string>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="title_activity_annual_chart">AnnualChartActivity</string>
+    <string name="title_activity_savings_chart">AnnualSavingsActivity</string>
+    <string name="title_activity_budget">BudgetActivity</string>
+    <string name="title_activity_calculate_annual_expenses">CalculateAnnualExpensesActivity</string>
+    <string name="maxbudgetvalue">2000</string>
+    <string name="action_previous">Previous</string>
+    <string name="action_next">Next</string>
+    <string name="APP_KEY">h5x1321simc1oxm</string>
+    <string name="sign_in">Sign in</string>
+    <string name="leftYearButton">Left Year Button</string>
+    <string name="rightYearButton">Right Year Button</string>
+    <string name="income">Income</string>
+
+    <string name="slide_page">Welcome to ManageXPence "\n\n"
+         <u> <font color="blue"> ADD AN EXPENSE </font> </u> "\n"
+        You can add an expense that you made along with a description in a date. These three elements are written in a file on your
+        device. You can also add your own description by pressing the ADD button.if you need a description that is not in the
+        dropdown list. "\n\n"
+
+           <u> <font color="blue"> ADD INCOME </font></u> "\n"
+        You can add your income and the app will show your balance (income minus the expenses made for the current month). Every time
+        you add an expensethe balance is updated. Also you can set a payment circle for the app to show you the balance according
+        to that circle and not the calendar month. This is applied only in the balance and not in the charts which show expenses
+        by month."\n"
+    </string>
+
+    <string name="slide_page2">Welcome to ManageXPence "\n\n"
+        <u> <font color="blue"> EDIT AN EXPENSE </font> </u> "\n"
+        The edit button gives you the option to edit or delete an expense from the file. In order to do that you may search for
+        an expense by description or by amount, select the one you need and then edit or delete it. "\n\n"
+
+        <u> <font color="blue"> SUM EXPENSES </font> </u> "\n"
+      You can add expenses that occurred between two dates. Simply add the dates in the form dd/mm/yyyy and among them add the hyphen -
+                symbol. The app will sum for you the expenses made between these two dates. Also you can select a description and the
+     app will sum the expenses you made only for that description in the period you entered. "\n\n"
+
+        <u> <font color="blue"> REPORT EXPENSES </font> </u> "\n"
+         A report shows all the expenses on your file. Initially it displays the current month expenses. There is also a dropdown menu
+       where you can see all of the other months expenses as well the total expenses added.
+       </string>
+
+    <string name="slide_page3">Welcome to ManageXPence "\n\n"
+         <u> <font color="blue"> BUDGET CONTROL </font> </u>  "\n"
+     You can set a budget warning amount and let ManageXPence notify you when you have reached the 80, the 90
+                and the 100 percent of that amount. Simply drag the seek bar to set the warning and this amount will be stored in the app,
+                it will not be changed unless you do so. You can always turn off these notifications from settings."\n\n"
+
+        <u> <font color="blue"> BACKUP </font> </u>  "\n"
+        You can export the file with the expenses in DROPBOX after you link the app with your account in DROPBOX (if you have one)
+        Also you can export it as a text file named as expenses.txt, or as a PDF named as expenses.pdf in your Download folder of
+        your Device Storage. On the other hand you can import the file from your Download folder of the device storage to ManageXPence.
+
+    </string>
+
+    <string name="slide_page4">Welcome to ManageXPence "\n\n"
+        That means you can edit the file when it is on your device storage if you want to make many changes and then import it.
+        Just make sure you keep the initial structure of the file, to avoid malfunctions, namely maximum 7 characters in the amount,
+        maximum 15 characters in the description and the date should be equal to 10 characters. The import will be made from
+        the text file expenses.txt and is available if you purchase the PRO version."\n\n"
+
+        <u> <font color="blue"> VISUAL EXPENSES </font> </u>  "\n"
+        A pie chart will show all your expenses that are added on your file. They are classified by month and you can switch from
+        percentages to numbers. A bar chart displays all the expenses as well. They are classified by month as well and you can
+        switch from percentages to numbers.
+        </string>
+
+    <string name="slide_page5">Welcome to ManageXPence "\n\n"
+        An annual chart shows all the expenses made for every month, so that you can compare your expenses between
+        months. Also, you can see how much you have spent for every expense in a year by clicking the link at the bottom of the
+        Annual Chart screen. A savings chart displays the savings made for every month. Every month is calculated with the income
+        you had entered on that month. If you have not entered an income in a month then the current month income is considered.
+        </string>
+    <string name="title_activity_login">Sign in</string>
+
+    <string name="year">Year:</string>
+    <string name="textview">TextView</string>
+    <string name="set_a_budget_warning">Set a Budget Warning</string>
+    <string name="_0">0</string>
+    <string name="warning_set_on">Warning set on:</string>
+    <string name="your_current_budget_warning_is">Your current Budget Warning is:</string>
+    <string name="select_an_expense_and_year">Select an Expense and Year</string>
+    <string name="calculate">Calculate</string>
+    <string name="month">Month</string>
+    <string name="or">% or £</string>
+    <string name="pound">£</string>
+    <string name="percent">%</string>
+    <string name="search_by_description">Search by Description</string>
+    <string name="enter_description">Enter description</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="search_by_amount">Search by Amount</string>
+    <string name="results">Results</string>
+    <string name="select">Select</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="add_an_expense">Add an Expense:</string>
+    <string name="expense_amount">Expense Amount</string>
+    <string name="expense_description">Expense Description</string>
+    <string name="add">Add</string>
+    <string name="select_date">Select Date</string>
+    <string name="save_to_file">Save To File</string>
+    <string name="add_your_income">Add your income:</string>
+    <string name="enter_your_income">Enter your income:</string>
+    <string name="income_circle">Income Circle</string>
+    <string name="balance">Balance:</string>
+    <string name="edit_an_expense">Edit an expense:</string>
+    <string name="add_expenses_using_date_range">Add expenses using date range:</string>
+    <string name="sum_expenses">Sum expenses</string>
+    <string name="enter_date_range">Enter date range</string>
+    <string name="show_a_report_of_your_expenses">Show a report of your Expenses:</string>
+    <string name="report">Report</string>
+    <string name="budget_warnings">Budget Warnings:</string>
+    <string name="budget_control">Budget Control</string>
+    <string name="backup">BackUp:</string>
+    <string name="export">Export</string>
+    <string name="importexpenses">Import</string>
+    <string name="show_a_pie_chart_with_your_expenses">Show a Pie Chart with your Expenses:</string>
+    <string name="pie_chart">Pie Chart</string>
+    <string name="show_a_barchart_with_your_expenses">Show a BarChart with your Expenses:</string>
+    <string name="bar_chart">Bar Chart</string>
+    <string name="show_an_annual_chart_with_your_expenses">Show an Annual Chart with your Expenses:</string>
+    <string name="annual_chart">Annual Chart</string>
+    <string name="show_a_savings_chart">Show a Savings Chart:</string>
+    <string name="savings_chart">Savings Chart</string>
+    <string name="export_to_dropbox">Export to DROPBOX</string>
+    <string name="export_txt">Export TXT</string>
+    <string name="export_pdf">Export PDF</string>
+    <string name="add_or_remove_a_description">ADD or REMOVE a Description</string>
+    <string name="enter_text_here">Enter text here..</string>
+    <string name="salary_day">Salary Day</string>
+    <string name="date_of_previous_month">Date of previous month:</string>
+    <string name="to_current">To Current:</string>
+
+</resources>

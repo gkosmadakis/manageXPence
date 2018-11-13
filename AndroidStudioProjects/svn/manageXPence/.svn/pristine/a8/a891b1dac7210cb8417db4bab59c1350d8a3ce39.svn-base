@@ -1,0 +1,54 @@
+[
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_money_control_gui.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_money_control_gui.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_help.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_help.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_edit.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_edit.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\activity_screen_slide.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\activity_screen_slide.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_grid_view.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_grid_view.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_horizontal_bar_chart.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_horizontal_bar_chart.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_bar_chart.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_bar_chart.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_chart.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_chart.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_main.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_report.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_report.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\export_menu.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\export_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_budget.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_budget.xml"
+    },
+    {
+        "merged": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_annual_chart.xml",
+        "source": "C:\\Users\\cousm\\AndroidStudioProjects\\svn\\manageXPence\\app\\src\\main\\res\\menu\\menu_annual_chart.xml"
+    }
+]
