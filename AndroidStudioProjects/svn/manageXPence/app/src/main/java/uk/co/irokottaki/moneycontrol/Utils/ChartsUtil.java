@@ -1,36 +1,62 @@
 package uk.co.irokottaki.moneycontrol.Utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
+import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import uk.co.irokottaki.moneycontrol.Activity.AnnualChartActivity;
+import uk.co.irokottaki.moneycontrol.Activity.AnnualSavingsActivity;
 import uk.co.irokottaki.moneycontrol.Model.AmountsFor2015;
 import uk.co.irokottaki.moneycontrol.Model.AmountsFor2016;
 import uk.co.irokottaki.moneycontrol.Model.AmountsFor2017;
 import uk.co.irokottaki.moneycontrol.Model.AmountsFor2018;
 import uk.co.irokottaki.moneycontrol.Model.AmountsForYear;
 
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.ANNUAL_EXPENSES;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.APRIL;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.AUGUST;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.DECEMBER;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.EIGHT;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.ELEVEN;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.EXPENSES_FILE;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.FEBRUARY;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.FIVE;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.FOUR;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.JANUARY;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.JULY;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.JUNE;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.MARCH;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.MAY;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.NINE;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.NOVEMBER;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.OCTOBER;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.ONE;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.SEPTEMBER;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.SEVEN;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.SIX;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.TEN;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.THREE;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.TWELVE;
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.TWO;
+import static uk.co.irokottaki.moneycontrol.Utils.Constants.YEAR;
 
 public class ChartsUtil {
 
@@ -232,4 +258,84 @@ public class ChartsUtil {
         return objectYear;
     }
 
+    public void setData(Float jan, Float feb, Float mar, Float apr, Float may, Float jun, Float jul,
+                        Float aug, Float sep, Float oct, Float nov, Float dec, LineChart mChart) {
+
+        String [] monthData = new String[]{JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER,
+                OCTOBER, NOVEMBER, DECEMBER};
+        ArrayList<String> xVals = new ArrayList<>();
+        for (String aMonthData : monthData) {
+            xVals.add((aMonthData).substring(0, 3));
+        }
+
+        ArrayList<Entry> yVals = new ArrayList<>();
+
+        ArrayList<Float> addAlltheMonths = new ArrayList<>();
+        addAlltheMonths.add(jan);
+        addAlltheMonths.add(feb);
+        addAlltheMonths.add(mar);
+        addAlltheMonths.add(apr);
+        addAlltheMonths.add(may);
+        addAlltheMonths.add(jun);
+        addAlltheMonths.add(jul);
+        addAlltheMonths.add(aug);
+        addAlltheMonths.add(sep);
+        addAlltheMonths.add(oct);
+        addAlltheMonths.add(nov);
+        addAlltheMonths.add(dec);
+
+        for (int i = 0; i < monthData.length; i++) {
+            float val = addAlltheMonths.get(i);
+            yVals.add(new Entry(val, i));
+        }
+
+        // create a dataset and give it a type
+        LineDataSet set1 = new LineDataSet(yVals, ANNUAL_EXPENSES);
+
+        // set the line to be drawn like this "- - - - - -"
+        set1.enableDashedLine(10f, 5f, 0f);
+        set1.enableDashedHighlightLine(10f, 5f, 0f);
+        set1.setColor(Color.BLUE);
+        set1.setCircleColor(Color.BLUE);
+        set1.setLineWidth(1f);
+        set1.setCircleSize(3f);
+        set1.setDrawCircleHole(false);
+        set1.setValueTextSize(9f);
+        set1.setFillAlpha(65);
+        set1.setFillColor(Color.BLACK);
+
+        ArrayList<LineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1); // add the datasets
+
+        // create a data object with the datasets
+        LineData data = new LineData(xVals, dataSets);
+
+        // set data
+        mChart.setData(data);
+        //update chart
+        mChart.invalidate();
+    }
+
+    public Calendar setXYAxisForChart(TextView yearView, LineChart mChart, int year) {
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setSpaceBetweenLabels(1);
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+
+        leftAxis.setAxisMaxValue(3000f);
+        leftAxis.setAxisMinValue(-50f);
+        leftAxis.setStartAtZero(false);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+
+        // limit lines are drawn behind data (and not on top)
+        leftAxis.setDrawLimitLinesBehindData(true);
+
+        mChart.getAxisRight().setEnabled(false);
+
+        Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);// get the current year
+        yearView.setText(YEAR + year);
+        return calendar;
+    }
 }

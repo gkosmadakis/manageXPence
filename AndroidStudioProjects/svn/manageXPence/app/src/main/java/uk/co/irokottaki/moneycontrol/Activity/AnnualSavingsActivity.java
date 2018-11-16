@@ -16,8 +16,6 @@ import android.widget.TextView;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -42,10 +40,10 @@ import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
 public class AnnualSavingsActivity extends AppCompatActivity implements OnChartGestureListener,
         OnChartValueSelectedListener {
 
-    private LineChart mChart;
+    public LineChart mChart;
     ImageButton leftYearButton;
     ImageButton rightYearButton;
-    private int year;
+    public int year;
     private Float incomeForJan;
     private Float incomeForFeb;
     private Float incomeForMar;
@@ -118,23 +116,7 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
         incomeForNov = MainActivity.getIncomeForNov();
         incomeForDec = MainActivity.getIncomeForDec();
 
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setSpaceBetweenLabels(1);
-
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-
-        leftAxis.setAxisMaxValue(3000f);
-        leftAxis.setAxisMinValue(-50f);
-        leftAxis.setStartAtZero(false);
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-
-        // limit lines are drawn behind data (and not on top)
-        leftAxis.setDrawLimitLinesBehindData(true);
-
-        mChart.getAxisRight().setEnabled(false);
-
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = util.setXYAxisForChart(yearView, mChart, year);
         year = calendar.get(Calendar.YEAR);// get the current year
         yearView.setText(YEAR + year);
 
@@ -180,84 +162,25 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
                 incomeForSep != null || incomeForOct != null ||
                 incomeForNov != null || incomeForDec != null) {
             if (year == 2017) {
-                setData(incomeForJan - obj2017.getAmountJan(), incomeForFeb - obj2017.getAmountFeb(), incomeForMar -
+                util.setData(incomeForJan - obj2017.getAmountJan(), incomeForFeb - obj2017.getAmountFeb(), incomeForMar -
                                 obj2017.getAmountMar(), incomeForApr - obj2017.getAmountApr(),
                         incomeForMay - obj2017.getAmountMay(), incomeForJun - obj2017.getAmountJun(), incomeForJul -
                                 obj2017.getAmountJul(), incomeForAug - obj2017.getAmountAug(),
                         incomeForSep - obj2017.getAmountSep(), incomeForOct - obj2017.getAmountOct(), incomeForNov -
-                                obj2017.getAmountNov(), incomeForDec - obj2017.getAmountDec());
+                                obj2017.getAmountNov(), incomeForDec - obj2017.getAmountDec(), mChart);
             } else if (year == 2018) {
-                setData(incomeForJan - obj2018.getAmountJan(), incomeForFeb - obj2018.getAmountFeb(), incomeForMar -
+                util.setData(incomeForJan - obj2018.getAmountJan(), incomeForFeb - obj2018.getAmountFeb(), incomeForMar -
                                 obj2018.getAmountMar(), incomeForApr - obj2018.getAmountApr(),
                         incomeForMay - obj2018.getAmountMay(), incomeForJun - obj2018.getAmountJun(), incomeForJul -
                                 obj2018.getAmountJul(), incomeForAug - obj2018.getAmountAug(),
                         incomeForSep - obj2018.getAmountSep(), incomeForOct - obj2018.getAmountOct(), incomeForNov -
-                                obj2018.getAmountNov(), incomeForDec - obj2018.getAmountDec());
+                                obj2018.getAmountNov(), incomeForDec - obj2018.getAmountDec(), mChart);
 
             }
         } else {
-            setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,mChart);
         }
     }
-
-    private void setData(Float jan, Float feb, Float mar, Float apr, Float may, Float jun, Float jul,
-                         Float aug, Float sep, Float oct, Float nov, Float dec) {
-
-        String [] monthData = new String[]{JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER,
-                OCTOBER, NOVEMBER, DECEMBER};
-        ArrayList<String> xVals = new ArrayList<>();
-        for (String aMonthData : monthData) {
-            xVals.add((aMonthData).substring(0, 3));
-        }
-
-        ArrayList<Entry> yVals = new ArrayList<>();
-
-        ArrayList<Float> addAlltheMonths = new ArrayList<>();
-        addAlltheMonths.add(jan);
-        addAlltheMonths.add(feb);
-        addAlltheMonths.add(mar);
-        addAlltheMonths.add(apr);
-        addAlltheMonths.add(may);
-        addAlltheMonths.add(jun);
-        addAlltheMonths.add(jul);
-        addAlltheMonths.add(aug);
-        addAlltheMonths.add(sep);
-        addAlltheMonths.add(oct);
-        addAlltheMonths.add(nov);
-        addAlltheMonths.add(dec);
-
-        for (int i = 0; i < monthData.length; i++) {
-            float val = addAlltheMonths.get(i);
-            yVals.add(new Entry(val, i));
-        }
-
-        // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, ANNUAL_SAVINGS);
-
-        // set the line to be drawn like this "- - - - - -"
-        set1.enableDashedLine(10f, 5f, 0f);
-        set1.enableDashedHighlightLine(10f, 5f, 0f);
-        set1.setColor(Color.BLUE);
-        set1.setCircleColor(Color.BLUE);
-        set1.setLineWidth(1f);
-        set1.setCircleSize(3f);
-        set1.setDrawCircleHole(false);
-        set1.setValueTextSize(9f);
-        set1.setFillAlpha(65);
-        set1.setFillColor(Color.BLACK);
-
-        ArrayList<LineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1); // add the datasets
-
-        // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
-
-        // set data
-        mChart.setData(data);
-        //update chart
-        mChart.invalidate();
-    }
-
 
     @SuppressLint("SetTextI18n")
     private void showSavings(AmountsFor2015 obj2015, AmountsFor2016 obj2016, AmountsFor2017 obj2017, AmountsFor2018 obj2018) {
@@ -270,14 +193,14 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
                         || incomeForJun != null || incomeForJul != null || incomeForAug != null
                         || incomeForSep != null || incomeForOct != null ||
                         incomeForNov != null || incomeForDec != null) {
-                    setData(incomeForJan - obj2018.getAmountJan(), incomeForFeb - obj2018.getAmountFeb(), incomeForMar -
+                    util.setData(incomeForJan - obj2018.getAmountJan(), incomeForFeb - obj2018.getAmountFeb(), incomeForMar -
                                     obj2018.getAmountMar(), incomeForApr - obj2018.getAmountApr(),
                             incomeForMay - obj2018.getAmountMay(), incomeForJun - obj2018.getAmountJun(), incomeForJul -
                                     obj2018.getAmountJul(), incomeForAug - obj2018.getAmountAug(),
                             incomeForSep - obj2018.getAmountSep(), incomeForOct - obj2018.getAmountOct(), incomeForNov -
-                                    obj2018.getAmountNov(), incomeForDec - obj2018.getAmountDec());
+                                    obj2018.getAmountNov(), incomeForDec - obj2018.getAmountDec(),mChart);
                 } else {
-                    setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+                    util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, mChart);
                 }
 
                 break;
@@ -289,14 +212,14 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
                         || incomeForJun != null || incomeForJul != null || incomeForAug != null
                         || incomeForSep != null || incomeForOct != null ||
                         incomeForNov != null || incomeForDec != null) {
-                    setData(incomeForJan - obj2017.getAmountJan(), incomeForFeb - obj2017.getAmountFeb(), incomeForMar -
+                    util.setData(incomeForJan - obj2017.getAmountJan(), incomeForFeb - obj2017.getAmountFeb(), incomeForMar -
                                     obj2017.getAmountMar(), incomeForApr - obj2017.getAmountApr(),
                             incomeForMay - obj2017.getAmountMay(), incomeForJun - obj2017.getAmountJun(), incomeForJul -
                                     obj2017.getAmountJul(), incomeForAug - obj2017.getAmountAug(),
                             incomeForSep - obj2017.getAmountSep(), incomeForOct - obj2017.getAmountOct(), incomeForNov -
-                                    obj2017.getAmountNov(), incomeForDec - obj2017.getAmountDec());
+                                    obj2017.getAmountNov(), incomeForDec - obj2017.getAmountDec(),mChart);
                 } else {
-                    setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+                    util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, mChart);
                 }
 
                 break;
@@ -308,14 +231,14 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
                         || incomeForJun != null || incomeForJul != null || incomeForAug != null
                         || incomeForSep != null || incomeForOct != null ||
                         incomeForNov != null || incomeForDec != null) {
-                    setData(incomeForJan - obj2016.getAmountJan(), incomeForFeb - obj2016.getAmountFeb(), incomeForMar
+                    util.setData(incomeForJan - obj2016.getAmountJan(), incomeForFeb - obj2016.getAmountFeb(), incomeForMar
                                     - obj2016.getAmountMar(), incomeForApr - obj2016.getAmountApr(),
                             incomeForMay - obj2016.getAmountMay(), incomeForJun - obj2016.getAmountJun(), incomeForJul
                                     - obj2016.getAmountJul(), incomeForAug - obj2016.getAmountAug(),
                             incomeForSep - obj2016.getAmountSep(), incomeForOct - obj2016.getAmountOct(), incomeForNov
-                                    - obj2016.getAmountNov(), incomeForDec - obj2016.getAmountDec());
+                                    - obj2016.getAmountNov(), incomeForDec - obj2016.getAmountDec(), mChart);
                 } else {
-                    setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+                    util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, mChart);
                 }
 
                 break;
@@ -327,14 +250,14 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
                         || incomeForJun != null || incomeForJul != null || incomeForAug != null
                         || incomeForSep != null || incomeForOct != null ||
                         incomeForNov != null || incomeForDec != null) {
-                    setData(incomeForJan - obj2015.getAmountJan(), incomeForFeb - obj2015.getAmountFeb(), incomeForMar
+                    util.setData(incomeForJan - obj2015.getAmountJan(), incomeForFeb - obj2015.getAmountFeb(), incomeForMar
                                     - obj2015.getAmountMar(), incomeForApr - obj2015.getAmountApr(),
                             incomeForMay - obj2015.getAmountMay(), incomeForJun - obj2015.getAmountJun(), incomeForJul
                                     - obj2015.getAmountJul(), incomeForAug - obj2015.getAmountAug(),
                             incomeForSep - obj2015.getAmountSep(), incomeForOct - obj2015.getAmountOct(), incomeForNov
-                                    - obj2015.getAmountNov(), incomeForDec - obj2015.getAmountDec());
+                                    - obj2015.getAmountNov(), incomeForDec - obj2015.getAmountDec(), mChart);
                 } else {
-                    setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+                    util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, mChart);
                 }
 
                 break;
