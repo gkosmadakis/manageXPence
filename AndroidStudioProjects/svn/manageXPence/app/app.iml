@@ -149,7 +149,6 @@
     <orderEntry type="library" name="Gradle: com.android.support:mediarouter-v7-23.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:animated-vector-drawable-23.4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.almworks.sqlite4java:sqlite4java:0.282@jar" level="project" />
-    <orderEntry type="library" name="Gradle: __local_aars__:/Users/s602050/StudioProjects/manageXPence/AndroidStudioProjects/svn/manageXPence/app/libs/gradle-3.2.0.jar:unspecified@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.apache.maven:maven-settings:2.2.1@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.schibsted.spain:barista-2.7.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:shadowapi:3.8@jar" level="project" />

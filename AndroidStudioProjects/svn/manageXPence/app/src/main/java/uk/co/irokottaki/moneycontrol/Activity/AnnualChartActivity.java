@@ -148,7 +148,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                 valueFromNumPicker1 = sharedprefs.getInt(VALUEFROMNUMPICKER1ANNUAL,
                         valueFromNumPicker1);
 
-                readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(valueFromNumPicker1,
+                util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(valueFromNumPicker1,
                         currentMonth,obj2018);
             } catch (ParseException e) {
                 Log.e("Parse Exception " ,e.getMessage());
@@ -302,7 +302,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                                     resetExpenseOfCurrentMonth(monthInt - 1,obj2018);
                                     resetExpenseOfCurrentMonth(monthInt,obj2018);
                                     resetExpenseOfCurrentMonth(monthInt + 1,obj2018);
-                                    readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle
+                                    util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle
                                             (valueFromNumPicker1, currentMonth,obj2018);
                                     util.setData(obj2018.getAmountJan(),obj2018.getAmountFeb(),obj2018.getAmountMar(),obj2018.getAmountApr(),
                                             obj2018.getAmountMay(),obj2018.getAmountJun(), obj2018.getAmountJul(),obj2018.getAmountAug(),
@@ -353,142 +353,6 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                         });
         alertDialogBuilder.create();
         alertDialogBuilder.show();
-    }
-
-    @SuppressWarnings("StringConcatenationInLoop")
-    public void readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(int salaryDay,
-                                                                             String currentMonth, AmountsFor2018 obj2018)
-            throws ParseException {
-
-        String fileLine = "";
-        String amount = "";
-        String date = "";
-
-        try {
-            InputStream inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
-                    ".moneycontrol/files/expenses.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            int lineIndex = 0;//this is to count the lines
-            while ((line = br.readLine()) != null) {
-
-                if (lineIndex == 0) {
-                    fileLine = line + "\n" + "\n";// need to catch the space and write only one
-                    // space after the header.
-                }
-
-                if (++lineIndex > 2 && !line.equals("") && !line.equals("r")) {
-                    fileLine += line + "\n";
-                    int index = line.lastIndexOf(" ");
-                    amount = line.substring(0, line.indexOf(" "));
-                    date = line.substring(index, line.length());
-                    String extractDayFromDate = date.substring(0, date.indexOf("/"));
-                    //convert String to int but first take the second character e.g. take 5 from 05
-                    int extractDayFromDateInt = Integer.parseInt(extractDayFromDate.trim()
-                            .replaceFirst("^0+(?!$)", ""));
-                    String extractMonthFromDate = date.substring(date.indexOf("/") + 1, date
-                            .lastIndexOf("/"));
-                    if (extractMonthFromDate.startsWith("0")) {
-                        extractMonthFromDate = extractMonthFromDate.replace("0", "");
-                    }
-                    String extractYearFromDate = date.substring(date.lastIndexOf("/") + 1, date
-                            .length());
-
-                    final Calendar calendar = Calendar.getInstance();
-                    java.util.Date currentDate = new SimpleDateFormat("MMM", Locale.ENGLISH)
-                            .parse(currentMonth);
-                    calendar.setTime(currentDate);// here i convert the String month in an
-                    // integer to be used on the switch-case
-                    int monthInt = calendar.get(Calendar.MONTH) + 1;
-                    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-
-                    if (salaryDay != 0 && currentMonth != null) {
-                        if (salaryDay <= extractDayFromDateInt &&
-                                extractMonthFromDate.equals(String.valueOf(monthInt - 1)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate)) {
-                            /*if the salary day set by the user is before the day of the expense
-                            made and the expense made in the
-                            previous month then the expense is added in the current month*/
-                            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt, obj2018);
-                        }
-                            /*else if the salary day set by the user is after the day of the
-                            expense made and the expense made
-                            on the current month then the expense amount is added in the current
-                            month*/
-                        else if (salaryDay > extractDayFromDateInt &&
-                                extractMonthFromDate.equals(String.valueOf(monthInt)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate)) {
-
-                            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt,obj2018);
-                        } else if (salaryDay <= extractDayFromDateInt &&
-                                extractMonthFromDate.equals(String.valueOf(monthInt)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate)) {
-                            /*if the day set by the user is before the day of the expense made
-                            and the expense made in the
-                            current month then the expense is added in the next month*/
-                            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt + 1,obj2018);
-                        } else if (salaryDay > extractDayFromDateInt &&
-                                extractMonthFromDate.equals(String.valueOf(monthInt - 1)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate)) {
-                            /*if the day set by the user is after the day of the expense made and
-                             the expense made in the
-                            previous month then the expense is added in the previous month*/
-                            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt - 1,obj2018);
-
-                        }
-                    }
-                }
-            }
-            inputStream.close();
-        } catch (FileNotFoundException e) {
-            Log.e("File not found",e.getMessage());
-        } catch (IOException e) {
-            Log.e("IOException",e.getMessage());
-        }
-    }
-
-    private void addAmountToCurrentOrNextMonth(Float amount, int monthInt, AmountsFor2018 obj2018) {
-
-        switch (monthInt) {
-
-            case 1:
-                obj2018.setAmountJan(obj2018.getAmountJan()+amount);
-                break;
-            case 2:
-                obj2018.setAmountFeb(obj2018.getAmountFeb()+amount);
-                break;
-            case 3:
-                obj2018.setAmountMar(obj2018.getAmountMar()+amount);
-                break;
-            case 4:
-                obj2018.setAmountApr(obj2018.getAmountApr()+amount);
-                break;
-            case 5:
-                obj2018.setAmountMay(obj2018.getAmountMay()+amount);
-                break;
-            case 6:
-                obj2018.setAmountJun(obj2018.getAmountJun()+amount);
-                break;
-            case 7:
-                obj2018.setAmountJul(obj2018.getAmountJul()+amount);
-                break;
-            case 8:
-                obj2018.setAmountAug(obj2018.getAmountAug()+amount);
-                break;
-            case 9:
-                obj2018.setAmountSep(obj2018.getAmountSep()+amount);
-                break;
-            case 10:
-                obj2018.setAmountOct(obj2018.getAmountOct()+amount);
-                break;
-            case 11:
-                obj2018.setAmountNov(obj2018.getAmountNov()+amount);
-                break;
-            case 12:
-                obj2018.setAmountDec(obj2018.getAmountDec()+amount);
-                break;
-        }
-
     }
 
     private void resetExpenseOfCurrentMonth(int currentMonth, AmountsFor2018 obj2018) {

@@ -15,27 +15,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.millennialmedia.InlineAd;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import uk.co.irokottaki.moneycontrol.Utils.NothingSelectedSpinnerAdapter;
 import uk.co.irokottaki.moneycontrol.R;
+import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.Utils.NothingSelectedSpinnerAdapter;
 import uk.co.irokottaki.moneycontrol.Utils.Utils;
 
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
@@ -43,21 +37,9 @@ import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
 
 public class ReportActivity extends AppCompatActivity {
     private Spinner monthItems;
-    private ArrayAdapter<String> spinnerAdapter;
     private ArrayList<String> monthsAddedToSpinner;
     private TextView reportView;
-    private static String fileLine, fileLineOct15, fileLineNov15, fileLineDec15, fileLineJan16,
-            fileLineFeb16, fileLineMar16, fileLineApr16,
-            fileLineMay16, fileLineJun16, fileLineJul16, fileLineAug16, fileLineSep16,
-            fileLineOct16, fileLineNov16, fileLineDec16,
-            fileLineJan17, fileLineFeb17, fileLineMar17, fileLineApr17, fileLineMay17,
-            fileLineJun17, fileLineJul17, fileLineAug17,
-            fileLineSep17, fileLineOct17, fileLineNov17, fileLineDec17,
-            fileLineJan, fileLineFeb, fileLineMar, fileLineApr, fileLineMay, fileLineJun,
-            fileLineJul, fileLineAug, fileLineSep,
-            fileLineOct, fileLineNov, fileLineDec;
     private StringBuilder shortLine;
-    private Button annualChartButton, exportButton, importButton;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private int monthInt;
     private static final String[] PERMISSIONS_STORAGE = {
@@ -67,6 +49,7 @@ public class ReportActivity extends AppCompatActivity {
     private final String TAG = "Millenial Media";
     private InlineAd inlineAd;
     private boolean adsDisabled;
+    private ChartsUtil util;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +152,8 @@ public class ReportActivity extends AppCompatActivity {
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, ReportActivity.this);
 
+
+
         // Spinner with the months
         monthItems = (Spinner) findViewById(R.id.monthSpinner);
 
@@ -218,7 +203,7 @@ public class ReportActivity extends AppCompatActivity {
         monthsAddedToSpinner.add(DECEMBER);
         monthsAddedToSpinner.add(TOTAL);
 
-        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 monthsAddedToSpinner);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthItems.setAdapter(spinnerAdapter);
@@ -235,7 +220,10 @@ public class ReportActivity extends AppCompatActivity {
         reportView.setMovementMethod(new ScrollingMovementMethod());
         reportView.setTypeface(Typeface.MONOSPACE);
 
-        readTheFile();
+        util = new ChartsUtil(this);
+        util.readTheFile();
+        
+        //readTheFile();
 
         //Get the current month
         final Calendar calendar = Calendar.getInstance();//this gets the current month
@@ -263,163 +251,163 @@ public class ReportActivity extends AppCompatActivity {
                 switch (getMonthSelection) {
 
                     case 1:
-                        formatReportArea(fileLineOct15);
+                        formatReportArea(util.getObjectYear().getYear2015().getFileLineOct15());
                         reportView.setText(shortLine.toString());
                         break;
                     case 2:
-                        formatReportArea(fileLineNov15);
+                        formatReportArea(util.getObjectYear().getYear2015().getFileLineNov15());
                         reportView.setText(shortLine.toString());
                         break;
                     case 3:
-                        formatReportArea(fileLineDec15);
+                        formatReportArea(util.getObjectYear().getYear2015().getFileLineDec15());
                         reportView.setText(shortLine.toString());
                         break;
                     case 4:
-                        formatReportArea(fileLineJan16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineJan16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 5:
-                        formatReportArea(fileLineFeb16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineFeb16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 6:
-                        formatReportArea(fileLineMar16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineMar16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 7:
-                        formatReportArea(fileLineApr16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineApr16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 8:
-                        formatReportArea(fileLineMay16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineMay16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 9:
-                        formatReportArea(fileLineJun16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineJun16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 10:
-                        formatReportArea(fileLineJul16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineJul16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 11:
-                        formatReportArea(fileLineAug16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineAug16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 12:
-                        formatReportArea(fileLineSep16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineSep16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 13:
-                        formatReportArea(fileLineOct16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineOct16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 14:
-                        formatReportArea(fileLineNov16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineNov16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 15:
-                        formatReportArea(fileLineDec16);
+                        formatReportArea(util.getObjectYear().getYear2016().getFileLineDec16());
                         reportView.setText(shortLine.toString());
                         break;
                     case 16:
-                        formatReportArea(fileLineJan17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineJan17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 17:
-                        formatReportArea(fileLineFeb17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineFeb17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 18:
-                        formatReportArea(fileLineMar17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineMar17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 19:
-                        formatReportArea(fileLineApr17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineApr17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 20:
-                        formatReportArea(fileLineMay17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineMay17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 21:
-                        formatReportArea(fileLineJun17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineJun17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 22:
-                        formatReportArea(fileLineJul17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineJul17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 23:
-                        formatReportArea(fileLineAug17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineAug17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 24:
-                        formatReportArea(fileLineSep17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineSep17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 25:
-                        formatReportArea(fileLineOct17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineOct17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 26:
-                        formatReportArea(fileLineNov17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineNov17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 27:
-                        formatReportArea(fileLineDec17);
+                        formatReportArea(util.getObjectYear().getYear2017().getFileLineDec17());
                         reportView.setText(shortLine.toString());
                         break;
                     case 28:
-                        formatReportArea(fileLineJan);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineJan());
                         reportView.setText(shortLine.toString());
                         break;
                     case 29:
-                        formatReportArea(fileLineFeb);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineFeb());
                         reportView.setText(shortLine.toString());
                         break;
                     case 30:
-                        formatReportArea(fileLineMar);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineMar());
                         reportView.setText(shortLine.toString());
                         break;
                     case 31:
-                        formatReportArea(fileLineApr);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineApr());
                         reportView.setText(shortLine.toString());
                         break;
                     case 32:
-                        formatReportArea(fileLineMay);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineMay());
                         reportView.setText(shortLine.toString());
                         break;
                     case 33:
-                        formatReportArea(fileLineJun);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineJun());
                         reportView.setText(shortLine.toString());
                         break;
                     case 34:
-                        formatReportArea(fileLineJul);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineJul());
                         reportView.setText(shortLine.toString());
                         break;
                     case 35:
-                        formatReportArea(fileLineAug);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineAug());
                         reportView.setText(shortLine.toString());
                         break;
                     case 36:
-                        formatReportArea(fileLineSep);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineSep());
                         reportView.setText(shortLine.toString());
                         break;
                     case 37:
-                        formatReportArea(fileLineOct);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineOct());
                         reportView.setText(shortLine.toString());
                         break;
                     case 38:
-                        formatReportArea(fileLineNov);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineNov());
                         reportView.setText(shortLine.toString());
                         break;
                     case 39:
-                        formatReportArea(fileLineDec);
+                        formatReportArea(util.getObjectYear().getYear2018().getFileLineDec());
                         reportView.setText(shortLine.toString());
                         break;
                     default:
-                        formatReportArea(fileLine);
+                        formatReportArea(util.getObjectYear().getAllLinesInFile());
                         reportView.setText(shortLine.toString());
                         break;
                 }//end of switch
@@ -470,251 +458,7 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
-    private void readTheFile() {
-        fileLine = "";
-        fileLineOct15 = "";
-        fileLineNov15 = "";
-        fileLineDec15 = "";
-        fileLineJan16 = "";
-        fileLineFeb16 = "";
-        fileLineMar16 = "";
-        fileLineApr16 = "";
-        fileLineMay16 = "";
-        fileLineJun16 = "";
-        fileLineJul16 = "";
-        fileLineAug16 = "";
-        fileLineSep16 = "";
-        fileLineOct16 = "";
-        fileLineNov16 = "";
-        fileLineDec16 = "";
-        fileLineJan17 = "";
-        fileLineFeb17 = "";
-        fileLineMar17 = "";
-        fileLineApr17 = "";
-        fileLineMay17 = "";
-        fileLineJun17 = "";
-        fileLineJul17 = "";
-        fileLineAug17 = "";
-        fileLineSep17 = "";
-        fileLineOct17 = "";
-        fileLineNov17 = "";
-        fileLineDec17 = "";
-        fileLineJan = "";
-        fileLineFeb = "";
-        fileLineMar = "";
-        fileLineApr = "";
-        fileLineMay = "";
-        fileLineJun = "";
-        fileLineJul = "";
-        fileLineAug = "";
-        fileLineSep = "";
-        fileLineOct = "";
-        fileLineNov = "";
-        fileLineDec = "";
 
-
-        String desc = "";
-        String date;
-
-        try {
-            InputStream inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
-                    ".moneycontrol/files/expenses.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            int lineIndex = 0;//this is to count the lines
-            while ((line = br.readLine()) != null) {
-
-                if (lineIndex == 0) {
-                    fileLine += line + "\n" + "\n";// get the contents of the file after the header
-                }
-                if (line.startsWith("Amount")) {
-                    fileLineOct15 += line + "\n" + "\n";
-                    fileLineNov15 += line + "\n" + "\n";
-                    fileLineDec15 += line + "\n" + "\n";
-
-                    fileLineJan16 += line + "\n" + "\n";
-                    fileLineFeb16 += line + "\n" + "\n";
-                    fileLineMar16 += line + "\n" + "\n";
-                    fileLineApr16 += line + "\n" + "\n";
-                    fileLineMay16 += line + "\n" + "\n";
-                    fileLineJun16 += line + "\n" + "\n";
-                    fileLineJul16 += line + "\n" + "\n";
-                    fileLineAug16 += line + "\n" + "\n";
-                    fileLineSep16 += line + "\n" + "\n";
-                    fileLineOct16 += line + "\n" + "\n";
-                    fileLineNov16 += line + "\n" + "\n";
-                    fileLineDec16 += line + "\n" + "\n";
-
-                    fileLineJan17 += line + "\n" + "\n";
-                    fileLineFeb17 += line + "\n" + "\n";
-                    fileLineMar17 += line + "\n" + "\n";
-                    fileLineApr17 += line + "\n" + "\n";
-                    fileLineMay17 += line + "\n" + "\n";
-                    fileLineJun17 += line + "\n" + "\n";
-                    fileLineJul17 += line + "\n" + "\n";
-                    fileLineAug17 += line + "\n" + "\n";
-                    fileLineSep17 += line + "\n" + "\n";
-                    fileLineOct17 += line + "\n" + "\n";
-                    fileLineNov17 += line + "\n" + "\n";
-                    fileLineDec17 += line + "\n" + "\n";
-
-                    fileLineJan += line + "\n" + "\n";
-                    fileLineFeb += line + "\n" + "\n";
-                    fileLineMar += line + "\n" + "\n";
-                    fileLineApr += line + "\n" + "\n";
-                    fileLineMay += line + "\n" + "\n";
-                    fileLineJun += line + "\n" + "\n";
-                    fileLineJul += line + "\n" + "\n";
-                    fileLineAug += line + "\n" + "\n";
-                    fileLineSep += line + "\n" + "\n";
-                    fileLineOct += line + "\n" + "\n";
-                    fileLineNov += line + "\n" + "\n";
-                    fileLineDec += line + "\n" + "\n";
-
-                }
-                if (++lineIndex > 2 && !line.equals("")) {
-                    fileLine += line + "\n";
-                    int index = line.lastIndexOf(" ");
-                    desc = line.substring(line.indexOf(" "), index).trim();
-                    date = line.substring(index, line.length());
-                    String extractMonthFromDate = date.substring(date.indexOf("/") + 1, date
-                            .lastIndexOf("/"));
-                    if (extractMonthFromDate.startsWith("0")) {
-                        extractMonthFromDate = extractMonthFromDate.replace("0", "");
-                    }
-                    String extractYearFromDate = date.substring(date.lastIndexOf("/") + 1, date
-                            .length());
-
-                    if (extractMonthFromDate.equals(TEN) && extractYearFromDate.equals(TWOTHOUSANDFIFTEEN)) {
-                        fileLineOct15 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(ELEVEN) && extractYearFromDate.equals(TWOTHOUSANDFIFTEEN)) {
-                        fileLineNov15 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TWELVE) && extractYearFromDate.equals(TWOTHOUSANDFIFTEEN)) {
-                        fileLineDec15 += line + "\n";
-                    }
-
-                    if (extractMonthFromDate.equals(ONE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineJan16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TWO) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineFeb16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(THREE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineMar16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(FOUR) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineApr16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(FIVE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineMay16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(SIX) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineJun16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(SEVEN) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineJul16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(EIGHT) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineAug16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(NINE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineSep16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TEN) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineOct16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(ELEVEN) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineNov16 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TWELVE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        fileLineDec16 += line + "\n";
-                    }
-
-                    if (extractMonthFromDate.equals(ONE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineJan17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TWO) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineFeb17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(THREE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineMar17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(FOUR) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineApr17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(FIVE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineMay17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(SIX) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineJun17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(SEVEN) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineJul17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(EIGHT) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineAug17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(NINE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineSep17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TEN) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineOct17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(ELEVEN) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineNov17 += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TWELVE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        fileLineDec17 += line + "\n";
-                    }
-
-                    if (extractMonthFromDate.equals(ONE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineJan += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TWO) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineFeb += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(THREE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineMar += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(FOUR) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineApr += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(FIVE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineMay += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(SIX) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineJun += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(SEVEN) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineJul += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(EIGHT) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineAug += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(NINE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineSep += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TEN) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineOct += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(ELEVEN) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineNov += line + "\n";
-                    }
-                    if (extractMonthFromDate.equals(TWELVE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        fileLineDec += line + "\n";
-                    }
-                }
-            }// end of while
-            inputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     private void formatReportArea(String fileLine) {
         shortLine = null;

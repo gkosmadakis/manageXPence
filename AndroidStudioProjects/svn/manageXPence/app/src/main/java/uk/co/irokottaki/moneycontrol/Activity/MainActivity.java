@@ -123,6 +123,8 @@ import uk.co.irokottaki.moneycontrol.DropboxClient;
 import uk.co.irokottaki.moneycontrol.IabHelper;
 import uk.co.irokottaki.moneycontrol.IabResult;
 import uk.co.irokottaki.moneycontrol.Inventory;
+import uk.co.irokottaki.moneycontrol.Model.AmountsFor2018;
+import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.Utils.NothingSelectedSpinnerAdapter;
 import uk.co.irokottaki.moneycontrol.Purchase;
 import uk.co.irokottaki.moneycontrol.R;
@@ -156,19 +158,19 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private String descriptionAddedByUser, ACCESS_TOKEN;
     public ArrayList<String> allDescriptions;//descriptions
     RelativeLayout layout;
-    private static ArrayList<Float> arrayOfamountOct15, arrayOfamountNov15, arrayOfamountDec15,
+/*    private static ArrayList<Float> arrayOfamountOct15, arrayOfamountNov15, arrayOfamountDec15,
             arrayOfamountJan16, arrayOfamountFeb16,
             arrayOfamountMar16, arrayOfamountApr16, arrayOfamountMay16, arrayOfamountJun16,
             arrayOfamountJul16, arrayOfamountAug16,
-            arrayOfamountSep16, arrayOfamountOct16, arrayOfamountNov16, arrayOfamountDec16,
-            arrayOfamountJan17, arrayOfamountFeb17, arrayOfamountMar17, arrayOfamountApr17,
+            arrayOfamountSep16, arrayOfamountOct16, arrayOfamountNov16, arrayOfamountDec16;*/
+            /*arrayOfamountJan17, arrayOfamountFeb17, arrayOfamountMar17, arrayOfamountApr17,
             arrayOfamountMay17, arrayOfamountJun17,
             arrayOfamountJul17, arrayOfamountAug17, arrayOfamountSep17, arrayOfamountOct17,
             arrayOfamountNov17, arrayOfamountDec17,
             arrayOfamountJan, arrayOfamountFeb, arrayOfamountMar, arrayOfamountApr,
             arrayOfamountMay, arrayOfamountJun, arrayOfamountJul,
             arrayOfamountAug, arrayOfamountSep, arrayOfamountOct, arrayOfamountNov,
-            arrayOfamountDec;//all the amounts for the months
+            arrayOfamountDec*/;//all the amounts for the months
     protected PreferenceManager mPreferenceManager;
     private LinkedHashSet<String> uniqueDescriptions;
     ArrayList<Float> uniqueAmounts;
@@ -211,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private static final int IMAGE_REQUEST_CODE = 101;
     private Uri imageUri;
     private static Map<String, String> DATE_FORMAT_REGEXPS;
+    private ChartsUtil util;
 
 
     final ServiceConnection mServiceConn = new ServiceConnection() {
@@ -265,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         valueFromNumPicker1 = sharedprefs.getInt(VALUEFROMNUMPICKER1, valueFromNumPicker1);
         valueFromNumPicker2 = sharedprefs.getInt(VALUEFROMNUMPICKER2, valueFromNumPicker2);
 
+        util = new ChartsUtil(this);
 
         /*if (adsDisabled==false) {
             //this is for the ads Millenial Media
@@ -556,11 +560,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         importButton = (Button) findViewById(R.id.importButton);
 
         showDialogOnButtonClick();
-        try {
-            readTheFile(0, 0, null);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+        util.readTheFile();
+
         readDescriptionsFile();
 
         saveToFile.setOnClickListener(new View.OnClickListener() {
@@ -1172,277 +1174,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         //System.out.println(errorMessage);
     }
 
-    @SuppressWarnings("StringConcatenationInLoop")
-    public void readTheFile(int lastDayOfPreviousMonth, int lastDayOfCurrentMonth, String
-            currentMonth) throws ParseException {
-        fileLine = "";
-        arrayOfamountOct15 = new ArrayList<>();
-        arrayOfamountNov15 = new ArrayList<>();
-        arrayOfamountDec15 = new ArrayList<>();
-
-        arrayOfamountJan16 = new ArrayList<>();
-        arrayOfamountFeb16 = new ArrayList<>();
-        arrayOfamountMar16 = new ArrayList<>();
-        arrayOfamountApr16 = new ArrayList<>();
-        arrayOfamountMay16 = new ArrayList<>();
-        arrayOfamountJun16 = new ArrayList<>();
-        arrayOfamountJul16 = new ArrayList<>();
-        arrayOfamountAug16 = new ArrayList<>();
-        arrayOfamountSep16 = new ArrayList<>();
-        arrayOfamountOct16 = new ArrayList<>();
-        arrayOfamountNov16 = new ArrayList<>();
-        arrayOfamountDec16 = new ArrayList<>();
-
-        arrayOfamountJan17 = new ArrayList<>();
-        arrayOfamountFeb17 = new ArrayList<>();
-        arrayOfamountMar17 = new ArrayList<>();
-        arrayOfamountApr17 = new ArrayList<>();
-        arrayOfamountMay17 = new ArrayList<>();
-        arrayOfamountJun17 = new ArrayList<>();
-        arrayOfamountJul17 = new ArrayList<>();
-        arrayOfamountAug17 = new ArrayList<>();
-        arrayOfamountSep17 = new ArrayList<>();
-        arrayOfamountOct17 = new ArrayList<>();
-        arrayOfamountNov17 = new ArrayList<>();
-        arrayOfamountDec17 = new ArrayList<>();
-
-        arrayOfamountJan = new ArrayList<>();
-        arrayOfamountFeb = new ArrayList<>();
-        arrayOfamountMar = new ArrayList<>();
-        arrayOfamountApr = new ArrayList<>();
-        arrayOfamountMay = new ArrayList<>();
-        arrayOfamountJun = new ArrayList<>();
-        arrayOfamountJul = new ArrayList<>();
-        arrayOfamountAug = new ArrayList<>();
-        arrayOfamountSep = new ArrayList<>();
-        arrayOfamountOct = new ArrayList<>();
-        arrayOfamountNov = new ArrayList<>();
-        arrayOfamountDec = new ArrayList<>();
-        amountsRelatedToDays = new HashMap<>();
-        amountsRelatedToDaysAfterSalaryDay = new HashMap<>();
-        String amount = "";
-        String date = "";
-
-        try {
-            InputStream inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
-                    ".moneycontrol/files/expenses.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            int lineIndex = 0;//this is to count the lines
-            while ((line = br.readLine()) != null) {
-
-                if (lineIndex == 0) {
-                    fileLine = line + "\n" + "\n";// need to catch the space and write only one
-                    // space after the header.
-                }
-
-                if (++lineIndex > 2 && !line.equals("") && !line.equals("r")) {
-                    fileLine += line + "\n";
-                    int index = line.lastIndexOf(" ");
-                    amount = line.substring(0, line.indexOf(" "));
-                    date = line.substring(index, line.length());
-                    String extractDayFromDate = date.substring(0, date.indexOf("/"));
-                    //convert String to int but first take the second character e.g. take 5 from 05
-                    int extractDayFromDateInt = Integer.parseInt(extractDayFromDate.trim()
-                            .replaceFirst("^0+(?!$)", ""));
-                    String extractMonthFromDate = date.substring(date.indexOf("/") + 1, date
-                            .lastIndexOf("/"));
-                    if (extractMonthFromDate.startsWith("0")) {
-                        extractMonthFromDate = extractMonthFromDate.replace("0", "");
-                    }
-                    String extractYearFromDate = date.substring(date.lastIndexOf("/") + 1, date
-                            .length());
-
-                    if (extractMonthFromDate.equals(TEN) && extractYearFromDate.equals(TWOTHOUSANDFIFTEEN)) {
-                        arrayOfamountOct15.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(ELEVEN) && extractYearFromDate.equals(TWOTHOUSANDFIFTEEN)) {
-                        arrayOfamountNov15.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TWELVE) && extractYearFromDate.equals(TWOTHOUSANDFIFTEEN)) {
-                        arrayOfamountDec15.add(Float.valueOf(amount));
-                    }
-
-                    if (extractMonthFromDate.equals(ONE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountJan16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TWO) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountFeb16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(THREE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountMar16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(FOUR) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountApr16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(FIVE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountMay16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(SIX) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountJun16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(SEVEN) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountJul16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(EIGHT) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountAug16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(NINE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountSep16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TEN) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountOct16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(ELEVEN) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountNov16.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TWELVE) && extractYearFromDate.equals(TWOTHOUSANDSIXTEEN)) {
-                        arrayOfamountDec16.add(Float.valueOf(amount));
-                    }
-
-                    if (extractMonthFromDate.equals(ONE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountJan17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TWO) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountFeb17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(THREE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountMar17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(FOUR) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountApr17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(FIVE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountMay17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(SIX) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountJun17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(SEVEN) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountJul17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(EIGHT) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountAug17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(NINE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountSep17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TEN) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountOct17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(ELEVEN) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountNov17.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TWELVE) && extractYearFromDate.equals(TWOTHOUSANDSEVENTEEN)) {
-                        arrayOfamountDec17.add(Float.valueOf(amount));
-                    }
-
-                    if (extractMonthFromDate.equals(ONE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountJan.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TWO) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountFeb.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(THREE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountMar.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(FOUR) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountApr.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(FIVE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountMay.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(SIX) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountJun.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(SEVEN) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountJul.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(EIGHT) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountAug.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(NINE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountSep.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TEN) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountOct.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(ELEVEN) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountNov.add(Float.valueOf(amount));
-                    }
-                    if (extractMonthFromDate.equals(TWELVE) && extractYearFromDate.equals(TWOTHOUSANDEIGHTEEN)) {
-                        arrayOfamountDec.add(Float.valueOf(amount));
-                    }
-
-
-                    if (lastDayOfCurrentMonth != 0 && lastDayOfPreviousMonth != 0 && currentMonth
-                            != null) {
-                        final Calendar calendar = Calendar.getInstance();
-                        java.util.Date currentDate = new SimpleDateFormat("MMM", Locale.ENGLISH)
-                                .parse(currentMonth);
-                        calendar.setTime(currentDate);// here i convert the String month in an
-                        // integer to be used on the switch-case
-                        int monthInt = calendar.get(Calendar.MONTH) + 1;
-                        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-                        //the case of the current month
-                        if (extractMonthFromDate.equals(String.valueOf(monthInt)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate) &&
-                                lastDayOfCurrentMonth > extractDayFromDateInt) {
-
-                            if (amountsRelatedToDays.containsKey(String.valueOf
-                                    (extractDayFromDateInt))) {
-                                amountsRelatedToDays.put(String.valueOf(extractDayFromDateInt),
-                                        amountsRelatedToDays.get(String.valueOf
-                                                (extractDayFromDateInt)) +
-                                                Float.valueOf(amount));
-                            } else {
-                                amountsRelatedToDays.put(String.valueOf(extractDayFromDateInt),
-                                        Float.valueOf(amount));
-                            }
-                        }
-                        //the case of the previous month
-                        if (extractMonthFromDate.equals(String.valueOf(monthInt - 1)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate) &&
-                                lastDayOfPreviousMonth <= extractDayFromDateInt) {
-
-                            if (amountsRelatedToDays.containsKey(String.valueOf
-                                    (extractDayFromDateInt))) {
-                                amountsRelatedToDays.put(String.valueOf(extractDayFromDateInt),
-                                        amountsRelatedToDays.get(String.valueOf
-                                                (extractDayFromDateInt)) +
-                                                Float.valueOf(amount));
-                            } else {
-                                amountsRelatedToDays.put(String.valueOf(extractDayFromDateInt),
-                                        Float.valueOf(amount));
-                            }
-                        }
-                        if (extractMonthFromDate.equals(String.valueOf(monthInt)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate) &&
-                                lastDayOfCurrentMonth <= extractDayFromDateInt) {
-
-                            if (amountsRelatedToDaysAfterSalaryDay.containsKey(String.valueOf
-                                    (extractDayFromDateInt))) {
-                                amountsRelatedToDaysAfterSalaryDay.put(String.valueOf
-                                        (extractDayFromDateInt),
-                                        amountsRelatedToDaysAfterSalaryDay.get
-                                        (String.valueOf(extractDayFromDateInt)) + Float.valueOf
-                                                (amount));
-                            } else {
-                                amountsRelatedToDaysAfterSalaryDay.put(String.valueOf
-                                        (extractDayFromDateInt), Float.valueOf(amount));
-                            }
-                        }
-                    }
-                }
-            }
-            inputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     protected void showInputDialog() {
         //this method handles the popup window to add/remove descriptions in the spinner.
         // get prompts.xml view
@@ -1652,7 +1383,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         numberPicker1.setMinValue(1);
         numberPicker1.setWrapSelectorWheel(true);
 
-        numberPicker2 = npView.findViewById(R.id.numberPicker2);
+        //numberPicker2 = npView.findViewById(R.id.numberPicker2);
         numberPicker2.setMaxValue(31);
         numberPicker2.setMinValue(1);
         numberPicker2.setWrapSelectorWheel(true);
@@ -1660,7 +1391,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         numberPickerLabel1 = new TextView(this);
         numberPickerLabel1 = npView.findViewById(R.id.numberPickerLabel1);
         numberPickerLabel2 = new TextView(this);
-        numberPickerLabel2 = npView.findViewById(R.id.numberPickerLabel2);
+        //numberPickerLabel2 = npView.findViewById(R.id.numberPickerLabel2);
 
         if ((valueFromNumPicker1 != 0 && valueFromNumPicker2 != 0)) {
             numberPicker1.setValue(valueFromNumPicker1);
@@ -1735,14 +1466,17 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
+        final AmountsFor2018 obj2018 = util.getObjectYear().getYear2018();
 
         try {
-            readTheFile(valueFromNumPicker1, valueFromNumPicker2, currentMonth);
+
+            util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(valueFromNumPicker1, currentMonth, obj2018);
             //the user has clicked SET on the dialog
             isPaymentCircleSet = true;
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         // process again the balance
         processBalance();
         // redraw the graph with the balance
@@ -1776,104 +1510,104 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
             if (currentMonth.equals(JANUARY) && year == 2018) {
                 incomeForJan = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountJan);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountJan());
             }
             if (currentMonth.equals(FEBRUARY) && year == 2018) {
                 incomeForFeb = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountFeb);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountFeb());
             }
             if (currentMonth.equals(MARCH) && year == 2018) {
                 incomeForMar = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountMar);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountMar());
             }
             if (currentMonth.equals(APRIL) && year == 2018) {
                 incomeForApr = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountApr);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountApr());
             }
             if (currentMonth.equals(MAY) && year == 2018) {
                 incomeForMay = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountMay);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountMay());
             }
             if (currentMonth.equals(JUNE) && year == 2018) {
                 incomeForJun = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountJun);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountJun());
             }
             if (currentMonth.equals(JULY) && year == 2018) {
                 incomeForJul = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountJul);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountJul());
             }
             if (currentMonth.equals(AUGUST) && year == 2018) {
                 incomeForAug = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountAug);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountAug());
             }
             if (currentMonth.equals(SEPTEMBER) && year == 2018) {
                 incomeForSep = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountSep);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountSep());
             }
             if (currentMonth.equals(OCTOBER) && year == 2018) {
                 incomeForOct = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountOct);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountOct());
             }
             if (currentMonth.equals(NOVEMBER) && year == 2018) {
                 incomeForNov = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountNov);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountNov());
             }
             if (currentMonth.equals(DECEMBER) && year == 2018) {
                 incomeForDec = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountDec);
+                SumExpensesForBalance(util.getObjectYear().getYear2018().getArrayOfamountDec());
             }
 
             if (currentMonth.equals(JANUARY) && year == 2017) {
                 incomeForJan = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountJan17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountJan17());
             }
             if (currentMonth.equals(FEBRUARY) && year == 2017) {
                 incomeForFeb = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountFeb17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountFeb17());
             }
             if (currentMonth.equals(MARCH) && year == 2017) {
                 incomeForMar = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountMar17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountMar17());
             }
             if (currentMonth.equals(APRIL) && year == 2017) {
                 incomeForApr = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountApr17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountApr17());
             }
             if (currentMonth.equals(MAY) && year == 2017) {
                 incomeForMay = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountMay17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountMay17());
             }
             if (currentMonth.equals(JUNE) && year == 2017) {
                 incomeForJun = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountJun17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountJun17());
             }
             if (currentMonth.equals(JULY) && year == 2017) {
                 incomeForJul = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountJul17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountJul17());
             }
             if (currentMonth.equals(AUGUST) && year == 2017) {
                 incomeForAug = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountAug17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountAug17());
             }
             if (currentMonth.equals(SEPTEMBER) && year == 2017) {
                 incomeForSep = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountSep17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountSep17());
             }
             if (currentMonth.equals(OCTOBER) && year == 2017) {
                 incomeForOct = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountOct17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountOct17());
             }
             if (currentMonth.equals(NOVEMBER) && year == 2017) {
                 incomeForNov = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountNov17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountNov17());
             }
             if (currentMonth.equals(DECEMBER) && year == 2017) {
                 incomeForDec = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountDec17);
+                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountDec17());
             }
             if (currentMonth.equals(DECEMBER) && year == 2016) {
                 incomeForDec = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(arrayOfamountDec16);
+                SumExpensesForBalance(util.getObjectYear().getYear2016().getArrayOfamountDec16());
             }
             // this is to avoid invalid double thrown on initial state where income is not added
             // yet by the user
@@ -2035,11 +1769,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
     public void checkBudgetWarning() {
         //call to retrieve amounts from months
-        try {
-            readTheFile(0, 0, null);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+        util.readTheFile();
 
         int sum = 0;
         //get the budget value as stored in Preferences in Budget Activity
@@ -2054,96 +1785,96 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         // that have been added so far
         if (budgetWarningEnabled && progressValue > 0) {
             if (currentMonth.equals(JANUARY)) {
-                for (int i = 0; i < arrayOfamountJan.size(); i++) {
-                    sum += arrayOfamountJan.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountJan().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountJan().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(FEBRUARY)) {
-                for (int i = 0; i < arrayOfamountFeb.size(); i++) {
-                    sum += arrayOfamountFeb.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountFeb().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountFeb().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(MARCH)) {
-                for (int i = 0; i < arrayOfamountMar.size(); i++) {
-                    sum += arrayOfamountMar.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountMar().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountMar().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(APRIL)) {
-                for (int i = 0; i < arrayOfamountApr.size(); i++) {
-                    sum += arrayOfamountApr.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountApr().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountApr().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(MAY)) {
-                for (int i = 0; i < arrayOfamountMay.size(); i++) {
-                    sum += arrayOfamountMay.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountMay().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountMay().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(JUNE)) {
-                for (int i = 0; i < arrayOfamountJun.size(); i++) {
-                    sum += arrayOfamountJun.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountJun().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountJun().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(JULY)) {
-                for (int i = 0; i < arrayOfamountJul.size(); i++) {
-                    sum += arrayOfamountJul.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountJul().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountJul().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(AUGUST)) {
-                for (int i = 0; i < arrayOfamountAug.size(); i++) {
-                    sum += arrayOfamountAug.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountAug().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountAug().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(SEPTEMBER)) {
-                for (int i = 0; i < arrayOfamountSep.size(); i++) {
-                    sum += arrayOfamountSep.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountSep().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountSep().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(OCTOBER)) {
-                for (int i = 0; i < arrayOfamountOct.size(); i++) {
-                    sum += arrayOfamountOct.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountOct().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountOct().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(NOVEMBER)) {
-                for (int i = 0; i < arrayOfamountNov.size(); i++) {
-                    sum += arrayOfamountNov.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountNov().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountNov().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(DECEMBER)) {
-                for (int i = 0; i < arrayOfamountDec.size(); i++) {
-                    sum += arrayOfamountDec.get(i);
+                for (int i = 0; i < util.getObjectYear().getYear2018().getArrayOfamountDec().size(); i++) {
+                    sum += util.getObjectYear().getYear2018().getArrayOfamountDec().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
