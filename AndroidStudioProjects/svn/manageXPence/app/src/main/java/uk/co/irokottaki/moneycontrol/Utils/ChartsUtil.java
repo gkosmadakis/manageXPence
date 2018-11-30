@@ -41,6 +41,7 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import uk.co.irokottaki.moneycontrol.Activity.CalculateAnnualExpensesActivity;
 import uk.co.irokottaki.moneycontrol.Activity.ChartActivity;
@@ -100,7 +101,7 @@ public class ChartsUtil {
             Scanner in = new Scanner(inputStream);
             int lineIndex = 0;//this is to count the lines
             yearsMappedToMonthsWithAmountsMap = new HashMap<>();
-            Map tempFirstMap = new HashMap<String, Map<String, ArrayList<String>>>();
+            TreeMap tempFirstMap = new TreeMap<Integer, Map<String, ArrayList<String>>>();
             Map tempSecondMap = new HashMap<String, ArrayList<String>>();
             ArrayList tempList = new ArrayList<Float>();
             descriptionsSet = new LinkedHashSet<>();
@@ -127,28 +128,45 @@ public class ChartsUtil {
                      * and value an arraylist with the amounts of this month*/
                     if (yearsMappedToMonthsWithAmountsMap.containsKey(extractYearFromDate)) {
                         /*if the key = year is in the map then get the tempFirstMap*/
-                        tempFirstMap = yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
+                        tempFirstMap = (TreeMap) yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
                         /*if the key = month is in the tempFirstMap and the descriptionSet has the current description
                         then get the tempList and the tempSecondMap and call the method to add amounts that are with the same description */
-                        if (tempFirstMap.containsKey(extractMonthFromDate) && descriptionsSet.contains(desc)) {
+                        if (tempFirstMap.containsKey(Integer.parseInt(extractMonthFromDate)) && descriptionsSet.contains(desc)) {
                             tempList = (ArrayList) tempSecondMap.get(desc);
-                            tempSecondMap = (Map) tempFirstMap.get(extractMonthFromDate);
+                            tempSecondMap = (Map) tempFirstMap.get(Integer.parseInt(extractMonthFromDate));
 
                             addAmountsWithDuplicates(descriptionsSet,desc, String.valueOf(amount), tempList);
                         }
                         /*if the key = month is in the tempFirstMap but the description is not in the descriptionSet
                         then get the tempSecondMap. Add the amount to the templist, the desc to the descriptionSet */
-                        else if (tempFirstMap.containsKey(extractMonthFromDate)) {
-                            tempSecondMap = (Map) tempFirstMap.get(extractMonthFromDate);
-                            //tempList = new ArrayList<String>();
+                        else if (tempFirstMap.containsKey(Integer.parseInt(extractMonthFromDate))) {
+                            tempSecondMap = (Map) tempFirstMap.get(Integer.parseInt(extractMonthFromDate));
 
-                            tempList.add(amount);
-                            descriptionsSet.add(desc);
+                            if ((int)tempFirstMap.lastKey() == Integer.parseInt(extractMonthFromDate)) {
+                                tempList.add(amount);
+                                descriptionsSet.add(desc);
+                            }
+                            else {
+                                descriptionsSet = new LinkedHashSet<>();
+                                for (Object description : tempSecondMap.keySet()){
+                                    descriptionsSet.add(description);
+                                }
+                            if (descriptionsSet.contains(desc)) {
+                                    tempList = (ArrayList) tempSecondMap.get(desc);
+                                    addAmountsWithDuplicates(descriptionsSet, desc, String.valueOf(amount), tempList);
+                                    descriptionsSet.clear();
+                                }
+                            else {
+                                    tempList.add(amount);
+                                    descriptionsSet.clear();
+                                 }
+
+                            }
                         }
                         /* if the key = month is not in the map at all then get the tempFirstMap, create a new tempSecondMap, a new set and a new list.
                         * Add the amount to the list, the desc in the set */
                         else {
-                            tempFirstMap = yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
+                            tempFirstMap = (TreeMap) yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
                             tempSecondMap = new HashMap<LinkedHashSet, ArrayList<String>>();
                             descriptionsSet = new LinkedHashSet<>();
                             tempList = new ArrayList<String>();
@@ -160,7 +178,7 @@ public class ChartsUtil {
                     /*if the key = year is not in the map then create new tempFirstMap, a new tempSecondMap, a new set and a new tempList
                     add the amount in the tempList the description in the set */
                     else {
-                        tempFirstMap = new HashMap<String, Map<LinkedHashSet, ArrayList<String>>>();
+                        tempFirstMap = new TreeMap<Integer, Map<LinkedHashSet, ArrayList<String>>>();
                         tempSecondMap = new HashMap<LinkedHashSet, ArrayList<String>>();
                         descriptionsSet = new LinkedHashSet<>();
                         tempList = new ArrayList<String>();
@@ -170,7 +188,7 @@ public class ChartsUtil {
                     }
                     /* Store fields in the maps and then in the main map */
                     tempSecondMap.put(desc, tempList);
-                    tempFirstMap.put(extractMonthFromDate, tempSecondMap);
+                    tempFirstMap.put(Integer.parseInt(extractMonthFromDate), tempSecondMap);
                     yearsMappedToMonthsWithAmountsMap.put(extractYearFromDate, tempFirstMap);
 
                     /* Similarly for the map to store years with months and fileLines that are used in ReportActivity */
@@ -237,12 +255,7 @@ public class ChartsUtil {
             String year = yearEntry.getKey();
             for ( Map.Entry<String, String> monthEntry : yearEntry.getValue().entrySet()) {
                 String month = monthEntry.getKey();
-                /*HashMap<String, String> tempMap = (HashMap<String, String>) yearEntry.getValue();
-                for (String lineRead : tempMap.values()) {
-                    Log.e("Year is" , year);
-                    Log.e("File lines ", lineRead);
 
-                    }*/
                 allLinesInFile += monthEntry.getValue();
                 if (monthRequested.equals(month) && yearRequested.equals(year)) {
                     line += monthEntry.getValue();
@@ -259,7 +272,7 @@ public class ChartsUtil {
             String year = yearEntry.getKey();
             Log.e("Year from file is ", year);
             for (Map.Entry<String, Map<String, ArrayList<Float>>> monthEntry : yearEntry.getValue().entrySet()) {
-                String month = monthEntry.getKey();
+                String month = String.valueOf(monthEntry.getKey());
                 Log.e("Month from file is ", month);
 
                 for (Map.Entry<String, ArrayList<Float>> descEntry : monthEntry.getValue().entrySet()) {
