@@ -49,6 +49,7 @@ public class ChartActivity extends AppCompatActivity {
     private PieDataSet dataSet;
     private PieData data;
     private int monthInt;
+    private int year;
     private boolean stateSwitchButton;
     private TextView monthLabel;
     private ChartsUtil util;
@@ -161,6 +162,7 @@ public class ChartActivity extends AppCompatActivity {
 
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
+        year = calendar.get(Calendar.YEAR);// get the current year
         monthLabel.setText(currentMonth);// and displays it on the month field
         String getCurrentMonthDisplayed = monthLabel.getText().toString();
 
@@ -180,7 +182,13 @@ public class ChartActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 monthInt--;
-                util.casesToShowExpensesForMonth(monthInt, ChartActivity.this);
+                if (monthInt > 12) {
+                    year++;
+                }
+                if (monthInt < 1) {
+                    year--;
+                }
+                util.casesToShowExpensesForMonth(monthInt, year, ChartActivity.this);
 
             }
         });
@@ -190,7 +198,13 @@ public class ChartActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 monthInt++;
-                util.casesToShowExpensesForMonth(monthInt, ChartActivity.this);
+                if (monthInt > 12) {
+                    year++;
+                }
+                if (monthInt < 1) {
+                    year--;
+                }
+                util.casesToShowExpensesForMonth(monthInt, year, ChartActivity.this);
 
             }
         });

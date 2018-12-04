@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -25,22 +24,13 @@ import android.widget.TextView;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -82,7 +72,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         final AmountsFor2018 obj2018 = util.getObjectYear().getYear2018();
         final AmountsFor2017 obj2017 = util.getObjectYear().getYear2017();
         final AmountsFor2016 obj2016 = util.getObjectYear().getYear2016();
-        final AmountsFor2015 obj2015 = util.getObjectYear().getYear2015();
+        final AmountsFor2015 obj2015 = util.getObjectYear().getYear();
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.annualChartView);
         SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);

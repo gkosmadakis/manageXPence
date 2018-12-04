@@ -2,7 +2,6 @@ package uk.co.irokottaki.moneycontrol.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -17,14 +16,11 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import uk.co.irokottaki.moneycontrol.Model.AmountsFor2015;
@@ -130,7 +126,7 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
             public void onClick(View v) {
                 year--;
 
-                showSavings(util.getObjectYear().getYear2015(), util.getObjectYear().getYear2016(),
+                showSavings(util.getObjectYear().getYear(), util.getObjectYear().getYear2016(),
                         util.getObjectYear().getYear2017(), util.getObjectYear().getYear2018());
             }
         });
@@ -140,7 +136,7 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
             public void onClick(View v) {
                 year++;
 
-                showSavings(util.getObjectYear().getYear2015(), util.getObjectYear().getYear2016(),
+                showSavings(util.getObjectYear().getYear(), util.getObjectYear().getYear2016(),
                         util.getObjectYear().getYear2017(), util.getObjectYear().getYear2018());
             }
         });

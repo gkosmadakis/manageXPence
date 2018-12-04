@@ -250,18 +250,18 @@ public class ReportActivity extends AppCompatActivity {
 
                 switch (getMonthSelection) {
 
-                    case 1:
-                        formatReportArea(util.getObjectYear().getYear2015().getFileLineOct15());
+                   /* case 1:
+                        formatReportArea(util.getObjectYear().getYear().getFileLineOct15());
                         reportView.setText(shortLine.toString());
                         break;
                     case 2:
-                        formatReportArea(util.getObjectYear().getYear2015().getFileLineNov15());
+                        formatReportArea(util.getObjectYear().getYear().getFileLineNov15());
                         reportView.setText(shortLine.toString());
                         break;
                     case 3:
-                        formatReportArea(util.getObjectYear().getYear2015().getFileLineDec15());
+                        formatReportArea(util.getObjectYear().getYear().getFileLineDec15());
                         reportView.setText(shortLine.toString());
-                        break;
+                        break;*/
                     case 4:
                         formatReportArea(util.getObjectYear().getYear2016().getFileLineJan16());
                         reportView.setText(shortLine.toString());

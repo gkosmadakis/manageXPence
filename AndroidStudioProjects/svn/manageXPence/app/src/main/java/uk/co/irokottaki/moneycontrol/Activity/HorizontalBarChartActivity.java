@@ -42,6 +42,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
     private ArrayList<String> xAxis;
     private BarDataSet barDataSet1;
     private int monthInt;
+    private int year;
     private boolean stateSwitchButton;
     private TextView monthLabel;
     private ChartsUtil util;
@@ -82,6 +83,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         final Calendar calendar = Calendar.getInstance();
         //SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
+        year = calendar.get(Calendar.YEAR);// get the current year
         //month_date.format(calendar.getTime());
         monthLabel.setText(currentMonth);
 
@@ -142,7 +144,13 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 monthInt--;
-                util.casesToShowExpensesForMonth(monthInt, HorizontalBarChartActivity.this);
+                if (monthInt > 12) {
+                    year++;
+                }
+                if (monthInt < 1) {
+                    year--;
+                }
+                util.casesToShowExpensesForMonth(monthInt, year,HorizontalBarChartActivity.this);
 
             }
         });
@@ -151,7 +159,13 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 monthInt++;
-                util.casesToShowExpensesForMonth(monthInt, HorizontalBarChartActivity.this);
+                if (monthInt > 12) {
+                    year++;
+                }
+                if (monthInt < 1) {
+                    year--;
+                }
+                util.casesToShowExpensesForMonth(monthInt, year, HorizontalBarChartActivity.this);
 
             }
         });
