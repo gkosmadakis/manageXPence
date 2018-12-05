@@ -50,6 +50,11 @@ public class ReportActivity extends AppCompatActivity {
     private InlineAd inlineAd;
     private boolean adsDisabled;
     private ChartsUtil util;
+    private int year;
+    private Spinner yearList;
+    private int yearSelected;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,17 +157,18 @@ public class ReportActivity extends AppCompatActivity {
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, ReportActivity.this);
 
-
-
         // Spinner with the months
         monthItems = (Spinner) findViewById(R.id.monthSpinner);
+
+        /*Spinner to hold the years*/
+        yearList = (Spinner) findViewById(R.id.yearSpinnerReport);
 
         /*String monthData [] = new String[] {"Month", "January","February","March","April",
                 "May","June","July","August","September","October","November","December",
                 "Total"};*/
 
         monthsAddedToSpinner = new ArrayList<>();
-        monthsAddedToSpinner.add(OCTOBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN);
+  /*      monthsAddedToSpinner.add(OCTOBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN);
         monthsAddedToSpinner.add(NOVEMBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN);
         monthsAddedToSpinner.add(DECEMBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN);
         monthsAddedToSpinner.add(JANUARY+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
@@ -188,7 +194,7 @@ public class ReportActivity extends AppCompatActivity {
         monthsAddedToSpinner.add(SEPTEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
         monthsAddedToSpinner.add(OCTOBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
         monthsAddedToSpinner.add(NOVEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(DECEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
+        monthsAddedToSpinner.add(DECEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);*/
         monthsAddedToSpinner.add(JANUARY);
         monthsAddedToSpinner.add(FEBRUARY);
         monthsAddedToSpinner.add(MARCH);
@@ -228,6 +234,7 @@ public class ReportActivity extends AppCompatActivity {
         //Get the current month
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
+        year = calendar.get(Calendar.YEAR);// get the current year
 
         //convert month String to integer
         monthInt = 0;
@@ -235,11 +242,29 @@ public class ReportActivity extends AppCompatActivity {
             java.util.Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse(currentMonth);
             calendar.setTime(date);// here i convert the String month in an integer
             monthInt = calendar.get(Calendar.MONTH);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        util.populateYearSpinnerAndSetCurrentYear(year, yearList, ReportActivity.this);
+
         //set the spinner to the current month
         monthItems.setSelection(findIndexForCurrentMonth(currentMonth));
+
+        yearList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                yearList = (Spinner) findViewById(R.id.yearSpinnerReport);
+
+                yearSelected = Integer.parseInt(yearList.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         monthItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -248,169 +273,7 @@ public class ReportActivity extends AppCompatActivity {
 
                 int getMonthSelection = monthItems.getSelectedItemPosition();
 
-                switch (getMonthSelection) {
-
-                   /* case 1:
-                        formatReportArea(util.getObjectYear().getYear().getFileLineOct15());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 2:
-                        formatReportArea(util.getObjectYear().getYear().getFileLineNov15());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 3:
-                        formatReportArea(util.getObjectYear().getYear().getFileLineDec15());
-                        reportView.setText(shortLine.toString());
-                        break;*/
-                    case 4:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineJan16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 5:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineFeb16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 6:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineMar16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 7:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineApr16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 8:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineMay16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 9:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineJun16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 10:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineJul16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 11:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineAug16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 12:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineSep16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 13:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineOct16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 14:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineNov16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 15:
-                        formatReportArea(util.getObjectYear().getYear2016().getFileLineDec16());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 16:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineJan17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 17:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineFeb17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 18:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineMar17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 19:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineApr17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 20:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineMay17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 21:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineJun17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 22:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineJul17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 23:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineAug17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 24:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineSep17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 25:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineOct17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 26:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineNov17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 27:
-                        formatReportArea(util.getObjectYear().getYear2017().getFileLineDec17());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 28:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineJan());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 29:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineFeb());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 30:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineMar());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 31:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineApr());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 32:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineMay());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 33:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineJun());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 34:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineJul());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 35:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineAug());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 36:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineSep());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 37:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineOct());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 38:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineNov());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    case 39:
-                        formatReportArea(util.getObjectYear().getYear2018().getFileLineDec());
-                        reportView.setText(shortLine.toString());
-                        break;
-                    default:
-                        formatReportArea(util.getObjectYear().getAllLinesInFile());
-                        reportView.setText(shortLine.toString());
-                        break;
-                }//end of switch
+                util.switchMonthsReport(getMonthSelection, yearSelected, shortLine, ReportActivity.this);
             }
 
             @Override
@@ -421,7 +284,6 @@ public class ReportActivity extends AppCompatActivity {
         });
 
     }// end of create method
-
 
 
     private int findIndexForCurrentMonth(String currentMonth) {
@@ -458,37 +320,12 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
+    public StringBuilder getShortLine() {
+        return shortLine;
+    }
 
-
-    private void formatReportArea(String fileLine) {
-        shortLine = null;
-        shortLine = new StringBuilder();
-        String formatStr = "%-8s%-15s%-10s";
-
-        String[] lines = fileLine.split("\n");
-
-        for (int i = 0; i < lines.length; i++) {
-            if (i == 0) {
-                String amount = AMOUNT;
-                String shortDesc = DESCRIPTION;
-                String date = DATE;
-                shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();
-                shortLine.append("\n");
-            } else if (i > 1 && !lines[i].equals("")) {
-                String amount = lines[i].substring(0, lines[i].indexOf(" "));
-                String shortDesc = lines[i].substring(lines[i].indexOf(" "), lines[i].lastIndexOf
-                        (" ")).trim();
-                String date = lines[i].substring(lines[i].lastIndexOf(" "), lines[i].length())
-                        .trim();
-                shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();
-                shortLine.append("\n");
-            } else {
-                shortLine.append(lines[i]);//this is to write the header Amount Description Date
-                // and a new line
-                shortLine.append("\n");
-            }
-        }
-
+    public TextView getReportView() {
+        return reportView;
     }
 
     @Override

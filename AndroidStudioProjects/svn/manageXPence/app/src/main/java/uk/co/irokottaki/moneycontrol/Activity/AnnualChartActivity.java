@@ -34,10 +34,8 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Locale;
 
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2015;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2016;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2017;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2018;
+import uk.co.irokottaki.moneycontrol.Model.AnyYear;
+import uk.co.irokottaki.moneycontrol.Model.YearToSet;
 import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.Utils.Utils;
@@ -68,11 +66,6 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         //READ THE FILE AND GET THE AMOUNTS FOR EVERY MONTH/YEAR
         util = new ChartsUtil(this);
         util.readTheFile();
-        // Get the object years to acces the months data expenses
-        final AmountsFor2018 obj2018 = util.getObjectYear().getYear2018();
-        final AmountsFor2017 obj2017 = util.getObjectYear().getYear2017();
-        final AmountsFor2016 obj2016 = util.getObjectYear().getYear2016();
-        final AmountsFor2015 obj2015 = util.getObjectYear().getYear();
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.annualChartView);
         SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
@@ -126,53 +119,36 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         year = calendar.get(Calendar.YEAR);// get the current year
         yearView.setText(YEAR + year);
 
+        // Get the object years to access the months data expenses
+        AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
+        final YearToSet yearToSet = currentYear.getYear();
+
         if (isPaymentCircleSetAnnual) {
             String currentMonth = String.format(Locale.UK, "%tB", calendar);
             int monthInt = calendar.get(Calendar.MONTH) + 1;
 
             try {
-                resetExpenseOfCurrentMonth(monthInt - 1,obj2018);
-                resetExpenseOfCurrentMonth(monthInt,obj2018);
-                resetExpenseOfCurrentMonth(monthInt + 1,obj2018);
+                resetExpenseOfCurrentMonth(monthInt - 1,yearToSet);
+                resetExpenseOfCurrentMonth(monthInt,yearToSet);
+                resetExpenseOfCurrentMonth(monthInt + 1,yearToSet);
                 //get the int values from number pickers
                 valueFromNumPicker1 = sharedprefs.getInt(VALUEFROMNUMPICKER1ANNUAL,
                         valueFromNumPicker1);
 
                 util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(valueFromNumPicker1,
-                        currentMonth,obj2018);
+                        currentMonth,yearToSet);
             } catch (ParseException e) {
                 Log.e("Parse Exception " ,e.getMessage());
             }
-            util.setData(obj2018.getAmountJan(),obj2018.getAmountFeb(),obj2018.getAmountMar(),obj2018.getAmountApr(),
-                    obj2018.getAmountMay(),obj2018.getAmountJun(), obj2018.getAmountJul(),obj2018.getAmountAug(),
-                    obj2018.getAmountSep(),obj2018.getAmountOct(), obj2018.getAmountNov(),obj2018.getAmountDec(), mChart);
+            util.setData(yearToSet.getAmountJan(),yearToSet.getAmountFeb(),yearToSet.getAmountMar(),yearToSet.getAmountApr(),
+                    yearToSet.getAmountMay(),yearToSet.getAmountJun(), yearToSet.getAmountJul(),yearToSet.getAmountAug(),
+                    yearToSet.getAmountSep(),yearToSet.getAmountOct(), yearToSet.getAmountNov(),yearToSet.getAmountDec(), mChart);
 
         } else {
+            util.setData(yearToSet.getAmountJan(),yearToSet.getAmountFeb(),yearToSet.getAmountMar(),yearToSet.getAmountApr(),
+                    yearToSet.getAmountMay(),yearToSet.getAmountJun(), yearToSet.getAmountJul(),yearToSet.getAmountAug(),
+                    yearToSet.getAmountSep(),yearToSet.getAmountOct(), yearToSet.getAmountNov(),yearToSet.getAmountDec(), mChart);
 
-            //i am just setting the data for every year that will be displayed on initializing
-            // the activity.
-            if (year == 2018) {
-                util.setData(obj2018.getAmountJan(),obj2018.getAmountFeb(),obj2018.getAmountMar(),obj2018.getAmountApr(),
-                          obj2018.getAmountMay(),obj2018.getAmountJun(), obj2018.getAmountJul(),obj2018.getAmountAug(),
-                          obj2018.getAmountSep(),obj2018.getAmountOct(), obj2018.getAmountNov(),obj2018.getAmountDec(), mChart);
-            }
-            if (year == 2017) {
-                util.setData(obj2017.getAmountJan(),obj2017.getAmountFeb(),obj2017.getAmountMar(),obj2017.getAmountApr(),
-                        obj2017.getAmountMay(),obj2017.getAmountJun(),obj2017.getAmountJul(),obj2017.getAmountAug(),
-                        obj2017.getAmountSep(),obj2017.getAmountOct(),obj2017.getAmountNov(),obj2017.getAmountDec(), mChart);
-            }
-
-            if (year == 2016) {
-                util.setData(obj2016.getAmountJan(),obj2016.getAmountFeb(),obj2016.getAmountMar(),obj2016.getAmountApr(),
-                        obj2016.getAmountMay(),obj2016.getAmountJun(),obj2016.getAmountJul(),obj2016.getAmountAug(),
-                        obj2016.getAmountSep(),obj2016.getAmountOct(),obj2016.getAmountNov(),obj2016.getAmountDec(), mChart);
-            }
-
-            if (year == 2015) {
-                util.setData(obj2015.getAmountJan(),obj2015.getAmountFeb(),obj2015.getAmountMar(),obj2015.getAmountApr(),
-                        obj2015.getAmountMay(),obj2015.getAmountJun(),obj2015.getAmountJul(),obj2015.getAmountAug(),
-                        obj2015.getAmountSep(),obj2015.getAmountOct(),obj2015.getAmountNov(),obj2015.getAmountDec(), mChart);
-            }
         }
         //listener of the income circle button
         circleTextview.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +156,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
             @Override
             public void onClick(View v) {
 
-                showNumberPickerDialogOnButtonClick(obj2018);
+                showNumberPickerDialogOnButtonClick(yearToSet);
             }
         });
 
@@ -189,7 +165,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
             @Override
             public void onClick(View v) {
                 year--;
-                switchAmountsBetweenYears(yearView, obj2015, obj2016, obj2017, obj2018);
+                util.switchAmountsBetweenYears(year, yearView, AnnualChartActivity.this);
             }
         });
 
@@ -197,7 +173,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
             @Override
             public void onClick(View v) {
                 year++;
-                switchAmountsBetweenYears(yearView, obj2015, obj2016, obj2017, obj2018);
+                util.switchAmountsBetweenYears(year, yearView, AnnualChartActivity.this);
             }
         });
 
@@ -220,38 +196,8 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         });
     }// end of onCreate
 
-    private void switchAmountsBetweenYears(TextView yearView, AmountsFor2015 obj2015, AmountsFor2016 obj2016, AmountsFor2017 obj2017, AmountsFor2018 obj2018) {
-        switch (year) {
-            case 2018:
-                yearView.setText(YEAR + year);
-                util.setData(obj2018.getAmountJan(),obj2018.getAmountFeb(),obj2018.getAmountMar(),obj2018.getAmountApr(),
-                        obj2018.getAmountMay(),obj2018.getAmountJun(), obj2018.getAmountJul(),obj2018.getAmountAug(),
-                        obj2018.getAmountSep(),obj2018.getAmountOct(), obj2018.getAmountNov(),obj2018.getAmountDec(), mChart);
-                break;
-            case 2017:
-                yearView.setText(YEAR + year);
-                util.setData(obj2017.getAmountJan(),obj2017.getAmountFeb(),obj2017.getAmountMar(),obj2017.getAmountApr(),
-                        obj2017.getAmountMay(),obj2017.getAmountJun(),obj2017.getAmountJul(),obj2017.getAmountAug(),
-                        obj2017.getAmountSep(),obj2017.getAmountOct(),obj2017.getAmountNov(),obj2017.getAmountDec(), mChart);
-                break;
-            case 2016:
-                yearView.setText(YEAR + year);
-                util.setData(obj2016.getAmountJan(),obj2016.getAmountFeb(),obj2016.getAmountMar(),obj2016.getAmountApr(),
-                        obj2016.getAmountMay(),obj2016.getAmountJun(),obj2016.getAmountJul(),obj2016.getAmountAug(),
-                        obj2016.getAmountSep(),obj2016.getAmountOct(),obj2016.getAmountNov(),obj2016.getAmountDec(), mChart);
-                break;
-            case 2015:
-                yearView.setText(YEAR + year);
-                util.setData(obj2015.getAmountJan(),obj2015.getAmountFeb(),obj2015.getAmountMar(),obj2015.getAmountApr(),
-                        obj2015.getAmountMay(),obj2015.getAmountJun(),obj2015.getAmountJul(),obj2015.getAmountAug(),
-                        obj2015.getAmountSep(),obj2015.getAmountOct(),obj2015.getAmountNov(),obj2015.getAmountDec(), mChart);
-                break;
 
-        }
-    }
-
-
-    protected void showNumberPickerDialogOnButtonClick(final AmountsFor2018 obj2018) {
+    protected void showNumberPickerDialogOnButtonClick(final YearToSet yearToSet) {
 
         LayoutInflater inflater = LayoutInflater.from(AnnualChartActivity.this);
         View npView = inflater.inflate(R.layout.number_picker_dialog_annual_layout, null);
@@ -289,14 +235,14 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
 
                                 try {
                                     /*Set to zero the expenses sums of the current and next month*/
-                                    resetExpenseOfCurrentMonth(monthInt - 1,obj2018);
-                                    resetExpenseOfCurrentMonth(monthInt,obj2018);
-                                    resetExpenseOfCurrentMonth(monthInt + 1,obj2018);
+                                    resetExpenseOfCurrentMonth(monthInt - 1,yearToSet);
+                                    resetExpenseOfCurrentMonth(monthInt,yearToSet);
+                                    resetExpenseOfCurrentMonth(monthInt + 1,yearToSet);
                                     util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle
-                                            (valueFromNumPicker1, currentMonth,obj2018);
-                                    util.setData(obj2018.getAmountJan(),obj2018.getAmountFeb(),obj2018.getAmountMar(),obj2018.getAmountApr(),
-                                            obj2018.getAmountMay(),obj2018.getAmountJun(), obj2018.getAmountJul(),obj2018.getAmountAug(),
-                                            obj2018.getAmountSep(),obj2018.getAmountOct(), obj2018.getAmountNov(),obj2018.getAmountDec(), mChart);
+                                            (valueFromNumPicker1, currentMonth,yearToSet);
+                                    util.setData(yearToSet.getAmountJan(),yearToSet.getAmountFeb(),yearToSet.getAmountMar(),yearToSet.getAmountApr(),
+                                            yearToSet.getAmountMay(),yearToSet.getAmountJun(), yearToSet.getAmountJul(),yearToSet.getAmountAug(),
+                                            yearToSet.getAmountSep(),yearToSet.getAmountOct(), yearToSet.getAmountNov(),yearToSet.getAmountDec(), mChart);
 
                                 } catch (ParseException e) {
                                     Log.e("ParseException",e.getMessage());
@@ -325,10 +271,10 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                                 valueFromNumPicker1 = 0;
 
                                 util.readTheFile();
-                                AmountsFor2018 obj2018Updated = util.getObjectYear().getYear2018();
-                                util.setData(obj2018Updated.getAmountJan(),obj2018Updated.getAmountFeb(),obj2018Updated.getAmountMar(),obj2018Updated.getAmountApr(),
-                                        obj2018Updated.getAmountMay(),obj2018Updated.getAmountJun(), obj2018Updated.getAmountJul(),obj2018Updated.getAmountAug(),
-                                        obj2018Updated.getAmountSep(),obj2018Updated.getAmountOct(), obj2018Updated.getAmountNov(),obj2018Updated.getAmountDec(), mChart);
+                                YearToSet year = util.getObjectYear().getYear();
+                                util.setData(year.getAmountJan(),year.getAmountFeb(),year.getAmountMar(),year.getAmountApr(),
+                                        year.getAmountMay(),year.getAmountJun(), year.getAmountJul(),year.getAmountAug(),
+                                        year.getAmountSep(),year.getAmountOct(), year.getAmountNov(),year.getAmountDec(), mChart);
 
                                 // store in preferences the boolean to set the circle and the
                                 // values from the number pickers.
@@ -345,7 +291,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         alertDialogBuilder.show();
     }
 
-    private void resetExpenseOfCurrentMonth(int currentMonth, AmountsFor2018 obj2018) {
+    private void resetExpenseOfCurrentMonth(int currentMonth, YearToSet obj2018) {
 
         switch (currentMonth) {
 
@@ -386,6 +332,10 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                 obj2018.setAmountDec(0f);
                 break;
         }
+    }
+
+    public LineChart getmChart() {
+        return mChart;
     }
 
     @Override

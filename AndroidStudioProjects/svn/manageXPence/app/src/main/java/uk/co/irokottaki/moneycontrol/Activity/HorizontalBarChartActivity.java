@@ -103,11 +103,20 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         toggleAmount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (monthInt > 12) {
+                    year++;
+                    monthInt = 1;
+                }
+                if (monthInt < 1) {
+                    year--;
+                    monthInt = 12;
+                }
                 if (isChecked) {
                     //depending on the month the user is i need to show the percentages for that
                     // month
+
                     if (!valueSet1.isEmpty()) {
-                        util.calculatePercentagesAndModifyYAxis(HorizontalBarChartActivity.this, dataSets);
+                        util.calculatePercentagesAndModifyYAxis(monthInt, year, HorizontalBarChartActivity.this, dataSets);
                     }
                     if (dataSets != null) {
                         data.setValueFormatter(new PercentFormatter());//this adds % in the
@@ -118,7 +127,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                 } else {
                     //here i revert back to the actual numbers
                     if (!valueSet1.isEmpty()) {
-                        util.revertToNumbersAndModifyYAxis(HorizontalBarChartActivity.this, dataSets);
+                        util.revertToNumbersAndModifyYAxis(monthInt, year, HorizontalBarChartActivity.this, dataSets);
                     }
                     if (dataSets != null) {
                         data.setValueFormatter(new ValueFormatter() {
@@ -146,9 +155,11 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                 monthInt--;
                 if (monthInt > 12) {
                     year++;
+                    monthInt = 1;
                 }
                 if (monthInt < 1) {
                     year--;
+                    monthInt = 12;
                 }
                 util.casesToShowExpensesForMonth(monthInt, year,HorizontalBarChartActivity.this);
 
@@ -161,9 +172,11 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                 monthInt++;
                 if (monthInt > 12) {
                     year++;
+                    monthInt = 1;
                 }
                 if (monthInt < 1) {
                     year--;
+                    monthInt = 12;
                 }
                 util.casesToShowExpensesForMonth(monthInt, year, HorizontalBarChartActivity.this);
 
@@ -209,6 +222,14 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
 
     public int getMonthInt() {
         return monthInt;
+    }
+
+    public int getYearInt() {
+        return year;
+    }
+
+    public void setDataSets(ArrayList<BarDataSet> dataSets) {
+        this.dataSets = dataSets;
     }
 
     public TextView getMonthLabel() {

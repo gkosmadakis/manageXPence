@@ -23,10 +23,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.Calendar;
 
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2015;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2016;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2017;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2018;
+import uk.co.irokottaki.moneycontrol.Model.YearToSet;
 import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.Utils.Utils;
@@ -40,18 +37,6 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
     ImageButton leftYearButton;
     ImageButton rightYearButton;
     public int year;
-    private Float incomeForJan;
-    private Float incomeForFeb;
-    private Float incomeForMar;
-    private Float incomeForApr;
-    private Float incomeForMay;
-    private Float incomeForJun;
-    private Float incomeForJul;
-    private Float incomeForAug;
-    private Float incomeForSep;
-    private Float incomeForOct;
-    private Float incomeForNov;
-    private Float incomeForDec;
     private TextView yearView;
     private ChartsUtil util;
 
@@ -98,36 +83,21 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
         //Year Label
         yearView = (TextView) findViewById(R.id.yearlabelSavings);
 
-        //retrieve the incomes from Main Activity
-        incomeForJan = MainActivity.getIncomeForJan();
-        incomeForFeb = MainActivity.getIncomeForFeb();
-        incomeForMar = MainActivity.getIncomeForMar();
-        incomeForApr = MainActivity.getIncomeForApr();
-        incomeForMay = MainActivity.getIncomeForMay();
-        incomeForJun = MainActivity.getIncomeForJun();
-        incomeForJul = MainActivity.getIncomeForJul();
-        incomeForAug = MainActivity.getIncomeForAug();
-        incomeForSep = MainActivity.getIncomeForSep();
-        incomeForOct = MainActivity.getIncomeForOct();
-        incomeForNov = MainActivity.getIncomeForNov();
-        incomeForDec = MainActivity.getIncomeForDec();
-
         Calendar calendar = util.setXYAxisForChart(yearView, mChart, year);
         year = calendar.get(Calendar.YEAR);// get the current year
-        yearView.setText(YEAR + year);
+
 
         //i am just setting the data for 2017 that will be displayed on initializing the activity
         // . Obviously it should be changed every year
-        setSavings(util.getObjectYear().getYear2017(), util.getObjectYear().getYear2018());
+        util.setSavings(year, AnnualSavingsActivity.this);
 
         //Listener to events on clicking the image arrows
         leftYearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 year--;
-
-                showSavings(util.getObjectYear().getYear(), util.getObjectYear().getYear2016(),
-                        util.getObjectYear().getYear2017(), util.getObjectYear().getYear2018());
+                yearView.setText(YEAR + year);
+                util.setSavings(year, AnnualSavingsActivity.this);
             }
         });
 
@@ -135,9 +105,8 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
             @Override
             public void onClick(View v) {
                 year++;
-
-                showSavings(util.getObjectYear().getYear(), util.getObjectYear().getYear2016(),
-                        util.getObjectYear().getYear2017(), util.getObjectYear().getYear2018());
+                yearView.setText(YEAR + year);
+                util.setSavings(year, AnnualSavingsActivity.this);
             }
         });
 
@@ -151,113 +120,8 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
 
     }// end of onCreate
 
-    private void setSavings(AmountsFor2017 obj2017, AmountsFor2018 obj2018) {
-        if (incomeForJan != null || incomeForFeb != null || incomeForMar != null || incomeForApr
-                != null || incomeForMay != null
-                || incomeForJun != null || incomeForJul != null || incomeForAug != null ||
-                incomeForSep != null || incomeForOct != null ||
-                incomeForNov != null || incomeForDec != null) {
-            if (year == 2017) {
-                util.setData(incomeForJan - obj2017.getAmountJan(), incomeForFeb - obj2017.getAmountFeb(), incomeForMar -
-                                obj2017.getAmountMar(), incomeForApr - obj2017.getAmountApr(),
-                        incomeForMay - obj2017.getAmountMay(), incomeForJun - obj2017.getAmountJun(), incomeForJul -
-                                obj2017.getAmountJul(), incomeForAug - obj2017.getAmountAug(),
-                        incomeForSep - obj2017.getAmountSep(), incomeForOct - obj2017.getAmountOct(), incomeForNov -
-                                obj2017.getAmountNov(), incomeForDec - obj2017.getAmountDec(), mChart);
-            } else if (year == 2018) {
-                util.setData(incomeForJan - obj2018.getAmountJan(), incomeForFeb - obj2018.getAmountFeb(), incomeForMar -
-                                obj2018.getAmountMar(), incomeForApr - obj2018.getAmountApr(),
-                        incomeForMay - obj2018.getAmountMay(), incomeForJun - obj2018.getAmountJun(), incomeForJul -
-                                obj2018.getAmountJul(), incomeForAug - obj2018.getAmountAug(),
-                        incomeForSep - obj2018.getAmountSep(), incomeForOct - obj2018.getAmountOct(), incomeForNov -
-                                obj2018.getAmountNov(), incomeForDec - obj2018.getAmountDec(), mChart);
-
-            }
-        } else {
-            util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,mChart);
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void showSavings(AmountsFor2015 obj2015, AmountsFor2016 obj2016, AmountsFor2017 obj2017, AmountsFor2018 obj2018) {
-
-        switch (year) {
-            case 2018:
-                yearView.setText(YEAR + year);
-                if (incomeForJan != null || incomeForFeb != null || incomeForMar != null ||
-                        incomeForApr != null || incomeForMay != null
-                        || incomeForJun != null || incomeForJul != null || incomeForAug != null
-                        || incomeForSep != null || incomeForOct != null ||
-                        incomeForNov != null || incomeForDec != null) {
-                    util.setData(incomeForJan - obj2018.getAmountJan(), incomeForFeb - obj2018.getAmountFeb(), incomeForMar -
-                                    obj2018.getAmountMar(), incomeForApr - obj2018.getAmountApr(),
-                            incomeForMay - obj2018.getAmountMay(), incomeForJun - obj2018.getAmountJun(), incomeForJul -
-                                    obj2018.getAmountJul(), incomeForAug - obj2018.getAmountAug(),
-                            incomeForSep - obj2018.getAmountSep(), incomeForOct - obj2018.getAmountOct(), incomeForNov -
-                                    obj2018.getAmountNov(), incomeForDec - obj2018.getAmountDec(),mChart);
-                } else {
-                    util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, mChart);
-                }
-
-                break;
-
-            case 2017:
-                yearView.setText(YEAR + year);
-                if (incomeForJan != null || incomeForFeb != null || incomeForMar != null ||
-                        incomeForApr != null || incomeForMay != null
-                        || incomeForJun != null || incomeForJul != null || incomeForAug != null
-                        || incomeForSep != null || incomeForOct != null ||
-                        incomeForNov != null || incomeForDec != null) {
-                    util.setData(incomeForJan - obj2017.getAmountJan(), incomeForFeb - obj2017.getAmountFeb(), incomeForMar -
-                                    obj2017.getAmountMar(), incomeForApr - obj2017.getAmountApr(),
-                            incomeForMay - obj2017.getAmountMay(), incomeForJun - obj2017.getAmountJun(), incomeForJul -
-                                    obj2017.getAmountJul(), incomeForAug - obj2017.getAmountAug(),
-                            incomeForSep - obj2017.getAmountSep(), incomeForOct - obj2017.getAmountOct(), incomeForNov -
-                                    obj2017.getAmountNov(), incomeForDec - obj2017.getAmountDec(),mChart);
-                } else {
-                    util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, mChart);
-                }
-
-                break;
-
-            case 2016:
-                yearView.setText(YEAR + year);
-                if (incomeForJan != null || incomeForFeb != null || incomeForMar != null ||
-                        incomeForApr != null || incomeForMay != null
-                        || incomeForJun != null || incomeForJul != null || incomeForAug != null
-                        || incomeForSep != null || incomeForOct != null ||
-                        incomeForNov != null || incomeForDec != null) {
-                    util.setData(incomeForJan - obj2016.getAmountJan(), incomeForFeb - obj2016.getAmountFeb(), incomeForMar
-                                    - obj2016.getAmountMar(), incomeForApr - obj2016.getAmountApr(),
-                            incomeForMay - obj2016.getAmountMay(), incomeForJun - obj2016.getAmountJun(), incomeForJul
-                                    - obj2016.getAmountJul(), incomeForAug - obj2016.getAmountAug(),
-                            incomeForSep - obj2016.getAmountSep(), incomeForOct - obj2016.getAmountOct(), incomeForNov
-                                    - obj2016.getAmountNov(), incomeForDec - obj2016.getAmountDec(), mChart);
-                } else {
-                    util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, mChart);
-                }
-
-                break;
-
-            case 2015:
-                yearView.setText(YEAR + year);
-                if (incomeForJan != null || incomeForFeb != null || incomeForMar != null ||
-                        incomeForApr != null || incomeForMay != null
-                        || incomeForJun != null || incomeForJul != null || incomeForAug != null
-                        || incomeForSep != null || incomeForOct != null ||
-                        incomeForNov != null || incomeForDec != null) {
-                    util.setData(incomeForJan - obj2015.getAmountJan(), incomeForFeb - obj2015.getAmountFeb(), incomeForMar
-                                    - obj2015.getAmountMar(), incomeForApr - obj2015.getAmountApr(),
-                            incomeForMay - obj2015.getAmountMay(), incomeForJun - obj2015.getAmountJun(), incomeForJul
-                                    - obj2015.getAmountJul(), incomeForAug - obj2015.getAmountAug(),
-                            incomeForSep - obj2015.getAmountSep(), incomeForOct - obj2015.getAmountOct(), incomeForNov
-                                    - obj2015.getAmountNov(), incomeForDec - obj2015.getAmountDec(), mChart);
-                } else {
-                    util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, mChart);
-                }
-
-                break;
-        }
+    public LineChart getmChart() {
+        return mChart;
     }
 
     @Override

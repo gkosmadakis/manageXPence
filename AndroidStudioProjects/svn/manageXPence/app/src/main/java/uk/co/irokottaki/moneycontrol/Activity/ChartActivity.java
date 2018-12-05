@@ -184,9 +184,11 @@ public class ChartActivity extends AppCompatActivity {
                 monthInt--;
                 if (monthInt > 12) {
                     year++;
+                    monthInt = 1;
                 }
                 if (monthInt < 1) {
                     year--;
+                    monthInt = 12;
                 }
                 util.casesToShowExpensesForMonth(monthInt, year, ChartActivity.this);
 
@@ -200,9 +202,11 @@ public class ChartActivity extends AppCompatActivity {
                 monthInt++;
                 if (monthInt > 12) {
                     year++;
+                    monthInt = 1;
                 }
                 if (monthInt < 1) {
                     year--;
+                    monthInt = 12;
                 }
                 util.casesToShowExpensesForMonth(monthInt, year, ChartActivity.this);
 

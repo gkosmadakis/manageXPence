@@ -31,6 +31,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
     private ArrayList itemsAddedByUser = null;
     private Double annualExpenseDouble;
     private ChartsUtil util;
+    private int year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,6 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         // activity to be displayed here as well
         itemsAddedByUser = MainActivity.getitemsAddedByUser();
         //retrieve the data for calculation
-        //retrieveDataFromChartActivity();
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_calculate_annual_expenses);
 
@@ -67,7 +67,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
                         this));
 
         yearList = (Spinner) findViewById(R.id.yearSpinner);
-        int year = Calendar.getInstance().get(Calendar.YEAR);
+        year = Calendar.getInstance().get(Calendar.YEAR);
         //get the year items from the array
         Resources res = getResources();
         String[] yearInTheList = res.getStringArray(R.array.yearItems);
@@ -136,7 +136,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         } else {
 
             util.readTheFile();
-            util.calculateSelectedExpenses(expensesList,yearList, CalculateAnnualExpensesActivity.this);
+            util.calculateSelectedExpenses(year, expensesList,yearList, CalculateAnnualExpensesActivity.this);
         }
     }
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -35,50 +36,46 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import uk.co.irokottaki.moneycontrol.Activity.AnnualChartActivity;
+import uk.co.irokottaki.moneycontrol.Activity.AnnualSavingsActivity;
 import uk.co.irokottaki.moneycontrol.Activity.CalculateAnnualExpensesActivity;
 import uk.co.irokottaki.moneycontrol.Activity.ChartActivity;
 import uk.co.irokottaki.moneycontrol.Activity.HorizontalBarChartActivity;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2015;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2016;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2017;
-import uk.co.irokottaki.moneycontrol.Model.AmountsFor2018;
-import uk.co.irokottaki.moneycontrol.Model.AmountsForYear;
-import uk.co.irokottaki.moneycontrol.Model.Years;
+import uk.co.irokottaki.moneycontrol.Activity.MainActivity;
+import uk.co.irokottaki.moneycontrol.Activity.ReportActivity;
+import uk.co.irokottaki.moneycontrol.Model.YearToSet;
+import uk.co.irokottaki.moneycontrol.Model.AnyYear;
+import uk.co.irokottaki.moneycontrol.R;
 
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
 
 public class ChartsUtil {
 
-    AmountsFor2018 object2018;
-    AmountsFor2017 object2017;
-    AmountsFor2016 object2016;
-    AmountsFor2015 object2015;
-    AmountsForYear objectYear;
+    YearToSet yearToSet;
+    AnyYear objectYear;
     private Context context;
     /*This map has all the data needed from the file. The first  key String on the map is the year, the second map contains the months as key,
     * and another map which contains a set with the descriptions and an arraylist with the expense amounts. An example could be
     * 2018=> 11=> Key: Supermarket-> 25,20,11
 				  Key: Shopping-> 10,20
 				  Key: House Rent-> 265
-	  2017=> 05=> Key: Travel-> 250,200
+	  20=> 05=> Key: Travel-> 250,200
 	              Key: Mortgage-> 400
 	              Key: Shopping-> 35, 55,100 */
     private HashMap<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearsMappedToMonthsWithAmountsMap;
     private LinkedHashSet<String> descriptionsSet;
     private HashMap<String, Map<String, String>> yearsMappedToMonthsWithFileLines;
     private String allLinesInFile;
-    private HashMap<String, AmountsForYear> test;
+    private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
 
     public ChartsUtil(Context context) {
 
@@ -91,15 +88,8 @@ public class ChartsUtil {
         String desc;
         String date;
 
-        objectYear = new AmountsForYear(object2015);
-
-        object2015 = new AmountsFor2015(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-
-        //object2016 = new AmountsFor2016(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-
-        //object2017 = new AmountsFor2017(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-
-        //object2018 = new AmountsFor2018(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        objectYear = new AnyYear(yearToSet);
+        yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
         try {
             InputStream inputStream = context.openFileInput(EXPENSES_FILE);
@@ -134,8 +124,10 @@ public class ChartsUtil {
                     if (yearsMappedToMonthsWithAmountsMap.containsKey(extractYearFromDate)) {
                         /*if the key = year is in the map then get the tempFirstMap*/
                         tempFirstMap = (TreeMap) yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
-                        /*if the key = month is the higher key in the tempFirstMap(that means it is the last month as we read the file) and the descriptionSet has the
-                        current description then get the tempList and the tempSecondMap and call the method to add amounts that are with the same description */
+
+                        /*if the key = month is not the higher key in the tempFirstMap(that means it is the previous month as we read the file) and the
+                        tempSecondMap has the current description then get the tempList create a new set and call the method to add amounts that are
+                        with the same description. if the tempSecondMap does not have the description then create a new tempList*/
                         if (!tempFirstMap.lastKey().equals(Integer.parseInt(extractMonthFromDate)) && tempFirstMap.containsKey(Integer.parseInt(extractMonthFromDate))) {
                             tempSecondMap = (LinkedHashMap) tempFirstMap.get(Integer.parseInt(extractMonthFromDate));
 
@@ -146,29 +138,27 @@ public class ChartsUtil {
                                 addAmountsWithDuplicates(descriptionsSet,desc, String.valueOf(amount), tempList);
                             }
                             else {
-
-                                tempSecondMap.put(desc,tempList);
-                                tempList = (ArrayList) tempSecondMap.get(desc);
+                                tempList = new ArrayList();
                                 tempList.add(amount);
                             }
                         }
+                        /*else if the key = month is the higher key in the tempFirstMap(that means it is the last month as we read the file) and the
+                        tempSecondMap has the current description then get the tempList create a new set and call the method to add amounts that are
+                        with the same description if the tempSecondMap does not have the description then create a new tempList*/
                         else if (tempFirstMap.lastKey().equals(Integer.parseInt(extractMonthFromDate)) && tempFirstMap.containsKey(Integer.parseInt(extractMonthFromDate))) {
                             tempSecondMap = (LinkedHashMap) tempFirstMap.get(Integer.parseInt(extractMonthFromDate));
-                            descriptionsSet = new LinkedHashSet(tempSecondMap.keySet());
 
-                            if (descriptionsSet.contains(desc)) {
-                                //tempList = (ArrayList) tempSecondMap.get(desc);
-                                addAmountsWithDuplicates(descriptionsSet, desc, String.valueOf(amount), tempList);
+                            if(tempSecondMap.get(desc) != null) {
+                                tempList = (ArrayList) tempSecondMap.get(desc);//tempList size is always 1
+                                descriptionsSet = new LinkedHashSet();
+                                descriptionsSet.add(desc);//descriptionsSet size is always 1
+                                addAmountsWithDuplicates(descriptionsSet,desc, String.valueOf(amount), tempList);
                             }
                             else {
-                                for (Object descFound : descriptionsSet) {
-                                    tempList = (ArrayList) tempSecondMap.get(descFound);
-                                    break;
-                                }
+                                tempList = new ArrayList();
                                 tempList.add(amount);
                             }
                         }
-
                         /* if the key = month is not in the map at all then get the tempFirstMap, create a new tempSecondMap, a new set and a new list.
                          * Add the amount to the list, the desc in the set */
                         else {
@@ -192,6 +182,7 @@ public class ChartsUtil {
                         tempList.add(amount);
                         descriptionsSet.add(desc);
                     }
+
                     /* Store fields in the maps and then in the main map */
                     tempSecondMap.put(desc, tempList);
                     tempFirstMap.put(Integer.parseInt(extractMonthFromDate), tempSecondMap);
@@ -201,21 +192,16 @@ public class ChartsUtil {
                     if (yearsMappedToMonthsWithFileLines.containsKey(extractYearFromDate) && tempFileLinesMap.containsKey(extractMonthFromDate)) {
                         tempFileLinesMap = yearsMappedToMonthsWithFileLines.get(extractYearFromDate);
                         fileLines += line + "\n";
-
                     }
-
                     else if (yearsMappedToMonthsWithFileLines.containsKey(extractYearFromDate) && !tempFileLinesMap.containsKey(extractMonthFromDate)) {
                         tempFileLinesMap = yearsMappedToMonthsWithFileLines.get(extractYearFromDate);
                         fileLines = "";
                         fileLines += line + "\n";
                     }
-
                     else {
-
                         tempFileLinesMap = new HashMap<String, String>();
                         fileLines = "";
                         fileLines += line + "\n";
-
                     }
 
                     tempFileLinesMap.put(extractMonthFromDate, fileLines);
@@ -231,6 +217,7 @@ public class ChartsUtil {
             Log.e("IOException ", e.getMessage());
         }
 
+        /*Call the method to iterate the map*/
         iterateMainMap();
     }
 
@@ -270,17 +257,15 @@ public class ChartsUtil {
             return line;
         }
 
-
-
     private void iterateMainMap() {
-        test = new HashMap<>();
+
+        yearsMappedToObjectYearsMap = new HashMap<>();
         for (Map.Entry<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearEntry : yearsMappedToMonthsWithAmountsMap.entrySet()) {
             String year = yearEntry.getKey();
             Log.e("Year from file is ", year);
-            objectYear = new AmountsForYear(object2015);
+            objectYear = new AnyYear(yearToSet);
 
-            object2015 = new AmountsFor2015(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-
+            yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
             for (Map.Entry<String, LinkedHashMap<String, ArrayList<Float>>> monthEntry : yearEntry.getValue().entrySet()) {
                 String month = String.valueOf(monthEntry.getKey());
@@ -297,18 +282,18 @@ public class ChartsUtil {
                                 amounts.add(amountFloat);
                             }
                         }
-
                     processAmountsForEveryMonth(month, amounts, objectYear, year, descriptionsSet, iterateFileLinesMap(month, year));
                         for (Object amountInFile : amounts) {
                             Log.e("Amounts from file is ", amountInFile.toString());
                         }
                 }
             }
-            test.put(year,objectYear);
+            /*add the year read from the map and the object year which has all the fields set that are needed */
+            yearsMappedToObjectYearsMap.put(year,objectYear);
         }
     }
 
-    private void processAmountsForEveryMonth(String month, ArrayList<Float> amounts, AmountsForYear obj, String year, LinkedHashSet set, String fileLine){
+    private void processAmountsForEveryMonth(String month, ArrayList<Float> amounts, AnyYear obj, String year, LinkedHashSet set, String fileLine){
 
         if (month.equals(ONE)) {
             Float totalExpensesForMonth = 0.0f;
@@ -400,7 +385,7 @@ public class ChartsUtil {
 
 
 
-    public AmountsForYear getObjectYear() {
+    public AnyYear getObjectYear() {
         return objectYear;
     }
 
@@ -487,124 +472,10 @@ public class ChartsUtil {
 
     public void casesToShowExpensesForMonth(int monthInt, int yearRequested, Activity activity) {
 
-        LinkedHashSet testDesc = getObjectYear().getYear().getDescriptionsForOct();
-        LinkedHashSet test2 = getObjectYear().getYear().getDescriptionsForNov();
-        LinkedHashSet test3 = getObjectYear().getYear().getDescriptionsForDec();
-        Log.e("October set is: ", testDesc.toString());
-        Log.e("November set is: ", test2.toString());
-        Log.e("December set is: ", test3.toString());
-
-        AmountsForYear year =  test.get(String.valueOf(yearRequested));
+        AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
         switch (monthInt) {
-            case -26:
-                showExpensesForMonth(OCTOBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN, getObjectYear().getYear().getDescriptionsForOct(),
-                        getObjectYear().getYear().getArrayOfamountOct(), activity);
-                break;
-            case -25:
-                showExpensesForMonth(NOVEMBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN, getObjectYear().getYear().getDescriptionsForNov(),
-                        getObjectYear().getYear().getArrayOfamountNov(), activity);
-                break;
-            case -24:
-                showExpensesForMonth(DECEMBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN, getObjectYear().getYear().getDescriptionsForDec(),
-                        getObjectYear().getYear().getArrayOfamountDec(), activity);
-                break;
-            case -23:
-                showExpensesForMonth(JANUARY+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForJan16(),
-                        getObjectYear().getYear2016().getArrayOfamountJan16(), activity);
-                break;
-            case -22:
-                showExpensesForMonth(FEBRUARY+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForFeb16(),
-                        getObjectYear().getYear2016().getArrayOfamountFeb16(), activity);
-                break;
-            case -21:
-                showExpensesForMonth(MARCH+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForMar16(),
-                        getObjectYear().getYear2016().getArrayOfamountMar16(), activity);
-                break;
-            case -20:
-                showExpensesForMonth(APRIL+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForApr16(),
-                        getObjectYear().getYear2016().getArrayOfamountApr16(), activity);
-                break;
-            case -19:
-                showExpensesForMonth(MAY+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForMay16(),
-                        getObjectYear().getYear2016().getArrayOfamountMay16(), activity);
-                break;
-            case -18:
-                showExpensesForMonth(JUNE+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForJun16(),
-                        getObjectYear().getYear2016().getArrayOfamountJun16(), activity);
-                break;
-            case -17:
-                showExpensesForMonth(JULY+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForJul16(),
-                        getObjectYear().getYear2016().getArrayOfamountJul16(), activity);
-                break;
-            case -16:
-                showExpensesForMonth(AUGUST+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForAug16(),
-                        getObjectYear().getYear2016().getArrayOfamountAug16(), activity);
-                break;
-            case -15:
-                showExpensesForMonth(SEPTEMBER+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForSep16(),
-                        getObjectYear().getYear2016().getArrayOfamountSep16(), activity);
-                break;
-            case -14:
-                showExpensesForMonth(OCTOBER+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForOct16(),
-                        getObjectYear().getYear2016().getArrayOfamountOct16(), activity);
-                break;
-            case -13:
-                showExpensesForMonth(NOVEMBER+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForNov16(),
-                        getObjectYear().getYear2016().getArrayOfamountNov16(), activity);
-                break;
-            case -12:
-                showExpensesForMonth(DECEMBER+EMPTY_SPACE+TWOTHOUSANDSIXTEEN, getObjectYear().getYear2016().getDescriptionsForDec16(),
-                        getObjectYear().getYear2016().getArrayOfamountDec16(), activity);
-                break;
-            case -11:
-                showExpensesForMonth(JANUARY+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForJan17(),
-                        getObjectYear().getYear2017().getArrayOfamountJan17(), activity);
-                break;
-            case -10:
-                showExpensesForMonth(FEBRUARY+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForFeb17(),
-                        getObjectYear().getYear2017().getArrayOfamountFeb17(), activity);
-                break;
-            case -9:
-                showExpensesForMonth(MARCH+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForMar17(),
-                        getObjectYear().getYear2017().getArrayOfamountMar17(), activity);
-                break;
-            case -8:
-                showExpensesForMonth(APRIL+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForApr17(),
-                        getObjectYear().getYear2017().getArrayOfamountApr17(), activity);
-                break;
-            case -7:
-                showExpensesForMonth(MAY+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForMay17(),
-                        getObjectYear().getYear2017().getArrayOfamountMay17(), activity);
-                break;
-            case -6:
-                showExpensesForMonth(JUNE+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForJun17(),
-                        getObjectYear().getYear2017().getArrayOfamountJun17(), activity);
-                break;
-            case -5:
-                showExpensesForMonth(JULY+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForJul17(),
-                        getObjectYear().getYear2017().getArrayOfamountJul17(), activity);
-                break;
-            case -4:
-                showExpensesForMonth(AUGUST+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForAug17(),
-                        getObjectYear().getYear2017().getArrayOfamountAug17(), activity);
-                break;
-            case -3:
-                showExpensesForMonth(SEPTEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForSep17(),
-                        getObjectYear().getYear2017().getArrayOfamountSep17(), activity);
-                break;
-            case -2:
-                showExpensesForMonth(OCTOBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForOct17(),
-                        getObjectYear().getYear2017().getArrayOfamountOct17(), activity);
-                break;
-            case -1:
-                showExpensesForMonth(NOVEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForNov17(),
-                        getObjectYear().getYear2017().getArrayOfamountNov17(), activity);
-                break;
-            case 0:
-                showExpensesForMonth(DECEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN, getObjectYear().getYear2017().getDescriptionsForDec17(),
-                        getObjectYear().getYear2017().getArrayOfamountDec17(), activity);
-                break;
+
             case 1:
                 showExpensesForMonth(JANUARY, year.getYear().getDescriptionsForJan(),
                         year.getYear().getArrayOfamountJan(), activity);
@@ -738,17 +609,20 @@ public class ChartsUtil {
                 ((HorizontalBarChartActivity) activity).setBarDataSet1(new BarDataSet(((HorizontalBarChartActivity) activity).getValueSet1(), EXPENSE));
                 ((HorizontalBarChartActivity) activity).getBarDataSet1().setColor(Color.rgb(0, 153, 204));
 
+                ((HorizontalBarChartActivity) activity).getDataSets().clear();
                 ((HorizontalBarChartActivity) activity).getDataSets().add(((HorizontalBarChartActivity) activity).getBarDataSet1());
 
                 ((HorizontalBarChartActivity) activity).setData(new BarData(((HorizontalBarChartActivity) activity).getxAxis(), ((HorizontalBarChartActivity) activity).getDataSets()));
 
                 if (((HorizontalBarChartActivity) activity).isStateSwitchButton()) {
-                    calculatePercentagesAndModifyYAxis(activity, ((HorizontalBarChartActivity) activity).getDataSets());
+                    calculatePercentagesAndModifyYAxis(((HorizontalBarChartActivity) activity).getMonthInt(), ((HorizontalBarChartActivity) activity).getYearInt(),
+                            activity, ((HorizontalBarChartActivity) activity).getDataSets());
 
                     ((HorizontalBarChartActivity) activity).getData().setValueFormatter(new PercentFormatter());
 
                 } else {
-                    revertToNumbersAndModifyYAxis(activity, ((HorizontalBarChartActivity) activity).getDataSets());
+                    revertToNumbersAndModifyYAxis(((HorizontalBarChartActivity) activity).getMonthInt(), ((HorizontalBarChartActivity) activity).getYearInt(),
+                            activity, ((HorizontalBarChartActivity) activity).getDataSets());
 
                     ((HorizontalBarChartActivity) activity).getData().setValueFormatter(new ValueFormatter() {
                         @Override
@@ -784,163 +658,58 @@ public class ChartsUtil {
         ((ChartActivity) activity).getDataSet().setColors(colors);
     }
 
-    public void calculatePercentagesAndModifyYAxis(Activity activity, ArrayList<BarDataSet> dataSets) {
+    public void calculatePercentagesAndModifyYAxis(int monthInt, int yearRequested, Activity activity, ArrayList<BarDataSet> dataSets) {
 
-        switch (((HorizontalBarChartActivity) activity).getMonthInt()) {
-            /*case -26:
-                calculatePercentages(getObjectYear().getYear().getArrayOfamountOct15(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -25:
-                calculatePercentages(getObjectYear().getYear().getArrayOfamountNov15(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -24:
-                calculatePercentages(getObjectYear().getYear().getArrayOfamountDec15(), activity);
-                modifyYAxis(activity, dataSets);
-                break;*/
-            case -23:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountJan16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -22:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountFeb16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -21:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountMar16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -20:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountApr16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -19:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountMay16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -18:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountJun16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -17:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountJul16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -16:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountAug16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -15:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountSep16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -14:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountOct16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -13:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountNov16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -12:
-                calculatePercentages(getObjectYear().getYear2016().getArrayOfamountDec16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -11:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountJan17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -10:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountFeb17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -9:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountMar17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -8:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountApr17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -7:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountMay17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -6:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountJun17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -5:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountJul17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -4:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountAug17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -3:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountSep17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -2:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountOct17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -1:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountNov17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case 0:
-                calculatePercentages(getObjectYear().getYear2017().getArrayOfamountDec17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
+        AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
+
+        switch (monthInt) {
+
             case 1:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountJan(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountJan(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 2:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountFeb(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountFeb(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 3:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountMar(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountMar(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 4:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountApr(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountApr(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 5:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountMay(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountMay(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 6:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountJun(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountJun(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 7:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountJul(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountJul(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 8:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountAug(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountAug(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 9:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountSep(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountSep(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 10:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountOct(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountOct(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 11:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountNov(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountNov(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 12:
-                calculatePercentages(getObjectYear().getYear2018().getArrayOfamountDec(), activity);
+                calculatePercentages(year.getYear().getArrayOfamountDec(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
         }
@@ -970,163 +739,58 @@ public class ChartsUtil {
         }
     }
 
-    public void revertToNumbersAndModifyYAxis(Activity activity, ArrayList<BarDataSet> dataSets) {
+    public void revertToNumbersAndModifyYAxis(int monthInt, int yearRequested, Activity activity, ArrayList<BarDataSet> dataSets) {
 
-        switch (((HorizontalBarChartActivity) activity).getMonthInt()) {
-            /*case -26:
-                revertPercentagesToNumbers(getObjectYear().getYear().getArrayOfamountOct15(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -25:
-                revertPercentagesToNumbers(getObjectYear().getYear().getArrayOfamountNov15(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -24:
-                revertPercentagesToNumbers(getObjectYear().getYear().getArrayOfamountDec15(), activity);
-                modifyYAxis(activity, dataSets);
-                break;*/
-            case -23:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountJan16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -22:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountFeb16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -21:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountMar16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -20:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountApr16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -19:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountMay16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -18:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountJun16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -17:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountJul16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -16:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountAug16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -15:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountSep16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -14:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountOct16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -13:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountNov16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -12:
-                revertPercentagesToNumbers(getObjectYear().getYear2016().getArrayOfamountDec16(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -11:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountJan17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -10:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountFeb17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -9:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountMar17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -8:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountApr17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -7:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountMay17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -6:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountJun17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -5:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountJul17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -4:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountAug17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -3:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountSep17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -2:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountOct17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case -1:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountNov17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
-            case 0:
-                revertPercentagesToNumbers(getObjectYear().getYear2017().getArrayOfamountDec17(), activity);
-                modifyYAxis(activity, dataSets);
-                break;
+        AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
+
+        switch (monthInt) {
+
             case 1:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountJan(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountJan(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 2:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountFeb(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountFeb(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 3:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountMar(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountMar(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 4:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountApr(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountApr(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 5:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountMay(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountMay(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 6:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountJun(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountJun(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 7:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountJul(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountJul(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 8:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountAug(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountAug(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 9:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountSep(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountSep(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 10:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountOct(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountOct(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 11:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountNov(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountNov(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
             case 12:
-                revertPercentagesToNumbers(getObjectYear().getYear2018().getArrayOfamountDec(), activity);
+                revertPercentagesToNumbers(year.getYear().getArrayOfamountDec(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
         }
@@ -1140,98 +804,100 @@ public class ChartsUtil {
         }
     }
 
-    public void calculateSelectedExpenses(Spinner expensesList, Spinner yearList, Activity activity) {
+    public void calculateSelectedExpenses(int yearRequested, Spinner expensesList, Spinner yearList, Activity activity) {
 
         String selectedExpense = expensesList.getSelectedItem().toString();
 
+        AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
+
         if (yearList.getSelectedItem().equals(TWOTHOUSANDEIGHTEEN)) {
 
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForJan(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountJan(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForFeb(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountFeb(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForMar(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountMar(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForApr(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountApr(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForMay(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountMay(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForJun(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountJun(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForJul(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountJul(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForAug(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountAug(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForSep(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountSep(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForOct(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountOct(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForNov(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountNov(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2018().getDescriptionsForDec(), selectedExpense,
-                    getObjectYear().getYear2018().getArrayOfamountDec(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForJan(), selectedExpense,
+                    year.getYear().getArrayOfamountJan(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForFeb(), selectedExpense,
+                    year.getYear().getArrayOfamountFeb(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForMar(), selectedExpense,
+                    year.getYear().getArrayOfamountMar(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForApr(), selectedExpense,
+                    year.getYear().getArrayOfamountApr(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForMay(), selectedExpense,
+                    year.getYear().getArrayOfamountMay(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForJun(), selectedExpense,
+                    year.getYear().getArrayOfamountJun(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForJul(), selectedExpense,
+                    year.getYear().getArrayOfamountJul(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForAug(), selectedExpense,
+                    year.getYear().getArrayOfamountAug(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForSep(), selectedExpense,
+                    year.getYear().getArrayOfamountSep(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForOct(), selectedExpense,
+                    year.getYear().getArrayOfamountOct(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForNov(), selectedExpense,
+                    year.getYear().getArrayOfamountNov(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForDec(), selectedExpense,
+                    year.getYear().getArrayOfamountDec(), activity);
         }
 
         if (yearList.getSelectedItem().equals(TWOTHOUSANDSEVENTEEN)) {
 
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForJan17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountJan17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForFeb17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountFeb17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForMar17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountMar17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForApr17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountApr17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForMay17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountMay17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForJun17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountJun17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForJul17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountJul17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForAug17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountAug17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForSep17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountSep17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForOct17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountOct17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForNov17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountNov17(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2017().getDescriptionsForDec17(), selectedExpense,
-                    getObjectYear().getYear2017().getArrayOfamountDec17(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForJan(), selectedExpense,
+                    year.getYear().getArrayOfamountJan(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForFeb(), selectedExpense,
+                    year.getYear().getArrayOfamountFeb(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForMar(), selectedExpense,
+                    year.getYear().getArrayOfamountMar(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForApr(), selectedExpense,
+                    year.getYear().getArrayOfamountApr(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForMay(), selectedExpense,
+                    year.getYear().getArrayOfamountMay(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForJun(), selectedExpense,
+                    year.getYear().getArrayOfamountJun(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForJul(), selectedExpense,
+                    year.getYear().getArrayOfamountJul(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForAug(), selectedExpense,
+                    year.getYear().getArrayOfamountAug(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForSep(), selectedExpense,
+                    year.getYear().getArrayOfamountSep(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForOct(), selectedExpense,
+                    year.getYear().getArrayOfamountOct(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForNov(), selectedExpense,
+                    year.getYear().getArrayOfamountNov(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForDec(), selectedExpense,
+                    year.getYear().getArrayOfamountDec(), activity);
         } else if (yearList.getSelectedItem().equals(TWOTHOUSANDSIXTEEN)) {
 
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForJan16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountJan16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForFeb16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountFeb16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForMar16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountMar16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForApr16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountApr16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForMay16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountMay16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForJun16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountJun16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForJul16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountJul16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForAug16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountAug16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForSep16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountSep16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForOct16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountOct16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForNov16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountNov16(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear2016().getDescriptionsForDec16(), selectedExpense,
-                    getObjectYear().getYear2016().getArrayOfamountDec16(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForJan(), selectedExpense,
+                    year.getYear().getArrayOfamountJan(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForFeb(), selectedExpense,
+                    year.getYear().getArrayOfamountFeb(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForMar(), selectedExpense,
+                    year.getYear().getArrayOfamountMar(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForApr(), selectedExpense,
+                    year.getYear().getArrayOfamountApr(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForMay(), selectedExpense,
+                    year.getYear().getArrayOfamountMay(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForJun(), selectedExpense,
+                    year.getYear().getArrayOfamountJun(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForJul(), selectedExpense,
+                    year.getYear().getArrayOfamountJul(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForAug(), selectedExpense,
+                    year.getYear().getArrayOfamountAug(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForSep(), selectedExpense,
+                    year.getYear().getArrayOfamountSep(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForOct(), selectedExpense,
+                    year.getYear().getArrayOfamountOct(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForNov(), selectedExpense,
+                    year.getYear().getArrayOfamountNov(), activity);
+            calculateExpensesByMonth(year.getYear().getDescriptionsForDec(), selectedExpense,
+                    year.getYear().getArrayOfamountDec(), activity);
         } else if (yearList.getSelectedItem().equals(TWOTHOUSANDFIFTEEN)) {
 
-            /*calculateExpensesByMonth(getObjectYear().getYear().getDescriptionsForOct15(), selectedExpense,
-                    getObjectYear().getYear().getArrayOfamountOct15(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear().getDescriptionsForNov15(), selectedExpense,
-                    getObjectYear().getYear().getArrayOfamountNov15(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear().getDescriptionsForDec15(), selectedExpense,
-                    getObjectYear().getYear().getArrayOfamountDec15(), activity);*/
+            calculateExpensesByMonth(getObjectYear().getYear().getDescriptionsForOct(), selectedExpense,
+                    getObjectYear().getYear().getArrayOfamountOct(), activity);
+            calculateExpensesByMonth(getObjectYear().getYear().getDescriptionsForNov(), selectedExpense,
+                    getObjectYear().getYear().getArrayOfamountNov(), activity);
+            calculateExpensesByMonth(getObjectYear().getYear().getDescriptionsForDec(), selectedExpense,
+                    getObjectYear().getYear().getArrayOfamountDec(), activity);
 
         }
     }
@@ -1252,7 +918,7 @@ public class ChartsUtil {
 
     @SuppressWarnings("StringConcatenationInLoop")
     public void readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(int salaryDay,
-                                                                             String currentMonth, AmountsFor2018 obj2018)
+                                                                             String currentMonth, YearToSet obj2018)
             throws ParseException {
 
         String fileLine = "";
@@ -1342,48 +1008,218 @@ public class ChartsUtil {
         }
     }
 
-    private void addAmountToCurrentOrNextMonth(Float amount, int monthInt, AmountsFor2018 obj2018) {
+    private void addAmountToCurrentOrNextMonth(Float amount, int monthInt, YearToSet obj2018) {
 
         switch (monthInt) {
 
             case 1:
-                obj2018.setAmountJan(obj2018.getAmountJan()+amount);
+                obj2018.getYear().setAmountJan(obj2018.getYear().getAmountJan()+amount);
                 break;
             case 2:
-                obj2018.setAmountFeb(obj2018.getAmountFeb()+amount);
+                obj2018.getYear().setAmountFeb(obj2018.getYear().getAmountFeb()+amount);
                 break;
             case 3:
-                obj2018.setAmountMar(obj2018.getAmountMar()+amount);
+                obj2018.getYear().setAmountMar(obj2018.getYear().getAmountMar()+amount);
                 break;
             case 4:
-                obj2018.setAmountApr(obj2018.getAmountApr()+amount);
+                obj2018.getYear().setAmountApr(obj2018.getYear().getAmountApr()+amount);
                 break;
             case 5:
-                obj2018.setAmountMay(obj2018.getAmountMay()+amount);
+                obj2018.getYear().setAmountMay(obj2018.getYear().getAmountMay()+amount);
                 break;
             case 6:
-                obj2018.setAmountJun(obj2018.getAmountJun()+amount);
+                obj2018.getYear().setAmountJun(obj2018.getYear().getAmountJun()+amount);
                 break;
             case 7:
-                obj2018.setAmountJul(obj2018.getAmountJul()+amount);
+                obj2018.getYear().setAmountJul(obj2018.getYear().getAmountJul()+amount);
                 break;
             case 8:
-                obj2018.setAmountAug(obj2018.getAmountAug()+amount);
+                obj2018.getYear().setAmountAug(obj2018.getYear().getAmountAug()+amount);
                 break;
             case 9:
-                obj2018.setAmountSep(obj2018.getAmountSep()+amount);
+                obj2018.getYear().setAmountSep(obj2018.getYear().getAmountSep()+amount);
                 break;
             case 10:
-                obj2018.setAmountOct(obj2018.getAmountOct()+amount);
+                obj2018.getYear().setAmountOct(obj2018.getYear().getAmountOct()+amount);
                 break;
             case 11:
-                obj2018.setAmountNov(obj2018.getAmountNov()+amount);
+                obj2018.getYear().setAmountNov(obj2018.getYear().getAmountNov()+amount);
                 break;
             case 12:
-                obj2018.setAmountDec(obj2018.getAmountDec()+amount);
+                obj2018.getYear().setAmountDec(obj2018.getYear().getAmountDec()+amount);
                 break;
         }
 
     }
 
+    public void switchMonthsReport(int getMonthSelection, int yearRequested, StringBuilder shortLine, Activity activity) {
+
+        AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
+        shortLine = new StringBuilder();
+
+        switch (getMonthSelection) {
+
+           case 1:
+               ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineJan()));
+                break;
+            case 2:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineFeb()));
+                break;
+            case 3:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineMar()));
+                break;
+            case 4:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineApr()));
+                break;
+            case 5:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineMay()));
+                break;
+            case 6:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineJun()));
+                break;
+            case 7:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineJul()));
+                break;
+            case 8:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineAug()));
+                break;
+            case 9:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineSep()));
+                break;
+            case 10:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineOct()));
+                break;
+            case 11:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineNov()));
+                break;
+            case 12:
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineDec()));
+                break;
+
+            default:
+                formatReportArea(year.getYear().getAllLinesInFile());
+                ((ReportActivity) activity).getReportView().setText(shortLine.toString());
+                break;
+        }//end of switch
+    }
+
+    private StringBuilder formatReportArea(String fileLine) {
+
+        StringBuilder shortLine = new StringBuilder();
+        String formatStr = "%-8s%-15s%-10s";
+
+        String[] lines = fileLine.split("\n");
+
+        for (int i = 0; i < lines.length; i++) {
+            if (i == 0) {
+                String amount = AMOUNT;
+                String shortDesc = DESCRIPTION;
+                String date = DATE;
+                shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();
+                shortLine.append("\n");
+            } else if (i > 1 && !lines[i].equals("")) {
+                String amount = lines[i].substring(0, lines[i].indexOf(" "));
+                String shortDesc = lines[i].substring(lines[i].indexOf(" "), lines[i].lastIndexOf
+                        (" ")).trim();
+                String date = lines[i].substring(lines[i].lastIndexOf(" "), lines[i].length())
+                        .trim();
+                shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();
+                shortLine.append("\n");
+            } else {
+                shortLine.append(lines[i]);//this is to write the header Amount Description Date
+                // and a new line
+                shortLine.append("\n");
+            }
+        }
+        return shortLine;
+    }
+
+    public void switchAmountsBetweenYears(int yearRequested, TextView yearView, Activity activity) {
+
+        AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
+
+        yearView.setText(YEAR + yearRequested);
+
+           if (year != null) {
+               setData(year.getYear().getAmountJan(), year.getYear().getAmountFeb(), year.getYear().getAmountMar(), year.getYear().getAmountApr(),
+                       year.getYear().getAmountMay(), year.getYear().getAmountJun(), year.getYear().getAmountJul(), year.getYear().getAmountAug(),
+                       year.getYear().getAmountSep(), year.getYear().getAmountOct(), year.getYear().getAmountNov(), year.getYear().getAmountDec(),
+                       ((AnnualChartActivity) activity).getmChart());
+           }
+           else {
+               setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, ((AnnualChartActivity) activity).getmChart());
+           }
+    }
+
+    public void setSavings(int yearRequested, Activity activity) {
+        AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
+
+        //retrieve the incomes from Main Activity
+        Float incomeForJan = MainActivity.getIncomeForJan();
+        Float incomeForFeb = MainActivity.getIncomeForFeb();
+        Float incomeForMar = MainActivity.getIncomeForMar();
+        Float incomeForApr = MainActivity.getIncomeForApr();
+        Float incomeForMay = MainActivity.getIncomeForMay();
+        Float incomeForJun = MainActivity.getIncomeForJun();
+        Float incomeForJul = MainActivity.getIncomeForJul();
+        Float incomeForAug = MainActivity.getIncomeForAug();
+        Float incomeForSep = MainActivity.getIncomeForSep();
+        Float incomeForOct = MainActivity.getIncomeForOct();
+        Float incomeForNov = MainActivity.getIncomeForNov();
+        Float incomeForDec = MainActivity.getIncomeForDec();
+
+        if (incomeForJan != null || incomeForFeb != null || incomeForMar != null || incomeForApr
+                != null || incomeForMay != null
+                || incomeForJun != null || incomeForJul != null || incomeForAug != null ||
+                incomeForSep != null || incomeForOct != null ||
+                incomeForNov != null || incomeForDec != null) {
+
+            if (year != null) {
+                setData(incomeForJan - year.getYear().getAmountJan(), incomeForFeb - year.getYear().getAmountFeb(), incomeForMar -
+                                year.getYear().getAmountMar(), incomeForApr - year.getYear().getAmountApr(),
+                        incomeForMay - year.getYear().getAmountMay(), incomeForJun - year.getYear().getAmountJun(), incomeForJul -
+                                year.getYear().getAmountJul(), incomeForAug - year.getYear().getAmountAug(),
+                        incomeForSep - year.getYear().getAmountSep(), incomeForOct - year.getYear().getAmountOct(), incomeForNov -
+                                year.getYear().getAmountNov(), incomeForDec - year.getYear().getAmountDec(), ((AnnualSavingsActivity) activity).getmChart());
+
+            } else {
+                setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, ((AnnualSavingsActivity) activity).getmChart());
+            }
+        }
+
+    }
+
+
+    public void populateYearSpinnerAndSetCurrentYear(int yearRequested, Spinner yearList, Activity activity) {
+
+        ArrayList<String> yearsFoundInFile = new ArrayList<String>();
+
+        for (String yearKey : yearsMappedToObjectYearsMap.keySet()) {
+
+            yearsFoundInFile.add(yearKey);
+        }
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, yearsFoundInFile);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearList.setAdapter(spinnerAdapter);
+
+        yearList.setAdapter(new NothingSelectedSpinnerAdapter(spinnerAdapter, R.layout.spinnernothingselected, activity));
+
+        int index = 1;
+        for (String yearIndex : yearsFoundInFile) {
+
+            if (yearIndex.equals(String.valueOf(yearRequested))) {
+                break;
+            }
+            index++;
+        }
+        yearList.setSelection(index);
+    }
+
+    public AnyYear returnObjectByYear(String year) {
+
+        AnyYear yearToSet = yearsMappedToObjectYearsMap.get(year);
+
+        return yearToSet;
+    }
 }
