@@ -217,6 +217,11 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
             numberPicker1.setValue(valueFromNumPicker1);
         }
 
+        final Calendar calendar = Calendar.getInstance();//this gets the
+        // current month
+        final String currentMonth = String.format(Locale.UK, "%tB", calendar);
+        final int monthInt = calendar.get(Calendar.MONTH) + 1;
+
         alertDialogBuilder.setCancelable(false)
                 .setTitle("Set your payment circle")
                 .setMessage("Set the day your salary comes in." + "\n" +
@@ -227,11 +232,6 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 valueFromNumPicker1 = numberPicker1.getValue();
-
-                                final Calendar calendar = Calendar.getInstance();//this gets the
-                                // current month
-                                String currentMonth = String.format(Locale.UK, "%tB", calendar);
-                                int monthInt = calendar.get(Calendar.MONTH) + 1;
 
                                 try {
                                     /*Set to zero the expenses sums of the current and next month*/
@@ -271,10 +271,12 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                                 valueFromNumPicker1 = 0;
 
                                 util.readTheFile();
-                                YearToSet year = util.getObjectYear().getYear();
-                                util.setData(year.getAmountJan(),year.getAmountFeb(),year.getAmountMar(),year.getAmountApr(),
-                                        year.getAmountMay(),year.getAmountJun(), year.getAmountJul(),year.getAmountAug(),
-                                        year.getAmountSep(),year.getAmountOct(), year.getAmountNov(),year.getAmountDec(), mChart);
+                                // Get the object years to access the months data expenses
+                                AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
+                                final YearToSet yearToSetNew = currentYear.getYear();
+                                util.setData(yearToSetNew.getAmountJan(),yearToSetNew.getAmountFeb(),yearToSetNew.getAmountMar(),yearToSetNew.getAmountApr(),
+                                        yearToSetNew.getAmountMay(),yearToSetNew.getAmountJun(), yearToSetNew.getAmountJul(),yearToSetNew.getAmountAug(),
+                                        yearToSetNew.getAmountSep(),yearToSetNew.getAmountOct(), yearToSetNew.getAmountNov(),yearToSetNew.getAmountDec(), mChart);
 
                                 // store in preferences the boolean to set the circle and the
                                 // values from the number pickers.
@@ -291,7 +293,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         alertDialogBuilder.show();
     }
 
-    private void resetExpenseOfCurrentMonth(int currentMonth, YearToSet obj2018) {
+    public void resetExpenseOfCurrentMonth(int currentMonth, YearToSet obj2018) {
 
         switch (currentMonth) {
 

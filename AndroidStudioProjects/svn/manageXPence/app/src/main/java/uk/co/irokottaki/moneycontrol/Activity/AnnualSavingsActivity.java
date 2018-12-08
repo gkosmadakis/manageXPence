@@ -20,10 +20,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-
 import java.util.Calendar;
-
-import uk.co.irokottaki.moneycontrol.Model.YearToSet;
 import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.Utils.Utils;

@@ -163,38 +163,7 @@ public class ReportActivity extends AppCompatActivity {
         /*Spinner to hold the years*/
         yearList = (Spinner) findViewById(R.id.yearSpinnerReport);
 
-        /*String monthData [] = new String[] {"Month", "January","February","March","April",
-                "May","June","July","August","September","October","November","December",
-                "Total"};*/
-
         monthsAddedToSpinner = new ArrayList<>();
-  /*      monthsAddedToSpinner.add(OCTOBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN);
-        monthsAddedToSpinner.add(NOVEMBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN);
-        monthsAddedToSpinner.add(DECEMBER+EMPTY_SPACE+TWOTHOUSANDFIFTEEN);
-        monthsAddedToSpinner.add(JANUARY+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(FEBRUARY+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(MARCH+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(APRIL+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(MAY+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(JUNE+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(JULY+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(AUGUST+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(SEPTEMBER+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(OCTOBER+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(NOVEMBER+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(DECEMBER+EMPTY_SPACE+TWOTHOUSANDSIXTEEN);
-        monthsAddedToSpinner.add(JANUARY+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(FEBRUARY+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(MARCH+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(APRIL+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(MAY+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(JUNE+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(JULY+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(AUGUST+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(SEPTEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(OCTOBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(NOVEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);
-        monthsAddedToSpinner.add(DECEMBER+EMPTY_SPACE+TWOTHOUSANDSEVENTEEN);*/
         monthsAddedToSpinner.add(JANUARY);
         monthsAddedToSpinner.add(FEBRUARY);
         monthsAddedToSpinner.add(MARCH);
@@ -318,10 +287,6 @@ public class ReportActivity extends AppCompatActivity {
                     REQUEST_EXTERNAL_STORAGE
             );
         }
-    }
-
-    public StringBuilder getShortLine() {
-        return shortLine;
     }
 
     public TextView getReportView() {

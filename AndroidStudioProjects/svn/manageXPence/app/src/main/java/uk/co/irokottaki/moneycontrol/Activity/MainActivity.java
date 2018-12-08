@@ -123,6 +123,7 @@ import uk.co.irokottaki.moneycontrol.DropboxClient;
 import uk.co.irokottaki.moneycontrol.IabHelper;
 import uk.co.irokottaki.moneycontrol.IabResult;
 import uk.co.irokottaki.moneycontrol.Inventory;
+import uk.co.irokottaki.moneycontrol.Model.AnyYear;
 import uk.co.irokottaki.moneycontrol.Model.YearToSet;
 import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.Utils.NothingSelectedSpinnerAdapter;
@@ -149,28 +150,14 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private Spinner descriptionsItem, addExpensesByDescription;
     static ArrayList<Date> dates = new ArrayList<>();
     final ArrayList<Double> expenses = new ArrayList<>();
-    private static String fileLine;
     private int year_x, month_x, day_x, valueFromNumPicker1, valueFromNumPicker2;
     static final int DIALOG_ID = 0;
-    private TextView incomeLabel, balanceLabel, numberPickerLabel1, numberPickerLabel2;
+    private TextView incomeLabel, balanceLabel, numberPickerLabel1;
     ArrayAdapter<String> spinnerAdapter;
     private static ArrayList<String> itemsAddedByUser;
     private String descriptionAddedByUser, ACCESS_TOKEN;
     public ArrayList<String> allDescriptions;//descriptions
     RelativeLayout layout;
-/*    private static ArrayList<Float> arrayOfamountOct15, arrayOfamountNov15, arrayOfamountDec15,
-            arrayOfamountJan16, arrayOfamountFeb16,
-            arrayOfamountMar16, arrayOfamountApr16, arrayOfamountMay16, arrayOfamountJun16,
-            arrayOfamountJul16, arrayOfamountAug16,
-            arrayOfamountSep16, arrayOfamountOct16, arrayOfamountNov16, arrayOfamountDec16;*/
-            /*arrayOfamountJan17, arrayOfamountFeb17, arrayOfamountMar17, arrayOfamountApr17,
-            arrayOfamountMay17, arrayOfamountJun17,
-            arrayOfamountJul17, arrayOfamountAug17, arrayOfamountSep17, arrayOfamountOct17,
-            arrayOfamountNov17, arrayOfamountDec17,
-            arrayOfamountJan, arrayOfamountFeb, arrayOfamountMar, arrayOfamountApr,
-            arrayOfamountMay, arrayOfamountJun, arrayOfamountJul,
-            arrayOfamountAug, arrayOfamountSep, arrayOfamountOct, arrayOfamountNov,
-            arrayOfamountDec*/;//all the amounts for the months
     protected PreferenceManager mPreferenceManager;
     private LinkedHashSet<String> uniqueDescriptions;
     ArrayList<Float> uniqueAmounts;
@@ -201,8 +188,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private static Float incomeForJan, incomeForFeb, incomeForMar, incomeForApr, incomeForMay,
             incomeForJun, incomeForJul, incomeForAug,
             incomeForSep, incomeForOct, incomeForNov, incomeForDec;
-    private NumberPicker numberPicker1, numberPicker2;
-    HashMap<String, Float> amountsRelatedToDays, amountsRelatedToDaysAfterSalaryDay;
+    private NumberPicker numberPicker1;
     private boolean isPaymentCircleSet, budgetWarningEnabled, invalidToken, expenseFound = false,
             dateFound = false, descFound = false;
     private final String apikey = "2990d40f-d7ca-4fdb-bacd-98d3cbe6eef5";
@@ -712,7 +698,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 try {
                     JSONObject object = null;
                         try {
-                            //object = new JSONObject(thisResponse);
                             String sku = object.getString("productId");
                             String price = object.getString("price");
                             if (sku.equals("premiumUpgrade")) {
@@ -1106,7 +1091,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         try {
                             Bitmap thumbnail = MediaStore.Images.Media.getBitmap
                                     (getContentResolver(), imageUri);
-                            //imgView.setImageBitmap(thumbnail);
                             imageurl = getRealPathFromURI(imageUri);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1383,19 +1367,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         numberPicker1.setMinValue(1);
         numberPicker1.setWrapSelectorWheel(true);
 
-        //numberPicker2 = npView.findViewById(R.id.numberPicker2);
-        numberPicker2.setMaxValue(31);
-        numberPicker2.setMinValue(1);
-        numberPicker2.setWrapSelectorWheel(true);
         //Labels before the number pickers
         numberPickerLabel1 = new TextView(this);
         numberPickerLabel1 = npView.findViewById(R.id.numberPickerLabel1);
-        numberPickerLabel2 = new TextView(this);
-        //numberPickerLabel2 = npView.findViewById(R.id.numberPickerLabel2);
 
-        if ((valueFromNumPicker1 != 0 && valueFromNumPicker2 != 0)) {
+        if ((valueFromNumPicker1 != 0)) {
             numberPicker1.setValue(valueFromNumPicker1);
-            numberPicker2.setValue(valueFromNumPicker2);
         }
 
         //if the user has set number picker values then set them to appear when user presses the
@@ -1411,7 +1388,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 valueFromNumPicker1 = numberPicker1.getValue();
-                                valueFromNumPicker2 = numberPicker2.getValue();
                                 processDateCircle();
 
                                 // store in preferences the boolean to set the circle and the
@@ -1421,7 +1397,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 SharedPreferences.Editor editor = prefers.edit();
                                 editor.putBoolean(ISPAYMENTCIRCLE, true);
                                 editor.putInt(VALUEFROMNUMPICKER1, valueFromNumPicker1);
-                                editor.putInt(VALUEFROMNUMPICKER2, valueFromNumPicker2);
                                 editor.apply();
                             }
                         })
@@ -1436,7 +1411,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 isPaymentCircleSet = false;
                                 valueFromNumPicker1 = 0;
-                                valueFromNumPicker2 = 0;
 
                                 // process again the balance
                                 processBalance();
@@ -1449,7 +1423,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                         Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = prefers.edit();
                                 editor.putInt(VALUEFROMNUMPICKER1, valueFromNumPicker1);
-                                editor.putInt(VALUEFROMNUMPICKER2, valueFromNumPicker2);
                                 editor.apply();
                                 dialog.cancel();
                             }
@@ -1466,11 +1439,16 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
-        final YearToSet obj2018 = util.getObjectYear().getYear();
+        int year = calendar.getInstance().get(Calendar.YEAR);
+        AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
 
         try {
-
-            util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(valueFromNumPicker1, currentMonth, obj2018);
+            /*Set to zero the expenses sums of the current and next month*/
+            int monthInt = calendar.get(Calendar.MONTH) + 1;
+            resetExpenseOfCurrentMonth(monthInt - 1,currentYear.getYear());
+            resetExpenseOfCurrentMonth(monthInt,currentYear.getYear());
+            resetExpenseOfCurrentMonth(monthInt + 1,currentYear.getYear());
+            util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(valueFromNumPicker1, currentMonth, currentYear.getYear());
             //the user has clicked SET on the dialog
             isPaymentCircleSet = true;
         } catch (ParseException e) {
@@ -1481,6 +1459,49 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         processBalance();
         // redraw the graph with the balance
         showStackedBar();
+    }
+
+    public void resetExpenseOfCurrentMonth(int currentMonth, YearToSet obj2018) {
+
+        switch (currentMonth) {
+
+            case 1:
+                obj2018.setAmountJan(0f);
+                break;
+            case 2:
+                obj2018.setAmountFeb(0f);
+                break;
+            case 3:
+                obj2018.setAmountMar(0f);
+                break;
+            case 4:
+                obj2018.setAmountApr(0f);
+                break;
+            case 5:
+                obj2018.setAmountMay(0f);
+                break;
+            case 6:
+                obj2018.setAmountJun(0f);
+                break;
+            case 7:
+                obj2018.setAmountJul(0f);
+                break;
+            case 8:
+                obj2018.setAmountAug(0f);
+                break;
+            case 9:
+                obj2018.setAmountSep(0f);
+                break;
+            case 10:
+                obj2018.setAmountOct(0f);
+                break;
+            case 11:
+                obj2018.setAmountNov(0f);
+                break;
+            case 12:
+                obj2018.setAmountDec(0f);
+                break;
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -1508,107 +1529,119 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             String currentMonth = String.format(Locale.UK, "%tB", c);//get the current month
             int year = c.getInstance().get(Calendar.YEAR);
 
-            if (currentMonth.equals(JANUARY) && year == 2018) {
-                incomeForJan = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountJan());
-            }
-            if (currentMonth.equals(FEBRUARY) && year == 2018) {
-                incomeForFeb = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountFeb());
-            }
-            if (currentMonth.equals(MARCH) && year == 2018) {
-                incomeForMar = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountMar());
-            }
-            if (currentMonth.equals(APRIL) && year == 2018) {
-                incomeForApr = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountApr());
-            }
-            if (currentMonth.equals(MAY) && year == 2018) {
-                incomeForMay = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountMay());
-            }
-            if (currentMonth.equals(JUNE) && year == 2018) {
-                incomeForJun = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountJun());
-            }
-            if (currentMonth.equals(JULY) && year == 2018) {
-                incomeForJul = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountJul());
-            }
-            if (currentMonth.equals(AUGUST) && year == 2018) {
-                incomeForAug = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountAug());
-            }
-            if (currentMonth.equals(SEPTEMBER) && year == 2018) {
-                incomeForSep = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountSep());
-            }
-            if (currentMonth.equals(OCTOBER) && year == 2018) {
-                incomeForOct = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountOct());
-            }
-            if (currentMonth.equals(NOVEMBER) && year == 2018) {
-                incomeForNov = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountNov());
-            }
-            if (currentMonth.equals(DECEMBER) && year == 2018) {
-                incomeForDec = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear().getArrayOfamountDec());
-            }
+            AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
 
-            /*if (currentMonth.equals(JANUARY) && year == 2017) {
-                incomeForJan = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountJan17());
-            }
-            if (currentMonth.equals(FEBRUARY) && year == 2017) {
-                incomeForFeb = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountFeb17());
-            }
-            if (currentMonth.equals(MARCH) && year == 2017) {
-                incomeForMar = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountMar17());
-            }
-            if (currentMonth.equals(APRIL) && year == 2017) {
-                incomeForApr = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountApr17());
-            }
-            if (currentMonth.equals(MAY) && year == 2017) {
-                incomeForMay = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountMay17());
-            }
-            if (currentMonth.equals(JUNE) && year == 2017) {
-                incomeForJun = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountJun17());
-            }
-            if (currentMonth.equals(JULY) && year == 2017) {
-                incomeForJul = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountJul17());
-            }
-            if (currentMonth.equals(AUGUST) && year == 2017) {
-                incomeForAug = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountAug17());
-            }
-            if (currentMonth.equals(SEPTEMBER) && year == 2017) {
-                incomeForSep = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountSep17());
-            }
-            if (currentMonth.equals(OCTOBER) && year == 2017) {
-                incomeForOct = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountOct17());
-            }
-            if (currentMonth.equals(NOVEMBER) && year == 2017) {
-                incomeForNov = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountNov17());
-            }
-            if (currentMonth.equals(DECEMBER) && year == 2017) {
-                incomeForDec = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2017().getArrayOfamountDec17());
-            }
-            if (currentMonth.equals(DECEMBER) && year == 2016) {
-                incomeForDec = Float.parseFloat(incomeValue);
-                SumExpensesForBalance(util.getObjectYear().getYear2016().getArrayOfamountDec16());
-            }*/
+            //if (isPaymentCircleSet) {
+                monthSum = 0.0;
+                if (currentMonth.equals(JANUARY)) {
+                    incomeForJan = Float.parseFloat(incomeValue);
+                    if(isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountJan();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountJan());
+                    }
+                }
+                if (currentMonth.equals(FEBRUARY)) {
+                    incomeForFeb = Float.parseFloat(incomeValue);
+                    if(isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountFeb();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountFeb());
+                    }
+                }
+                if (currentMonth.equals(MARCH)) {
+                    incomeForMar = Float.parseFloat(incomeValue);
+                    if(isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountMar();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountMar());
+                    }
+                }
+                if (currentMonth.equals(APRIL)) {
+                    incomeForApr = Float.parseFloat(incomeValue);
+                    if (isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountApr();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountApr());
+                    }
+                }
+                if (currentMonth.equals(MAY)) {
+                    incomeForMay = Float.parseFloat(incomeValue);
+                    if (isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountMay();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountMay());
+                    }
+                }
+                if (currentMonth.equals(JUNE)) {
+                    incomeForJun = Float.parseFloat(incomeValue);
+                    if (isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountJun();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountJun());
+                    }
+                }
+                if (currentMonth.equals(JULY)) {
+                    incomeForJul = Float.parseFloat(incomeValue);
+                    if (isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountJul();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountJul());
+                    }
+                }
+                if (currentMonth.equals(AUGUST)) {
+                    incomeForAug = Float.parseFloat(incomeValue);
+                    if (isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountAug();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountAug());
+                    }
+                }
+                if (currentMonth.equals(SEPTEMBER)) {
+                    incomeForSep = Float.parseFloat(incomeValue);
+                    if (isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountSep();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountSep());
+                    }
+                }
+                if (currentMonth.equals(OCTOBER)) {
+                    incomeForOct = Float.parseFloat(incomeValue);
+                    if (isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountOct();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountOct());
+                    }
+                }
+                if (currentMonth.equals(NOVEMBER)) {
+                    incomeForNov = Float.parseFloat(incomeValue);
+                    if (isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountNov();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountNov());
+                    }
+                }
+                if (currentMonth.equals(DECEMBER)) {
+                    incomeForDec = Float.parseFloat(incomeValue);
+                    if (isPaymentCircleSet) {
+                        monthSum = currentYear.getYear().getAmountDec();
+                    }
+                    else {
+                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountDec());
+                    }
+                }
+
             // this is to avoid invalid double thrown on initial state where income is not added
             // yet by the user
             incomeDouble = Double.valueOf(incomeValue);
@@ -1682,34 +1715,11 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
     private void SumExpensesForBalance(ArrayList<Float> arrayOfamount) {
         Float monthSumFloat = 0f;
-        //the user has set a payment circle
-        if (isPaymentCircleSet) {
-            Calendar cal = Calendar.getInstance();
-            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-            /*Show the balance in the graph taking into account the expenses made after the
-            valueFromNumPicker2 day and the
-             * next month*/
-            if (valueFromNumPicker2 < dayOfMonth) {
 
-                for (Map.Entry<String, Float> entry : amountsRelatedToDaysAfterSalaryDay.entrySet
-                        ()) {
-                    if (Integer.parseInt(entry.getKey()) >= valueFromNumPicker2) {
-                        monthSumFloat += entry.getValue();
-                    }
-                }
-            } else {
-
-                for (Float amountsFloat : amountsRelatedToDays.values()) {
-                    monthSumFloat += amountsFloat;
-                }
-            }
-        }
-        // the user has not set a payment circle or has reset it.
-        else if (!isPaymentCircleSet) {
             for (int i = 0; i < arrayOfamount.size(); i++) {
                 monthSumFloat += arrayOfamount.get(i);
             }
-        }
+
         monthSum = monthSumFloat;
     }
 
@@ -1744,8 +1754,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 dateText = date.getText().toString();
                 int length = 22;
                 String formatStr = "%-8s%-15s%-10s";
-                if (!fileLine.contains(AMOUNT)) {
-                    fileLine = "Amount Description Date";
+                if (util.getObjectYear().getAllLinesInFile().equals("")) {
                     out.printf("%-" + length + "s %s%n", "Amount  Description", "Date");//write
                     // the header
                     out.write("\r\n");//write two new lines

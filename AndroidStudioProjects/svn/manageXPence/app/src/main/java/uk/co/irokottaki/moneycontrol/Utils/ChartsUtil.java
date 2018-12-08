@@ -60,8 +60,8 @@ import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
 
 public class ChartsUtil {
 
-    YearToSet yearToSet;
-    AnyYear objectYear;
+    private YearToSet yearToSet;
+    private AnyYear objectYear;
     private Context context;
     /*This map has all the data needed from the file. The first  key String on the map is the year, the second map contains the months as key,
     * and another map which contains a set with the descriptions and an arraylist with the expense amounts. An example could be
@@ -73,7 +73,7 @@ public class ChartsUtil {
 	              Key: Shopping-> 35, 55,100 */
     private HashMap<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearsMappedToMonthsWithAmountsMap;
     private LinkedHashSet<String> descriptionsSet;
-    private HashMap<String, Map<String, String>> yearsMappedToMonthsWithFileLines;
+    private TreeMap<Integer, Map<Integer, String>> yearsMappedToMonthsWithFileLines;
     private String allLinesInFile;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
 
@@ -101,8 +101,8 @@ public class ChartsUtil {
             ArrayList tempList = new ArrayList<Float>();
             descriptionsSet = new LinkedHashSet<>();
             LinkedHashSet descriptionsSet = new LinkedHashSet<>();
-            yearsMappedToMonthsWithFileLines = new HashMap<>();
-            Map tempFileLinesMap = new HashMap<String, String>();
+            yearsMappedToMonthsWithFileLines = new TreeMap<>();
+            TreeMap tempFileLinesMap = new TreeMap<Integer, String>();
             String fileLines = "";
             while (in.hasNextLine()) {
 
@@ -189,23 +189,26 @@ public class ChartsUtil {
                     yearsMappedToMonthsWithAmountsMap.put(extractYearFromDate, tempFirstMap);
 
                     /* Similarly for the map to store years with months and fileLines that are used in ReportActivity */
-                    if (yearsMappedToMonthsWithFileLines.containsKey(extractYearFromDate) && tempFileLinesMap.containsKey(extractMonthFromDate)) {
-                        tempFileLinesMap = yearsMappedToMonthsWithFileLines.get(extractYearFromDate);
-                        fileLines += line + "\n";
-                    }
-                    else if (yearsMappedToMonthsWithFileLines.containsKey(extractYearFromDate) && !tempFileLinesMap.containsKey(extractMonthFromDate)) {
-                        tempFileLinesMap = yearsMappedToMonthsWithFileLines.get(extractYearFromDate);
-                        fileLines = "";
-                        fileLines += line + "\n";
+                    if (yearsMappedToMonthsWithFileLines.containsKey(Integer.parseInt(extractYearFromDate))) {
+                        if (tempFileLinesMap.containsKey(Integer.parseInt(extractMonthFromDate))) {
+
+                                String linesFound = (String) tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate));
+                                linesFound += line + "\n";
+                                fileLines = linesFound;
+                        }
+                        else {
+                            tempFileLinesMap = (TreeMap) yearsMappedToMonthsWithFileLines.get(Integer.parseInt(extractYearFromDate));
+                            fileLines = "";
+                            fileLines += line + "\n";
+                        }
                     }
                     else {
-                        tempFileLinesMap = new HashMap<String, String>();
+                        tempFileLinesMap = new TreeMap<String, String>();
                         fileLines = "";
                         fileLines += line + "\n";
                     }
-
-                    tempFileLinesMap.put(extractMonthFromDate, fileLines);
-                    yearsMappedToMonthsWithFileLines.put(extractYearFromDate, tempFileLinesMap);
+                    tempFileLinesMap.put(Integer.parseInt(extractMonthFromDate), fileLines);
+                    yearsMappedToMonthsWithFileLines.put(Integer.parseInt(extractYearFromDate), tempFileLinesMap);
 
                 }
             }
@@ -243,13 +246,13 @@ public class ChartsUtil {
     private String iterateFileLinesMap(String monthRequested, String yearRequested){
         String line = "";
         allLinesInFile = "";
-        for (Map.Entry<String, Map<String, String>> yearEntry : yearsMappedToMonthsWithFileLines.entrySet()) {
-            String year = yearEntry.getKey();
-            for ( Map.Entry<String, String> monthEntry : yearEntry.getValue().entrySet()) {
-                String month = monthEntry.getKey();
+        for (Map.Entry<Integer, Map<Integer, String>> yearEntry : yearsMappedToMonthsWithFileLines.entrySet()) {
+            int year = yearEntry.getKey();
+            for ( Map.Entry<Integer, String> monthEntry : yearEntry.getValue().entrySet()) {
+                int month = monthEntry.getKey();
 
-                allLinesInFile += monthEntry.getValue();
-                if (monthRequested.equals(month) && yearRequested.equals(year)) {
+                allLinesInFile+= monthEntry.getValue();
+                if (monthRequested.equals(String.valueOf(month)) && yearRequested.equals(String.valueOf(year))) {
                     line += monthEntry.getValue();
                     }
                 }
@@ -282,7 +285,7 @@ public class ChartsUtil {
                                 amounts.add(amountFloat);
                             }
                         }
-                    processAmountsForEveryMonth(month, amounts, objectYear, year, descriptionsSet, iterateFileLinesMap(month, year));
+                    processAmountsForEveryMonth(month, amounts, objectYear, descriptionsSet, iterateFileLinesMap(month, year));
                         for (Object amountInFile : amounts) {
                             Log.e("Amounts from file is ", amountInFile.toString());
                         }
@@ -293,7 +296,7 @@ public class ChartsUtil {
         }
     }
 
-    private void processAmountsForEveryMonth(String month, ArrayList<Float> amounts, AnyYear obj, String year, LinkedHashSet set, String fileLine){
+    private void processAmountsForEveryMonth(String month, ArrayList<Float> amounts, AnyYear obj, LinkedHashSet set, String fileLine){
 
         if (month.equals(ONE)) {
             Float totalExpensesForMonth = 0.0f;
@@ -301,89 +304,87 @@ public class ChartsUtil {
 
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescJan(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescJan(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(TWO)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescFeb(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescFeb(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(THREE)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescMar(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescMar(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(FOUR)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescApr(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescApr(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(FIVE)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescMay(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescMay(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(SIX)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescJun(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescJun(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(SEVEN)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescJul(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescJul(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(EIGHT)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescAug(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescAug(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(NINE)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescSep(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescSep(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(TEN)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescOct(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescOct(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(ELEVEN)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescNov(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescNov(totalExpensesForMonth, set, amounts, fileLine);
         }
         if (month.equals(TWELVE)) {
             Float totalExpensesForMonth = 0.0f;
             for (int i=0; i<amounts.size(); i++) {
                 totalExpensesForMonth += amounts.get(i);
             }
-            obj.setAmountAndDescDec(totalExpensesForMonth, year, set, amounts, fileLine);
+            obj.setAmountAndDescDec(totalExpensesForMonth, set, amounts, fileLine);
         }
         obj.setAllLinesInFile(allLinesInFile);
     }
-
-
 
     public AnyYear getObjectYear() {
         return objectYear;
@@ -804,14 +805,12 @@ public class ChartsUtil {
         }
     }
 
-    public void calculateSelectedExpenses(int yearRequested, Spinner expensesList, Spinner yearList, Activity activity) {
+    public void calculateSelectedExpenses(int yearRequested, Spinner expensesList, Activity activity) {
 
         String selectedExpense = expensesList.getSelectedItem().toString();
 
         AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
-        if (yearList.getSelectedItem().equals(TWOTHOUSANDEIGHTEEN)) {
-
             calculateExpensesByMonth(year.getYear().getDescriptionsForJan(), selectedExpense,
                     year.getYear().getArrayOfamountJan(), activity);
             calculateExpensesByMonth(year.getYear().getDescriptionsForFeb(), selectedExpense,
@@ -836,70 +835,7 @@ public class ChartsUtil {
                     year.getYear().getArrayOfamountNov(), activity);
             calculateExpensesByMonth(year.getYear().getDescriptionsForDec(), selectedExpense,
                     year.getYear().getArrayOfamountDec(), activity);
-        }
 
-        if (yearList.getSelectedItem().equals(TWOTHOUSANDSEVENTEEN)) {
-
-            calculateExpensesByMonth(year.getYear().getDescriptionsForJan(), selectedExpense,
-                    year.getYear().getArrayOfamountJan(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForFeb(), selectedExpense,
-                    year.getYear().getArrayOfamountFeb(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForMar(), selectedExpense,
-                    year.getYear().getArrayOfamountMar(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForApr(), selectedExpense,
-                    year.getYear().getArrayOfamountApr(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForMay(), selectedExpense,
-                    year.getYear().getArrayOfamountMay(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForJun(), selectedExpense,
-                    year.getYear().getArrayOfamountJun(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForJul(), selectedExpense,
-                    year.getYear().getArrayOfamountJul(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForAug(), selectedExpense,
-                    year.getYear().getArrayOfamountAug(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForSep(), selectedExpense,
-                    year.getYear().getArrayOfamountSep(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForOct(), selectedExpense,
-                    year.getYear().getArrayOfamountOct(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForNov(), selectedExpense,
-                    year.getYear().getArrayOfamountNov(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForDec(), selectedExpense,
-                    year.getYear().getArrayOfamountDec(), activity);
-        } else if (yearList.getSelectedItem().equals(TWOTHOUSANDSIXTEEN)) {
-
-            calculateExpensesByMonth(year.getYear().getDescriptionsForJan(), selectedExpense,
-                    year.getYear().getArrayOfamountJan(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForFeb(), selectedExpense,
-                    year.getYear().getArrayOfamountFeb(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForMar(), selectedExpense,
-                    year.getYear().getArrayOfamountMar(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForApr(), selectedExpense,
-                    year.getYear().getArrayOfamountApr(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForMay(), selectedExpense,
-                    year.getYear().getArrayOfamountMay(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForJun(), selectedExpense,
-                    year.getYear().getArrayOfamountJun(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForJul(), selectedExpense,
-                    year.getYear().getArrayOfamountJul(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForAug(), selectedExpense,
-                    year.getYear().getArrayOfamountAug(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForSep(), selectedExpense,
-                    year.getYear().getArrayOfamountSep(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForOct(), selectedExpense,
-                    year.getYear().getArrayOfamountOct(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForNov(), selectedExpense,
-                    year.getYear().getArrayOfamountNov(), activity);
-            calculateExpensesByMonth(year.getYear().getDescriptionsForDec(), selectedExpense,
-                    year.getYear().getArrayOfamountDec(), activity);
-        } else if (yearList.getSelectedItem().equals(TWOTHOUSANDFIFTEEN)) {
-
-            calculateExpensesByMonth(getObjectYear().getYear().getDescriptionsForOct(), selectedExpense,
-                    getObjectYear().getYear().getArrayOfamountOct(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear().getDescriptionsForNov(), selectedExpense,
-                    getObjectYear().getYear().getArrayOfamountNov(), activity);
-            calculateExpensesByMonth(getObjectYear().getYear().getDescriptionsForDec(), selectedExpense,
-                    getObjectYear().getYear().getArrayOfamountDec(), activity);
-
-        }
     }
 
     private void calculateExpensesByMonth(LinkedHashSet descriptions, String selectedExpense,
@@ -1013,40 +949,40 @@ public class ChartsUtil {
         switch (monthInt) {
 
             case 1:
-                obj2018.getYear().setAmountJan(obj2018.getYear().getAmountJan()+amount);
+                obj2018.setAmountJan(obj2018.getAmountJan()+amount);
                 break;
             case 2:
-                obj2018.getYear().setAmountFeb(obj2018.getYear().getAmountFeb()+amount);
+                obj2018.setAmountFeb(obj2018.getAmountFeb()+amount);
                 break;
             case 3:
-                obj2018.getYear().setAmountMar(obj2018.getYear().getAmountMar()+amount);
+                obj2018.setAmountMar(obj2018.getAmountMar()+amount);
                 break;
             case 4:
-                obj2018.getYear().setAmountApr(obj2018.getYear().getAmountApr()+amount);
+                obj2018.setAmountApr(obj2018.getAmountApr()+amount);
                 break;
             case 5:
-                obj2018.getYear().setAmountMay(obj2018.getYear().getAmountMay()+amount);
+                obj2018.setAmountMay(obj2018.getAmountMay()+amount);
                 break;
             case 6:
-                obj2018.getYear().setAmountJun(obj2018.getYear().getAmountJun()+amount);
+                obj2018.setAmountJun(obj2018.getAmountJun()+amount);
                 break;
             case 7:
-                obj2018.getYear().setAmountJul(obj2018.getYear().getAmountJul()+amount);
+                obj2018.setAmountJul(obj2018.getAmountJul()+amount);
                 break;
             case 8:
-                obj2018.getYear().setAmountAug(obj2018.getYear().getAmountAug()+amount);
+                obj2018.setAmountAug(obj2018.getAmountAug()+amount);
                 break;
             case 9:
-                obj2018.getYear().setAmountSep(obj2018.getYear().getAmountSep()+amount);
+                obj2018.setAmountSep(obj2018.getAmountSep()+amount);
                 break;
             case 10:
-                obj2018.getYear().setAmountOct(obj2018.getYear().getAmountOct()+amount);
+                obj2018.setAmountOct(obj2018.getAmountOct()+amount);
                 break;
             case 11:
-                obj2018.getYear().setAmountNov(obj2018.getYear().getAmountNov()+amount);
+                obj2018.setAmountNov(obj2018.getAmountNov()+amount);
                 break;
             case 12:
-                obj2018.getYear().setAmountDec(obj2018.getYear().getAmountDec()+amount);
+                obj2018.setAmountDec(obj2018.getAmountDec()+amount);
                 break;
         }
 
@@ -1097,8 +1033,7 @@ public class ChartsUtil {
                 break;
 
             default:
-                formatReportArea(year.getYear().getAllLinesInFile());
-                ((ReportActivity) activity).getReportView().setText(shortLine.toString());
+                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getAllLinesInFile()));
                 break;
         }//end of switch
     }
@@ -1110,26 +1045,28 @@ public class ChartsUtil {
 
         String[] lines = fileLine.split("\n");
 
+        String amount = AMOUNT;
+        String shortDesc = DESCRIPTION;
+        String date = DATE;
+        shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();
+        shortLine.append("\n");
+        shortLine.append("\n");
+
         for (int i = 0; i < lines.length; i++) {
-            if (i == 0) {
-                String amount = AMOUNT;
-                String shortDesc = DESCRIPTION;
-                String date = DATE;
-                shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();
-                shortLine.append("\n");
-            } else if (i > 1 && !lines[i].equals("")) {
-                String amount = lines[i].substring(0, lines[i].indexOf(" "));
-                String shortDesc = lines[i].substring(lines[i].indexOf(" "), lines[i].lastIndexOf
+            if (i >= 0 && !lines[i].equals("")) {
+                amount = lines[i].substring(0, lines[i].indexOf(" "));
+                shortDesc = lines[i].substring(lines[i].indexOf(" "), lines[i].lastIndexOf
                         (" ")).trim();
-                String date = lines[i].substring(lines[i].lastIndexOf(" "), lines[i].length())
+                date = lines[i].substring(lines[i].lastIndexOf(" "), lines[i].length())
                         .trim();
                 shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();
                 shortLine.append("\n");
-            } else {
+            }
+            /*else {
                 shortLine.append(lines[i]);//this is to write the header Amount Description Date
                 // and a new line
                 shortLine.append("\n");
-            }
+            }*/
         }
         return shortLine;
     }

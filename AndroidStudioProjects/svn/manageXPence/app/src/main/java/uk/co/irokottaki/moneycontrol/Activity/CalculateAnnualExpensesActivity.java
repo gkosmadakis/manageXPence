@@ -2,7 +2,6 @@ package uk.co.irokottaki.moneycontrol.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -41,6 +40,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         setTitle(CALCULATE_ANNUAL_EXPENSES);
 
         util = new ChartsUtil(this);
+        util.readTheFile();
 
         //retrieve the spinner items from main activity so whatever is populated in the main
         // activity to be displayed here as well
@@ -68,18 +68,10 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
 
         yearList = (Spinner) findViewById(R.id.yearSpinner);
         year = Calendar.getInstance().get(Calendar.YEAR);
-        //get the year items from the array
-        Resources res = getResources();
-        String[] yearInTheList = res.getStringArray(R.array.yearItems);
-        int length = yearInTheList.length;
-        String yearInArray = null;
-        for (int i = 0; i < length; i++) {
-            yearInArray = yearInTheList[i];
 
-            if (year == Integer.parseInt(yearInArray)) {
-                yearList.setSelection(i);
-            }
-        }
+        //populate the spinner with the years found after reading the file
+        util.populateYearSpinnerAndSetCurrentYear(year, yearList, CalculateAnnualExpensesActivity.this);
+
         //calculate Button
         calculateButton = new Button(this);
         calculateButton = (Button) findViewById(R.id.calculateButton);
@@ -136,7 +128,9 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         } else {
 
             util.readTheFile();
-            util.calculateSelectedExpenses(year, expensesList,yearList, CalculateAnnualExpensesActivity.this);
+            // get the year selected from the year spinner
+            year = Integer.parseInt(yearList.getSelectedItem().toString());
+            util.calculateSelectedExpenses(year, expensesList, CalculateAnnualExpensesActivity.this);
         }
     }
 

@@ -23,7 +23,7 @@ public class AnyYear {
         return year;
     }
 
-    public void setAmountAndDescJan(Float amountJan, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescJan(Float amountJan, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountJan(amountJan);
         this.year.setDescriptionsForJan(descriptionSet);
@@ -31,7 +31,7 @@ public class AnyYear {
         this.year.setFileLineJan(fileLine);
     }
 
-    public void setAmountAndDescFeb(Float amountFeb, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescFeb(Float amountFeb,  LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountFeb(amountFeb);
         this.year.setDescriptionsForFeb(descriptionSet);
@@ -39,7 +39,7 @@ public class AnyYear {
         this.year.setFileLineFeb(fileLine);
     }
 
-    public void setAmountAndDescMar(Float amountMar, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescMar(Float amountMar, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountMar(amountMar);
         this.year.setDescriptionsForMar(descriptionSet);
@@ -47,7 +47,7 @@ public class AnyYear {
         this.year.setFileLineMar(fileLine);
     }
 
-    public void setAmountAndDescApr(Float amountApr, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescApr(Float amountApr, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountApr(amountApr);
         this.year.setDescriptionsForApr(descriptionSet);
@@ -55,7 +55,7 @@ public class AnyYear {
         this.year.setFileLineApr(fileLine);
     }
 
-    public void setAmountAndDescMay(Float amountMay, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescMay(Float amountMay, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountMay(amountMay);
         this.year.setDescriptionsForMay(descriptionSet);
@@ -63,7 +63,7 @@ public class AnyYear {
         this.year.setFileLineMay(fileLine);
     }
 
-    public void setAmountAndDescJun(Float amountJun, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescJun(Float amountJun, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountJun(amountJun);
         this.year.setDescriptionsForJun(descriptionSet);
@@ -71,7 +71,7 @@ public class AnyYear {
         this.year.setFileLineJun(fileLine);
     }
 
-    public void setAmountAndDescJul(Float amountJul, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescJul(Float amountJul, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountJul(amountJul);
         this.year.setDescriptionsForJul(descriptionSet);
@@ -79,7 +79,7 @@ public class AnyYear {
         this.year.setFileLineJul(fileLine);
     }
 
-    public void setAmountAndDescAug(Float amountAug, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescAug(Float amountAug, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountAug(amountAug);
         this.year.setDescriptionsForAug(descriptionSet);
@@ -87,7 +87,7 @@ public class AnyYear {
         this.year.setFileLineAug(fileLine);
     }
 
-    public void setAmountAndDescSep(Float amountSep, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescSep(Float amountSep, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountSep(amountSep);
         this.year.setDescriptionsForSep(descriptionSet);
@@ -95,7 +95,7 @@ public class AnyYear {
         this.year.setFileLineSep(fileLine);
     }
 
-    public void setAmountAndDescOct(Float amountOct, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescOct(Float amountOct, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountOct(amountOct);
         this.year.setDescriptionsForOct(descriptionSet);
@@ -103,7 +103,7 @@ public class AnyYear {
         this.year.setFileLineOct(fileLine);
     }
 
-    public void setAmountAndDescNov(Float amountNov, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescNov(Float amountNov, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountNov(amountNov);
         this.year.setDescriptionsForNov(descriptionSet);
@@ -111,7 +111,7 @@ public class AnyYear {
         this.year.setFileLineNov(fileLine);
     }
 
-    public void setAmountAndDescDec(Float amountDec, String year, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescDec(Float amountDec, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
 
         this.year.setAmountDec(amountDec);
         this.year.setDescriptionsForDec(descriptionSet);
