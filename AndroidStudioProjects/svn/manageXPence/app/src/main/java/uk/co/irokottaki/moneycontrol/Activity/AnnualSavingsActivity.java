@@ -21,14 +21,16 @@ import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.util.Calendar;
+import java.util.HashMap;
+
+import uk.co.irokottaki.moneycontrol.Model.AnyYear;
 import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.Utils.Utils;
 
 import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
 
-public class AnnualSavingsActivity extends AppCompatActivity implements OnChartGestureListener,
-        OnChartValueSelectedListener {
+public class AnnualSavingsActivity extends AppCompatActivity implements OnChartGestureListener, OnChartValueSelectedListener {
 
     public LineChart mChart;
     ImageButton leftYearButton;
@@ -47,7 +49,9 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
 
         //READ THE FILE AND GET THE AMOUNTS FOR EVERY MONTH/YEAR
         util = new ChartsUtil(this);
-        util.readTheFile();
+        Intent intent = getIntent();
+        HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.annualSavingsView);
 
@@ -86,24 +90,30 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
 
         //i am just setting the data for 2017 that will be displayed on initializing the activity
         // . Obviously it should be changed every year
-        util.setSavings(year, AnnualSavingsActivity.this);
+        util.setSavings(yearsMappedToObjectYearsMap, year, AnnualSavingsActivity.this);
 
         //Listener to events on clicking the image arrows
         leftYearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
                 year--;
                 yearView.setText(YEAR + year);
-                util.setSavings(year, AnnualSavingsActivity.this);
+                util.setSavings(yearsMappedToObjectYearsMap, year, AnnualSavingsActivity.this);
             }
         });
 
         rightYearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
                 year++;
                 yearView.setText(YEAR + year);
-                util.setSavings(year, AnnualSavingsActivity.this);
+                util.setSavings(yearsMappedToObjectYearsMap, year, AnnualSavingsActivity.this);
             }
         });
 

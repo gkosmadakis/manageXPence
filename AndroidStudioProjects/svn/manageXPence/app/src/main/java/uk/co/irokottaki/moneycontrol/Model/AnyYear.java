@@ -1,9 +1,10 @@
 package uk.co.irokottaki.moneycontrol.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
-public class AnyYear {
+public class AnyYear implements Serializable {
     private YearToSet year;
     private String allLinesInFile;
 

@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private Uri imageUri;
     private static Map<String, String> DATE_FORMAT_REGEXPS;
     private ChartsUtil util;
+    private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
 
 
     final ServiceConnection mServiceConn = new ServiceConnection() {
@@ -547,7 +548,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         showDialogOnButtonClick();
 
-        util.readTheFile();
+        yearsMappedToObjectYearsMap = new HashMap();
+        yearsMappedToObjectYearsMap = util.readTheFile();
 
         readDescriptionsFile();
 
@@ -728,8 +730,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             @Override
             public void onClick(View view) {
 
-                Intent intent1 = new Intent(view.getContext(), ReportActivity.class);
-                startActivity(intent1);
+                Intent intent = new Intent(view.getContext(), ReportActivity.class);
+                intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+                startActivity(intent);
             }
         });
 
@@ -748,6 +751,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
                 Intent intentEdit = new Intent(view.getContext(), ChartActivity.class);
                 intentEdit.putExtra(DESCRIPTIONS, allDescriptions);
+                intentEdit.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
                 startActivity(intentEdit);
             }
         });
@@ -757,7 +761,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             public void onClick(View view) {
 
                 Intent intentEdit = new Intent(view.getContext(), HorizontalBarChartActivity.class);
-                System.out.println(BAR_CHART);
+                //System.out.println(BAR_CHART);
+                intentEdit.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
                 startActivity(intentEdit);
             }
         });
@@ -767,6 +772,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             public void onClick(View view) {
 
                 Intent intentAnnualChart = new Intent(view.getContext(), AnnualChartActivity.class);
+                intentAnnualChart.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
                 startActivity(intentAnnualChart);
             }
         });
@@ -775,8 +781,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             @Override
             public void onClick(View view) {
 
-                Intent intentSavingsChart = new Intent(view.getContext(), AnnualSavingsActivity
-                        .class);
+                Intent intentSavingsChart = new Intent(view.getContext(), AnnualSavingsActivity.class);
+                intentSavingsChart.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
                 startActivity(intentSavingsChart);
             }
         });

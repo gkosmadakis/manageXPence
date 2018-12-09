@@ -25,8 +25,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
+import uk.co.irokottaki.moneycontrol.Model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.Utils.Utils;
@@ -54,7 +56,6 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         setTitle(BAR_CHART);
 
         util = new ChartsUtil(this);
-        util.readTheFile();
 
         RelativeLayout barLayout = (RelativeLayout) findViewById(R.id.barChartView);
 
@@ -111,12 +112,15 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                     year--;
                     monthInt = 12;
                 }
+                Intent intent = getIntent();
+                HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
                 if (isChecked) {
                     //depending on the month the user is i need to show the percentages for that
                     // month
 
                     if (!valueSet1.isEmpty()) {
-                        util.calculatePercentagesAndModifyYAxis(monthInt, year, HorizontalBarChartActivity.this, dataSets);
+                        util.calculatePercentagesAndModifyYAxis(yearsMappedToObjectYearsMap,monthInt, year, HorizontalBarChartActivity.this, dataSets);
                     }
                     if (dataSets != null) {
                         data.setValueFormatter(new PercentFormatter());//this adds % in the
@@ -127,7 +131,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                 } else {
                     //here i revert back to the actual numbers
                     if (!valueSet1.isEmpty()) {
-                        util.revertToNumbersAndModifyYAxis(monthInt, year, HorizontalBarChartActivity.this, dataSets);
+                        util.revertToNumbersAndModifyYAxis(yearsMappedToObjectYearsMap, monthInt, year, HorizontalBarChartActivity.this, dataSets);
                     }
                     if (dataSets != null) {
                         data.setValueFormatter(new ValueFormatter() {
@@ -152,6 +156,9 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         arrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
                 monthInt--;
                 if (monthInt > 12) {
                     year++;
@@ -161,7 +168,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                     year--;
                     monthInt = 12;
                 }
-                util.casesToShowExpensesForMonth(monthInt, year,HorizontalBarChartActivity.this);
+                util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap,monthInt, year,HorizontalBarChartActivity.this);
 
             }
         });
@@ -169,6 +176,9 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         arrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                HashMap<String, AnyYear>  yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
                 monthInt++;
                 if (monthInt > 12) {
                     year++;
@@ -178,7 +188,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                     year--;
                     monthInt = 12;
                 }
-                util.casesToShowExpensesForMonth(monthInt, year, HorizontalBarChartActivity.this);
+                util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap,monthInt, year, HorizontalBarChartActivity.this);
 
             }
         });

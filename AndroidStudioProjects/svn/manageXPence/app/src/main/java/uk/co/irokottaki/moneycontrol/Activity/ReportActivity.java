@@ -25,8 +25,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
+import uk.co.irokottaki.moneycontrol.Model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.Utils.NothingSelectedSpinnerAdapter;
@@ -196,8 +198,11 @@ public class ReportActivity extends AppCompatActivity {
         reportView.setTypeface(Typeface.MONOSPACE);
 
         util = new ChartsUtil(this);
-        util.readTheFile();
-        
+
+        Intent intent = getIntent();
+        HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
+
         //readTheFile();
 
         //Get the current month
@@ -216,7 +221,7 @@ public class ReportActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        util.populateYearSpinnerAndSetCurrentYear(year, yearList, ReportActivity.this);
+        util.populateYearSpinnerAndSetCurrentYear(yearsMappedToObjectYearsMap, year, yearList, ReportActivity.this);
 
         //set the spinner to the current month
         monthItems.setSelection(findIndexForCurrentMonth(currentMonth));

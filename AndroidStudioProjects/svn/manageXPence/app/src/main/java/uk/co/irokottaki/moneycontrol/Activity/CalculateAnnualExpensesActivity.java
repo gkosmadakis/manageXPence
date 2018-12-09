@@ -2,6 +2,7 @@ package uk.co.irokottaki.moneycontrol.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -15,7 +16,9 @@ import android.widget.Spinner;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
+import uk.co.irokottaki.moneycontrol.Model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.Utils.NothingSelectedSpinnerAdapter;
@@ -31,6 +34,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
     private Double annualExpenseDouble;
     private ChartsUtil util;
     private int year;
+    private HashMap yearsMappedToObjectYearsMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,10 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         setTitle(CALCULATE_ANNUAL_EXPENSES);
 
         util = new ChartsUtil(this);
-        util.readTheFile();
+        Intent intent = getIntent();
+        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+        //add it here to be used back in AnnualChartActivity
+
 
         //retrieve the spinner items from main activity so whatever is populated in the main
         // activity to be displayed here as well
@@ -70,7 +77,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         year = Calendar.getInstance().get(Calendar.YEAR);
 
         //populate the spinner with the years found after reading the file
-        util.populateYearSpinnerAndSetCurrentYear(year, yearList, CalculateAnnualExpensesActivity.this);
+        util.populateYearSpinnerAndSetCurrentYear(yearsMappedToObjectYearsMap,year, yearList, CalculateAnnualExpensesActivity.this);
 
         //calculate Button
         calculateButton = new Button(this);
@@ -126,11 +133,9 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
             alert1.show();
 
         } else {
-
-            util.readTheFile();
             // get the year selected from the year spinner
             year = Integer.parseInt(yearList.getSelectedItem().toString());
-            util.calculateSelectedExpenses(year, expensesList, CalculateAnnualExpensesActivity.this);
+            util.calculateSelectedExpenses(yearsMappedToObjectYearsMap,year, expensesList, CalculateAnnualExpensesActivity.this);
         }
     }
 
@@ -140,6 +145,14 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
 
     public Double setAnnualExpenseDouble(double expense) {
         return this.annualExpenseDouble = expense;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+        setResult(-1, intent);
+        finish();
     }
 
     @Override
@@ -155,12 +168,15 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Intent intent = new Intent();
+        intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+        setResult(-1, intent);
+        finish();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

@@ -32,6 +32,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 import uk.co.irokottaki.moneycontrol.Model.AnyYear;
@@ -55,6 +56,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
     private NumberPicker numberPicker1;
     private boolean isPaymentCircleSetAnnual;
     private ChartsUtil util;
+    HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -65,7 +67,10 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
 
         //READ THE FILE AND GET THE AMOUNTS FOR EVERY MONTH/YEAR
         util = new ChartsUtil(this);
-        util.readTheFile();
+
+        Intent intent = getIntent();
+        final HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.annualChartView);
         SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
@@ -119,8 +124,8 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         year = calendar.get(Calendar.YEAR);// get the current year
         yearView.setText(YEAR + year);
 
-        // Get the object years to access the months data expenses
-        AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
+        // Get the object of AnyYear from yearsMappedToObjectYearsMap returned from MainActivity to access the months data expenses
+        AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
         final YearToSet yearToSet = currentYear.getYear();
 
         if (isPaymentCircleSetAnnual) {
@@ -164,16 +169,22 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         leftYearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
                 year--;
-                util.switchAmountsBetweenYears(year, yearView, AnnualChartActivity.this);
+                util.switchAmountsBetweenYears(yearsMappedToObjectYearsMap,year, yearView, AnnualChartActivity.this);
             }
         });
 
         rightYearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
                 year++;
-                util.switchAmountsBetweenYears(year, yearView, AnnualChartActivity.this);
+                util.switchAmountsBetweenYears(yearsMappedToObjectYearsMap,year, yearView, AnnualChartActivity.this);
             }
         });
 
@@ -189,13 +200,23 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
             @Override
             public void onClick(View view) {
 
-                Intent intent1 = new Intent(view.getContext(), CalculateAnnualExpensesActivity
-                        .class);
-                startActivity(intent1);
+                Intent intent = new Intent(view.getContext(), CalculateAnnualExpensesActivity.class);
+                intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+                startActivity(intent);
             }
         });
     }// end of onCreate
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) data.getSerializableExtra("yearsMappedToObjectYearsMap");
+
+            }
+        }
+    }
 
     protected void showNumberPickerDialogOnButtonClick(final YearToSet yearToSet) {
 

@@ -82,7 +82,7 @@ public class ChartsUtil {
         this.context = context;
     }
 
-    public void readTheFile() {
+    public HashMap readTheFile() {
 
         Float amount;
         String desc;
@@ -221,7 +221,10 @@ public class ChartsUtil {
         }
 
         /*Call the method to iterate the map*/
-        iterateMainMap();
+        yearsMappedToObjectYearsMap = new HashMap<>();
+        yearsMappedToObjectYearsMap = iterateMainMap();
+
+        return yearsMappedToObjectYearsMap;
     }
 
     private static void addAmountsWithDuplicates(LinkedHashSet descriptions, String desc, String
@@ -260,9 +263,8 @@ public class ChartsUtil {
             return line;
         }
 
-    private void iterateMainMap() {
+    private HashMap iterateMainMap() {
 
-        yearsMappedToObjectYearsMap = new HashMap<>();
         for (Map.Entry<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearEntry : yearsMappedToMonthsWithAmountsMap.entrySet()) {
             String year = yearEntry.getKey();
             Log.e("Year from file is ", year);
@@ -294,6 +296,7 @@ public class ChartsUtil {
             /*add the year read from the map and the object year which has all the fields set that are needed */
             yearsMappedToObjectYearsMap.put(year,objectYear);
         }
+        return yearsMappedToObjectYearsMap;
     }
 
     private void processAmountsForEveryMonth(String month, ArrayList<Float> amounts, AnyYear obj, LinkedHashSet set, String fileLine){
@@ -471,69 +474,69 @@ public class ChartsUtil {
         return calendar;
     }
 
-    public void casesToShowExpensesForMonth(int monthInt, int yearRequested, Activity activity) {
+    public void casesToShowExpensesForMonth(HashMap<String, AnyYear> yearsMappedToObjectYearsMap,int monthInt, int yearRequested, Activity activity) {
 
-        AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
+        AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
         switch (monthInt) {
 
             case 1:
                 showExpensesForMonth(JANUARY, year.getYear().getDescriptionsForJan(),
-                        year.getYear().getArrayOfamountJan(), activity);
+                        year.getYear().getArrayOfamountJan(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 2:
                 showExpensesForMonth(FEBRUARY, year.getYear().getDescriptionsForFeb(),
-                        year.getYear().getArrayOfamountFeb(), activity);
+                        year.getYear().getArrayOfamountFeb(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 3:
                 showExpensesForMonth(MARCH, year.getYear().getDescriptionsForMar(),
-                        year.getYear().getArrayOfamountMar(), activity);
+                        year.getYear().getArrayOfamountMar(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 4:
                 showExpensesForMonth(APRIL, year.getYear().getDescriptionsForApr(),
-                        year.getYear().getArrayOfamountApr(), activity);
+                        year.getYear().getArrayOfamountApr(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 5:
                 showExpensesForMonth(MAY, year.getYear().getDescriptionsForMay(),
-                        year.getYear().getArrayOfamountMay(), activity);
+                        year.getYear().getArrayOfamountMay(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 6:
                 showExpensesForMonth(JUNE, year.getYear().getDescriptionsForJun(),
-                        year.getYear().getArrayOfamountJun(), activity);
+                        year.getYear().getArrayOfamountJun(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 7:
                 showExpensesForMonth(JULY, year.getYear().getDescriptionsForJul(),
-                        year.getYear().getArrayOfamountJul(), activity);
+                        year.getYear().getArrayOfamountJul(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 8:
                 showExpensesForMonth(AUGUST, year.getYear().getDescriptionsForAug(),
-                        year.getYear().getArrayOfamountAug(), activity);
+                        year.getYear().getArrayOfamountAug(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 9:
                 showExpensesForMonth(SEPTEMBER, year.getYear().getDescriptionsForSep(),
-                        year.getYear().getArrayOfamountSep(), activity);
+                        year.getYear().getArrayOfamountSep(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 10:
                 showExpensesForMonth(OCTOBER, year.getYear().getDescriptionsForOct(),
-                        year.getYear().getArrayOfamountOct(), activity);
+                        year.getYear().getArrayOfamountOct(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 11:
                 showExpensesForMonth(NOVEMBER, year.getYear().getDescriptionsForNov(),
-                        year.getYear().getArrayOfamountNov(), activity);
+                        year.getYear().getArrayOfamountNov(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
             case 12:
                 showExpensesForMonth(DECEMBER, year.getYear().getDescriptionsForDec(),
-                        year.getYear().getArrayOfamountDec(), activity);
+                        year.getYear().getArrayOfamountDec(), activity,yearRequested, yearsMappedToObjectYearsMap);
                 break;
         }// end of switch
     }
 
     private void showExpensesForMonth(String month, LinkedHashSet descriptions, ArrayList<Float>
-            arrayAmount, Activity activity) {
+            arrayAmount, Activity activity, int yearRequested, HashMap<String,AnyYear> yearsMappedToObjectYearsMap) {
 
         if (activity instanceof ChartActivity) {
 
-            ((ChartActivity) activity).getMonthLabel().setText(month);
+            ((ChartActivity) activity).getMonthLabel().setText(month+" "+yearRequested);
             ((ChartActivity) activity).getDataSet().clear();
             ((ChartActivity) activity).getxVals().clear();
             int x = 0;
@@ -545,7 +548,7 @@ public class ChartsUtil {
             ((ChartActivity) activity).setDataSet(new PieDataSet(((ChartActivity) activity).getyVals1(), EXPENSES_FOR + month));
         }
         else if (activity instanceof HorizontalBarChartActivity){
-            ((HorizontalBarChartActivity) activity).getMonthLabel().setText(month);
+            ((HorizontalBarChartActivity) activity).getMonthLabel().setText(month+" "+yearRequested);
             ((HorizontalBarChartActivity) activity).getBarDataSet1().clear();
             ((HorizontalBarChartActivity) activity).getxAxis().clear();
             int z = 0;
@@ -556,10 +559,10 @@ public class ChartsUtil {
             }
         }
 
-        modifyData(activity);
+        modifyData(activity,yearsMappedToObjectYearsMap);
     }
 
-    private void modifyData(Activity activity) {
+    private void modifyData(Activity activity,HashMap<String,AnyYear>yearsMappedToObjectYearsMap) {
 
         if (activity instanceof ChartActivity) {
             addColors(activity);
@@ -616,13 +619,13 @@ public class ChartsUtil {
                 ((HorizontalBarChartActivity) activity).setData(new BarData(((HorizontalBarChartActivity) activity).getxAxis(), ((HorizontalBarChartActivity) activity).getDataSets()));
 
                 if (((HorizontalBarChartActivity) activity).isStateSwitchButton()) {
-                    calculatePercentagesAndModifyYAxis(((HorizontalBarChartActivity) activity).getMonthInt(), ((HorizontalBarChartActivity) activity).getYearInt(),
+                    calculatePercentagesAndModifyYAxis(yearsMappedToObjectYearsMap,((HorizontalBarChartActivity) activity).getMonthInt(), ((HorizontalBarChartActivity) activity).getYearInt(),
                             activity, ((HorizontalBarChartActivity) activity).getDataSets());
 
                     ((HorizontalBarChartActivity) activity).getData().setValueFormatter(new PercentFormatter());
 
                 } else {
-                    revertToNumbersAndModifyYAxis(((HorizontalBarChartActivity) activity).getMonthInt(), ((HorizontalBarChartActivity) activity).getYearInt(),
+                    revertToNumbersAndModifyYAxis(yearsMappedToObjectYearsMap,((HorizontalBarChartActivity) activity).getMonthInt(), ((HorizontalBarChartActivity) activity).getYearInt(),
                             activity, ((HorizontalBarChartActivity) activity).getDataSets());
 
                     ((HorizontalBarChartActivity) activity).getData().setValueFormatter(new ValueFormatter() {
@@ -659,7 +662,7 @@ public class ChartsUtil {
         ((ChartActivity) activity).getDataSet().setColors(colors);
     }
 
-    public void calculatePercentagesAndModifyYAxis(int monthInt, int yearRequested, Activity activity, ArrayList<BarDataSet> dataSets) {
+    public void calculatePercentagesAndModifyYAxis(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int monthInt, int yearRequested, Activity activity, ArrayList<BarDataSet> dataSets) {
 
         AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -740,7 +743,7 @@ public class ChartsUtil {
         }
     }
 
-    public void revertToNumbersAndModifyYAxis(int monthInt, int yearRequested, Activity activity, ArrayList<BarDataSet> dataSets) {
+    public void revertToNumbersAndModifyYAxis(HashMap<String, AnyYear> yearsMappedToObjectYearsMap,int monthInt, int yearRequested, Activity activity, ArrayList<BarDataSet> dataSets) {
 
         AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -805,7 +808,7 @@ public class ChartsUtil {
         }
     }
 
-    public void calculateSelectedExpenses(int yearRequested, Spinner expensesList, Activity activity) {
+    public void calculateSelectedExpenses(HashMap<String,AnyYear>yearsMappedToObjectYearsMap,int yearRequested, Spinner expensesList, Activity activity) {
 
         String selectedExpense = expensesList.getSelectedItem().toString();
 
@@ -1071,7 +1074,7 @@ public class ChartsUtil {
         return shortLine;
     }
 
-    public void switchAmountsBetweenYears(int yearRequested, TextView yearView, Activity activity) {
+    public void switchAmountsBetweenYears(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, TextView yearView, Activity activity) {
 
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -1088,7 +1091,7 @@ public class ChartsUtil {
            }
     }
 
-    public void setSavings(int yearRequested, Activity activity) {
+    public void setSavings(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, Activity activity) {
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
         //retrieve the incomes from Main Activity
@@ -1127,7 +1130,7 @@ public class ChartsUtil {
     }
 
 
-    public void populateYearSpinnerAndSetCurrentYear(int yearRequested, Spinner yearList, Activity activity) {
+    public void populateYearSpinnerAndSetCurrentYear(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, Spinner yearList, Activity activity) {
 
         ArrayList<String> yearsFoundInFile = new ArrayList<String>();
 
@@ -1158,5 +1161,9 @@ public class ChartsUtil {
         AnyYear yearToSet = yearsMappedToObjectYearsMap.get(year);
 
         return yearToSet;
+    }
+
+    public HashMap<String, AnyYear> getYearsMappedToObjectYearsMap() {
+        return yearsMappedToObjectYearsMap;
     }
 }

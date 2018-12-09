@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import uk.co.irokottaki.moneycontrol.Model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.Utils.Utils;
@@ -63,7 +64,6 @@ public class ChartActivity extends AppCompatActivity {
 
         //READ THE FILE AND GET THE AMOUNTS FOR EVERY MONTH/YEAR
         util = new ChartsUtil(this);
-        util.readTheFile();
 
         FrameLayout chartLayout = (FrameLayout) findViewById(R.id.chartLayout);
 
@@ -72,6 +72,7 @@ public class ChartActivity extends AppCompatActivity {
         //this is to change the background color of the activity when user changes it from settings
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, ChartActivity.this);
+
 
         mChart = new PieChart(this);
 
@@ -180,6 +181,8 @@ public class ChartActivity extends AppCompatActivity {
         arrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                HashMap<String, AnyYear>  yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
 
                 monthInt--;
                 if (monthInt > 12) {
@@ -190,7 +193,7 @@ public class ChartActivity extends AppCompatActivity {
                     year--;
                     monthInt = 12;
                 }
-                util.casesToShowExpensesForMonth(monthInt, year, ChartActivity.this);
+                util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap,monthInt, year, ChartActivity.this);
 
             }
         });
@@ -198,6 +201,8 @@ public class ChartActivity extends AppCompatActivity {
         arrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                HashMap<String, AnyYear>  yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
 
                 monthInt++;
                 if (monthInt > 12) {
@@ -208,7 +213,7 @@ public class ChartActivity extends AppCompatActivity {
                     year--;
                     monthInt = 12;
                 }
-                util.casesToShowExpensesForMonth(monthInt, year, ChartActivity.this);
+                util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap,monthInt, year, ChartActivity.this);
 
             }
         });
