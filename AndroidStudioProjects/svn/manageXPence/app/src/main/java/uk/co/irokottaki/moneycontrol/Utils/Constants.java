@@ -84,7 +84,7 @@ public class Constants {
     public static final String DECEMBER = "December";
     public static final String EMPTY_FIELD = "Empty Field";
     public static final String AMOUNT = "Amount";
-    public static final String BUDGETVALUE = "BudgetValue";
+    public static final String BUDGETVALUE = "budgetValue";
     public static final String DESCRIPTION = "Description";
     public static final String EDIT_AN_EXPENSE = "Edit an Expense";
     public static final String HELP = "Help";

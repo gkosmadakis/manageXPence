@@ -82,7 +82,7 @@ public class ChartsUtil {
         this.context = context;
     }
 
-    public HashMap readTheFile() {
+    public HashMap<String,AnyYear> readTheFile() {
 
         Float amount;
         String desc;
@@ -991,7 +991,7 @@ public class ChartsUtil {
 
     }
 
-    public void switchMonthsReport(int getMonthSelection, int yearRequested, StringBuilder shortLine, Activity activity) {
+    public void switchMonthsReport(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int getMonthSelection, int yearRequested, StringBuilder shortLine, Activity activity) {
 
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
         shortLine = new StringBuilder();
@@ -1065,11 +1065,6 @@ public class ChartsUtil {
                 shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();
                 shortLine.append("\n");
             }
-            /*else {
-                shortLine.append(lines[i]);//this is to write the header Amount Description Date
-                // and a new line
-                shortLine.append("\n");
-            }*/
         }
         return shortLine;
     }
@@ -1163,7 +1158,4 @@ public class ChartsUtil {
         return yearToSet;
     }
 
-    public HashMap<String, AnyYear> getYearsMappedToObjectYearsMap() {
-        return yearsMappedToObjectYearsMap;
-    }
 }

@@ -202,9 +202,6 @@ public class ReportActivity extends AppCompatActivity {
         Intent intent = getIntent();
         HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
 
-
-        //readTheFile();
-
         //Get the current month
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
@@ -243,11 +240,15 @@ public class ReportActivity extends AppCompatActivity {
         monthItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = getIntent();
+                HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
                 monthItems = (Spinner) findViewById(R.id.monthSpinner);
 
                 int getMonthSelection = monthItems.getSelectedItemPosition();
 
-                util.switchMonthsReport(getMonthSelection, yearSelected, shortLine, ReportActivity.this);
+                util.switchMonthsReport(yearsMappedToObjectYearsMap,getMonthSelection, yearSelected, shortLine, ReportActivity.this);
             }
 
             @Override
@@ -321,6 +322,10 @@ public class ReportActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
+             case android.R.id.home: finish();
+             return true;
+        }
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

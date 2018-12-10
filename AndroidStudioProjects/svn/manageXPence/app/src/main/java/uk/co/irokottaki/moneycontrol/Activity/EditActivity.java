@@ -602,6 +602,10 @@ public class EditActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
+            case android.R.id.home: finish();
+                return true;
+        }
         int id = item.getItemId();
 
 

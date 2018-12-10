@@ -183,7 +183,10 @@ public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekB
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
+            case android.R.id.home: finish();
+                return true;
+        }
         //this code is for storing the value of progress in the budgetWarningValue when going
         // back to main activity
         budgetWarningValue = (TextView) findViewById(R.id.budgetWarningValue);

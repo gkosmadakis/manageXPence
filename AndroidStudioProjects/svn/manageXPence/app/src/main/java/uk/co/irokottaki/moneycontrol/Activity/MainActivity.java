@@ -240,20 +240,17 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         hodClient = new HODClient(apikey, this);
 
         SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        adsDisabled = sharedprefs.getBoolean(ADSDISABLED, false);//retrieve the boolean value
-        // for ads
+        adsDisabled = sharedprefs.getBoolean(ADSDISABLED, false);/*retrieve the boolean value for ads*/
 
-        userIsPro = sharedprefs.getBoolean(USERISPRO, false);//retrieve the boolean for the pro
-        // user
+        userIsPro = sharedprefs.getBoolean(USERISPRO, false);/*retrieve the boolean for the pro user*/
 
         //get the value from settings for the budget warnings
         budgetWarningEnabled = sharedprefs.getBoolean(BUDGETWARNINGS, false);
         //get the boolean value for payment circle
         isPaymentCircleSet = sharedprefs.getBoolean(ISPAYMENTCIRCLE, false);
 
-        //get the int values from number pickers
+        //get the int value from number picker
         valueFromNumPicker1 = sharedprefs.getInt(VALUEFROMNUMPICKER1, valueFromNumPicker1);
-        valueFromNumPicker2 = sharedprefs.getInt(VALUEFROMNUMPICKER2, valueFromNumPicker2);
 
         util = new ChartsUtil(this);
 
@@ -548,7 +545,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         showDialogOnButtonClick();
 
-        yearsMappedToObjectYearsMap = new HashMap();
+        /*Call the readTheFile here to read the expenses file and populate the map with year as key and the object AnyYear that has all the necessary fields */
+        yearsMappedToObjectYearsMap = new HashMap<String, AnyYear>();
         yearsMappedToObjectYearsMap = util.readTheFile();
 
         readDescriptionsFile();
@@ -1029,12 +1027,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         isPaymentCircleSet = prefs.getBoolean(ISPAYMENTCIRCLE, isPaymentCircleSet);
         //get the int values from number pickers
         valueFromNumPicker1 = prefs.getInt(VALUEFROMNUMPICKER1, valueFromNumPicker1);
-        valueFromNumPicker2 = prefs.getInt(VALUEFROMNUMPICKER2, valueFromNumPicker2);
-
-        //call the methods to update balance and the graph
-        if (isPaymentCircleSet) {
-
-        }
 
         // Binding to IInAppBillingService
         Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
@@ -1429,6 +1421,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                         Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = prefers.edit();
                                 editor.putInt(VALUEFROMNUMPICKER1, valueFromNumPicker1);
+                                editor.putBoolean(ISPAYMENTCIRCLE, false);
                                 editor.apply();
                                 dialog.cancel();
                             }
@@ -1777,7 +1770,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 Toast.makeText(this, "Exception: " + e.toString(), Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
-            checkBudgetWarning();//since the expense is written in the file call the budget
+            if (budgetWarningEnabled) {
+                checkBudgetWarning();//since the expense is written in the file call the budget method is budget warning is enabled
+            }
             // warning method
         }
     }
@@ -1795,29 +1790,32 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         // i get the current month
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
+        int year = calendar.getInstance().get(Calendar.YEAR);
+
+        AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
 
         //1. Check if the user has enabled this feature from settings.2.if yes find the expenses
         // that have been added so far
-        if (budgetWarningEnabled && progressValue > 0) {
+        if (progressValue > 0) {
             if (currentMonth.equals(JANUARY)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountJan().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountJan().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountJan().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountJan().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(FEBRUARY)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountFeb().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountFeb().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountFeb().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountFeb().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(MARCH)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountMar().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountMar().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountMar().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountMar().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
@@ -1832,64 +1830,64 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(MAY)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountMay().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountMay().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountMay().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountMay().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(JUNE)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountJun().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountJun().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountJun().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountJun().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(JULY)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountJul().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountJul().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountJul().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountJul().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(AUGUST)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountAug().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountAug().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountAug().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountAug().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(SEPTEMBER)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountSep().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountSep().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountSep().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountSep().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(OCTOBER)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountOct().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountOct().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountOct().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountOct().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(NOVEMBER)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountNov().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountNov().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountNov().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountNov().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(DECEMBER)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountDec().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountDec().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountDec().size(); i++) {
+                    sum += currentYear.getYear().getArrayOfamountDec().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window

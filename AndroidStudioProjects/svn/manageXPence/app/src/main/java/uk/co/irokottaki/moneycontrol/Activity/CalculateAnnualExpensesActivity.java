@@ -149,6 +149,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        /*Pass the map back to AnnualChartActivity when user presses the back button*/
         Intent intent = new Intent();
         intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
         setResult(-1, intent);
@@ -168,6 +169,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        /*Pass the map back to ANnualChartActivity when user presses the back button on the top of activity*/
         Intent intent = new Intent();
         intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
         setResult(-1, intent);
