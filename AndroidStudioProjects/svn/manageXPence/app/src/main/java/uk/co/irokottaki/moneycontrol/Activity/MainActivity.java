@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private Spinner descriptionsItem, addExpensesByDescription;
     static ArrayList<Date> dates = new ArrayList<>();
     final ArrayList<Double> expenses = new ArrayList<>();
-    private int year_x, month_x, day_x, valueFromNumPicker1, valueFromNumPicker2;
+    private int year_x, month_x, day_x, valueFromNumPicker1;
     static final int DIALOG_ID = 0;
     private TextView incomeLabel, balanceLabel, numberPickerLabel1;
     ArrayAdapter<String> spinnerAdapter;
@@ -739,7 +739,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             public void onClick(View view) {
 
                 Intent intentEdit = new Intent(view.getContext(), EditActivity.class);
-                startActivity(intentEdit);
+                startActivityForResult(intentEdit,2);
             }
         });
 
@@ -1032,6 +1032,11 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
         serviceIntent.setPackage("com.android.vending");
         bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
+
+        //this is when the user has deleted an expense and returns from EditActivity
+        /*Intent intent = getIntent(); this breaks things so need investigation because the map becomes null
+        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+*/
     }
 
     @Override
@@ -1077,30 +1082,41 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                             .setMessage("Failed to parse purchase data.");
                     e.printStackTrace();
                 }
+
             }
         }
 
-        String imageurl = null;
-        switch (requestCode) {
-            case TAKE_PICTURE:
-                if (requestCode == TAKE_PICTURE) {
-                    if (resultCode == Activity.RESULT_OK) {
+        if (requestCode == 1) {
+            String imageurl = null;
+            switch (requestCode) {
+                case TAKE_PICTURE:
+                    if (requestCode == TAKE_PICTURE) {
+                        if (resultCode == Activity.RESULT_OK) {
 
-                        try {
-                            Bitmap thumbnail = MediaStore.Images.Media.getBitmap
-                                    (getContentResolver(), imageUri);
-                            imageurl = getRealPathFromURI(imageUri);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            try {
+                                Bitmap thumbnail = MediaStore.Images.Media.getBitmap
+                                        (getContentResolver(), imageUri);
+                                imageurl = getRealPathFromURI(imageUri);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-                }
+            }
+            String hodApp = HODApps.OCR_DOCUMENT;
+            Map<String, Object> params = new HashMap<>();
+            params.put("file", imageurl);
+            params.put("mode", "document_photo");
+            hodClient.PostRequest(params, hodApp, HODClient.REQ_MODE.ASYNC);
         }
-        String hodApp = HODApps.OCR_DOCUMENT;
-        Map<String, Object> params = new HashMap<>();
-        params.put("file", imageurl);
-        params.put("mode", "document_photo");
-        hodClient.PostRequest(params, hodApp, HODClient.REQ_MODE.ASYNC);
+
+        if (requestCode == 2) {
+            if (resultCode == RESULT_FIRST_USER) {
+                yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) data.getSerializableExtra("yearsMappedToObjectYearsMap");
+
+                Log.i("MAP is updated and ", "returned from EditActivity");
+            }
+        }
     }
 
     @SuppressWarnings("StringConcatenationInLoop")
@@ -1433,8 +1449,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
     private void processDateCircle() {
 
-        System.out.println("First Date: " + valueFromNumPicker1 + " Second Date: " +
-                valueFromNumPicker2);
+        System.out.println("First Date: " + valueFromNumPicker1);
 
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
@@ -1766,6 +1781,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 out.close();
                 Toast.makeText(this, "The expense is saved in the file.", Toast.LENGTH_LONG).show();
 
+                /*Need to call again here the readTheFile method in order to take into account the new expense that was added*/
+                //util.readTheFile();
+                util.updateMapWithNewExpense(amountText, descriptionText, dateText, year_x, yearsMappedToObjectYearsMap);
+
             } catch (Exception e) {
                 Toast.makeText(this, "Exception: " + e.toString(), Toast.LENGTH_LONG).show();
                 e.printStackTrace();
@@ -1777,10 +1796,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         }
     }
 
-    public void checkBudgetWarning() {
-        //call to retrieve amounts from months
 
-        util.readTheFile();
+
+    public void checkBudgetWarning() {
+        //This is not needed anymore because it is called in the previous method writeToFile
+
+        //util.readTheFile();
 
         int sum = 0;
         //get the budget value as stored in Preferences in Budget Activity

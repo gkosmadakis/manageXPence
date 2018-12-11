@@ -3,6 +3,7 @@ package uk.co.irokottaki.moneycontrol.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -29,9 +30,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import uk.co.irokottaki.moneycontrol.Model.AnyYear;
+import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.Utils.MultiMap;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.Utils.Utils;
@@ -50,12 +54,13 @@ public class EditActivity extends AppCompatActivity {
     private List<String> lineToEdit = new ArrayList<>();
     private final List<String> linesExtracted = new ArrayList<>();
     private int counter = 0;
-    int mLayoutWidth;
-    int mLayoutHeight;
     private int iteration = 1;
     private final String TAG = "Millenial Media";
     private InlineAd inlineAd;
     private boolean adsDisabled;
+    private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
+    private ChartsUtil util;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +162,8 @@ public class EditActivity extends AppCompatActivity {
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, EditActivity.this);
         //this is to change the background color of the activity when user changes it from settings
+
+        util = new ChartsUtil(this);
 
         //Image Button for information
         ImageButton infoEditButton = new ImageButton(this);
@@ -282,6 +289,8 @@ public class EditActivity extends AppCompatActivity {
                             "select button first", OK);
                 } else {
                     processEdit();
+                    //here i need to update the map that holds as key the year and as value the anyYear object
+                    //yearsMappedToObjectYearsMap = util.readTheFile();//call to update the map
                 }
             }
         });
@@ -438,7 +447,6 @@ public class EditActivity extends AppCompatActivity {
             int startPos = resultsArea.getLayout().getLineStart(i);
             int endPos = resultsArea.getLayout().getLineEnd(i);
             String singleMultiLine = resultsArea.getText().toString().substring(startPos, endPos);
-            Log.i("Single Multiline is ", singleMultiLine);
             linesExtracted.add(singleMultiLine);
         }
     }
@@ -506,8 +514,7 @@ public class EditActivity extends AppCompatActivity {
 
                 out.close();
                 fstream.close();
-                Toast.makeText(this, "You edited successfully your expenses.", Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(this, "You edited successfully your expenses.", Toast.LENGTH_LONG).show();
 
             } catch (FileNotFoundException e) {
                 Log.e("File not found ", e.toString());
@@ -550,13 +557,14 @@ public class EditActivity extends AppCompatActivity {
                 out.write("\r\n");//if the expense deleted is the last one that means the file
                 // contains only the header.
                 out.close();//So i add the header and two lines after it.
-                Toast.makeText(this, "You deleted the selected expense", Toast.LENGTH_LONG).show();
-            } else {
+            }
+            else {
                 out.write(fileContent.toString().trim());
                 out.write("\r\n");//if the expense is not the last in the file i add one line
                 out.close();//because the next expense is added will go straight into that line
-                Toast.makeText(this, "You deleted the selected expense", Toast.LENGTH_LONG).show();
             }
+
+            Toast.makeText(this, "You deleted the selected expense", Toast.LENGTH_LONG).show();
         } catch (Exception e) {//Catch exception if any
             Log.e("Error: ", e.getMessage());
         }
@@ -576,6 +584,7 @@ public class EditActivity extends AppCompatActivity {
             builder.setPositiveButton(OK, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     deleteAnExpense();
+
                     Log.i("Info: ","You pressed OK");
                 }
             });
@@ -589,6 +598,16 @@ public class EditActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        // send the updated map back to MainActivity when user presses the back button
+        //here i need to update the map that holds as key the year and as value the anyYear object
+        yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
+        Intent intent = new Intent();
+        intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+        setResult(1, intent);
+        finish();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -602,13 +621,21 @@ public class EditActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        /* send the updated map back to MainActivity when user presses the back button on the top of activity and avoid the call to onCreate of mainActivity that
+        will trigger the readTheFile again*/
         switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
-            case android.R.id.home: finish();
+            case android.R.id.home:
+                //here i need to update the map that holds as key the year and as value the anyYear object
+                yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
+                Intent intent = new Intent();
+                intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+                setResult(1, intent);
+                finish();
                 return true;
         }
+
         int id = item.getItemId();
-
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
