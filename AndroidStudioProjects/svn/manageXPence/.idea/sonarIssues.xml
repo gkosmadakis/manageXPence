@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="issues">
+    <option name="index">
+      <map>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/ChartsUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

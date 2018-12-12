@@ -1783,7 +1783,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
                 /*Need to call again here the readTheFile method in order to take into account the new expense that was added*/
                 //util.readTheFile();
-                util.updateMapWithNewExpense(amountText, descriptionText, dateText, year_x, yearsMappedToObjectYearsMap);
+                if (yearsMappedToObjectYearsMap.get(String.valueOf(year_x))==null){
+                    yearsMappedToObjectYearsMap = util.readTheFile();
+                }
+                else {
+                    util.updateMapWithNewExpense(amountText, descriptionText, dateText, year_x, yearsMappedToObjectYearsMap);
+                }
 
             } catch (Exception e) {
                 Toast.makeText(this, "Exception: " + e.toString(), Toast.LENGTH_LONG).show();

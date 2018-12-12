@@ -1163,253 +1163,252 @@ public class ChartsUtil {
     public void updateMapWithNewExpense(String amount, String descriptionText, String date, int currentYear, HashMap<String,AnyYear> yearsMappedToObjectYearsMap) {
         // get the anyYear object
         AnyYear anyYear = yearsMappedToObjectYearsMap.get(String.valueOf(currentYear));
-        String monthTheExpenseWritten = date.substring(date.indexOf("/") + 1, date.lastIndexOf("/"));
-        String formatStr = "%-8s%-15s%-10s";
-        String updatedAllLinesInFile = anyYear.getAllLinesInFile();
-        updatedAllLinesInFile+= String.format(formatStr, amount, descriptionText, date)+"\n";
+        /*that means that the map does not have an expense for the current year. the user is adding the first expense of the year */
+        /*if (anyYear == null) {
+            yearsMappedToObjectYearsMap = readTheFile();
+            anyYear = yearsMappedToObjectYearsMap.get(String.valueOf(currentYear));
 
-        if (monthTheExpenseWritten.equals(ONE)) {
-
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountJan()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForJan();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJan();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
-
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
-
+        } */
+        //else {
+            String monthTheExpenseWritten = date.substring(date.indexOf("/") + 1, date.lastIndexOf("/"));
+            if (monthTheExpenseWritten.startsWith("0")) {
+                monthTheExpenseWritten = monthTheExpenseWritten.replace("0", "");
             }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
+            String formatStr = "%-8s%-15s%-10s";
+            String updatedAllLinesInFile = anyYear.getAllLinesInFile();
+            updatedAllLinesInFile += String.format(formatStr, amount, descriptionText, date) + "\n";
+
+            if (monthTheExpenseWritten.equals(ONE)) {
+
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountJan() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForJan();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJan();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
+
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineJan();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescJan(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            String updatedFileLine = anyYear.getYear().getFileLineJan();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescJan(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(TWO)) {
+            if (monthTheExpenseWritten.equals(TWO)) {
 
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountFeb()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForFeb();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountFeb();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountFeb() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForFeb();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountFeb();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
 
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
 
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineFeb();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescFeb(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
+            if (monthTheExpenseWritten.equals(THREE)) {
+
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountMar() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForMar();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountMar();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
+
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineMar();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescMar(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            String updatedFileLine = anyYear.getYear().getFileLineFeb();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescFeb(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(THREE)) {
+            if (monthTheExpenseWritten.equals(FOUR)) {
 
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountMar()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForMar();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountMar();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountApr() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForApr();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountApr();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
 
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
 
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineApr();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescApr(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
+            if (monthTheExpenseWritten.equals(FIVE)) {
+
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountMay() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForMay();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountMay();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
+
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineMay();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescMay(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            String updatedFileLine = anyYear.getYear().getFileLineMar();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescMar(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(FOUR)) {
+            if (monthTheExpenseWritten.equals(SIX)) {
 
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountApr()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForApr();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountApr();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountJun() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForJun();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJun();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
 
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
 
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineJun();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescJun(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
+            if (monthTheExpenseWritten.equals(SEVEN)) {
+
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountJul() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForJul();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJul();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
+
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineJul();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescJul(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            String updatedFileLine = anyYear.getYear().getFileLineApr();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescApr(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(FIVE)) {
+            if (monthTheExpenseWritten.equals(EIGHT)) {
 
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountMay()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForMay();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountMay();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountAug() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForAug();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountAug();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
 
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
 
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineAug();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescAug(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
+            if (monthTheExpenseWritten.equals(NINE)) {
+
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountSep() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForSep();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountSep();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
+
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineSep();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescSep(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            String updatedFileLine = anyYear.getYear().getFileLineMay();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescMay(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(SIX)) {
+            if (monthTheExpenseWritten.equals(TEN)) {
 
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountJun()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForJun();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJun();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountOct() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForOct();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountOct();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
 
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
 
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineOct();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescOct(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
+            if (monthTheExpenseWritten.equals(ELEVEN)) {
+
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountNov() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForNov();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountNov();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
+
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineNov();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescNov(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            String updatedFileLine = anyYear.getYear().getFileLineJun();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescJun(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(SEVEN)) {
+            if (monthTheExpenseWritten.equals(TWELVE)) {
 
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountJul()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForJul();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJul();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
+                Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountDec() + Float.valueOf(amount);
+                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForDec();
+                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountDec();
+                //that means the expense added already exists in the set so it is a duplicate
+                if (existingDescriptionsSet.contains(descriptionText)) {
 
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
+                    addAmountsWithDuplicates(existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
 
+                } else {
+                    updatedArrayOfAmounts.add(Float.valueOf(amount));
+                    existingDescriptionsSet.add(descriptionText);
+                }
+                String updatedFileLine = anyYear.getYear().getFileLineDec();
+                updatedFileLine += String.format(formatStr, amount, descriptionText, date) + "\n";
+                // set all the fields updated
+                anyYear.setAmountAndDescDec(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
             }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
-            }
-            String updatedFileLine = anyYear.getYear().getFileLineJul();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescJul(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(EIGHT)) {
+            anyYear.setAllLinesInFile(updatedAllLinesInFile);
 
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountAug()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForAug();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountAug();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
-
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
-
-            }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
-            }
-            String updatedFileLine = anyYear.getYear().getFileLineAug();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescAug(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(NINE)) {
-
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountSep()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForSep();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountSep();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
-
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
-
-            }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
-            }
-            String updatedFileLine = anyYear.getYear().getFileLineSep();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescSep(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(TEN)) {
-
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountOct()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForOct();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountOct();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
-
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
-
-            }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
-            }
-            String updatedFileLine = anyYear.getYear().getFileLineOct();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescOct(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(ELEVEN)) {
-
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountNov()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForNov();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountNov();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
-
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
-
-            }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
-            }
-            String updatedFileLine = anyYear.getYear().getFileLineNov();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescNov(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        if (monthTheExpenseWritten.equals(TWELVE)) {
-
-            Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountDec()+ Float.valueOf(amount);
-            LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForDec();
-            ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountDec();
-            //that means the expense added already exists in the set so it is a duplicate
-            if (existingDescriptionsSet.contains(descriptionText)){
-
-                addAmountsWithDuplicates( existingDescriptionsSet, descriptionText, amount, updatedArrayOfAmounts);
-
-            }
-            else {
-                updatedArrayOfAmounts.add(Float.valueOf(amount));
-                existingDescriptionsSet.add(descriptionText);
-            }
-            String updatedFileLine = anyYear.getYear().getFileLineDec();
-            updatedFileLine+= String.format(formatStr, amount, descriptionText, date)+"\n";
-            // set all the fields updated
-            anyYear.setAmountAndDescDec(updatedTotalExpensesForMonth, existingDescriptionsSet, updatedArrayOfAmounts, updatedFileLine);
-        }
-        anyYear.setAllLinesInFile(updatedAllLinesInFile);
-
+        //}
     }
 
 }
