@@ -25,7 +25,7 @@ public class Constants {
     public static final String EXPENSE_DESCRIPTION = "Expense Description";
     public static final String HOUSE_RENT = "House Rent";
     public static final String SHOPPING = "Shopping";
-    public static final String SUPERMARKET = "Supermarket";
+    public static final String SUPERMARKET = "SuperMarket";
     public static final String TRAVEL = "Travel";
     public static final String MORTGAGE = "Mortgage";
     public static final String COUNCIL_TAX = "Council Tax";
