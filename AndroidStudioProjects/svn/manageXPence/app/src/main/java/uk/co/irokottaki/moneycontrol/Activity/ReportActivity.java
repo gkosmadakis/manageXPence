@@ -161,7 +161,7 @@ public class ReportActivity extends AppCompatActivity {
 
         // Text view for year and month
         yearView = (TextView) findViewById(R.id.yearView);
-        monthView = (TextView) findViewById(R.id.yearView);
+        monthView = (TextView) findViewById(R.id.monthView);
 
         // Spinner with the months
         monthItems = (Spinner) findViewById(R.id.monthSpinner);
