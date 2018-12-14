@@ -105,7 +105,7 @@
     <string name="your_current_budget_warning_is">Your current Budget Warning is:</string>
     <string name="select_an_expense_and_year">Select an Expense and Year</string>
     <string name="calculate">Calculate</string>
-    <string name="month">Month</string>
+    <string name="month">Month:</string>
     <string name="or">% or £</string>
     <string name="pound">£</string>
     <string name="percent">%</string>

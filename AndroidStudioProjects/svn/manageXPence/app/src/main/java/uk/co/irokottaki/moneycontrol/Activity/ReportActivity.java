@@ -40,7 +40,7 @@ import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
 public class ReportActivity extends AppCompatActivity {
     private Spinner monthItems;
     private ArrayList<String> monthsAddedToSpinner;
-    private TextView reportView;
+    private TextView reportView,yearView, monthView;
     private StringBuilder shortLine;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private int monthInt;
@@ -158,6 +158,10 @@ public class ReportActivity extends AppCompatActivity {
         //this is to change the background color of the activity when user changes it from settings
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, ReportActivity.this);
+
+        // Text view for year and month
+        yearView = (TextView) findViewById(R.id.yearView);
+        monthView = (TextView) findViewById(R.id.yearView);
 
         // Spinner with the months
         monthItems = (Spinner) findViewById(R.id.monthSpinner);
