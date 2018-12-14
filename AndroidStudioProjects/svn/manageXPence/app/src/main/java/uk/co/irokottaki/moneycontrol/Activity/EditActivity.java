@@ -514,8 +514,18 @@ public class EditActivity extends AppCompatActivity {
 
                 out.close();
                 fstream.close();
-                Toast.makeText(this, "You edited successfully your expenses.", Toast.LENGTH_LONG).show();
 
+                yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, AlertDialog
+                        .THEME_HOLO_LIGHT)
+                        .setTitle("Edit Expense")
+                        .setMessage("The expense is successfully edited");
+                builder.setPositiveButton(OK, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.show();
             } catch (FileNotFoundException e) {
                 Log.e("File not found ", e.toString());
             } catch (IOException e) {
@@ -564,7 +574,17 @@ public class EditActivity extends AppCompatActivity {
                 out.close();//because the next expense is added will go straight into that line
             }
 
-            Toast.makeText(this, "You deleted the selected expense", Toast.LENGTH_LONG).show();
+            yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, AlertDialog
+                    .THEME_HOLO_LIGHT)
+                    .setTitle("Expense Deletion")
+                    .setMessage("The expense is deleted");
+            builder.setPositiveButton(OK, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.show();
         } catch (Exception e) {//Catch exception if any
             Log.e("Error: ", e.getMessage());
         }
@@ -601,8 +621,10 @@ public class EditActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // send the updated map back to MainActivity when user presses the back button
-        //here i need to update the map that holds as key the year and as value the anyYear object
-        yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
+        //here i need to send the updated map that holds as key the year and as value the anyYear object
+        if (yearsMappedToObjectYearsMap == null){
+            yearsMappedToObjectYearsMap = util.readTheFile();
+        }
         Intent intent = new Intent();
         intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
         setResult(1, intent);
@@ -626,8 +648,10 @@ public class EditActivity extends AppCompatActivity {
         will trigger the readTheFile again*/
         switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
             case android.R.id.home:
-                //here i need to update the map that holds as key the year and as value the anyYear object
-                yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
+                //here i need to send the updated map that holds as key the year and as value the anyYear object
+                if (yearsMappedToObjectYearsMap == null){
+                    yearsMappedToObjectYearsMap = util.readTheFile();
+                }
                 Intent intent = new Intent();
                 intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
                 setResult(1, intent);

@@ -190,16 +190,30 @@ public class ChartsUtil {
 
                     /* Similarly for the map to store years with months and fileLines that are used in ReportActivity */
                     if (yearsMappedToMonthsWithFileLines.containsKey(Integer.parseInt(extractYearFromDate))) {
-                        if (tempFileLinesMap.containsKey(Integer.parseInt(extractMonthFromDate))) {
 
+                        if (yearsMappedToMonthsWithFileLines.lastKey().equals(Integer.parseInt(extractYearFromDate))) {
+                            tempFileLinesMap = (TreeMap) yearsMappedToMonthsWithFileLines.get(Integer.parseInt(extractYearFromDate));
+                            if (tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate)) != null) {
                                 String linesFound = (String) tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate));
                                 linesFound += line + "\n";
                                 fileLines = linesFound;
+                            }
+                            else {
+                                fileLines = "";
+                                fileLines += line + "\n";
+                            }
                         }
-                        else {
+                        if (!yearsMappedToMonthsWithFileLines.lastKey().equals(Integer.parseInt(extractYearFromDate))){
                             tempFileLinesMap = (TreeMap) yearsMappedToMonthsWithFileLines.get(Integer.parseInt(extractYearFromDate));
-                            fileLines = "";
-                            fileLines += line + "\n";
+                            if (tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate)) != null) {
+                                String linesFound = (String) tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate));
+                                linesFound += line + "\n";
+                                fileLines = linesFound;
+                            }
+                            else {
+                                fileLines = "";
+                                fileLines += line + "\n";
+                            }
                         }
                     }
                     else {
