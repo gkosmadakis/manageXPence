@@ -150,8 +150,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         });
 
 
-        barDataSet1 = new BarDataSet(valueSet1, EXPENSE);//i initialize it here in order to
-        // avoid getting null pointer inside the switch
+        barDataSet1 = new BarDataSet(valueSet1, EXPENSE);//i initialize it here in order to avoid getting null pointer inside the switch
 
         arrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +167,16 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                     year--;
                     monthInt = 12;
                 }
-                util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap,monthInt, year,HorizontalBarChartActivity.this);
+                /*the expenses file is empty so just set Data to start the activity*/
+                if (yearsMappedToObjectYearsMap.isEmpty()) {
+                    data = new BarData(xAxis, dataSets);
+                    final Calendar calendar = Calendar.getInstance();//this gets the current month
+                    String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                    monthLabel.setText(currentMonth+ " "+ calendar.get(Calendar.YEAR));
+                }
+                else {
+                    util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, monthInt, year, HorizontalBarChartActivity.this);
+                }
 
             }
         });
@@ -188,8 +196,16 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                     year--;
                     monthInt = 12;
                 }
-                util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap,monthInt, year, HorizontalBarChartActivity.this);
-
+                /*the expenses file is empty so just set Data to start the activity*/
+                if (yearsMappedToObjectYearsMap.isEmpty()) {
+                    data = new BarData(xAxis, dataSets);
+                    final Calendar calendar = Calendar.getInstance();//this gets the current month
+                    String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                    monthLabel.setText(currentMonth+ " "+ calendar.get(Calendar.YEAR));
+                }
+                else {
+                    util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, monthInt, year, HorizontalBarChartActivity.this);
+                }
             }
         });
         arrowRight.performClick();

@@ -95,6 +95,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -1027,16 +1028,20 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         isPaymentCircleSet = prefs.getBoolean(ISPAYMENTCIRCLE, isPaymentCircleSet);
         //get the int values from number pickers
         valueFromNumPicker1 = prefs.getInt(VALUEFROMNUMPICKER1, valueFromNumPicker1);
+        /*call again the methods to calculate the balance and show the stacked bar on the main activity. That would be triggered when user is changing/adding expenses*/
+        if (isPaymentCircleSet) {
+            processDateCircle();
+
+        } else {
+            processBalance();
+            showStackedBar();
+        }
 
         // Binding to IInAppBillingService
         Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
         serviceIntent.setPackage("com.android.vending");
         bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
 
-        //this is when the user has deleted an expense and returns from EditActivity
-        /*Intent intent = getIntent(); this breaks things so need investigation because the map becomes null
-        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
-*/
     }
 
     @Override
@@ -1454,23 +1459,26 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
         int year = calendar.getInstance().get(Calendar.YEAR);
-        AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
+        AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
 
-        try {
-            /*Set to zero the expenses sums of the current and next month*/
-            int monthInt = calendar.get(Calendar.MONTH) + 1;
-            resetExpenseOfCurrentMonth(monthInt - 1,currentYear.getYear());
-            resetExpenseOfCurrentMonth(monthInt,currentYear.getYear());
-            resetExpenseOfCurrentMonth(monthInt + 1,currentYear.getYear());
-            util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(valueFromNumPicker1, currentMonth, currentYear.getYear());
-            //the user has clicked SET on the dialog
-            isPaymentCircleSet = true;
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (currentYear != null) {
+
+            try {
+                /*Set to zero the expenses sums of the current and next month*/
+                int monthInt = calendar.get(Calendar.MONTH) + 1;
+                resetExpenseOfCurrentMonth(monthInt - 1, currentYear.getYear());
+                resetExpenseOfCurrentMonth(monthInt, currentYear.getYear());
+                resetExpenseOfCurrentMonth(monthInt + 1, currentYear.getYear());
+                util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(valueFromNumPicker1, currentMonth, currentYear.getYear());
+                //the user has clicked SET on the dialog
+                isPaymentCircleSet = true;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            // process again the balance
+            processBalance();
         }
-
-        // process again the balance
-        processBalance();
         // redraw the graph with the balance
         showStackedBar();
     }
@@ -1543,34 +1551,31 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             String currentMonth = String.format(Locale.UK, "%tB", c);//get the current month
             int year = c.getInstance().get(Calendar.YEAR);
 
-            AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
+            AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
+            monthSum = 0.0;
+            if (currentYear != null) {
 
-            //if (isPaymentCircleSet) {
-                monthSum = 0.0;
                 if (currentMonth.equals(JANUARY)) {
                     incomeForJan = Float.parseFloat(incomeValue);
-                    if(isPaymentCircleSet) {
+                    if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountJan();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountJan());
                     }
                 }
                 if (currentMonth.equals(FEBRUARY)) {
                     incomeForFeb = Float.parseFloat(incomeValue);
-                    if(isPaymentCircleSet) {
+                    if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountFeb();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountFeb());
                     }
                 }
                 if (currentMonth.equals(MARCH)) {
                     incomeForMar = Float.parseFloat(incomeValue);
-                    if(isPaymentCircleSet) {
+                    if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountMar();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountMar());
                     }
                 }
@@ -1578,8 +1583,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     incomeForApr = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountApr();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountApr());
                     }
                 }
@@ -1587,8 +1591,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     incomeForMay = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountMay();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountMay());
                     }
                 }
@@ -1596,8 +1599,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     incomeForJun = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountJun();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountJun());
                     }
                 }
@@ -1605,8 +1607,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     incomeForJul = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountJul();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountJul());
                     }
                 }
@@ -1614,8 +1615,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     incomeForAug = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountAug();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountAug());
                     }
                 }
@@ -1623,8 +1623,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     incomeForSep = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountSep();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountSep());
                     }
                 }
@@ -1632,8 +1631,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     incomeForOct = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountOct();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountOct());
                     }
                 }
@@ -1641,8 +1639,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     incomeForNov = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountNov();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountNov());
                     }
                 }
@@ -1650,12 +1647,11 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     incomeForDec = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountDec();
-                    }
-                    else {
+                    } else {
                         SumExpensesForBalance(currentYear.getYear().getArrayOfamountDec());
                     }
                 }
-
+            }
             // this is to avoid invalid double thrown on initial state where income is not added
             // yet by the user
             incomeDouble = Double.valueOf(incomeValue);
@@ -1768,9 +1764,11 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 dateText = date.getText().toString();
                 int length = 22;
                 String formatStr = "%-8s%-15s%-10s";
-                if (util.getObjectYear().getAllLinesInFile().equals("")) {
-                    out.printf("%-" + length + "s %s%n", "Amount  Description", "Date");//write
-                    // the header
+
+                BufferedReader br = new BufferedReader(new FileReader("/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt"));
+                /*That means the first line of the file is empty so write the header*/
+                if (br.readLine() == null){
+                    out.printf("%-" + length + "s %s%n", "Amount  Description", "Date");
                     out.write("\r\n");//write two new lines
                     out.write("\r\n");
                 }
@@ -1782,7 +1780,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 Toast.makeText(this, "The expense is saved in the file.", Toast.LENGTH_LONG).show();
 
                 /*Need to call again here the readTheFile method in order to take into account the new expense that was added*/
-                //util.readTheFile();
+                /*if the map is null that means there is no expense for the current year. the user is adding the first expense of the year */
                 if (yearsMappedToObjectYearsMap.get(String.valueOf(year_x))==null){
                     yearsMappedToObjectYearsMap = util.readTheFile();
                 }
@@ -1818,7 +1816,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
         int year = calendar.getInstance().get(Calendar.YEAR);
 
-        AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
+        AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
 
         //1. Check if the user has enabled this feature from settings.2.if yes find the expenses
         // that have been added so far

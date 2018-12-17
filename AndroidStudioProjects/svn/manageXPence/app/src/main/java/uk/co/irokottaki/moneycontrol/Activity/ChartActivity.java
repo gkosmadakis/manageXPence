@@ -193,8 +193,16 @@ public class ChartActivity extends AppCompatActivity {
                     year--;
                     monthInt = 12;
                 }
-                util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap,monthInt, year, ChartActivity.this);
-
+                /*the expenses file is empty so just set Data to start the activity*/
+                if(yearsMappedToObjectYearsMap.isEmpty()) {
+                    data = new PieData(xVals, dataSet);
+                    final Calendar calendar = Calendar.getInstance();//this gets the current month
+                    String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                    monthLabel.setText(currentMonth+ " "+ calendar.get(Calendar.YEAR));
+                }
+                else {
+                    util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, monthInt, year, ChartActivity.this);
+                }
             }
         });
 
@@ -213,8 +221,16 @@ public class ChartActivity extends AppCompatActivity {
                     year--;
                     monthInt = 12;
                 }
-                util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap,monthInt, year, ChartActivity.this);
-
+                /*the expenses file is empty so just set Data to start the activity*/
+                if(yearsMappedToObjectYearsMap.isEmpty()) {
+                    data = new PieData(xVals, dataSet);
+                    final Calendar calendar = Calendar.getInstance();//this gets the current month
+                    String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                    monthLabel.setText(currentMonth+ " "+ calendar.get(Calendar.YEAR));
+                }
+                else {
+                    util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, monthInt, year, ChartActivity.this);
+                }
             }
         });
         arrowRight.performClick();//this shows the pie chart for the current month

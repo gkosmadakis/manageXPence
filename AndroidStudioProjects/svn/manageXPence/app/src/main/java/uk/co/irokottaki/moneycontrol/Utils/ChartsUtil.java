@@ -252,6 +252,7 @@ public class ChartsUtil {
                     amountWithDuplicate = arrayAmount.get(i) + Float.valueOf(amount);//add up the
                     // amounts if there are duplicates
                     arrayAmount.set(i, amountWithDuplicate);
+                    break;
                 }
             }
         } else {
@@ -271,6 +272,7 @@ public class ChartsUtil {
                 allLinesInFile+= monthEntry.getValue();
                 if (monthRequested.equals(String.valueOf(month)) && yearRequested.equals(String.valueOf(year))) {
                     line += monthEntry.getValue();
+                    break;
                     }
                 }
             }
@@ -290,22 +292,18 @@ public class ChartsUtil {
                 String month = String.valueOf(monthEntry.getKey());
                 Log.e("Month from file is ", month);
 
-                for (Map.Entry<String, ArrayList<Float>> descEntry : monthEntry.getValue().entrySet()) {
-                    LinkedHashMap<String, ArrayList<Float>> secondMap = (LinkedHashMap<String, ArrayList<Float>>) monthEntry.getValue();
-                    LinkedHashSet descriptionsSet = new LinkedHashSet<String>(secondMap.keySet());
+                LinkedHashMap<String, ArrayList<Float>> secondMap = (LinkedHashMap<String, ArrayList<Float>>) monthEntry.getValue();
+                LinkedHashSet descriptionsSet = new LinkedHashSet<String>(secondMap.keySet());
 
-                        Log.e("Description in file ", descriptionsSet.toString());
-                        ArrayList amounts = new ArrayList<Float>();
-                        for (ArrayList<Float> listFloats : secondMap.values()) {
-                            for(Float amountFloat : listFloats) {
-                                amounts.add(amountFloat);
-                            }
-                        }
-                    processAmountsForEveryMonth(month, amounts, objectYear, descriptionsSet, iterateFileLinesMap(month, year));
-                        for (Object amountInFile : amounts) {
-                            Log.e("Amounts from file is ", amountInFile.toString());
-                        }
+                Log.e("Description in file ", descriptionsSet.toString());
+                ArrayList amounts = new ArrayList<Float>();
+                for (ArrayList<Float> listFloats : secondMap.values()) {
+                    for(Float amountFloat : listFloats) {
+                        amounts.add(amountFloat);
+                    }
                 }
+                processAmountsForEveryMonth(month, amounts, objectYear, descriptionsSet, iterateFileLinesMap(month, year));
+
             }
             /*add the year read from the map and the object year which has all the fields set that are needed */
             yearsMappedToObjectYearsMap.put(year,objectYear);
@@ -1012,49 +1010,51 @@ public class ChartsUtil {
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
         shortLine = new StringBuilder();
 
-        switch (getMonthSelection) {
+        if (year != null) {
+            switch (getMonthSelection) {
 
-           case 1:
-               ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineJan()));
-                break;
-            case 2:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineFeb()));
-                break;
-            case 3:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineMar()));
-                break;
-            case 4:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineApr()));
-                break;
-            case 5:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineMay()));
-                break;
-            case 6:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineJun()));
-                break;
-            case 7:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineJul()));
-                break;
-            case 8:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineAug()));
-                break;
-            case 9:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineSep()));
-                break;
-            case 10:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineOct()));
-                break;
-            case 11:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineNov()));
-                break;
-            case 12:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineDec()));
-                break;
+                case 1:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineJan()));
+                    break;
+                case 2:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineFeb()));
+                    break;
+                case 3:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineMar()));
+                    break;
+                case 4:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineApr()));
+                    break;
+                case 5:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineMay()));
+                    break;
+                case 6:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineJun()));
+                    break;
+                case 7:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineJul()));
+                    break;
+                case 8:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineAug()));
+                    break;
+                case 9:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineSep()));
+                    break;
+                case 10:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineOct()));
+                    break;
+                case 11:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineNov()));
+                    break;
+                case 12:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getYear().getFileLineDec()));
+                    break;
 
-            default:
-                ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getAllLinesInFile()));
-                break;
-        }//end of switch
+                default:
+                    ((ReportActivity) activity).getReportView().setText(formatReportArea(year.getAllLinesInFile()));
+                    break;
+            }//end of switch
+        }
     }
 
     private StringBuilder formatReportArea(String fileLine) {
@@ -1167,27 +1167,14 @@ public class ChartsUtil {
         yearList.setSelection(index);
     }
 
-    public AnyYear returnObjectByYear(String year) {
-
-        AnyYear yearToSet = yearsMappedToObjectYearsMap.get(year);
-
-        return yearToSet;
-    }
-
     public void updateMapWithNewExpense(String amount, String descriptionText, String date, int currentYear, HashMap<String,AnyYear> yearsMappedToObjectYearsMap) {
         // get the anyYear object
         AnyYear anyYear = yearsMappedToObjectYearsMap.get(String.valueOf(currentYear));
-        /*that means that the map does not have an expense for the current year. the user is adding the first expense of the year */
-        /*if (anyYear == null) {
-            yearsMappedToObjectYearsMap = readTheFile();
-            anyYear = yearsMappedToObjectYearsMap.get(String.valueOf(currentYear));
 
-        } */
-        //else {
-            String monthTheExpenseWritten = date.substring(date.indexOf("/") + 1, date.lastIndexOf("/"));
-            if (monthTheExpenseWritten.startsWith("0")) {
+        String monthTheExpenseWritten = date.substring(date.indexOf("/") + 1, date.lastIndexOf("/"));
+        if (monthTheExpenseWritten.startsWith("0")) {
                 monthTheExpenseWritten = monthTheExpenseWritten.replace("0", "");
-            }
+        }
             String formatStr = "%-8s%-15s%-10s";
             String updatedAllLinesInFile = anyYear.getAllLinesInFile();
             updatedAllLinesInFile += String.format(formatStr, amount, descriptionText, date) + "\n";

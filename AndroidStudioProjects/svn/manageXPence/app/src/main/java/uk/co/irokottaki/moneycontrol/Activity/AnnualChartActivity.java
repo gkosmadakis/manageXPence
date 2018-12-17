@@ -56,7 +56,8 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
     private NumberPicker numberPicker1;
     private boolean isPaymentCircleSetAnnual;
     private ChartsUtil util;
-    HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
+    private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
+    private YearToSet yearToSet = null;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -69,7 +70,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         util = new ChartsUtil(this);
 
         Intent intent = getIntent();
-        final HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
 
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.annualChartView);
@@ -126,33 +127,34 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
 
         // Get the object of AnyYear from yearsMappedToObjectYearsMap returned from MainActivity to access the months data expenses
         AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
-        final YearToSet yearToSet = currentYear.getYear();
+        if (currentYear != null) {
+            yearToSet = currentYear.getYear();
 
         if (isPaymentCircleSetAnnual) {
             String currentMonth = String.format(Locale.UK, "%tB", calendar);
             int monthInt = calendar.get(Calendar.MONTH) + 1;
 
             try {
-                resetExpenseOfCurrentMonth(monthInt - 1,yearToSet);
-                resetExpenseOfCurrentMonth(monthInt,yearToSet);
-                resetExpenseOfCurrentMonth(monthInt + 1,yearToSet);
+                resetExpenseOfCurrentMonth(monthInt - 1, yearToSet);
+                resetExpenseOfCurrentMonth(monthInt, yearToSet);
+                resetExpenseOfCurrentMonth(monthInt + 1, yearToSet);
                 //get the int values from number pickers
                 valueFromNumPicker1 = sharedprefs.getInt(VALUEFROMNUMPICKER1ANNUAL,
                         valueFromNumPicker1);
 
                 util.readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(valueFromNumPicker1,
-                        currentMonth,yearToSet);
+                        currentMonth, yearToSet);
             } catch (ParseException e) {
-                Log.e("Parse Exception " ,e.getMessage());
+                Log.e("Parse Exception ", e.getMessage());
             }
-            util.setData(yearToSet.getAmountJan(),yearToSet.getAmountFeb(),yearToSet.getAmountMar(),yearToSet.getAmountApr(),
-                    yearToSet.getAmountMay(),yearToSet.getAmountJun(), yearToSet.getAmountJul(),yearToSet.getAmountAug(),
-                    yearToSet.getAmountSep(),yearToSet.getAmountOct(), yearToSet.getAmountNov(),yearToSet.getAmountDec(), mChart);
+            util.setData(yearToSet.getAmountJan(), yearToSet.getAmountFeb(), yearToSet.getAmountMar(), yearToSet.getAmountApr(),
+                    yearToSet.getAmountMay(), yearToSet.getAmountJun(), yearToSet.getAmountJul(), yearToSet.getAmountAug(),
+                    yearToSet.getAmountSep(), yearToSet.getAmountOct(), yearToSet.getAmountNov(), yearToSet.getAmountDec(), mChart);
 
         } else {
-            util.setData(yearToSet.getAmountJan(),yearToSet.getAmountFeb(),yearToSet.getAmountMar(),yearToSet.getAmountApr(),
-                    yearToSet.getAmountMay(),yearToSet.getAmountJun(), yearToSet.getAmountJul(),yearToSet.getAmountAug(),
-                    yearToSet.getAmountSep(),yearToSet.getAmountOct(), yearToSet.getAmountNov(),yearToSet.getAmountDec(), mChart);
+            util.setData(yearToSet.getAmountJan(), yearToSet.getAmountFeb(), yearToSet.getAmountMar(), yearToSet.getAmountApr(),
+                    yearToSet.getAmountMay(), yearToSet.getAmountJun(), yearToSet.getAmountJul(), yearToSet.getAmountAug(),
+                    yearToSet.getAmountSep(), yearToSet.getAmountOct(), yearToSet.getAmountNov(), yearToSet.getAmountDec(), mChart);
 
         }
         //listener of the income circle button
@@ -164,6 +166,11 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                 showNumberPickerDialogOnButtonClick(yearToSet);
             }
         });
+    }
+    /*the expenses file is empty so just set to 0 the data*/
+    else {
+            util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,mChart);
+        }
 
         //Listener to events on clicking the image arrows
         leftYearButton.setOnClickListener(new View.OnClickListener() {
@@ -293,7 +300,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
 
                                 util.readTheFile();
                                 // Get the object years to access the months data expenses
-                                AnyYear currentYear = util.returnObjectByYear(String.valueOf(year));
+                                AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
                                 final YearToSet yearToSetNew = currentYear.getYear();
                                 util.setData(yearToSetNew.getAmountJan(),yearToSetNew.getAmountFeb(),yearToSetNew.getAmountMar(),yearToSetNew.getAmountApr(),
                                         yearToSetNew.getAmountMay(),yearToSetNew.getAmountJun(), yearToSetNew.getAmountJul(),yearToSetNew.getAmountAug(),
