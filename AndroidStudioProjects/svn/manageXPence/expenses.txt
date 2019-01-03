@@ -1,0 +1,9 @@
+Amount  Description    Date
+
+
+15      SuperMarket    19/12/2016
+25      House Bills    20/12/2016
+15      SuperMarket    19/12/2017
+25      House Bills    20/12/2017
+15      SuperMarket    19/12/2018
+25      House Bills    20/12/2018

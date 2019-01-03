@@ -3,7 +3,232 @@
   <component name="issues">
     <option name="index">
       <map>
-        <entry key="/Dummy.txt">
+        <entry key="/fragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/EditActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/ReportActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/ChartsUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout-v14/activity_login.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_annual_chart.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_annual_savings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_budget.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_calculate_annual_expenses.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_chart_v14.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_edit.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_horizontal_bar_chart.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_main.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_screen_slide.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_settings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/activity_splash.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/fragment_screen_slide_page.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/fragment_screen_slide_page2.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/fragment_screen_slide_page3.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/fragment_screen_slide_page4.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/fragment_screen_slide_page5.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/input_dialog.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/number_picker_dialog_annual_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/number_picker_dialog_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/layout/spinnernothingselected.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/menu/activity_screen_slide.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/menu/export_menu.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/menu/menu_annual_chart.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/menu/menu_bar_chart.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/menu/menu_chart.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/menu/menu_edit.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/menu/menu_main.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/menu/menu_report.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/values/colors.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/values/ids.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/values/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/values/strings_activity_settings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/values/styles.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/res/xml/preferences.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/ChartActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/ChartsUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/NothingSelectedSpinnerAdapter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
           <value>
             <set />
           </value>
@@ -14,61 +239,6 @@
           </value>
         </entry>
         <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/AnnualChartActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/ChartActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/EditActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/HorizontalBarChartActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/MainActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/ReportActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/ChartsUtil.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/Constants.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_report.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="/fragment.java">
           <value>
             <set />
           </value>

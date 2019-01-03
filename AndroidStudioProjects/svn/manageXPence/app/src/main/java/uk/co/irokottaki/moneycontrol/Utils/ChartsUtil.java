@@ -90,12 +90,12 @@ public class ChartsUtil {
 
         objectYear = new AnyYear(yearToSet);
         yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-
+        yearsMappedToMonthsWithAmountsMap = new HashMap<>();
         try {
             InputStream inputStream = context.openFileInput(EXPENSES_FILE);
             Scanner in = new Scanner(inputStream);
             int lineIndex = 0;//this is to count the lines
-            yearsMappedToMonthsWithAmountsMap = new HashMap<>();
+
             TreeMap tempFirstMap = new TreeMap<Integer, Map<String, ArrayList<String>>>();//to use lastKey to find the higher month
             LinkedHashMap tempSecondMap = new LinkedHashMap<String, ArrayList<Float>>();//to maintain insertion order
             ArrayList tempList = new ArrayList<Float>();
@@ -1008,7 +1008,6 @@ public class ChartsUtil {
     public void switchMonthsReport(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int getMonthSelection, int yearRequested, StringBuilder shortLine, Activity activity) {
 
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
-        shortLine = new StringBuilder();
 
         if (year != null) {
             switch (getMonthSelection) {
@@ -1055,7 +1054,8 @@ public class ChartsUtil {
                     break;
             }//end of switch
         }
-    }
+     }
+
 
     private StringBuilder formatReportArea(String fileLine) {
 
@@ -1160,9 +1160,9 @@ public class ChartsUtil {
         for (String yearIndex : yearsFoundInFile) {
 
             if (yearIndex.equals(String.valueOf(yearRequested))) {
+
                 break;
             }
-            index++;
         }
         yearList.setSelection(index);
     }

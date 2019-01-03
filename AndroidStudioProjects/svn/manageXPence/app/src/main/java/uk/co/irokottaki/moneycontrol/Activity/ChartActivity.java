@@ -234,8 +234,9 @@ public class ChartActivity extends AppCompatActivity {
             }
         });
         arrowRight.performClick();//this shows the pie chart for the current month
-        data.setValueFormatter(new PercentFormatter());
-
+        if (data!= null) {
+            data.setValueFormatter(new PercentFormatter());
+        }
     }// end of create method
 
 
