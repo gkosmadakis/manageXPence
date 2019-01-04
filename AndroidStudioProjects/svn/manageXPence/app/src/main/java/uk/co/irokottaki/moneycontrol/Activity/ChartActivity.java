@@ -114,14 +114,16 @@ public class ChartActivity extends AppCompatActivity {
                 if (isChecked) {
                     //i set percent values to false
                     mChart.setUsePercentValues(false);
-                    data.setValueFormatter(new ValueFormatter() {
-                        //this returns the values as floats
-                        @Override
-                        public String getFormattedValue(float v, Entry entry, int i,
-                                                        ViewPortHandler viewPortHandler) {
-                            return Float.toString(v);
-                        }
-                    });
+                    if (data != null) {
+                        data.setValueFormatter(new ValueFormatter() {
+                            //this returns the values as floats
+                            @Override
+                            public String getFormattedValue(float v, Entry entry, int i,
+                                                            ViewPortHandler viewPortHandler) {
+                                return Float.toString(v);
+                            }
+                        });
+                    }
                     mChart.invalidate();//refresh the chart
                     stateSwitchButton = true;// i use this to know the state of the switch
 
@@ -129,8 +131,10 @@ public class ChartActivity extends AppCompatActivity {
 
                     mChart.setUsePercentValues(true);//this calculates the percentages from my
                     // values
-                    data.setValueFormatter(new PercentFormatter());//this enables the
-                    // percentages, adds % after the number
+                    if (data != null) {
+                        data.setValueFormatter(new PercentFormatter());//this enables the
+                        // percentages, adds % after the number
+                    }
                     mChart.invalidate();
                     stateSwitchButton = false;
                 }
@@ -181,56 +185,14 @@ public class ChartActivity extends AppCompatActivity {
         arrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
-                HashMap<String, AnyYear>  yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
-
-                monthInt--;
-                if (monthInt > 12) {
-                    year++;
-                    monthInt = 1;
-                }
-                if (monthInt < 1) {
-                    year--;
-                    monthInt = 12;
-                }
-                /*the expenses file is empty so just set Data to start the activity*/
-                if(yearsMappedToObjectYearsMap.isEmpty()) {
-                    data = new PieData(xVals, dataSet);
-                    final Calendar calendar = Calendar.getInstance();//this gets the current month
-                    String currentMonth = String.format(Locale.UK, "%tB", calendar);
-                    monthLabel.setText(currentMonth+ " "+ calendar.get(Calendar.YEAR));
-                }
-                else {
-                    util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, monthInt, year, ChartActivity.this);
-                }
+                util.clickRightOrLeft(ChartActivity.this, true);
             }
         });
 
         arrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
-                HashMap<String, AnyYear>  yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
-
-                monthInt++;
-                if (monthInt > 12) {
-                    year++;
-                    monthInt = 1;
-                }
-                if (monthInt < 1) {
-                    year--;
-                    monthInt = 12;
-                }
-                /*the expenses file is empty so just set Data to start the activity*/
-                if(yearsMappedToObjectYearsMap.isEmpty()) {
-                    data = new PieData(xVals, dataSet);
-                    final Calendar calendar = Calendar.getInstance();//this gets the current month
-                    String currentMonth = String.format(Locale.UK, "%tB", calendar);
-                    monthLabel.setText(currentMonth+ " "+ calendar.get(Calendar.YEAR));
-                }
-                else {
-                    util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, monthInt, year, ChartActivity.this);
-                }
+                util.clickRightOrLeft(ChartActivity.this, false);
             }
         });
         arrowRight.performClick();//this shows the pie chart for the current month
@@ -335,5 +297,19 @@ public class ChartActivity extends AppCompatActivity {
         return mChart;
     }
 
+    public int getMonthInt() {
+        return monthInt;
+    }
 
+    public int getYearInt() {
+        return year;
+    }
+
+    public void setMonthInt(int monthInt) {
+        this.monthInt = monthInt;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 }

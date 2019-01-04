@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -1409,7 +1412,71 @@ public class ChartsUtil {
             }
             anyYear.setAllLinesInFile(updatedAllLinesInFile);
 
-        //}
+    }
+
+    public void clickRightOrLeft( Activity activity, boolean isLeftClick) {
+
+        final Calendar calendar = Calendar.getInstance();
+        Intent intent = activity.getIntent();
+        HashMap<String, AnyYear>  yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+
+        if (activity instanceof HorizontalBarChartActivity) {
+            int monthInt = ((HorizontalBarChartActivity) activity).getMonthInt();
+            if (isLeftClick) {
+
+                ((HorizontalBarChartActivity) activity).setMonthInt(monthInt - 1);
+            }
+            else {
+                ((HorizontalBarChartActivity) activity).setMonthInt(monthInt + 1);
+            }
+            int year = ((HorizontalBarChartActivity) activity).getYearInt();
+            if (((HorizontalBarChartActivity) activity).getMonthInt() > 12) {
+                ((HorizontalBarChartActivity) activity).setYear(year + 1);
+                ((HorizontalBarChartActivity) activity).setMonthInt(1);
+            }
+            if (((HorizontalBarChartActivity) activity).getMonthInt() < 1) {
+                ((HorizontalBarChartActivity) activity).setYear(year - 1);
+                ((HorizontalBarChartActivity) activity).setMonthInt(12);
+            }
+            //the expenses file is empty so just set Data to start the activity*//*
+            if (yearsMappedToObjectYearsMap.isEmpty()) {
+                BarData data = ((HorizontalBarChartActivity) activity).getData();
+                data = new BarData(((HorizontalBarChartActivity) activity).getxAxis(), ((HorizontalBarChartActivity) activity).getDataSets());
+                String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                ((HorizontalBarChartActivity) activity).getMonthLabel().setText(currentMonth + " " + calendar.get(Calendar.YEAR));
+            } else {
+                casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, ((HorizontalBarChartActivity) activity).getMonthInt(), ((HorizontalBarChartActivity) activity).getYearInt(), activity);
+            }
+        }
+        else {
+            int monthInt = ((ChartActivity) activity).getMonthInt();
+            if (isLeftClick) {
+
+                ((ChartActivity) activity).setMonthInt(monthInt - 1);
+            }
+            else {
+
+                ((ChartActivity) activity).setMonthInt(monthInt + 1);
+            }
+            int year = ((ChartActivity) activity).getYearInt();
+            if (((ChartActivity) activity).getMonthInt() > 12) {
+                ((ChartActivity) activity).setYear(year + 1);
+                ((ChartActivity) activity).setMonthInt(1);
+            }
+            if (((ChartActivity) activity).getMonthInt() < 1) {
+                ((ChartActivity) activity).setYear(year - 1);
+                ((ChartActivity) activity).setMonthInt(12);
+            }
+            //the expenses file is empty so just set Data to start the activity*//*
+            if (yearsMappedToObjectYearsMap.isEmpty()) {
+                PieData data = ((ChartActivity) activity).getData();
+                data = new PieData(((ChartActivity) activity).getxVals(), ((ChartActivity) activity).getDataSet());
+                String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                ((ChartActivity) activity).getMonthLabel().setText(currentMonth + " " + calendar.get(Calendar.YEAR));
+            } else {
+                casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, ((ChartActivity) activity).getMonthInt(), ((ChartActivity) activity).getYearInt(), activity);
+            }
+        }
     }
 
 }

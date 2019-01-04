@@ -155,28 +155,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         arrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
-                HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
-
-                monthInt--;
-                if (monthInt > 12) {
-                    year++;
-                    monthInt = 1;
-                }
-                if (monthInt < 1) {
-                    year--;
-                    monthInt = 12;
-                }
-                /*the expenses file is empty so just set Data to start the activity*/
-                if (yearsMappedToObjectYearsMap.isEmpty()) {
-                    data = new BarData(xAxis, dataSets);
-                    final Calendar calendar = Calendar.getInstance();//this gets the current month
-                    String currentMonth = String.format(Locale.UK, "%tB", calendar);
-                    monthLabel.setText(currentMonth+ " "+ calendar.get(Calendar.YEAR));
-                }
-                else {
-                    util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, monthInt, year, HorizontalBarChartActivity.this);
-                }
+                util.clickRightOrLeft(HorizontalBarChartActivity.this, true);
 
             }
         });
@@ -184,28 +163,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         arrowRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
-                HashMap<String, AnyYear>  yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
-
-                monthInt++;
-                if (monthInt > 12) {
-                    year++;
-                    monthInt = 1;
-                }
-                if (monthInt < 1) {
-                    year--;
-                    monthInt = 12;
-                }
-                /*the expenses file is empty so just set Data to start the activity*/
-                if (yearsMappedToObjectYearsMap.isEmpty()) {
-                    data = new BarData(xAxis, dataSets);
-                    final Calendar calendar = Calendar.getInstance();//this gets the current month
-                    String currentMonth = String.format(Locale.UK, "%tB", calendar);
-                    monthLabel.setText(currentMonth+ " "+ calendar.get(Calendar.YEAR));
-                }
-                else {
-                    util.casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, monthInt, year, HorizontalBarChartActivity.this);
-                }
+                util.clickRightOrLeft( HorizontalBarChartActivity.this, false);
             }
         });
         arrowRight.performClick();
@@ -252,6 +210,14 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
 
     public int getYearInt() {
         return year;
+    }
+
+    public void setMonthInt(int monthInt) {
+        this.monthInt = monthInt;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public void setDataSets(ArrayList<BarDataSet> dataSets) {
