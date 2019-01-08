@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_main">
             <intent-filter>
@@ -58,76 +58,76 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.ReportActivity"
+            android:name=".activity.ReportActivity"
             android:label="@string/title_activity_report"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".Activity.EditActivity"
+            android:name=".activity.EditActivity"
             android:label="@string/title_activity_edit"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".Activity.ChartActivity"
+            android:name=".activity.ChartActivity"
             android:label="@string/title_activity_chart"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".Activity.HorizontalBarChartActivity"
+            android:name=".activity.HorizontalBarChartActivity"
             android:label="@string/title_activity_bar_chart"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".Activity.HelpActivity"
+            android:name=".activity.HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".Activity.AnnualChartActivity"
+            android:name=".activity.AnnualChartActivity"
             android:label="@string/title_activity_annual_chart"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".Activity.CalculateAnnualExpensesActivity"
+            android:name=".activity.CalculateAnnualExpensesActivity"
             android:label="@string/title_activity_calculate_annual_expenses"
-            android:parentActivityName=".Activity.AnnualChartActivity">
+            android:parentActivityName=".activity.AnnualChartActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.AnnualChartActivity" />
+                android:value=".activity.AnnualChartActivity" />
         </activity>
         <activity
-            android:name=".Activity.BudgetActivity"
+            android:name=".activity.BudgetActivity"
             android:label="@string/title_activity_budget"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
-            android:name=".Activity.SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
 
         <service android:name="com.android.vending.billing.IInAppBillingService" />
@@ -141,12 +141,12 @@
         </receiver>
 
         <activity
-            android:name=".Activity.AnnualSavingsActivity"
+            android:name=".activity.AnnualSavingsActivity"
             android:label="@string/title_activity_savings_chart"
-            android:parentActivityName=".Activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Activity.MainActivity" />
+                android:value=".activity.MainActivity" />
         </activity>
         <activity
             android:name="com.dropbox.core.android.AuthActivity"
@@ -172,7 +172,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login" />
     </application>
 

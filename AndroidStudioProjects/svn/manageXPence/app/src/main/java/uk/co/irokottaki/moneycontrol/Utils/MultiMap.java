@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Utils;
+package uk.co.irokottaki.moneycontrol.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

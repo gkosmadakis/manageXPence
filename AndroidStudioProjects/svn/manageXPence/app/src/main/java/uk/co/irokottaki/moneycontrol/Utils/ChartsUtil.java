@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Utils;
+package uk.co.irokottaki.moneycontrol.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,9 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -48,18 +46,18 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import uk.co.irokottaki.moneycontrol.Activity.AnnualChartActivity;
-import uk.co.irokottaki.moneycontrol.Activity.AnnualSavingsActivity;
-import uk.co.irokottaki.moneycontrol.Activity.CalculateAnnualExpensesActivity;
-import uk.co.irokottaki.moneycontrol.Activity.ChartActivity;
-import uk.co.irokottaki.moneycontrol.Activity.HorizontalBarChartActivity;
-import uk.co.irokottaki.moneycontrol.Activity.MainActivity;
-import uk.co.irokottaki.moneycontrol.Activity.ReportActivity;
-import uk.co.irokottaki.moneycontrol.Model.YearToSet;
-import uk.co.irokottaki.moneycontrol.Model.AnyYear;
+import uk.co.irokottaki.moneycontrol.activity.AnnualChartActivity;
+import uk.co.irokottaki.moneycontrol.activity.AnnualSavingsActivity;
+import uk.co.irokottaki.moneycontrol.activity.CalculateAnnualExpensesActivity;
+import uk.co.irokottaki.moneycontrol.activity.ChartActivity;
+import uk.co.irokottaki.moneycontrol.activity.HorizontalBarChartActivity;
+import uk.co.irokottaki.moneycontrol.activity.MainActivity;
+import uk.co.irokottaki.moneycontrol.activity.ReportActivity;
+import uk.co.irokottaki.moneycontrol.model.YearToSet;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class ChartsUtil {
 
@@ -75,7 +73,6 @@ public class ChartsUtil {
 	              Key: Mortgage-> 400
 	              Key: Shopping-> 35, 55,100 */
     private HashMap<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearsMappedToMonthsWithAmountsMap;
-    private LinkedHashSet<String> descriptionsSet;
     private TreeMap<Integer, Map<Integer, String>> yearsMappedToMonthsWithFileLines;
     private String allLinesInFile;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
@@ -94,16 +91,17 @@ public class ChartsUtil {
         objectYear = new AnyYear(yearToSet);
         yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         yearsMappedToMonthsWithAmountsMap = new HashMap<>();
+        InputStream inputStream = null;
+        Scanner in = null;
         try {
-            InputStream inputStream = context.openFileInput(EXPENSES_FILE);
-            Scanner in = new Scanner(inputStream);
+            inputStream = context.openFileInput(EXPENSES_FILE);
+            in = new Scanner(inputStream);
             int lineIndex = 0;//this is to count the lines
 
             TreeMap tempFirstMap = new TreeMap<Integer, Map<String, ArrayList<String>>>();//to use lastKey to find the higher month
             LinkedHashMap tempSecondMap = new LinkedHashMap<String, ArrayList<Float>>();//to maintain insertion order
             ArrayList tempList = new ArrayList<Float>();
-            descriptionsSet = new LinkedHashSet<>();
-            LinkedHashSet descriptionsSet = new LinkedHashSet<>();
+            LinkedHashSet<String> descriptionsSet = new LinkedHashSet<>();
             yearsMappedToMonthsWithFileLines = new TreeMap<>();
             TreeMap tempFileLinesMap = new TreeMap<Integer, String>();
             String fileLines = "";
@@ -111,44 +109,27 @@ public class ChartsUtil {
 
                 String line = in.nextLine();
                 if (++lineIndex > 2 && !line.equals("")) {
-                    int index = line.lastIndexOf(" ");
-                    amount = Float.valueOf(line.substring(0, line.indexOf(" ")));
-                    desc = line.substring(line.indexOf(" "), index).trim();
+                    int index = line.lastIndexOf(' ');
+                    amount = Float.valueOf(line.substring(0, line.indexOf(' ')));
+                    desc = line.substring(line.indexOf(' '), index).trim();
                     date = line.substring(index, line.length());
-                    String extractMonthFromDate = date.substring(date.indexOf("/") + 1, date
+                    String extractMonthFromDate = date.substring(date.indexOf('/') + 1, date
                             .lastIndexOf("/"));
                     if (extractMonthFromDate.startsWith("0")) {
                         extractMonthFromDate = extractMonthFromDate.replace("0", "");
                     }
-                    String extractYearFromDate = date.substring(date.lastIndexOf("/") + 1, date
+                    String extractYearFromDate = date.substring(date.lastIndexOf('/') + 1, date
                             .length());
                     /*Here I store the data to the map, key is the year, value is another map, the tempMap with key as the month
                      * and value an arraylist with the amounts of this month*/
                     if (yearsMappedToMonthsWithAmountsMap.containsKey(extractYearFromDate)) {
                         /*if the key = year is in the map then get the tempFirstMap*/
-                        tempFirstMap = (TreeMap) yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
+                        tempFirstMap = yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
 
-                        /*if the key = month is not the higher key in the tempFirstMap(that means it is the previous month as we read the file) and the
+                        /*if the key = month and the
                         tempSecondMap has the current description then get the tempList create a new set and call the method to add amounts that are
                         with the same description. if the tempSecondMap does not have the description then create a new tempList*/
-                        if (!tempFirstMap.lastKey().equals(Integer.parseInt(extractMonthFromDate)) && tempFirstMap.containsKey(Integer.parseInt(extractMonthFromDate))) {
-                            tempSecondMap = (LinkedHashMap) tempFirstMap.get(Integer.parseInt(extractMonthFromDate));
-
-                            if(tempSecondMap.get(desc) != null) {
-                                tempList = (ArrayList) tempSecondMap.get(desc);//tempList size is always 1
-                                descriptionsSet = new LinkedHashSet();
-                                descriptionsSet.add(desc);//descriptionsSet size is always 1
-                                addAmountsWithDuplicates(descriptionsSet,desc, String.valueOf(amount), tempList);
-                            }
-                            else {
-                                tempList = new ArrayList();
-                                tempList.add(amount);
-                            }
-                        }
-                        /*else if the key = month is the higher key in the tempFirstMap(that means it is the last month as we read the file) and the
-                        tempSecondMap has the current description then get the tempList create a new set and call the method to add amounts that are
-                        with the same description if the tempSecondMap does not have the description then create a new tempList*/
-                        else if (tempFirstMap.lastKey().equals(Integer.parseInt(extractMonthFromDate)) && tempFirstMap.containsKey(Integer.parseInt(extractMonthFromDate))) {
+                        if (tempFirstMap.containsKey(Integer.parseInt(extractMonthFromDate))) {
                             tempSecondMap = (LinkedHashMap) tempFirstMap.get(Integer.parseInt(extractMonthFromDate));
 
                             if(tempSecondMap.get(desc) != null) {
@@ -165,7 +146,7 @@ public class ChartsUtil {
                         /* if the key = month is not in the map at all then get the tempFirstMap, create a new tempSecondMap, a new set and a new list.
                          * Add the amount to the list, the desc in the set */
                         else {
-                            tempFirstMap = (TreeMap) yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
+                            tempFirstMap = yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
                             tempSecondMap = new LinkedHashMap();
                             descriptionsSet = new LinkedHashSet<>();
                             tempList = new ArrayList<String>();
@@ -194,7 +175,6 @@ public class ChartsUtil {
                     /* Similarly for the map to store years with months and fileLines that are used in ReportActivity */
                     if (yearsMappedToMonthsWithFileLines.containsKey(Integer.parseInt(extractYearFromDate))) {
 
-                        if (yearsMappedToMonthsWithFileLines.lastKey().equals(Integer.parseInt(extractYearFromDate))) {
                             tempFileLinesMap = (TreeMap) yearsMappedToMonthsWithFileLines.get(Integer.parseInt(extractYearFromDate));
                             if (tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate)) != null) {
                                 String linesFound = (String) tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate));
@@ -205,19 +185,6 @@ public class ChartsUtil {
                                 fileLines = "";
                                 fileLines += line + "\n";
                             }
-                        }
-                        if (!yearsMappedToMonthsWithFileLines.lastKey().equals(Integer.parseInt(extractYearFromDate))){
-                            tempFileLinesMap = (TreeMap) yearsMappedToMonthsWithFileLines.get(Integer.parseInt(extractYearFromDate));
-                            if (tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate)) != null) {
-                                String linesFound = (String) tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate));
-                                linesFound += line + "\n";
-                                fileLines = linesFound;
-                            }
-                            else {
-                                fileLines = "";
-                                fileLines += line + "\n";
-                            }
-                        }
                     }
                     else {
                         tempFileLinesMap = new TreeMap<String, String>();
@@ -229,12 +196,21 @@ public class ChartsUtil {
 
                 }
             }
-            inputStream.close();
-
         } catch (FileNotFoundException e) {
             Log.e("File not found ", e.getMessage());
-        } catch (IOException e) {
-            Log.e("IOException ", e.getMessage());
+        }
+        finally {
+
+            try {
+                if(inputStream != null) {
+                    inputStream.close();
+                }
+                if(in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         /*Call the method to iterate the map*/
@@ -295,7 +271,7 @@ public class ChartsUtil {
                 String month = String.valueOf(monthEntry.getKey());
                 Log.e("Month from file is ", month);
 
-                LinkedHashMap<String, ArrayList<Float>> secondMap = (LinkedHashMap<String, ArrayList<Float>>) monthEntry.getValue();
+                LinkedHashMap<String, ArrayList<Float>> secondMap = monthEntry.getValue();
                 LinkedHashSet descriptionsSet = new LinkedHashSet<String>(secondMap.keySet());
 
                 Log.e("Description in file ", descriptionsSet.toString());
@@ -753,7 +729,9 @@ public class ChartsUtil {
             total += Math.round(arrayOfamount.get(i));
         }
         for (int j = 0; j < arrayOfamount.size(); j++) {
-            percentage = Math.round((arrayOfamount.get(j) * 100.0) / (double) total);
+            if (total > 0) {
+                percentage = Math.round((arrayOfamount.get(j) * 100.0) / (double) total);
+            }
             float percentageInFloat = (float) percentage;
             //i replace all the items on the valueSet1 with percentages
             ((HorizontalBarChartActivity) activity).getValueSet1().set(j, new BarEntry(percentageInFloat, j));
@@ -861,10 +839,10 @@ public class ChartsUtil {
     private void calculateExpensesByMonth(LinkedHashSet descriptions, String selectedExpense,
                                           ArrayList<Float> arrayAmount, Activity activity) {
 
-        Iterator Itr = descriptions.iterator();
+        Iterator itr = descriptions.iterator();
         int i = 0;
-        while (Itr.hasNext()) {
-            String descFound = Itr.next().toString();
+        while (itr.hasNext()) {
+            String descFound = itr.next().toString();
             if (selectedExpense.equals(descFound)) {
                 ((CalculateAnnualExpensesActivity)activity).setAnnualExpenseDouble(((CalculateAnnualExpensesActivity)activity).getAnnualExpenseDouble() + (double) arrayAmount.get(i));
             }
@@ -880,11 +858,12 @@ public class ChartsUtil {
         String fileLine = "";
         String amount = "";
         String date = "";
-
+        InputStream inputStream = null;
+                BufferedReader br = null;
         try {
-            InputStream inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
+            inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
                     ".moneycontrol/files/expenses.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            br = new BufferedReader(new InputStreamReader(inputStream));
             String line = "";
             int lineIndex = 0;//this is to count the lines
             while ((line = br.readLine()) != null) {
@@ -896,19 +875,19 @@ public class ChartsUtil {
 
                 if (++lineIndex > 2 && !line.equals("") && !line.equals("r")) {
                     fileLine += line + "\n";
-                    int index = line.lastIndexOf(" ");
-                    amount = line.substring(0, line.indexOf(" "));
+                    int index = line.lastIndexOf(' ');
+                    amount = line.substring(0, line.indexOf(' '));
                     date = line.substring(index, line.length());
-                    String extractDayFromDate = date.substring(0, date.indexOf("/"));
+                    String extractDayFromDate = date.substring(0, date.indexOf('/'));
                     //convert String to int but first take the second character e.g. take 5 from 05
                     int extractDayFromDateInt = Integer.parseInt(extractDayFromDate.trim()
                             .replaceFirst("^0+(?!$)", ""));
-                    String extractMonthFromDate = date.substring(date.indexOf("/") + 1, date
-                            .lastIndexOf("/"));
+                    String extractMonthFromDate = date.substring(date.indexOf('/') + 1, date
+                            .lastIndexOf('/'));
                     if (extractMonthFromDate.startsWith("0")) {
                         extractMonthFromDate = extractMonthFromDate.replace("0", "");
                     }
-                    String extractYearFromDate = date.substring(date.lastIndexOf("/") + 1, date
+                    String extractYearFromDate = date.substring(date.lastIndexOf('/') + 1, date
                             .length());
 
                     final Calendar calendar = Calendar.getInstance();
@@ -956,11 +935,19 @@ public class ChartsUtil {
                     }
                 }
             }
-            inputStream.close();
+
         } catch (FileNotFoundException e) {
             Log.e("File not found",e.getMessage());
         } catch (IOException e) {
             Log.e("IOException",e.getMessage());
+        }
+        finally {
+            try {
+                inputStream.close();
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -1076,10 +1063,10 @@ public class ChartsUtil {
 
         for (int i = 0; i < lines.length; i++) {
             if (i >= 0 && !lines[i].equals("")) {
-                amount = lines[i].substring(0, lines[i].indexOf(" "));
-                shortDesc = lines[i].substring(lines[i].indexOf(" "), lines[i].lastIndexOf
+                amount = lines[i].substring(0, lines[i].indexOf(' '));
+                shortDesc = lines[i].substring(lines[i].indexOf(' '), lines[i].lastIndexOf
                         (" ")).trim();
-                date = lines[i].substring(lines[i].lastIndexOf(" "), lines[i].length())
+                date = lines[i].substring(lines[i].lastIndexOf(' '), lines[i].length())
                         .trim();
                 shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();
                 shortLine.append("\n");
@@ -1146,14 +1133,14 @@ public class ChartsUtil {
 
     public void populateYearSpinnerAndSetCurrentYear(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, Spinner yearList, Activity activity) {
 
-        ArrayList<String> yearsFoundInFile = new ArrayList<String>();
+        ArrayList<String> yearsFoundInFile = new ArrayList<>();
 
         for (String yearKey : yearsMappedToObjectYearsMap.keySet()) {
 
             yearsFoundInFile.add(yearKey);
         }
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, yearsFoundInFile);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, yearsFoundInFile);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearList.setAdapter(spinnerAdapter);
 
@@ -1174,7 +1161,7 @@ public class ChartsUtil {
         // get the anyYear object
         AnyYear anyYear = yearsMappedToObjectYearsMap.get(String.valueOf(currentYear));
 
-        String monthTheExpenseWritten = date.substring(date.indexOf("/") + 1, date.lastIndexOf("/"));
+        String monthTheExpenseWritten = date.substring(date.indexOf('/') + 1, date.lastIndexOf('/'));
         if (monthTheExpenseWritten.startsWith("0")) {
                 monthTheExpenseWritten = monthTheExpenseWritten.replace("0", "");
         }

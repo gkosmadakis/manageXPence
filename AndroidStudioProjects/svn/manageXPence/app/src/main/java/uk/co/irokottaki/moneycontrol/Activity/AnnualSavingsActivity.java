@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -23,19 +23,19 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import uk.co.irokottaki.moneycontrol.Model.AnyYear;
-import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
+import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class AnnualSavingsActivity extends AppCompatActivity implements OnChartGestureListener, OnChartValueSelectedListener {
 
-    public LineChart mChart;
+    private LineChart mChart;
     ImageButton leftYearButton;
     ImageButton rightYearButton;
-    public int year;
+    private int year;
     private TextView yearView;
     private ChartsUtil util;
 
@@ -50,7 +50,7 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
         //READ THE FILE AND GET THE AMOUNTS FOR EVERY MONTH/YEAR
         util = new ChartsUtil(this);
         Intent intent = getIntent();
-        HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+        HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP);
 
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.annualSavingsView);
@@ -97,7 +97,7 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
-                HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+                HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP);
 
                 year--;
                 yearView.setText(YEAR + year);
@@ -109,7 +109,7 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
-                HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+                HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP);
 
                 year++;
                 yearView.setText(YEAR + year);

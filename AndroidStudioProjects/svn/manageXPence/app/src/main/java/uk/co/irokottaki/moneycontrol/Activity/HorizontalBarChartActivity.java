@@ -1,8 +1,9 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,14 +27,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
-import uk.co.irokottaki.moneycontrol.Model.AnyYear;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class HorizontalBarChartActivity extends ActionBarActivity {
 
@@ -63,13 +65,11 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(barLayout, HorizontalBarChartActivity.this);
 
-        ImageButton arrowLeft = new ImageButton(this);
-        arrowLeft = (ImageButton) findViewById(R.id.arrowLeft);
+        ImageButton  arrowLeft = (ImageButton) findViewById(R.id.arrowLeft);
 
         monthLabel = (TextView) findViewById(R.id.month);
 
-        ImageButton arrowRight = new ImageButton(this);
-        arrowRight = (ImageButton) findViewById(R.id.arrowRight);
+        ImageButton  arrowRight = (ImageButton) findViewById(R.id.arrowRight);
 
         chart = (HorizontalBarChart) findViewById(R.id.chart);
         valueSet1 = new ArrayList<>();
@@ -78,14 +78,14 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         Switch toggleAmount = (Switch) findViewById(R.id.switchButton);
         toggleAmount.setChecked(false);
 
-        dataSets = new ArrayList<BarDataSet>();
+        dataSets = new ArrayList<>();
         data = new BarData(xAxis, dataSets);// initialize data to avoid null pointers
 
         final Calendar calendar = Calendar.getInstance();
-        //SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
+
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
         year = calendar.get(Calendar.YEAR);// get the current year
-        //month_date.format(calendar.getTime());
+
         monthLabel.setText(currentMonth);
 
         String getCurrentMonthDisplayed = monthLabel.getText().toString();
@@ -97,7 +97,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
             // the switch-case
             monthInt = calendar.get(Calendar.MONTH);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("ParseException",e.getMessage());
         }
 
         // switch button listener
@@ -180,7 +180,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         return data;
     }
 
-    public ArrayList<BarEntry> getValueSet1() {
+    public List<BarEntry> getValueSet1() {
         return valueSet1;
     }
 
@@ -196,7 +196,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         this.barDataSet1 = barDataSet1;
     }
 
-    public ArrayList<String> getxAxis() {
+    public List<String> getxAxis() {
         return xAxis;
     }
 

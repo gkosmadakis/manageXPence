@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -20,23 +20,19 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
-    private ImageButton infoBudgetButton;
-    private SeekBar budgetSeekBar;
-    private TextView warningDisplay, budgetWarningValue;
+    private TextView warningDisplay;
+    private TextView budgetWarningValue;
     private static final int step = 1;
-    private static final int max = 2000;
-    private static final int min = 0;
+    private static final int MAX = 2000;
+    private static final int MIN = 0;
     private int progress = 0;
     private String currentMonth;
-
-    protected PreferenceManager mPreferenceManager;
-    public boolean budgetWarningEnabled;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -51,11 +47,11 @@ public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekB
         utils.setBackgroundAndAdjustLayout(layout, BudgetActivity.this);
 
         //Button for information
-        infoBudgetButton = new ImageButton(this);
+        ImageButton infoBudgetButton = new ImageButton(this);
         infoBudgetButton = (ImageButton) findViewById(R.id.infoBudgetButton);
 
         //Seek bar
-        budgetSeekBar = (SeekBar) findViewById(R.id.budgetBar);
+        SeekBar budgetSeekBar = (SeekBar) findViewById(R.id.budgetBar);
         budgetSeekBar.setOnSeekBarChangeListener(this);
 
         //Warning textview
@@ -74,7 +70,7 @@ public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekB
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(BudgetActivity.this,
-                        AlertDialog.THEME_HOLO_LIGHT)
+                        R.style.Theme_AppCompat_Light_Dialog)
                         .setTitle(INFORMATION)
                         .setMessage("Here you can set a budget warning using the bar displayed."
                                 + "\n" +
@@ -99,7 +95,7 @@ public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekB
         });
 
 
-        budgetSeekBar.setMax((max - min) / step);
+        budgetSeekBar.setMax((MAX - MIN) / step);
 
         warningDisplay.setText("Warning set on: " + budgetSeekBar.getProgress() + "/" +
                 budgetSeekBar.getMax());
@@ -136,7 +132,7 @@ public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekB
                 editor.putInt("budgetValue", progress);
                 editor.apply();
                 AlertDialog.Builder builder = new AlertDialog.Builder(BudgetActivity.this,
-                        AlertDialog.THEME_HOLO_LIGHT)
+                        R.style.Theme_AppCompat_Light_Dialog)
                         .setTitle("Budget Warning Set")
                         .setMessage("You set your warning budget. Now go to Settings of the Home " +
                                 "Screen to turn them on.");

@@ -1,9 +1,10 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,21 +31,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
-import uk.co.irokottaki.moneycontrol.Model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class ChartActivity extends AppCompatActivity {
 
     private PieChart mChart;
-    private static final Map<String, Float> storeAmounts = new HashMap<>();
     private ArrayList<Entry> yVals1;
     private ArrayList<String> xVals;
     private PieDataSet dataSet;
@@ -82,7 +80,7 @@ public class ChartActivity extends AppCompatActivity {
 
         //configure pie chart
         mChart.setUsePercentValues(true);
-        // will be the descriptions from the array mChart.setDescription();
+        // will be the descriptions from the array
         mChart.setDescription("");
 
         //enable hole and configure
@@ -95,13 +93,11 @@ public class ChartActivity extends AppCompatActivity {
         mChart.setRotation(0);
         mChart.setRotationEnabled(true);
 
-        ImageButton arrowLeft = new ImageButton(this);
-        arrowLeft = (ImageButton) findViewById(R.id.arrowLeft);
+        ImageButton arrowLeft = (ImageButton) findViewById(R.id.arrowLeft);
 
         monthLabel = (TextView) findViewById(R.id.month);
 
-        ImageButton arrowRight = new ImageButton(this);
-        arrowRight = (ImageButton) findViewById(R.id.arrowRight);
+        ImageButton arrowRight = (ImageButton) findViewById(R.id.arrowRight);
 
         //initialize switch button
         Switch toggleAmount = (Switch) findViewById(R.id.toggleButton);
@@ -153,11 +149,11 @@ public class ChartActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected() {
-
+                /* Not used */
             }
         });
         //add data
-        InitializeChart();
+        initializeChart();
 
         //customize legends
         Legend l = mChart.getLegend();
@@ -179,7 +175,7 @@ public class ChartActivity extends AppCompatActivity {
             // the switch-case
             monthInt = calendar.get(Calendar.MONTH);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("Parse exception",e.getMessage());
         }
 
         arrowLeft.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +198,7 @@ public class ChartActivity extends AppCompatActivity {
     }// end of create method
 
 
-    private void InitializeChart() {
+    private void initializeChart() {
 
         yVals1 = new ArrayList<>();
         xVals = new ArrayList<>();
@@ -213,11 +209,11 @@ public class ChartActivity extends AppCompatActivity {
         dataSet.setSelectionShift(5);
 
         //instantiate pie data object
-        PieData data = new PieData(xVals, dataSet);
-        data.setValueTextSize(15f);
-        data.setValueTextColor(Color.GRAY);
+        PieData pieData = new PieData(xVals, dataSet);
+        pieData.setValueTextSize(15f);
+        pieData.setValueTextColor(Color.GRAY);
 
-        mChart.setData(data);
+        mChart.setData(pieData);
         //undo all highlights
         mChart.highlightValues(null);
         //update pie chart
@@ -261,11 +257,11 @@ public class ChartActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public ArrayList<Entry> getyVals1() {
+    public List<Entry> getyVals1() {
         return yVals1;
     }
 
-    public ArrayList<String> getxVals() {
+    public List<String> getxVals() {
         return xVals;
     }
 

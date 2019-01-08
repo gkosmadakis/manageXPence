@@ -36,8 +36,6 @@ public class IabResult {
         }
     }
 
-    // --Commented out by Inspection (05/10/2018 15:28):public int getResponse() { return
-    // mResponse; }
     public String getMessage() {
         return mMessage;
     }

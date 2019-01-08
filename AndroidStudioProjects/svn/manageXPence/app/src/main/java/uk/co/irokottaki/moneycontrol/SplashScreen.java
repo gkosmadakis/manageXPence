@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import uk.co.irokottaki.moneycontrol.Activity.MainActivity;
+import uk.co.irokottaki.moneycontrol.activity.MainActivity;
 
 public class SplashScreen extends Activity {
 

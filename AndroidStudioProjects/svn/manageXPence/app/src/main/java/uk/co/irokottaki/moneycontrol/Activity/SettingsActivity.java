@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -46,9 +46,9 @@ import uk.co.irokottaki.moneycontrol.IabResult;
 import uk.co.irokottaki.moneycontrol.Inventory;
 import uk.co.irokottaki.moneycontrol.Purchase;
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -80,7 +80,7 @@ public class SettingsActivity extends PreferenceActivity {
                 MyPreferenceFragment()).commit();
 
         SettingsActivity.context = getApplicationContext();
-        String packageName = getApplicationContext().getPackageName();
+
         activity = SettingsActivity.this;
         lv = getListView();
         cr = getContentResolver();
@@ -136,11 +136,11 @@ public class SettingsActivity extends PreferenceActivity {
 
         IInAppBillingService mService;
         Bundle querySkus;
-        static final String sku = "android.test.purchased";
+        static final String SKU = "android.test.purchased";
         static IabHelper mHelper;
-        static final String base64EncodedPublicKey =
+        static final String BASE_64_ENCODED_PUBLIC_KEY =
                 "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqcYpXYA3pWCTMjOYJNNC70rNhXmbwxI5i4sGCtmZWN+eVFvrvtBtlwm8Wxwab8wf4CyLUxthccmgSd2Wmb6lHYVHG9/F7VSn+u3f9tnu8x+Oh30fyiSr4Wdesz0yfTwflVipA4wNwcEjxJoO0t8CCEyswQZcAzLAMzkodlMVwcdWx0kJ39qJxxuT8LWFlqwDpUSlLm6sPr+XmbD/vhfmd1h+qNQTteVte2Q5vVLSAk1/hCsqLCzrDp0BJ30w4f0nzEBn3g/7KIn3KQQp+6JE+xJanavahcvAU//PTDmy8t/bYxiFtn8kquBCL9xcHa/2Nw8PTEhzeWx3hCRUAugruwIDAQAB";
-        private static final String tag = "In App blling";
+        private static final String TAG = "In App blling";
         IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
 
 
@@ -167,8 +167,8 @@ public class SettingsActivity extends PreferenceActivity {
             userIsPro = sharedPrefs.getBoolean(USERISPRO, false);//retrieve the boolean for the
             // pro user
 
-            mHelper = new IabHelper(getSettingsActivity(), base64EncodedPublicKey);
-            mHelper.enableDebugLogging(true, tag);
+            mHelper = new IabHelper(getSettingsActivity(), BASE_64_ENCODED_PUBLIC_KEY);
+            mHelper.enableDebugLogging(true, TAG);
 
             mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 public void onIabSetupFinished(IabResult result) {
@@ -180,7 +180,7 @@ public class SettingsActivity extends PreferenceActivity {
                     // Hooray, IAB is fully set up!
                     if (mHelper == null)
                         return;
-                    Log.d(tag, "Setup successful. Querying inventory.");
+                    Log.d(TAG, "Setup successful. Querying inventory.");
                 }
             });
 
@@ -188,7 +188,7 @@ public class SettingsActivity extends PreferenceActivity {
 
             //Query a purchase
             final ArrayList<String> skuList = new ArrayList<>();
-            skuList.add(sku);
+            skuList.add(SKU);
             querySkus = new Bundle();
             querySkus.putStringArrayList("ITEM_ID_LIST", skuList);
 
@@ -197,12 +197,12 @@ public class SettingsActivity extends PreferenceActivity {
                 @Override
                 public void onQueryInventoryFinished(IabResult result, Inventory inv) {
                     if (result.isFailure()) {
-                        Log.d(tag, "Querying Inventory Failed: " + result);
+                        Log.d(TAG, "Querying Inventory Failed: " + result);
                         return;
                     }
-                    Log.d(tag, "Title: " + inv.getSkuDetails(sku).getTitle());
-                    Log.d(tag, "Description: " + inv.getSkuDetails(sku).getDescription());
-                    Log.d(tag, "Price = " + inv.getSkuDetails(sku).getPrice());
+                    Log.d(TAG, "Title: " + inv.getSkuDetails(SKU).getTitle());
+                    Log.d(TAG, "Description: " + inv.getSkuDetails(SKU).getDescription());
+                    Log.d(TAG, "Price = " + inv.getSkuDetails(SKU).getPrice());
                 }
             };
 
@@ -220,7 +220,7 @@ public class SettingsActivity extends PreferenceActivity {
                                     Toast.makeText(getAppContext(), "Purchase:Error occured " +
                                             "during purchase " + result, Toast.LENGTH_SHORT).show();
 
-                                } else if (purchase.getSku().equals(sku)) {
+                                } else if (purchase.getSku().equals(SKU)) {
                                     Toast.makeText(getAppContext(), "It ENTERED consume method "
                                             + result, Toast.LENGTH_SHORT).show();
                                     consumeItem();
@@ -268,12 +268,12 @@ public class SettingsActivity extends PreferenceActivity {
                             String mPremiumUpgradePrice = price;
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e("JSONException", e.getMessage());
                     }
 
                 //}Remote
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("Exception", e.getMessage());
             }
         }
 
@@ -319,7 +319,7 @@ public class SettingsActivity extends PreferenceActivity {
                     Toast.makeText(getAppContext(), "Error occured during purchase " + result,
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    mHelper.consumeAsync(inventory.getPurchase(sku), mConsumeFinishedListener);
+                    mHelper.consumeAsync(inventory.getPurchase(SKU), mConsumeFinishedListener);
                 }
             }
         };
@@ -349,12 +349,12 @@ public class SettingsActivity extends PreferenceActivity {
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
 
-            Log.i(tag, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+            Log.i(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
             // Pass on the activity result to the helper for handling
             if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
                 super.onActivityResult(requestCode, resultCode, data);
             } else {
-                Log.i(tag, "onActivityResult handled by IABUtil.");
+                Log.i(TAG, "onActivityResult handled by IABUtil.");
             }
 
             if (requestCode == 1001) {
@@ -367,16 +367,16 @@ public class SettingsActivity extends PreferenceActivity {
                         JSONObject jo = new JSONObject(purchaseData);
                         String productId = jo.getString("productId");
                          new AlertDialog.Builder(getAppContext(),
-                                AlertDialog.THEME_HOLO_LIGHT)
+                                 R.style.Theme_AppCompat_Light_Dialog)
                                 .setTitle(INFORMATION)
                                 .setMessage("You have bought the " + productId + ". Excellent choice, " +
                                         "adventurer!");
                     } catch (JSONException e) {
                         new AlertDialog.Builder(getAppContext(),
-                                AlertDialog.THEME_HOLO_LIGHT)
+                                R.style.Theme_AppCompat_Light_Dialog)
                                 .setTitle(INFORMATION)
                                 .setMessage("Failed to parse purchase data.");
-                        e.printStackTrace();
+                        Log.e("JSONException", e.getMessage());
                     }
                 }
             }

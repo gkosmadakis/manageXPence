@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -35,23 +36,21 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-import uk.co.irokottaki.moneycontrol.Model.AnyYear;
-import uk.co.irokottaki.moneycontrol.Model.YearToSet;
-import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
+import uk.co.irokottaki.moneycontrol.model.YearToSet;
+import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 
 public class AnnualChartActivity extends AppCompatActivity implements OnChartGestureListener,
         OnChartValueSelectedListener {
-    public LineChart mChart;
+    private LineChart mChart;
     ImageButton leftYearButton;
     ImageButton rightYearButton;
-    private TextView specificexpenseForYear;
-    private TextView circleTextview;
-    public int year;
+    private int year;
     private int valueFromNumPicker1;
     private NumberPicker numberPicker1;
     private boolean isPaymentCircleSetAnnual;
@@ -70,7 +69,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         util = new ChartsUtil(this);
 
         Intent intent = getIntent();
-        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP);
 
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.annualChartView);
@@ -107,15 +106,20 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         rightYearButton = (ImageButton) findViewById(R.id.rigthYearButton);
 
         //Circle Button
-        circleTextview = new TextView(this);
+        TextView circleTextview = new TextView(this);
         circleTextview = (TextView) findViewById(R.id.circleTextview);
-        circleTextview.setText(Html.fromHtml("<font color=#0000FF> <u> Set Income Circle"));
+        if(Build.VERSION.SDK_INT >= 24) {
+            circleTextview.setText(Html.fromHtml("<font color=#0000FF> <u> Set Income Circle", 26));
+        }
+        else {
+            circleTextview.setText(Html.fromHtml("<font color=#0000FF> <u> Set Income Circle"));
+        }
 
         //Year Label
         final TextView yearView = (TextView) findViewById(R.id.yearlabel);
 
         //Bottom Label for each expense in a year
-        specificexpenseForYear = (TextView) findViewById(R.id.specificExpensesOfYear);
+        TextView specificexpenseForYear = (TextView) findViewById(R.id.specificExpensesOfYear);
         specificexpenseForYear.setMovementMethod(LinkMovementMethod.getInstance());
         specificexpenseForYear.setText(Html.fromHtml("<font color=#0000FF> <u>Hom much do I spend" +
                 " on a year for each expense?" +
@@ -177,10 +181,10 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
-                HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+                HashMap<String, AnyYear> yearsMappedToObjectYearsMapRetrieved = (HashMap<String, AnyYear> ) intent.getSerializableExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP);
 
                 year--;
-                util.switchAmountsBetweenYears(yearsMappedToObjectYearsMap,year, yearView, AnnualChartActivity.this);
+                util.switchAmountsBetweenYears(yearsMappedToObjectYearsMapRetrieved,year, yearView, AnnualChartActivity.this);
             }
         });
 
@@ -188,10 +192,10 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
-                HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+                HashMap<String, AnyYear> yearsMappedToObjectYearsMapRetrieved = (HashMap<String, AnyYear> ) intent.getSerializableExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP);
 
                 year++;
-                util.switchAmountsBetweenYears(yearsMappedToObjectYearsMap,year, yearView, AnnualChartActivity.this);
+                util.switchAmountsBetweenYears(yearsMappedToObjectYearsMapRetrieved,year, yearView, AnnualChartActivity.this);
             }
         });
 
@@ -217,11 +221,10 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if(resultCode == RESULT_OK) {
-                yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) data.getSerializableExtra("yearsMappedToObjectYearsMap");
+        if (requestCode == 1 && resultCode == RESULT_OK) {
 
-            }
+            yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) data.getSerializableExtra("yearsMappedToObjectYearsMap");
+
         }
     }
 
@@ -230,16 +233,12 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         LayoutInflater inflater = LayoutInflater.from(AnnualChartActivity.this);
         View npView = inflater.inflate(R.layout.number_picker_dialog_annual_layout, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AnnualChartActivity
-                .this, AlertDialog.THEME_HOLO_LIGHT);
+                .this, R.style.Theme_AppCompat_Light_Dialog);
         //number pickers
         numberPicker1 = npView.findViewById(R.id.numberPicker1);
         numberPicker1.setMaxValue(31);
         numberPicker1.setMinValue(1);
         numberPicker1.setWrapSelectorWheel(true);
-
-        //Labels before the number pickers
-        TextView numberPickerLabel1 = new TextView(this);
-        numberPickerLabel1 = npView.findViewById(R.id.numberPickerLabel1);
 
         if ((valueFromNumPicker1 != 0)) {
             numberPicker1.setValue(valueFromNumPicker1);

@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
-import android.widget.Toast;
 
 import com.millennialmedia.InlineAd;
 
@@ -34,13 +33,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import uk.co.irokottaki.moneycontrol.Model.AnyYear;
-import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
-import uk.co.irokottaki.moneycontrol.Utils.MultiMap;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
+import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.utils.MultiMap;
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -55,7 +54,7 @@ public class EditActivity extends AppCompatActivity {
     private final List<String> linesExtracted = new ArrayList<>();
     private int counter = 0;
     private int iteration = 1;
-    private final String TAG = "Millenial Media";
+    private final static String TAG = "Millenial Media";
     private InlineAd inlineAd;
     private boolean adsDisabled;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
@@ -166,14 +165,11 @@ public class EditActivity extends AppCompatActivity {
         util = new ChartsUtil(this);
 
         //Image Button for information
-        ImageButton infoEditButton = new ImageButton(this);
-        infoEditButton = (ImageButton) findViewById(R.id.infoEditButton);
+        ImageButton infoEditButton = (ImageButton) findViewById(R.id.infoEditButton);
 
         //Button for the search by description, search by Amount
-        Button searchDescButton = new Button(this);
-        searchDescButton = (Button) findViewById(R.id.searchByDescButton);
-        Button searchAmountButton = new Button(this);
-        searchAmountButton = (Button) findViewById(R.id.searchByAmountButton);
+        Button searchDescButton = (Button) findViewById(R.id.searchByDescButton);
+        Button searchAmountButton = (Button) findViewById(R.id.searchByAmountButton);
 
         //EditText for the search fields
         descField = new EditText(this);
@@ -192,12 +188,10 @@ public class EditActivity extends AppCompatActivity {
                     v.getParent().requestDisallowInterceptTouchEvent(true);//this listener is for
                     // scrolling even when i have
                     if(MotionEvent.ACTION_UP == MotionEvent.ACTION_MASK || MotionEvent.ACTION_UP == event.getAction()){
-                    //switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                       // case MotionEvent.ACTION_UP://the results area inside a scrollview.
-                            // Otherwise android:fadeScrollbars="false"
+                       //the results area inside a scrollview.
+
                             v.getParent().requestDisallowInterceptTouchEvent(false);// and
-                            // android:scrollbars="vertical" do the scroll
-                           // break;
+
                     }
                 }
                 return false;
@@ -211,16 +205,13 @@ public class EditActivity extends AppCompatActivity {
         lineBeforeEdit = "";
 
         //Button for the select
-        Button selectButton = new Button(this);
-        selectButton = (Button) findViewById(R.id.selectButton);
+        Button selectButton = (Button) findViewById(R.id.selectButton);
 
         //Button for the edit
-        ImageButton editButton = new ImageButton(this);
-        editButton = (ImageButton) findViewById(R.id.editButton);
+         ImageButton editButton = (ImageButton) findViewById(R.id.editButton);
 
         //Button for the delete
-        ImageButton deleteButton = new ImageButton(this);
-        deleteButton = (ImageButton) findViewById(R.id.deleteButton);
+        ImageButton deleteButton = (ImageButton) findViewById(R.id.deleteButton);
 
         readTheLines();
 
@@ -263,7 +254,7 @@ public class EditActivity extends AppCompatActivity {
                     showAlertOnEmptyFields(EMPTY_RESULTS_FIELD,"Results area is empty! Search first for an expense and " +
                             "try again", OK);
                 } else {
-                    linesExtracted.removeAll(linesExtracted);
+                    linesExtracted.clear();
                     selectAlineFromMultiline();
                     int i = 0;
                     for (i = counter; i < iteration; i++) {
@@ -317,9 +308,11 @@ public class EditActivity extends AppCompatActivity {
     }//end of onCreate method
 
     private void readTheLines() {
+        InputStream inputStream = null;
+        Scanner in = null;
         try {
-            InputStream inputStream = openFileInput(EXPENSES_FILE);
-            Scanner in = new Scanner(inputStream);
+            inputStream = openFileInput(EXPENSES_FILE);
+            in = new Scanner(inputStream);
             int lineIndex = 0;
             singleLine = new ArrayList<>();
             while (in.hasNextLine()) {
@@ -333,6 +326,18 @@ public class EditActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.i("EDITACTIVITY", "File not found");
 
+        }
+        finally{
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    Log.e("IOException",e.getMessage());
+                }
+            }
+            if (in != null) {
+                in.close();
+            }
         }
     }
 
@@ -350,13 +355,13 @@ public class EditActivity extends AppCompatActivity {
         } else {
             for (int i = 0; i < singleLine.size(); i++) {
                 linefound = singleLine.get(i);
-                int index = linefound.lastIndexOf(" ");
-                descFound = linefound.substring(linefound.indexOf(" "), index);
+                int index = linefound.lastIndexOf(' ');
+                descFound = linefound.substring(linefound.indexOf(' '), index);
                 descriptionFoundMap.put(descFound.trim(), linefound);
             }
             if (linefound == null) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this,
-                        AlertDialog.THEME_HOLO_LIGHT)
+                        R.style.Theme_AppCompat_Light_Dialog)
                         .setTitle("No expenses found")
                         .setMessage("It seems your expenses file is empty! Please supply expenses" +
                                 " and try again.");
@@ -390,8 +395,7 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void showAlertOnEmptyFields(String title, String message, String buttonText) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, AlertDialog
-                .THEME_HOLO_LIGHT)
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                 .setTitle(title)
                 .setMessage(message);
         AlertDialog alert1;
@@ -412,14 +416,14 @@ public class EditActivity extends AppCompatActivity {
         String amountPart = null;
         String linefound = "";
         lineToEdit.clear();
-        lineToEditMultiple =  new StringBuilder();;
+        lineToEditMultiple =  new StringBuilder();
         MultiMap amountFoundMap = new MultiMap();
         if (amountField.getText().toString().equals("")) {
             showAlertOnEmptyFields("Empty Field ", "Amount field is empty!", OK);
         } else {
             for (int i = 0; i < singleLine.size(); i++) {
                 linefound = singleLine.get(i);
-                amountPart = linefound.substring(0, linefound.indexOf(" "));
+                amountPart = linefound.substring(0, linefound.indexOf(' '));
                 amountFoundMap.put(amountPart, linefound);
             }
             if (amountFoundMap.containsKey(amountField.getText().toString())) {
@@ -454,9 +458,9 @@ public class EditActivity extends AppCompatActivity {
     private void processEdit() {
 
         String editedText = singleLineEdit.getText().toString();
-        String amountEdited = editedText.substring(0, editedText.indexOf(" "));
-        int lengthTillDate = editedText.lastIndexOf(" ");
-        String descriptionEdited = editedText.substring(editedText.indexOf(" "), lengthTillDate)
+        String amountEdited = editedText.substring(0, editedText.indexOf(' '));
+        int lengthTillDate = editedText.lastIndexOf(' ');
+        String descriptionEdited = editedText.substring(editedText.indexOf(' '), lengthTillDate)
                 .trim();
         String dateEdited = editedText.substring(lengthTillDate, editedText.length()).trim();
 
@@ -493,10 +497,10 @@ public class EditActivity extends AppCompatActivity {
                     lineIndex++;
                     if (strLine.replaceAll("\\s+", " ").equals(lineBeforeEdit.trim()) &&
                             ++lineIndex > 2) {
-                        amount = editedText.substring(0, editedText.indexOf(" "));//prints the
+                        amount = editedText.substring(0, editedText.indexOf(' '));//prints the
                         // amount
-                        int index = editedText.lastIndexOf(" ");
-                        desc = editedText.substring(editedText.indexOf(" "), index).trim();
+                        int index = editedText.lastIndexOf(' ');
+                        desc = editedText.substring(editedText.indexOf(' '), index).trim();
                         //prints the description
                         date = editedText.substring(index, editedText.length()).trim();//prints
                         // the date
@@ -516,13 +520,12 @@ public class EditActivity extends AppCompatActivity {
                 fstream.close();
 
                 yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, AlertDialog
-                        .THEME_HOLO_LIGHT)
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                         .setTitle("Edit Expense")
                         .setMessage("The expense is successfully edited");
                 builder.setPositiveButton(OK, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
+                        /* Not used */
                     }
                 });
                 builder.show();
@@ -575,13 +578,12 @@ public class EditActivity extends AppCompatActivity {
             }
 
             yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
-            AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("Expense Deletion")
                     .setMessage("The expense is deleted");
             builder.setPositiveButton(OK, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-
+                    /* Not used */
                 }
             });
             builder.show();
@@ -597,8 +599,7 @@ public class EditActivity extends AppCompatActivity {
             showAlertOnEmptyFields("Empty Line to Delete", "The line to edit/Delete is empty! Please press select button " +
                     "first and try again", OK);
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("Delete the expense")
                     .setMessage("Do you really want to delete this expense?");
             builder.setPositiveButton(OK, new DialogInterface.OnClickListener() {

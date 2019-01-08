@@ -1,6 +1,7 @@
 package uk.co.irokottaki.moneycontrol;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
@@ -33,7 +34,7 @@ public class UserAccountTask extends AsyncTask<Void, Void, FullAccount> {
             //get the users FullAccount
             return dbxClient.users().getCurrentAccount();
         } catch (DbxException e) {
-            e.printStackTrace();
+            Log.e("DbxException", e.getMessage());
             error = e;
         }
         return null;

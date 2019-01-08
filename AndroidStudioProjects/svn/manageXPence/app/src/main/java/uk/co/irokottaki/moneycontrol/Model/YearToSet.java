@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Model;
+package uk.co.irokottaki.moneycontrol.model;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -19,12 +19,42 @@ public class YearToSet extends AnyYear implements YearInterface {
     private Float amountOct;
     private Float amountNov;
     private Float amountDec;
-    private LinkedHashSet<String> descriptionsForJan, descriptionsForFeb, descriptionsForMar, descriptionsForApr, descriptionsForMay,
-            descriptionsForJun, descriptionsForJul, descriptionsForAug, descriptionsForSep, descriptionsForOct, descriptionsForNov, descriptionsForDec;
-    private ArrayList<Float> arrayOfamountJan, arrayOfamountFeb, arrayOfamountMar, arrayOfamountApr, arrayOfamountMay, arrayOfamountJun,
-            arrayOfamountJul, arrayOfamountAug, arrayOfamountSep, arrayOfamountOct, arrayOfamountNov, arrayOfamountDec;
-    private String fileLineJan, fileLineFeb, fileLineMar, fileLineApr, fileLineMay, fileLineJun, fileLineJul, fileLineAug, fileLineSep,
-            fileLineOct, fileLineNov, fileLineDec;
+    private LinkedHashSet<String> descriptionsForJan;
+    private LinkedHashSet<String> descriptionsForFeb;
+    private LinkedHashSet<String> descriptionsForMar;
+    private LinkedHashSet<String> descriptionsForApr;
+    private LinkedHashSet<String> descriptionsForMay;
+    private LinkedHashSet<String> descriptionsForJun;
+    private LinkedHashSet<String> descriptionsForJul;
+    private LinkedHashSet<String> descriptionsForAug;
+    private LinkedHashSet<String> descriptionsForSep;
+    private LinkedHashSet<String> descriptionsForOct;
+    private LinkedHashSet<String> descriptionsForNov;
+    private LinkedHashSet<String> descriptionsForDec;
+    private ArrayList<Float> arrayOfamountJan;
+    private ArrayList<Float> arrayOfamountFeb;
+    private ArrayList<Float> arrayOfamountMar;
+    private ArrayList<Float> arrayOfamountApr;
+    private ArrayList<Float> arrayOfamountMay;
+    private ArrayList<Float> arrayOfamountJun;
+    private ArrayList<Float> arrayOfamountJul;
+    private ArrayList<Float> arrayOfamountAug;
+    private ArrayList<Float> arrayOfamountSep;
+    private ArrayList<Float> arrayOfamountOct;
+    private ArrayList<Float> arrayOfamountNov;
+    private ArrayList<Float> arrayOfamountDec;
+    private String fileLineJan;
+    private String fileLineFeb;
+    private String fileLineMar;
+    private String fileLineApr;
+    private String fileLineMay;
+    private String fileLineJun;
+    private String fileLineJul;
+    private String fileLineAug;
+    private String fileLineSep;
+    private String fileLineOct;
+    private String fileLineNov;
+    private String fileLineDec;
 
     public YearToSet(Float jan, Float feb, Float mar, Float apr, Float may, Float jun, Float jul,
                      Float aug, Float sep, Float oct, Float nov, Float dec){

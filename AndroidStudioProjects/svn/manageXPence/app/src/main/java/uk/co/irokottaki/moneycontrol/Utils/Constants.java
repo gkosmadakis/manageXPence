@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Utils;
+package uk.co.irokottaki.moneycontrol.utils;
 
 public class Constants {
 
@@ -104,6 +104,9 @@ public class Constants {
     public static final String ANNUAL_SAVINGS = "Annual Savings";
     public static final String EMPTY_RESULTS_FIELD = "Empty Results Field";
     public static final String EXPENSES_FILE = "expenses.txt";
-
-
+    public static final String YEARS_MAPPED_TO_OBJECT_YEARS_MAP = "yearsMappedToObjectYearsMap";
+    public static final String ERROR_DURING_PURCHASE = "Error occured during purchase ";
+    public static final String PRODUCT_ID = "productId";
+    public static final String DESCRIPTIONS_FILE = "descriptions.txt";
+    public static final String BUDGET_WARNING = "Budget Warning!";
 }

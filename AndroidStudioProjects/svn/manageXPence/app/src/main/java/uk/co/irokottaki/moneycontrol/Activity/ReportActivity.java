@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,22 +29,21 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-import uk.co.irokottaki.moneycontrol.Model.AnyYear;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
-import uk.co.irokottaki.moneycontrol.Utils.NothingSelectedSpinnerAdapter;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 
 public class ReportActivity extends AppCompatActivity {
     private Spinner monthItems;
     private ArrayList<String> monthsAddedToSpinner;
-    private TextView reportView,yearView, monthView;
+    private TextView reportView;
     private StringBuilder shortLine;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private int monthInt;
     private static final String[] PERMISSIONS_STORAGE = {
             android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -52,7 +52,6 @@ public class ReportActivity extends AppCompatActivity {
     private InlineAd inlineAd;
     private boolean adsDisabled;
     private ChartsUtil util;
-    private int year;
     private Spinner yearList;
     private int yearSelected;
 
@@ -160,8 +159,8 @@ public class ReportActivity extends AppCompatActivity {
         utils.setBackgroundAndAdjustLayout(layout, ReportActivity.this);
 
         // Text view for year and month
-        yearView = (TextView) findViewById(R.id.yearView);
-        monthView = (TextView) findViewById(R.id.monthView);
+        TextView yearView = (TextView) findViewById(R.id.yearView);
+        TextView monthView = (TextView) findViewById(R.id.monthView);
 
         // Spinner with the months
         monthItems = (Spinner) findViewById(R.id.monthSpinner);
@@ -209,17 +208,17 @@ public class ReportActivity extends AppCompatActivity {
         //Get the current month
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
-        year = calendar.get(Calendar.YEAR);// get the current year
+        int year = calendar.get(Calendar.YEAR);// get the current year
 
         //convert month String to integer
-        monthInt = 0;
+        int monthInt = 0;
         try {
             java.util.Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse(currentMonth);
             calendar.setTime(date);// here i convert the String month in an integer
             monthInt = calendar.get(Calendar.MONTH);
 
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("ParseException", e.getMessage());
         }
 
         util.populateYearSpinnerAndSetCurrentYear(yearsMappedToObjectYearsMap, year, yearList, ReportActivity.this);
@@ -237,7 +236,7 @@ public class ReportActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                /* Not used */
             }
         });
 
@@ -275,28 +274,6 @@ public class ReportActivity extends AppCompatActivity {
             index++;
         }
         return index;
-    }
-
-    /**
-     * Checks if the app has permission to write to device storage
-     * <p>
-     * If the app does not has permission then the user will be prompted to grant permissions
-     * <p>
-     * /* @param activity
-     */
-    private static void verifyStoragePermissions(Activity activity) {
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, android.Manifest.permission
-                .WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
     }
 
     public TextView getReportView() {

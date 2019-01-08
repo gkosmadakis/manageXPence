@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -124,46 +124,53 @@ import uk.co.irokottaki.moneycontrol.DropboxClient;
 import uk.co.irokottaki.moneycontrol.IabHelper;
 import uk.co.irokottaki.moneycontrol.IabResult;
 import uk.co.irokottaki.moneycontrol.Inventory;
-import uk.co.irokottaki.moneycontrol.Model.AnyYear;
-import uk.co.irokottaki.moneycontrol.Model.YearToSet;
-import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
-import uk.co.irokottaki.moneycontrol.Utils.NothingSelectedSpinnerAdapter;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
+import uk.co.irokottaki.moneycontrol.model.YearToSet;
+import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
 import uk.co.irokottaki.moneycontrol.Purchase;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.UploadTask;
 import uk.co.irokottaki.moneycontrol.UserAccountTask;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
 import static android.content.DialogInterface.OnClickListener;
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 
 public class MainActivity extends AppCompatActivity implements IHODClientCallback {
 
-    private Button saveToFile, addExpensesButton, reportButton, dateButton, editButton,
-            chartButton, barChartButton,
-            addDescrButton, budgetButton, annualChartButton, exportButton, importButton,
-            savingsButton, circleButton;
-    private ImageButton infoDateRangeButton;
+    private Button dateButton;
+    private Button exportButton;
     ImageButton backUpInfoButton;
     ImageButton photoButton;
-    EditText expensesField, dateText, addedDescriptionField = null, incomeField;
-    private Spinner descriptionsItem, addExpensesByDescription;
+    EditText expensesField;
+    EditText dateText;
+    EditText addedDescriptionField;
+    EditText incomeField;
+    private Spinner descriptionsItem;
+    private Spinner addExpensesByDescription;
     static ArrayList<Date> dates = new ArrayList<>();
     final ArrayList<Double> expenses = new ArrayList<>();
-    private int year_x, month_x, day_x, valueFromNumPicker1;
+    private int yearX;
+    private int monthX;
+    private int dayX;
+    private int valueFromNumPicker1;
     static final int DIALOG_ID = 0;
-    private TextView incomeLabel, balanceLabel, numberPickerLabel1;
+    private TextView balanceLabel;
     ArrayAdapter<String> spinnerAdapter;
     private static ArrayList<String> itemsAddedByUser;
-    private String descriptionAddedByUser, ACCESS_TOKEN;
-    public ArrayList<String> allDescriptions;//descriptions
+    private String descriptionAddedByUser;
+    private String accessToken;
+    private ArrayList<String> allDescriptions;//descriptions
     RelativeLayout layout;
     protected PreferenceManager mPreferenceManager;
     private LinkedHashSet<String> uniqueDescriptions;
     ArrayList<Float> uniqueAmounts;
-    private float amountWithDuplicate;
-    private double monthSum, balance, incomeDouble;
+    private double monthSum;
+    private double balance;
+    private double incomeDouble;
     TabHost tabHost;
     private final Handler handler = new Handler();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -172,34 +179,45 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     ImageView imageView;
-    private final String TAG = "Millenial Media", TAG2 = "In App Billing";
+    private final static String TAG = "Millenial Media";
+    private final static String TAG2 = "In App Billing";
     private InlineAd inlineAd;
     IabHelper mHelper;
     final String base64EncodedPublicKey =
             "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqcYpXYA3pWCTMjOYJNNC70rNhXmbwxI5i4sGCtmZWN" +
                     "+eVFvrvtBtlwm8Wxwab8wf4CyLUxthccmgSd2Wmb6lHYVHG9/F7VSn+u3f9tnu8x" +
                     "+Oh30fyiSr4Wdesz0yfTwflVipA4wNwcEjxJoO0t8CCEyswQZcAzLAMzkodlMVwcdWx0kJ39qJxxuT8LWFlqwDpUSlLm6sPr+XmbD/vhfmd1h+qNQTteVte2Q5vVLSAk1/hCsqLCzrDp0BJ30w4f0nzEBn3g/7KIn3KQQp+6JE+xJanavahcvAU//PTDmy8t/bYxiFtn8kquBCL9xcHa/2Nw8PTEhzeWx3hCRUAugruwIDAQAB";
-    public boolean adsDisabled, userIsPro;
+    private boolean adsDisabled;
+    private boolean userIsPro;
     IInAppBillingService mService;
     Bundle querySkus;
     final String sku = "android.test.purchased";
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
-    private HorizontalBarChart mChart;
-    private FrameLayout stackedBarLayout;
-    private static Float incomeForJan, incomeForFeb, incomeForMar, incomeForApr, incomeForMay,
-            incomeForJun, incomeForJul, incomeForAug,
-            incomeForSep, incomeForOct, incomeForNov, incomeForDec;
+    private static Float incomeForJan;
+    private static Float incomeForFeb;
+    private static Float incomeForMar;
+    private static Float incomeForApr;
+    private static Float incomeForMay;
+    private static Float incomeForJun;
+    private static Float incomeForJul;
+    private static Float incomeForAug;
+    private static Float incomeForSep;
+    private static Float incomeForOct;
+    private static Float incomeForNov;
+    private static Float incomeForDec;
     private NumberPicker numberPicker1;
-    private boolean isPaymentCircleSet, budgetWarningEnabled, invalidToken, expenseFound = false,
-            dateFound = false, descFound = false;
-    private final String apikey = "2990d40f-d7ca-4fdb-bacd-98d3cbe6eef5";
+    private boolean isPaymentCircleSet;
+    private boolean budgetWarningEnabled;
+    private boolean invalidToken;
+    private boolean expenseFound;
+    private boolean dateFound;
+    private boolean descFound;
+    private final static String apikey = "2990d40f-d7ca-4fdb-bacd-98d3cbe6eef5";
     private static final int TAKE_PICTURE = 1;
-    private static byte[] byteArray = null;
     HODClient hodClient;
-    final static private String APP_KEY = "h5x1321simc1oxm", APP_SECRET = "y2hrku7km5xdtvi";
-    private static final int IMAGE_REQUEST_CODE = 101;
+    private final static String APP_KEY = "h5x1321simc1oxm";
+    private final static String APP_SECRET = "y2hrku7km5xdtvi";
     private Uri imageUri;
-    private static Map<String, String> DATE_FORMAT_REGEXPS;
     private ChartsUtil util;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
 
@@ -229,9 +247,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Calendar cal = Calendar.getInstance();
-        year_x = cal.get(Calendar.YEAR);
-        month_x = cal.get(Calendar.MONTH);
-        day_x = cal.get(Calendar.DAY_OF_MONTH);
+        yearX = cal.get(Calendar.YEAR);
+        monthX = cal.get(Calendar.MONTH);
+        dayX = cal.get(Calendar.DAY_OF_MONTH);
 
         setContentView(R.layout.activity_main);
         setTitle(HOME);
@@ -374,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         TextView z = tabHost.getTabWidget().getChildAt(2).findViewById(android.R.id.title);
         z.setTextSize(10);
 
-        // compute your public key and store it in base64EncodedPublicKey
+        // compute your public key and store it in BASE_64_ENCODED_PUBLIC_KEY
         mHelper = new IabHelper(MainActivity.this, base64EncodedPublicKey);
         mHelper.enableDebugLogging(true);
 
@@ -444,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         dateLabel.setText(DATE);
 
         //Button for the add description
-        addDescrButton = new Button(this);
+        Button addDescrButton = new Button(this);
         addDescrButton.setText(ADD);
         addDescrButton = (Button) findViewById(R.id.addDescButton);
 
@@ -461,13 +479,13 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         dateText = (EditText) findViewById(R.id.dateText);
 
         //Save to File Button
-        saveToFile = new Button(this);
+        Button saveToFile = new Button(this);
         saveToFile.setText(SAVE_TO_FILE);
         saveToFile.setBackgroundColor(Color.BLUE);
         saveToFile = (Button) findViewById(R.id.saveButton);
 
         //Income label, income field
-        incomeLabel = new TextView(this);
+        TextView incomeLabel = new TextView(this);
         incomeLabel = (TextView) findViewById(R.id.incomeLabel);
 
         incomeField = new EditText(this);
@@ -479,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         incomeField.setText(incomeStored);
 
         //cicle Button
-        circleButton = new Button(this);
+        Button circleButton = new Button(this);
         circleButton = (Button) findViewById(R.id.circleButton);
 
         //Balance Label
@@ -487,13 +505,13 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         balanceLabel = (TextView) findViewById(R.id.balanceView);
 
         //Edit Button
-        editButton = new Button(this);
+        Button editButton = new Button(this);
         editButton = (Button) findViewById(R.id.editButton);
 
         // END OF FIRST TAB
 
         //Add expenses button
-        addExpensesButton = new Button(this);
+        Button addExpensesButton = new Button(this);
         addExpensesButton = (Button) findViewById(R.id.addExpensesButton);
 
         //add expenses by description Spinner
@@ -505,31 +523,31 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 .layout.spinnernothingselected, this));
 
         //Information with example date range button
-        infoDateRangeButton = new ImageButton(this);
+        ImageButton infoDateRangeButton = new ImageButton(this);
         infoDateRangeButton = (ImageButton) findViewById(R.id.infoDateRange);
 
         //Button for the Budget Control
-        budgetButton = new Button(this);
+        Button budgetButton = new Button(this);
         budgetButton = (Button) findViewById(R.id.budgetButton);
 
         //Report button
-        reportButton = new Button(this);
+        Button reportButton = new Button(this);
         reportButton = (Button) findViewById(R.id.reportButton);
 
         //Chart button
-        chartButton = new Button(this);
+        Button chartButton = new Button(this);
         chartButton = (Button) findViewById(R.id.chartButton);
 
         //Bar Chart button
-        barChartButton = new Button(this);
+        Button barChartButton = new Button(this);
         barChartButton = (Button) findViewById(R.id.barChartbutton);
 
         //Annual Chart Button
-        annualChartButton = new Button(this);
+        Button annualChartButton = new Button(this);
         annualChartButton = (Button) findViewById(R.id.annualChartButton);
 
         //Savings Chart Button
-        savingsButton = new Button(this);
+        Button savingsButton = new Button(this);
         savingsButton = (Button) findViewById(R.id.annualSavingsButton);
 
         // Back up Info button
@@ -541,13 +559,13 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         exportButton = (Button) findViewById(R.id.exportButton);
 
         //import button
-        importButton = new Button(this);
+        Button importButton = new Button(this);
         importButton = (Button) findViewById(R.id.importButton);
 
         showDialogOnButtonClick();
 
         /*Call the readTheFile here to read the expenses file and populate the map with year as key and the object AnyYear that has all the necessary fields */
-        yearsMappedToObjectYearsMap = new HashMap<String, AnyYear>();
+        yearsMappedToObjectYearsMap = new HashMap<>();
         yearsMappedToObjectYearsMap = util.readTheFile();
 
         readDescriptionsFile();
@@ -556,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             @Override
             public void onClick(View view) {
 
-                WriteToFile("","","");
+                writeToFile("","","");
             }
         });
 
@@ -580,10 +598,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                /* Not used */
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /* Not used */
             }
 
             @Override
@@ -612,7 +632,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             @Override
             public void onClick(View view) {
 
-                AddTheExpenses();
+                addTheExpenses();
             }
         });
 
@@ -621,9 +641,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             public void onClick(View view) {
 
                 // Request for permission if not granted
-                String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest
+                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest
                         .permission.CAMERA};
-                if (!hasPermissions(getApplicationContext(), PERMISSIONS)) {
+                if (!hasPermissions(getApplicationContext(), permissions)) {
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{
                             Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission
                             .CAMERA}, 1);
@@ -644,7 +664,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
-                        AlertDialog.THEME_HOLO_LIGHT)
+                        R.style.Theme_AppCompat_Light_Dialog)
                         .setTitle(INFORMATION)
                         .setMessage("You can enter a date range and the application will add the " +
                                 "expenses you made for that period." +
@@ -688,7 +708,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
                     public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
                         if (result.isFailure()) {
-                            Toast.makeText(MainActivity.this, "Error occured during purchase " +
+                            Toast.makeText(MainActivity.this, ERROR_DURING_PURCHASE +
                                     result, Toast.LENGTH_SHORT).show();
 
                         } else if (purchase.getSku().equals(sku)) {
@@ -699,18 +719,18 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 try {
                     JSONObject object = null;
                         try {
-                            String sku = object.getString("productId");
+                            String sku = object.getString(PRODUCT_ID);
                             String price = object.getString("price");
                             if (sku.equals("premiumUpgrade")) {
                                 String mPremiumUpgradePrice = price;
                             }
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("JSONException",e.getMessage());
                         }
 
                     //}Remote
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("Exception", e.getMessage());
                 }
                 //check if the user has purchased the PRO version
                 // If the request is successful, the returned Bundle has a response code of 0.
@@ -730,7 +750,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             public void onClick(View view) {
 
                 Intent intent = new Intent(view.getContext(), ReportActivity.class);
-                intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+                intent.putExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP, yearsMappedToObjectYearsMap);
                 startActivity(intent);
             }
         });
@@ -750,7 +770,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
                 Intent intentEdit = new Intent(view.getContext(), ChartActivity.class);
                 intentEdit.putExtra(DESCRIPTIONS, allDescriptions);
-                intentEdit.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+                intentEdit.putExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP, yearsMappedToObjectYearsMap);
                 startActivity(intentEdit);
             }
         });
@@ -760,8 +780,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             public void onClick(View view) {
 
                 Intent intentEdit = new Intent(view.getContext(), HorizontalBarChartActivity.class);
-                //System.out.println(BAR_CHART);
-                intentEdit.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+
+                intentEdit.putExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP, yearsMappedToObjectYearsMap);
                 startActivity(intentEdit);
             }
         });
@@ -771,7 +791,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             public void onClick(View view) {
 
                 Intent intentAnnualChart = new Intent(view.getContext(), AnnualChartActivity.class);
-                intentAnnualChart.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+                intentAnnualChart.putExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP, yearsMappedToObjectYearsMap);
                 startActivity(intentAnnualChart);
             }
         });
@@ -781,7 +801,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             public void onClick(View view) {
 
                 Intent intentSavingsChart = new Intent(view.getContext(), AnnualSavingsActivity.class);
-                intentSavingsChart.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+                intentSavingsChart.putExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP, yearsMappedToObjectYearsMap);
                 startActivity(intentSavingsChart);
             }
         });
@@ -790,7 +810,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
-                        AlertDialog.THEME_HOLO_LIGHT)
+                        R.style.Theme_AppCompat_Light_Dialog)
                         .setTitle(INFORMATION)
                         .setMessage("You can save your expenses file to your device internal " +
                                 "storage, edit it and then " +
@@ -829,7 +849,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
                         if (item.getTitle().equals(EXPORT_TO_DROPBOX)) {
 
-                            ACCESS_TOKEN = retrieveAccessToken();
+                            accessToken = retrieveAccessToken();
 
                             getUserAccount();
                             if (!tokenExists() || invalidToken) {
@@ -844,9 +864,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                     ".moneycontrol/files/expenses.txt");//get the directory of
                             // the file
                             // stored
-                            if (!invalidToken) {
+                            if (!invalidToken && accessToken!= null) {
                                 //Initialize UploadTask
-                                new UploadTask(DropboxClient.getClient(ACCESS_TOKEN), file,
+                                new UploadTask(DropboxClient.getClient(accessToken), file,
                                         getApplicationContext()).execute();
                             }
 
@@ -893,12 +913,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 String mPremiumUpgradePrice = price;
                             }
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("JSONException",e.getMessage());
                         }
 
                     //}Remote
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("Exception",e.getMessage());
                 }
                 //check if the user has purchased the PRO version
                 //check if the user is Pro retrieve boolean from SharedPreferences
@@ -1009,7 +1029,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, MainActivity.this);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = getDefaultSharedPreferences(this);
         budgetWarningEnabled = prefs.getBoolean(BUDGETWARNINGS, false);
 
         //get the stored income value from preferences and set it to the income field
@@ -1076,16 +1096,34 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     JSONObject jo = new JSONObject(purchaseData);
                     String sku = jo.getString("productId");
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
-                            AlertDialog.THEME_HOLO_LIGHT)
+                            R.style.Theme_AppCompat_Light_Dialog)
                             .setTitle(INFORMATION)
                             .setMessage("You have bought the " + sku + ". Excellent choice, " +
                                     "adventurer!");
+                    AlertDialog alert1;
+                    builder.setPositiveButton(OK,
+                            new OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alert1 = builder.create();
+                    alert1.show();
                 } catch (JSONException e) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
-                            AlertDialog.THEME_HOLO_LIGHT)
+                            R.style.Theme_AppCompat_Light_Dialog)
                             .setTitle(INFORMATION)
                             .setMessage("Failed to parse purchase data.");
-                    e.printStackTrace();
+                    AlertDialog alert1;
+                    builder.setPositiveButton(OK,
+                            new OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alert1 = builder.create();
+                    alert1.show();
+                    Log.e("Exception purchase data",e.getMessage());
                 }
 
             }
@@ -1095,17 +1133,15 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             String imageurl = null;
             switch (requestCode) {
                 case TAKE_PICTURE:
-                    if (requestCode == TAKE_PICTURE) {
-                        if (resultCode == Activity.RESULT_OK) {
+                    if (resultCode == Activity.RESULT_OK) {
 
                             try {
                                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap
                                         (getContentResolver(), imageUri);
                                 imageurl = getRealPathFromURI(imageUri);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.e("Exception",e.getMessage());
                             }
-                        }
                     }
             }
             String hodApp = HODApps.OCR_DOCUMENT;
@@ -1115,19 +1151,19 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             hodClient.PostRequest(params, hodApp, HODClient.REQ_MODE.ASYNC);
         }
 
-        if (requestCode == 2) {
-            if (resultCode == RESULT_FIRST_USER) {
-                yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) data.getSerializableExtra("yearsMappedToObjectYearsMap");
+        if (requestCode == 2 && resultCode == RESULT_FIRST_USER) {
 
-                Log.i("MAP is updated and ", "returned from EditActivity");
-            }
+            yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) data.getSerializableExtra("yearsMappedToObjectYearsMap");
+
+            Log.i("MAP is updated and ", "returned from EditActivity");
+
         }
     }
 
     @SuppressWarnings("StringConcatenationInLoop")
     @Override
     public void requestCompletedWithContent(String response) {
-        System.out.println("SUCCESS!" + response);
+        Log.i("SUCCESS!", response);
 
         //response = "text Greenpoint\nCoffeehouse\n195 Frann Street\n1 718-349-6635\nServer:
         // Keith 09/03/2009\nTable 9/1 1:53 PM\nGuests: 3 20021\nEggs Avocado 9.00\nGrill Chix
@@ -1152,7 +1188,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 }
             }
         } catch (JSONException e) {
-            System.out.println(e.getMessage());
+            Log.e("JSONException",e.getMessage());
         }
         setExpenseFieldsFromCameraExtractedText(textFound);
     }
@@ -1166,15 +1202,15 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 hodClient.GetJobResult(jobID);
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            Log.e("Exception",ex.getMessage());
         }
-        System.out.println(response);
+        Log.i("response",response);
 
     }
 
     @Override
     public void onErrorOccurred(String errorMessage) {
-        //System.out.println(errorMessage);
+        /* Not used */
     }
 
     protected void showInputDialog() {
@@ -1183,14 +1219,14 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
         View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this,
-                AlertDialog.THEME_HOLO_LIGHT);
+                R.style.Theme_AppCompat_Light_Dialog);
         alertDialogBuilder.setView(promptView);
 
         addedDescriptionField = new EditText(this);
         addedDescriptionField = promptView.findViewById(R.id.edittext);
-        InputFilter[] FilterArray = new InputFilter[1];//this is to set a limit
-        FilterArray[0] = new InputFilter.LengthFilter(14);//on characters entered by user
-        addedDescriptionField.setFilters(FilterArray);
+        InputFilter[] filterArray = new InputFilter[1];//this is to set a limit
+        filterArray[0] = new InputFilter.LengthFilter(14);//on characters entered by user
+        addedDescriptionField.setFilters(filterArray);
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton(ADD, new OnClickListener() {
@@ -1198,7 +1234,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         descriptionAddedByUser = addedDescriptionField.getText().toString();
                         if (itemsAddedByUser.contains(descriptionAddedByUser)) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity
-                                    .this, AlertDialog.THEME_HOLO_LIGHT)
+                                    .this, R.style.Theme_AppCompat_Light_Dialog)
                                     .setTitle("Description exists!")
                                     .setMessage("This description exists already on your list");
                             AlertDialog alert1;
@@ -1228,7 +1264,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 if (Arrays.asList(fixedDescriptions).contains
                                         (addedDescriptionField.getText().toString())) {
                                     AlertDialog.Builder builder = new AlertDialog.Builder
-                                            (MainActivity.this, AlertDialog.THEME_HOLO_LIGHT)
+                                            (MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                                             .setTitle("Can not remove this Description!")
                                             .setMessage("This description is preinstalled in the " +
                                                     "application and for operating reasons is not" +
@@ -1249,10 +1285,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                             .toString());
                                     deleteDescriptionFromFile();
                                 }
-                                //dialog.cancel();
+
                                 else {
                                     AlertDialog.Builder builder = new AlertDialog.Builder
-                                            (MainActivity.this, AlertDialog.THEME_HOLO_LIGHT)
+                                            (MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                                             .setTitle("Description does not exist!")
                                             .setMessage("This description does not exist on your " +
                                                     "list");
@@ -1281,41 +1317,65 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     }
 
     private void writeDescriptionsToFile() {
+        PrintWriter out = null;
         try {
-            PrintWriter out = new PrintWriter(openFileOutput("descriptions.txt", MODE_APPEND));
+            out = new PrintWriter(openFileOutput(DESCRIPTIONS_FILE, MODE_APPEND));
             String descriptionItem = descriptionAddedByUser;
             out.append(descriptionItem);
             out.write("\r\n");
-            out.close();
+
             Toast.makeText(this, descriptionItem + " added in your list", Toast.LENGTH_LONG).show();
 
         } catch (Exception e) {
             Toast.makeText(this, "Exception: " + e.toString(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+        finally{
+            if (out != null) {
+                out.close();
+            }
+        }
     }
 
     private void readDescriptionsFile() {
+        InputStream inputStream = null;
+        Scanner in = null;
         try {
-            InputStream inputStream = openFileInput("descriptions.txt");
-            Scanner in = new Scanner(inputStream);
+            inputStream = openFileInput(DESCRIPTIONS_FILE);
+            in = new Scanner(inputStream);
 
             while (in.hasNextLine()) {
                 String descriptionItem = in.nextLine();
                 itemsAddedByUser.add(descriptionItem);
             }
-            inputStream.close();
+
         } catch (IOException e) {
-            System.out.println("File not found");
+            Log.e("IOException", e.getMessage());
+        }
+        finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if(in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                Log.e("IOException", e.getMessage());
+            }
+
         }
     }
 
     private void deleteDescriptionFromFile() {
         String checkedDescription = addedDescriptionField.getText().toString();
+        FileInputStream fstream = null;
+        BufferedReader br = null;
+        PrintWriter out = null;
         try {
 
-            FileInputStream fstream = this.openFileInput("descriptions.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            fstream = this.openFileInput(DESCRIPTIONS_FILE);
+            br = new BufferedReader(new InputStreamReader(fstream));
             String strLine;
             StringBuilder fileContent = new StringBuilder();
             while ((strLine = br.readLine()) != null) {
@@ -1324,13 +1384,23 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     fileContent.append("\r\n");
                 }
             }
-            PrintWriter out = new PrintWriter(openFileOutput("descriptions.txt", MODE_PRIVATE));
+            out = new PrintWriter(openFileOutput(DESCRIPTIONS_FILE, MODE_PRIVATE));
             out.write(fileContent.toString());
             out.close();
             Toast.makeText(this, checkedDescription + " removed from your list", Toast
                     .LENGTH_LONG).show();
         } catch (Exception e) {            //Catch exception if any
-            System.err.println("Error: " + e.getMessage());
+            Log.e("Exception", e.getMessage());
+        }
+        finally {
+            try {
+                fstream.close();
+                br.close();
+                out.close();
+            } catch (IOException e) {
+                Log.e("IOException", e.getMessage());
+            }
+
         }
     }
 
@@ -1349,7 +1419,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_ID)
-            return new DatePickerDialog(this, dpickerListener, year_x, month_x, day_x);
+            return new DatePickerDialog(this, dpickerListener, yearX, monthX, dayX);
         return null;
     }
 
@@ -1358,12 +1428,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         @Override
 
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            year_x = year;
-            month_x = monthOfYear;
-            day_x = dayOfMonth;
+            yearX = year;
+            monthX = monthOfYear;
+            dayX = dayOfMonth;
 
             Calendar calendar = Calendar.getInstance();
-            calendar.set(year_x, month_x, day_x);
+            calendar.set(yearX, monthX, dayX);
 
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
             String strDate = format.format(calendar.getTime());
@@ -1379,7 +1449,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         View npView = inflater.inflate(R.layout.number_picker_dialog_layout, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this,
-                AlertDialog.THEME_HOLO_LIGHT);
+                R.style.Theme_AppCompat_Light_Dialog);
         //number pickers
         numberPicker1 = npView.findViewById(R.id.numberPicker1);
         numberPicker1.setMaxValue(31);
@@ -1387,7 +1457,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         numberPicker1.setWrapSelectorWheel(true);
 
         //Labels before the number pickers
-        numberPickerLabel1 = new TextView(this);
+        TextView numberPickerLabel1 = new TextView(this);
         numberPickerLabel1 = npView.findViewById(R.id.numberPickerLabel1);
 
         if ((valueFromNumPicker1 != 0)) {
@@ -1447,18 +1517,18 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 dialog.cancel();
                             }
                         });
-        AlertDialog alertBox = alertDialogBuilder.create();
+        alertDialogBuilder.create();
         alertDialogBuilder.show();
 
     }
 
     private void processDateCircle() {
 
-        System.out.println("First Date: " + valueFromNumPicker1);
+        Log.i("First Date: ", String.valueOf(valueFromNumPicker1));
 
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
-        int year = calendar.getInstance().get(Calendar.YEAR);
+        int year = calendar.get(Calendar.YEAR);
         AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
 
         if (currentYear != null) {
@@ -1473,7 +1543,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 //the user has clicked SET on the dialog
                 isPaymentCircleSet = true;
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e("ParseException", e.getMessage());
             }
 
             // process again the balance
@@ -1560,7 +1630,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountJan();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountJan());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountJan());
                     }
                 }
                 if (currentMonth.equals(FEBRUARY)) {
@@ -1568,7 +1638,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountFeb();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountFeb());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountFeb());
                     }
                 }
                 if (currentMonth.equals(MARCH)) {
@@ -1576,7 +1646,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountMar();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountMar());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountMar());
                     }
                 }
                 if (currentMonth.equals(APRIL)) {
@@ -1584,7 +1654,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountApr();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountApr());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountApr());
                     }
                 }
                 if (currentMonth.equals(MAY)) {
@@ -1592,7 +1662,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountMay();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountMay());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountMay());
                     }
                 }
                 if (currentMonth.equals(JUNE)) {
@@ -1600,7 +1670,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountJun();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountJun());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountJun());
                     }
                 }
                 if (currentMonth.equals(JULY)) {
@@ -1608,7 +1678,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountJul();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountJul());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountJul());
                     }
                 }
                 if (currentMonth.equals(AUGUST)) {
@@ -1616,7 +1686,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountAug();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountAug());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountAug());
                     }
                 }
                 if (currentMonth.equals(SEPTEMBER)) {
@@ -1624,7 +1694,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountSep();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountSep());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountSep());
                     }
                 }
                 if (currentMonth.equals(OCTOBER)) {
@@ -1632,7 +1702,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountOct();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountOct());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountOct());
                     }
                 }
                 if (currentMonth.equals(NOVEMBER)) {
@@ -1640,7 +1710,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountNov();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountNov());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountNov());
                     }
                 }
                 if (currentMonth.equals(DECEMBER)) {
@@ -1648,7 +1718,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountDec();
                     } else {
-                        SumExpensesForBalance(currentYear.getYear().getArrayOfamountDec());
+                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountDec());
                     }
                 }
             }
@@ -1672,8 +1742,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager
                 .LayoutParams.FLAG_FULLSCREEN);
 
-        mChart = new HorizontalBarChart(this);
-        stackedBarLayout = (FrameLayout) findViewById(R.id.stackedBar);
+        HorizontalBarChart mChart = new HorizontalBarChart(this);
+        FrameLayout stackedBarLayout = (FrameLayout) findViewById(R.id.stackedBar);
         stackedBarLayout.addView(mChart);
         mChart.setDrawGridBackground(false);
 
@@ -1723,7 +1793,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         mChart.invalidate();
     }
 
-    private void SumExpensesForBalance(ArrayList<Float> arrayOfamount) {
+    private void sumExpensesForBalance(ArrayList<Float> arrayOfamount) {
         Float monthSumFloat = 0f;
 
             for (int i = 0; i < arrayOfamount.size(); i++) {
@@ -1733,7 +1803,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         monthSum = monthSumFloat;
     }
 
-    public void WriteToFile(String amountText, String descriptionText, String dateText) {
+    public void writeToFile(String amountText, String descriptionText, String dateText) {
         EditText amount = (EditText) findViewById(R.id.expenseText);
         EditText date = (EditText) findViewById(R.id.dateText);
         String amountField = amount.getText().toString();
@@ -1741,8 +1811,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         if (amountField.equals("") || amountField.equals(" ") || descriptionsItem.getSelectedItem
                 () == null || dateField.equals("")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle(EMPTY_FIELD)
                     .setMessage("Some of the fields are empty, fill them all and try again");
             AlertDialog alert1;
@@ -1755,8 +1824,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             alert1 = builder.create();
             alert1.show();
         } else {
+            PrintWriter out = null;
             try {
-                PrintWriter out = new PrintWriter(openFileOutput("expenses.txt", MODE_APPEND));
+                out = new PrintWriter(openFileOutput(EXPENSES_FILE, MODE_APPEND));
                 Spinner dateSpinner = (Spinner) findViewById(R.id.descriptionCombo);
                 date = (EditText) findViewById(R.id.dateText);
                 amountText = amount.getText().toString();
@@ -1776,21 +1846,24 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 out.append(String.format(formatStr, amountText, descriptionText, dateText));
                 //write the expense
                 out.write("\r\n");//write a new line
-                out.close();
+
                 Toast.makeText(this, "The expense is saved in the file.", Toast.LENGTH_LONG).show();
 
                 /*Need to call again here the readTheFile method in order to take into account the new expense that was added*/
                 /*if the map is null that means there is no expense for the current year. the user is adding the first expense of the year */
-                if (yearsMappedToObjectYearsMap.get(String.valueOf(year_x))==null){
+                if (yearsMappedToObjectYearsMap.get(String.valueOf(yearX))==null){
                     yearsMappedToObjectYearsMap = util.readTheFile();
                 }
                 else {
-                    util.updateMapWithNewExpense(amountText, descriptionText, dateText, year_x, yearsMappedToObjectYearsMap);
+                    util.updateMapWithNewExpense(amountText, descriptionText, dateText, yearX, yearsMappedToObjectYearsMap);
                 }
 
             } catch (Exception e) {
                 Toast.makeText(this, "Exception: " + e.toString(), Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+                Log.e("Exception", e.getMessage());
+            }
+            finally {
+                out.close();
             }
             if (budgetWarningEnabled) {
                 checkBudgetWarning();//since the expense is written in the file call the budget method is budget warning is enabled
@@ -1802,9 +1875,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
 
     public void checkBudgetWarning() {
-        //This is not needed anymore because it is called in the previous method writeToFile
-
-        //util.readTheFile();
 
         int sum = 0;
         //get the budget value as stored in Preferences in Budget Activity
@@ -1814,7 +1884,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         // i get the current month
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
-        int year = calendar.getInstance().get(Calendar.YEAR);
+        int year = calendar.get(Calendar.YEAR);
 
         AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
 
@@ -1922,9 +1992,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
     public static void getDialogForBudgetWarning(Double percentWarning, Context mContext) {
         if (percentWarning > 0.75 && percentWarning < 0.85) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog
-                    .THEME_HOLO_LIGHT)
-                    .setTitle("Budget Warning!")
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.Theme_AppCompat_Light_Dialog)
+                    .setTitle(BUDGET_WARNING)
                     .setMessage("You have reached the 80% of your budget as set in Budget Control" +
                             ". \n\n" +
                             "*** Remember you can always turn off these notifications from the " +
@@ -1939,9 +2008,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             alert1 = builder.create();
             alert1.show();
         } else if (percentWarning > 0.85 && percentWarning < 1) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog
-                    .THEME_HOLO_LIGHT)
-                    .setTitle("Budget Warning!")
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.Theme_AppCompat_Light_Dialog)
+                    .setTitle(BUDGET_WARNING)
                     .setMessage("You have reached the 90% of your budget as set in Budget Control" +
                             ". \n\n" +
                             "*** Remember you can always turn off these notifications from the " +
@@ -1956,9 +2024,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             alert1 = builder.create();
             alert1.show();
         } else if (percentWarning >= 1) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog
-                    .THEME_HOLO_LIGHT)
-                    .setTitle("Budget Warning!")
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.Theme_AppCompat_Light_Dialog)
+                    .setTitle(BUDGET_WARNING)
                     .setMessage("You have exceeded the 100% of your budget as set in Budget " +
                             "Control. Too many expenses this month? You can increase the budget " +
                             "warning " +
@@ -1977,14 +2044,13 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         }
     }
 
-    public void AddTheExpenses() {
+    public void addTheExpenses() {
 
         getDaysBetweenDates();
         if (dates.isEmpty()) {
             return;
         }
         EditText datesField = (EditText) findViewById(R.id.dateFromTo);
-        String datesFromTo = datesField.getText().toString();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy", Locale.US);
         Date dateIntheFile = null;
         Set<Date> datesMatchedUserInput = new TreeSet<>();
@@ -1995,12 +2061,13 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         String desc = "";
         String date = "";
+        Scanner in = null;
         try {
-            InputStream inputStream = openFileInput("expenses.txt");
+            InputStream inputStream = openFileInput(EXPENSES_FILE);
+
             if (inputStream != null) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                Scanner in = new Scanner(inputStreamReader);//read the file
+                in = new Scanner(inputStreamReader);//read the file
                 int lineIndex = 0;//this is to count the lines
                 while (in.hasNextLine()) {
                     String line = in.nextLine();
@@ -2009,8 +2076,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
                         expenseAmount = line.substring(0, line.indexOf(" "));//take the amount
                         // from the file
-                        int index = line.lastIndexOf(" ");
-                        desc = line.substring(line.indexOf(" "), index).trim();//take the
+                        int index = line.lastIndexOf(' ');
+                        desc = line.substring(line.indexOf(' '), index).trim();//take the
                         // description
                         date = line.substring(index, line.length());//take the date
                         try {
@@ -2018,9 +2085,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
                         } catch (ParseException e) {
 
-                            e.printStackTrace();
+                            Log.e("ParseException", e.getMessage());
                         }
-                        double firstDateAmountNumber = 0.0;
+                        double firstDateAmountNumber;
                         if (dates.contains(dateIntheFile)) {
                             datesMatchedUserInput.add(dateIntheFile);//add the Date in a list
                             // that will maintain them as the while loop checks all the dates.
@@ -2038,7 +2105,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                         .hasNext(); i++) {
                                     String descFound = s.next();
                                     if (desc.equals(descFound)) {
-                                        amountWithDuplicate = uniqueAmounts.get(i) + Float
+                                        Float amountWithDuplicate = uniqueAmounts.get(i) + Float
                                                 .valueOf(expenseAmount);//add up the amounts if
                                         // there are
                                         // duplicates
@@ -2087,9 +2154,14 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
         } catch (FileNotFoundException e) {
             Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         }
+        finally{
+            in.close();
+        }
+
     }
 
     public void sumTheExpensesByDescription(String desc) {
@@ -2134,8 +2206,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             sum += expenses.get(i);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, AlertDialog
-                .THEME_HOLO_LIGHT)
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                 .setTitle("Expenses for: " + datesFromTo)
                 .setMessage("You have spent: " + String.format(Locale.ENGLISH, "%.2f", sum));
         AlertDialog alert1;
@@ -2154,9 +2225,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         String datesFromTo = datesField.getText().toString();
         dates = new ArrayList<>();//the arraylist where i store the dates
 
-        if (datesFromTo.equals("") || datesFromTo.equals(null)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+        if (datesFromTo.equals("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("Empty Field!")
                     .setMessage("Add expenses field is empty.Please supply a date range");
             builder.setPositiveButton(OK,
@@ -2168,8 +2238,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             AlertDialog alert1 = builder.create();
             alert1.show();
         } else if (!datesFromTo.matches("^[0-9].*") || !datesFromTo.contains("-")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("Wrong Date!")
                     .setMessage("You entered words for a date or a single date. " +
                             "Please supply a correct date range in the format dd/MM/yyyy");
@@ -2193,7 +2262,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             if (!firstdate.matches("^(3[01]|[12][0-9]|0[1-9])/(1[0-2]|0[1-9])/[0-9]{4}$")
                     || !lastdate.matches("^(3[01]|[12][0-9]|0[1-9])/(1[0-2]|0[1-9])/[0-9]{4}$")) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
-                        AlertDialog.THEME_HOLO_LIGHT)
+                        R.style.Theme_AppCompat_Light_Dialog)
                         .setTitle("Wrong Format!")
                         .setMessage("Dates should be entered in the dd/MM/yyyy format.Please " +
                                 "supply a correct date range");
@@ -2210,7 +2279,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     startdate = format.parse(firstdate);
                 } catch (ParseException e) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
-                            AlertDialog.THEME_HOLO_LIGHT)
+                            R.style.Theme_AppCompat_Light_Dialog)
                             .setTitle("Wrong Format!")
                             .setMessage("Please supply a correct date range.");
                     builder.setPositiveButton(OK,
@@ -2221,25 +2290,27 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                             });
                     AlertDialog alert1 = builder.create();
                     alert1.show();
-                    e.printStackTrace();
+                    Log.e("ParseException" , e.getMessage());
                 }
-                Date enddate;
-                enddate = null;
+                Date endDate;
+                endDate = null;
                 try {
-                    enddate = format.parse(lastdate);//convert the second date into Date
+                    endDate = format.parse(lastdate);//convert the second date into Date
 
                 } catch (ParseException e) {
 
-                    e.printStackTrace();
+                    Log.e("ParseException", e.getMessage());
                 }
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(startdate);
 
-                while (calendar.getTime().getTime() <= enddate.getTime()) {
-                    Date result = calendar.getTime();//take the date
-                    dates.add(result);//add it to dates arraylist
-                    calendar.add(Calendar.DATE, 1);
+                if (endDate != null) {
+                    while (calendar.getTime().getTime() <= endDate.getTime()) {
+                        Date result = calendar.getTime();//take the date
+                        dates.add(result);//add it to dates arraylist
+                        calendar.add(Calendar.DATE, 1);
+                    }
                 }
 
             }// end of second else
@@ -2264,6 +2335,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
     private void exportExpensesFileToSdCard() {
         verifyStoragePermissions(MainActivity.this);
+        FileOutputStream f = null;
+        InputStream inputStream = null;
         try {
 
             File root2 = new File("/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt");
@@ -2276,19 +2349,30 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 dirAndFolder.mkdir();
             }
             File file = new File(dirAndFolder, "expenses" + ".txt");
-            FileOutputStream f = new FileOutputStream(file);//pass the directory of the SD card
+            f = new FileOutputStream(file);//pass the directory of the SD card
             // with the name file in a FileOutputStream
 
-            InputStream inputStream = new FileInputStream(root2);
+            inputStream = new FileInputStream(root2);
 
             byte[] buffer = new byte[1024];
             int len1 = 0;
             while ((len1 = inputStream.read(buffer)) > 0) {
                 f.write(buffer, 0, len1);
             }
-            f.close();
         } catch (Exception e) {
-            Log.e("Exception ", e.getMessage().toString());
+            Log.e("Exception ", e.getMessage());
+        }
+        finally {
+            try {
+                if(f != null) {
+                    f.close();
+                }
+                if(inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -2300,11 +2384,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         String formatStr = "%-7s %-15s %-10s";
         StringBuilder myData = new StringBuilder();
         File myExternalFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath
-                () + "/Download/", "expenses.txt");
+                () + "/Download/", EXPENSES_FILE);
+        BufferedReader br = null;
         try {
             FileInputStream fis = new FileInputStream(myExternalFile);
             DataInputStream in = new DataInputStream(fis);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            br = new BufferedReader(new InputStreamReader(in));
             String strLine;
             int lineIndex = 0;
             while ((strLine = br.readLine()) != null) {
@@ -2326,11 +2411,11 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                             String fileLineArrayOneSpace = aFileLineArray.replaceAll("\\s+", " ");
                             amount = fileLineArrayOneSpace.substring(0, aFileLineArray.indexOf(" " +
                                     ""));
-                            int index = fileLineArrayOneSpace.lastIndexOf(" ");
-                            desc = fileLineArrayOneSpace.substring(aFileLineArray.indexOf(" "),
+                            int index = fileLineArrayOneSpace.lastIndexOf(' ');
+                            desc = fileLineArrayOneSpace.substring(aFileLineArray.indexOf(' '),
                                     index).trim();
                             date = fileLineArrayOneSpace.substring(fileLineArrayOneSpace
-                                    .lastIndexOf(" "), fileLineArrayOneSpace.length()).trim();
+                                    .lastIndexOf(' '), fileLineArrayOneSpace.length()).trim();
                             myData.append(String.format(formatStr, amount, desc, date + "\n"));
                         }
                     } //this is the case where the file has lines of length<34, probably 33. do
@@ -2340,10 +2425,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 .replaceAll("\\s+", " ").contains(TWOTHOUSANDSIXTEEN))) {
                             amount = strLine.replaceAll("\\s+", " ").substring(0, strLine.indexOf
                                     (" "));
-                            int index = strLine.replaceAll("\\s+", " ").lastIndexOf(" ");
-                            desc = strLine.replaceAll("\\s+", " ").substring(strLine.indexOf(" ")
+                            int index = strLine.replaceAll("\\s+", " ").lastIndexOf(' ');
+                            desc = strLine.replaceAll("\\s+", " ").substring(strLine.indexOf(' ')
                                     , index).trim();
-                            date = strLine.substring(strLine.lastIndexOf(" "), strLine.length())
+                            date = strLine.substring(strLine.lastIndexOf(' '), strLine.length())
                                     .trim();
 
                             myData.append(String.format(formatStr, amount, desc, date + "\n"));
@@ -2359,10 +2444,16 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         } catch (IOException e) {
             e.printStackTrace();
         }
+        finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                Log.e("IOException", e.getMessage());
+            }
+        }
         //if the file in the Download folder is empty or does not exist
         if (myData.toString().equals("")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("No expenses file!")
                     .setMessage("There is no expenses file in the Download folder. Please export " +
                             "expenses first.");
@@ -2378,16 +2469,23 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             //now save the file from Sd card to internal storage data/data/....
             ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
             String directory = contextWrapper.getFilesDir().getPath();
-            File myInternalFile = new File(directory, "expenses.txt");
-
+            File myInternalFile = new File(directory, EXPENSES_FILE);
+            FileOutputStream fos = null;
             try {
-                FileOutputStream fos = new FileOutputStream(myInternalFile);
+                fos = new FileOutputStream(myInternalFile);
                 fos.write(myData.toString().getBytes());
                 fos.close();
                 Toast.makeText(MainActivity.this, "You imported the file", Toast.LENGTH_SHORT)
                         .show();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("IOException", e.getMessage());
+            }
+            finally {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -2402,8 +2500,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 || !textResponseFromHaven.replaceAll("\\s+", "").matches(".*[a-zA-Z]+.*")) {
             // response is null so do nothing, print a message to user to take
             // another picture
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("Did not capture that. Try again!")
                     .setMessage("There was nothing captured from your image or the characters are" +
                             " not recognisable. " +
@@ -2546,8 +2643,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             description, final String date) {
 
         if (expenseFound && dateFound && descFound) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("Expense, Date and Description Found")
                     .setMessage("Expense Amount: " + expenseAmount + "\n" +
                             "Description: " + description + "\n" +
@@ -2561,12 +2657,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                             expensesField.setText(expenseAmount);
                             dateText.setText(date);
 
-                            if (!description.equals(null)) {
+                            if (description!=null) {
                                 int spinnerPosition = spinnerAdapter.getPosition(description);
                                 descriptionsItem.setSelection(spinnerPosition + 1);
                             }
                             //write the expenses to the file
-                            WriteToFile("","","");
+                            writeToFile("","","");
                         }
                     });
 
@@ -2588,8 +2684,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         // something was not detected from the receipt
         else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("Found")
                     .setMessage( EXPENSE_AMOUNT + ": " + expenseAmount + "\n" +
                             DESCRIPTION +": " + description + "\n" +
@@ -2654,8 +2749,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         if (id == R.id.removeAds) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, AlertDialog
-                    .THEME_HOLO_LIGHT)
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("Ads are Removed")
                     .setMessage("You have already purchased Pro version so ads have been removed.");
             builder.setPositiveButton(CLOSE,
@@ -2678,8 +2772,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
     public void clear()//this method resets the shared preferences
     {
-        SharedPreferences prefs = mPreferenceManager.getDefaultSharedPreferences
-                (getApplicationContext());
+        SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());
         //SharedPreferences prefs; // here you get your prefrences by either of two methods
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
@@ -2759,18 +2852,19 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             addContent(document);
             document.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("Exception" , e.getMessage());
         }
     }
 
     private static void addContent(Document document) throws DocumentException {
 
         Paragraph preface = new Paragraph();
-
+        InputStream inputStream = null;
+        BufferedReader br = null;
         try {
-            InputStream inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
+            inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
                     ".moneycontrol/files/expenses.txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            br = new BufferedReader(new InputStreamReader(inputStream));
             String line = "";
             while ((line = br.readLine()) != null) {
 
@@ -2789,20 +2883,20 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         String lineTrimmed = line.trim();
 
                         // add a new font color for the header.
-                        table.addCell(new Phrase(lineTrimmed.substring(0, lineTrimmed.indexOf(" " +
+                        table.addCell(new Phrase(lineTrimmed.substring(0, lineTrimmed.indexOf(' ' +
                                 "")), f1));
-                        table.addCell(new Phrase(lineTrimmed.substring(lineTrimmed.indexOf(" "),
+                        table.addCell(new Phrase(lineTrimmed.substring(lineTrimmed.indexOf(' '),
                                 lineTrimmed.lastIndexOf(" ")).trim(), f1));
-                        table.addCell(new Phrase(lineTrimmed.substring(lineTrimmed.lastIndexOf(" " +
+                        table.addCell(new Phrase(lineTrimmed.substring(lineTrimmed.lastIndexOf(' ' +
                                 ""), lineTrimmed.length()).trim(), f1));
 
                     } else {
                         // add all the columns of the file amount description and date in a table
                         // to be formatted correctly
-                        table.addCell(line.substring(0, line.indexOf(" ")));
-                        table.addCell(line.substring(line.indexOf(" "), line.lastIndexOf(" "))
+                        table.addCell(line.substring(0, line.indexOf(' ')));
+                        table.addCell(line.substring(line.indexOf(" "), line.lastIndexOf(' '))
                                 .trim());
-                        table.addCell(line.substring(line.lastIndexOf(" "), line.length()).trim());
+                        table.addCell(line.substring(line.lastIndexOf(' '), line.length()).trim());
                     }
                     document.add(table);
                 }
@@ -2810,11 +2904,21 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 addEmptyLine(preface);
 
             }// end of while
-            inputStream.close();
+
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.e("FileNotFoundException", e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("IOException", e.getMessage());
+        }
+
+        finally {
+            try {
+                inputStream.close();
+                br.close();
+            } catch (IOException e) {
+                Log.e("IOException", e.getMessage());
+            }
+
         }
     }
 
@@ -2860,8 +2964,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     }
 
     protected void getUserAccount() {
-        if (ACCESS_TOKEN == null) return;
-        new UserAccountTask(DropboxClient.getClient(ACCESS_TOKEN), new UserAccountTask
+        if (accessToken == null) return;
+        new UserAccountTask(DropboxClient.getClient(accessToken), new UserAccountTask
                 .TaskDelegate() {
             @Override
             public void onAccountReceived(FullAccount account) {
@@ -2869,14 +2973,13 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 Log.d("User", account.getEmail());
                 Log.d("User", account.getName().getDisplayName());
                 Log.d("User", account.getAccountType().name());
-                //updateUI(account);
             }
 
             @Override
             public void onError() {
                 Log.d("User", "Error receiving account details.");
                 invalidToken = true;
-                System.out.println(invalidToken);
+                Log.i("invalidToken", String.valueOf(invalidToken));
             }
         }).execute();
     }
@@ -2898,24 +3001,24 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             DbxRequestConfig config = new DbxRequestConfig("JavaTutorial/1.0", Locale.getDefault
                     ().toString());
             DbxWebAuthNoRedirect webAuth = new DbxWebAuthNoRedirect(config, appInfo);
-            String authorizeUrl = webAuth.start();
             String code = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
             authFinish = webAuth.finish(code);
             validToken = true;
         } catch (DbxException e) {
-            e.printStackTrace();
+            Log.e("DbxException", e.getMessage());
             validToken = false;
         } catch (IOException j) {
-            j.printStackTrace();
+            Log.e("IOException", j.getMessage());
         }
 
-        accessToken = authFinish.getAccessToken();
-
+        if(authFinish!= null) {
+            accessToken = authFinish.getAccessToken();
+        }
         return validToken;
     }
 
     private String retrieveAccessToken() {
-        //check if ACCESS_TOKEN is stored on previous app launches
+        //check if accessToken is stored on previous app launches
         SharedPreferences prefs = getSharedPreferences("com.example.valdio.dropboxintegration",
                 Context.MODE_PRIVATE);
         String accessToken = prefs.getString("access-token", null);
@@ -2932,17 +3035,17 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor
+        int columnIndex = cursor
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
-        return cursor.getString(column_index);
+        return cursor.getString(columnIndex);
     }
 
     public static String findTheDateFormat(String dateString) {
 
         String dateStringFound = "";
 
-        DATE_FORMAT_REGEXPS = new HashMap<String, String>() {{
+        Map<String, String> dateFormatRegexps = new HashMap<String, String>() {{
             put("^\\d{8}$", "yyyyMMdd");
             put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
             put("^\\d{4}-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd");
@@ -2970,10 +3073,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     "HH:mm:ss");
         }};
 
-        for (String regexp : DATE_FORMAT_REGEXPS.keySet()) {
+        for (String regexp : dateFormatRegexps.keySet()) {
             if (dateString.toLowerCase(Locale.ENGLISH).matches(regexp)) {
 
-                dateStringFound = DATE_FORMAT_REGEXPS.get(regexp);
+                dateStringFound = dateFormatRegexps.get(regexp);
                 break;
             } else {
                 dateStringFound = null;// unknown format so handle it in the call

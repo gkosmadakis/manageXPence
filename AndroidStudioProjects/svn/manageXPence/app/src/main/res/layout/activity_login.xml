@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/loginActivityView"
-    tools:context="uk.co.irokottaki.moneycontrol.Activity.LoginActivity"
+    tools:context="uk.co.irokottaki.moneycontrol.activity.LoginActivity"
     android:background="@drawable/backgroundimg">
     <!-- Update package name -->
 

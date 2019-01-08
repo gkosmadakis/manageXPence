@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Utils;
+package uk.co.irokottaki.moneycontrol.utils;
 
 import android.content.Context;
 import android.database.DataSetObserver;

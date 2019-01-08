@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Model;
+package uk.co.irokottaki.moneycontrol.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,11 +9,11 @@ public class AnyYear implements Serializable {
     private String allLinesInFile;
 
 
-    public AnyYear(YearToSet year) {
+    public AnyYear(YearToSet yearToSet) {
 
-        year = new YearToSet(0.0f, 0.0f, 0.0f,0.0f, 0.0f, 0.0f,0.0f ,0.0f, 0.0f ,0.0f ,0.0f ,0.0f );
+        yearToSet = new YearToSet(0.0f, 0.0f, 0.0f,0.0f, 0.0f, 0.0f,0.0f ,0.0f, 0.0f ,0.0f ,0.0f ,0.0f );
 
-        this.year = year;
+        this.year = yearToSet;
     }
 
     public AnyYear() {

@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import uk.co.irokottaki.moneycontrol.Activity.HelpActivity;
+import uk.co.irokottaki.moneycontrol.activity.HelpActivity;
 
 public class ScreenSlidePageFragment extends Fragment {
 

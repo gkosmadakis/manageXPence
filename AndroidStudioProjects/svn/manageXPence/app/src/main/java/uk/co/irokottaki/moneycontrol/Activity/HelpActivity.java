@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +19,9 @@ import uk.co.irokottaki.moneycontrol.ScreenSlidePageFragment2;
 import uk.co.irokottaki.moneycontrol.ScreenSlidePageFragment3;
 import uk.co.irokottaki.moneycontrol.ScreenSlidePageFragment4;
 import uk.co.irokottaki.moneycontrol.ScreenSlidePageFragment5;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.HELP;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.HELP;
 
 public class HelpActivity extends AppCompatActivity {
     RelativeLayout layout;
@@ -135,7 +135,6 @@ public class HelpActivity extends AppCompatActivity {
                 NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
                 return true;
         }
-        //return super.onOptionsItemSelected(item);
     }
 
 

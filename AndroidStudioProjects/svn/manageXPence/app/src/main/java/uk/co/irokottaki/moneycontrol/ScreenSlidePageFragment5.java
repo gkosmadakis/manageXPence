@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import uk.co.irokottaki.moneycontrol.Activity.HelpActivity;
+import uk.co.irokottaki.moneycontrol.activity.HelpActivity;
 
 /**
  * Created by cousm on 06/07/2016.

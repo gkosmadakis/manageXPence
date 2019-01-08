@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Activity;
+package uk.co.irokottaki.moneycontrol.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,19 +18,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import uk.co.irokottaki.moneycontrol.Model.AnyYear;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.Utils.ChartsUtil;
-import uk.co.irokottaki.moneycontrol.Utils.NothingSelectedSpinnerAdapter;
-import uk.co.irokottaki.moneycontrol.Utils.Utils;
+import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class CalculateAnnualExpensesActivity extends AppCompatActivity {
-    private Spinner expensesList, yearList;
-    private Button calculateButton;
-    private ArrayAdapter<String> spinnerAdapter;
-    private ArrayList itemsAddedByUser = null;
+    private Spinner expensesList;
+    private Spinner yearList;
     private Double annualExpenseDouble;
     private ChartsUtil util;
     private int year;
@@ -45,13 +43,13 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
 
         util = new ChartsUtil(this);
         Intent intent = getIntent();
-        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP);
         //add it here to be used back in AnnualChartActivity
 
 
         //retrieve the spinner items from main activity so whatever is populated in the main
         // activity to be displayed here as well
-        itemsAddedByUser = MainActivity.getitemsAddedByUser();
+        ArrayList itemsAddedByUser = MainActivity.getitemsAddedByUser();
         //retrieve the data for calculation
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_calculate_annual_expenses);
@@ -62,7 +60,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
 
         expensesList = (Spinner) findViewById(R.id.expensesSpinner);
 
-        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 itemsAddedByUser);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         expensesList.setAdapter(spinnerAdapter);
@@ -80,7 +78,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         util.populateYearSpinnerAndSetCurrentYear(yearsMappedToObjectYearsMap,year, yearList, CalculateAnnualExpensesActivity.this);
 
         //calculate Button
-        calculateButton = new Button(this);
+        Button calculateButton = new Button(this);
         calculateButton = (Button) findViewById(R.id.calculateButton);
 
         calculateButton.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +91,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
                 if (expensesList.getSelectedItem() != null && !expensesList.getSelectedItem()
                         .equals("")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder
-                            (CalculateAnnualExpensesActivity.this, AlertDialog.THEME_HOLO_LIGHT)
+                            (CalculateAnnualExpensesActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                             .setTitle("Annual Expenses for year: " + yearList.getSelectedItem())
                             .setMessage("You have spent: " + df.format(annualExpenseDouble) + " " +
                                     "for " + expensesList.getSelectedItem());
@@ -119,7 +117,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
 
         if (expensesList.getSelectedItem() == null || expensesList.getSelectedItem().equals("")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(CalculateAnnualExpensesActivity
-                    .this, AlertDialog.THEME_HOLO_LIGHT)
+                    .this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle(EMPTY_FIELD)
                     .setMessage("Expenses Field is empty, select first an expense and try again");
             AlertDialog alert1;
@@ -151,7 +149,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
     public void onBackPressed() {
         /*Pass the map back to AnnualChartActivity when user presses the back button*/
         Intent intent = new Intent();
-        intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+        intent.putExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP, yearsMappedToObjectYearsMap);
         setResult(-1, intent);
         finish();
     }
@@ -171,7 +169,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         int id = item.getItemId();
         /*Pass the map back to AnnualChartActivity when user presses the back button on the top of activity*/
         Intent intent = new Intent();
-        intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+        intent.putExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP, yearsMappedToObjectYearsMap);
         setResult(-1, intent);
         finish();
         //noinspection SimplifiableIfStatement

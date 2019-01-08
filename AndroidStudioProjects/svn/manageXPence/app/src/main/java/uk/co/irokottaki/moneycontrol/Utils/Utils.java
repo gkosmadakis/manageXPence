@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol.Utils;
+package uk.co.irokottaki.moneycontrol.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,21 +13,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import uk.co.irokottaki.moneycontrol.Activity.AnnualChartActivity;
-import uk.co.irokottaki.moneycontrol.Activity.AnnualSavingsActivity;
-import uk.co.irokottaki.moneycontrol.Activity.BudgetActivity;
-import uk.co.irokottaki.moneycontrol.Activity.CalculateAnnualExpensesActivity;
-import uk.co.irokottaki.moneycontrol.Activity.ChartActivity;
-import uk.co.irokottaki.moneycontrol.Activity.EditActivity;
-import uk.co.irokottaki.moneycontrol.Activity.HelpActivity;
-import uk.co.irokottaki.moneycontrol.Activity.HorizontalBarChartActivity;
-import uk.co.irokottaki.moneycontrol.Activity.LoginActivity;
-import uk.co.irokottaki.moneycontrol.Activity.MainActivity;
-import uk.co.irokottaki.moneycontrol.Activity.ReportActivity;
-import uk.co.irokottaki.moneycontrol.Activity.SettingsActivity;
+import uk.co.irokottaki.moneycontrol.activity.AnnualChartActivity;
+import uk.co.irokottaki.moneycontrol.activity.AnnualSavingsActivity;
+import uk.co.irokottaki.moneycontrol.activity.BudgetActivity;
+import uk.co.irokottaki.moneycontrol.activity.CalculateAnnualExpensesActivity;
+import uk.co.irokottaki.moneycontrol.activity.ChartActivity;
+import uk.co.irokottaki.moneycontrol.activity.EditActivity;
+import uk.co.irokottaki.moneycontrol.activity.HelpActivity;
+import uk.co.irokottaki.moneycontrol.activity.HorizontalBarChartActivity;
+import uk.co.irokottaki.moneycontrol.activity.LoginActivity;
+import uk.co.irokottaki.moneycontrol.activity.MainActivity;
+import uk.co.irokottaki.moneycontrol.activity.ReportActivity;
+import uk.co.irokottaki.moneycontrol.activity.SettingsActivity;
 import uk.co.irokottaki.moneycontrol.R;
 
-import static uk.co.irokottaki.moneycontrol.Utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class Utils {
 
