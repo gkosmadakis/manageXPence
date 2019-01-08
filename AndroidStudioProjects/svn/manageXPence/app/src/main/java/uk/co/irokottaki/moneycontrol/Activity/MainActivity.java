@@ -574,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             @Override
             public void onClick(View view) {
 
-                writeToFile("","","");
+                writeToFile();
             }
         });
 
@@ -719,10 +719,13 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 try {
                     JSONObject object = null;
                         try {
-                            String sku = object.getString(PRODUCT_ID);
-                            String price = object.getString("price");
-                            if (sku.equals("premiumUpgrade")) {
-                                String mPremiumUpgradePrice = price;
+                            if (object != null) {
+                                String sku = object.getString(PRODUCT_ID);
+                                String price = object.getString("price");
+
+                                if (sku.equals("premiumUpgrade")) {
+                                    String mPremiumUpgradePrice = price;
+                                }
                             }
                         } catch (JSONException e) {
                             Log.e("JSONException",e.getMessage());
@@ -907,10 +910,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     JSONObject object = null;
                         try {
                             //object = new JSONObject(thisResponse);
-                            String sku = object.getString("productId");
-                            String price = object.getString("price");
-                            if (sku.equals("premiumUpgrade")) {
-                                String mPremiumUpgradePrice = price;
+                            if (object != null) {
+                                String sku = object.getString("productId");
+                                String price = object.getString("price");
+                                if (sku.equals("premiumUpgrade")) {
+                                    String mPremiumUpgradePrice = price;
+                                }
                             }
                         } catch (JSONException e) {
                             Log.e("JSONException",e.getMessage());
@@ -1394,9 +1399,15 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         }
         finally {
             try {
-                fstream.close();
-                br.close();
-                out.close();
+                if (fstream!= null) {
+                    fstream.close();
+                }
+                if (br!=null) {
+                    br.close();
+                }
+                if (out!= null) {
+                    out.close();
+                }
             } catch (IOException e) {
                 Log.e("IOException", e.getMessage());
             }
@@ -1803,7 +1814,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         monthSum = monthSumFloat;
     }
 
-    public void writeToFile(String amountText, String descriptionText, String dateText) {
+    public void writeToFile() {
         EditText amount = (EditText) findViewById(R.id.expenseText);
         EditText date = (EditText) findViewById(R.id.dateText);
         String amountField = amount.getText().toString();
@@ -1825,17 +1836,18 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             alert1.show();
         } else {
             PrintWriter out = null;
+            BufferedReader br = null;
             try {
                 out = new PrintWriter(openFileOutput(EXPENSES_FILE, MODE_APPEND));
                 Spinner dateSpinner = (Spinner) findViewById(R.id.descriptionCombo);
                 date = (EditText) findViewById(R.id.dateText);
-                amountText = amount.getText().toString();
-                descriptionText = dateSpinner.getSelectedItem().toString();
-                dateText = date.getText().toString();
+                String amountText = amount.getText().toString();
+                String descriptionText = dateSpinner.getSelectedItem().toString();
+                String dateText = date.getText().toString();
                 int length = 22;
                 String formatStr = "%-8s%-15s%-10s";
 
-                BufferedReader br = new BufferedReader(new FileReader("/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt"));
+                br = new BufferedReader(new FileReader("/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt"));
                 /*That means the first line of the file is empty so write the header*/
                 if (br.readLine() == null){
                     out.printf("%-" + length + "s %s%n", "Amount  Description", "Date");
@@ -1863,7 +1875,16 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 Log.e("Exception", e.getMessage());
             }
             finally {
-                out.close();
+                if (out!=null) {
+                    out.close();
+                }
+                if(br!=null){
+                    try {
+                        br.close();
+                    } catch (IOException e) {
+                        Log.e("IOException", e.getMessage());
+                    }
+                }
             }
             if (budgetWarningEnabled) {
                 checkBudgetWarning();//since the expense is written in the file call the budget method is budget warning is enabled
@@ -2446,7 +2467,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         }
         finally {
             try {
-                br.close();
+                if(br!=null) {
+                    br.close();
+                }
             } catch (IOException e) {
                 Log.e("IOException", e.getMessage());
             }
@@ -2482,7 +2505,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
             finally {
                 try {
-                    fos.close();
+                    if(fos!=null) {
+                        fos.close();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -2662,7 +2687,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 descriptionsItem.setSelection(spinnerPosition + 1);
                             }
                             //write the expenses to the file
-                            writeToFile("","","");
+                            writeToFile();
                         }
                     });
 
@@ -2671,7 +2696,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 public void onClick(DialogInterface dialog, int id) {
                     expensesField.setText(expenseAmount);
                     dateText.setText(date);
-                    if (!description.equals(null)) {
+                    if (description != null) {
                         int spinnerPosition = spinnerAdapter.getPosition(description);
                         descriptionsItem.setSelection(spinnerPosition + 1);
                     }
@@ -2913,8 +2938,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         finally {
             try {
-                inputStream.close();
-                br.close();
+                if(inputStream != null) {
+                    inputStream.close();
+                }
+                if(br != null) {
+                    br.close();
+                }
             } catch (IOException e) {
                 Log.e("IOException", e.getMessage());
             }
@@ -2993,7 +3022,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         return accessToken != null;
     }
 
-    private boolean checkValidToken(String accessToken) {
+    private boolean checkValidToken() {
         boolean validToken = false;
         DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
         DbxAuthFinish authFinish = null;
@@ -3012,7 +3041,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         }
 
         if(authFinish!= null) {
-            accessToken = authFinish.getAccessToken();
+            String accessToken = authFinish.getAccessToken();
         }
         return validToken;
     }

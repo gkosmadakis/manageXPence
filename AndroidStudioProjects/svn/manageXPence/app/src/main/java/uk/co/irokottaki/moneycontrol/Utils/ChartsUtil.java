@@ -859,7 +859,7 @@ public class ChartsUtil {
         String amount = "";
         String date = "";
         InputStream inputStream = null;
-                BufferedReader br = null;
+        BufferedReader br = null;
         try {
             inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
                     ".moneycontrol/files/expenses.txt");
@@ -943,8 +943,12 @@ public class ChartsUtil {
         }
         finally {
             try {
-                inputStream.close();
-                br.close();
+                if(inputStream!=null) {
+                    inputStream.close();
+                }
+                if(br!=null) {
+                    br.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

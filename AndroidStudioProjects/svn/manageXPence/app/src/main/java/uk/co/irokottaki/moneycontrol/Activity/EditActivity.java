@@ -482,10 +482,11 @@ public class EditActivity extends AppCompatActivity {
         // finally if the user has not exceeded the text limiters we process the Edit
         else if (amountEdited.length() <= 7 && descriptionEdited.length() <= 15 && dateEdited
                 .length() == 10) {
-
+            FileInputStream fstream = null;
+            BufferedReader br = null;
             try {
-                FileInputStream fstream = this.openFileInput(EXPENSES_FILE);
-                BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+                fstream = this.openFileInput(EXPENSES_FILE);
+                br = new BufferedReader(new InputStreamReader(fstream));
                 String strLine;
                 StringBuilder fileContent = new StringBuilder();
                 String amount = "";
@@ -534,6 +535,22 @@ public class EditActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Log.e("IOException: ", e.toString());
             }
+            finally {
+                if (fstream!= null){
+                    try {
+                        fstream.close();
+                    } catch (IOException e) {
+                        Log.e("IOException", e.getMessage());
+                    }
+                }
+                if (br!= null){
+                    try {
+                        br.close();
+                    } catch (IOException e) {
+                        Log.e("IOException", e.getMessage());
+                    }
+                }
+            }
         }
     }
 
@@ -546,10 +563,14 @@ public class EditActivity extends AppCompatActivity {
         } else {
             lineToCompare = lineBeforeEdit;//if he/she has set focus that means lineBeforeEdit
             // has taken value, i pass this value
-        }                                   // in lineToCompare
+        }
+        // in lineToCompare
+        FileInputStream fstream = null;
+        BufferedReader br = null;
+        PrintWriter out = null;
         try {
-            FileInputStream fstream = this.openFileInput(EXPENSES_FILE);
-            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            fstream = this.openFileInput(EXPENSES_FILE);
+            br = new BufferedReader(new InputStreamReader(fstream));
             String strLine;
             StringBuilder fileContent = new StringBuilder();
             while ((strLine = br.readLine()) != null) {
@@ -563,7 +584,7 @@ public class EditActivity extends AppCompatActivity {
                     //singleLineEdit will not be written to the file, it will be deleted.
                 }
             }
-            PrintWriter out = new PrintWriter(openFileOutput(EXPENSES_FILE, MODE_PRIVATE));
+            out = new PrintWriter(openFileOutput(EXPENSES_FILE, MODE_PRIVATE));
             if (fileContent.toString().replaceAll("\\s+", " ").equals("Amount Description Date ")) {
                 out.write(fileContent.toString().trim());
                 out.write("\r\n");
@@ -589,6 +610,25 @@ public class EditActivity extends AppCompatActivity {
             builder.show();
         } catch (Exception e) {//Catch exception if any
             Log.e("Error: ", e.getMessage());
+        }
+        finally {
+            if (fstream!= null){
+                try {
+                    fstream.close();
+                } catch (IOException e) {
+                    Log.e("IOException", e.getMessage());
+                }
+            }
+            if (br!= null){
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    Log.e("IOException", e.getMessage());
+                }
+            }
+            if (out!= null){
+                out.close();
+            }
         }
     }
 

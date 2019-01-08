@@ -262,10 +262,12 @@ public class SettingsActivity extends PreferenceActivity {
                 JSONObject object = null;
                     try {
                         //object = new JSONObject(thisResponse);
-                        String productId = object.getString("productId");
-                        String price = object.getString("price");
-                        if (productId.equals("premiumUpgrade")) {
-                            String mPremiumUpgradePrice = price;
+                        if(object != null) {
+                            String productId = object.getString("productId");
+                            String price = object.getString("price");
+                            if (productId.equals("premiumUpgrade")) {
+                                String mPremiumUpgradePrice = price;
+                            }
                         }
                     } catch (JSONException e) {
                         Log.e("JSONException", e.getMessage());
