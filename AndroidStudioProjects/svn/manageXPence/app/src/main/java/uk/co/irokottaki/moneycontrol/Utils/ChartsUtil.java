@@ -88,7 +88,7 @@ public class ChartsUtil {
         String desc;
         String date;
 
-        objectYear = new AnyYear();
+        objectYear = new AnyYear(yearToSet);
         yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         yearsMappedToMonthsWithAmountsMap = new HashMap<>();
         Scanner in = null;
@@ -255,7 +255,7 @@ public class ChartsUtil {
         for (Map.Entry<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearEntry : yearsMappedToMonthsWithAmountsMap.entrySet()) {
             String year = yearEntry.getKey();
             Log.e("Year from file is ", year);
-            objectYear = new AnyYear();
+            objectYear = new AnyYear(yearToSet);
 
             yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 

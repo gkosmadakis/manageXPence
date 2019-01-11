@@ -87,7 +87,7 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
         util.setXYAxisForChart(mChart);
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);// get the current year
-
+        yearView.setText(YEAR + year);
 
         //i am just setting the data for 2017 that will be displayed on initializing the activity
         // . Obviously it should be changed every year
