@@ -88,14 +88,13 @@ public class ChartsUtil {
         String desc;
         String date;
 
-        objectYear = new AnyYear(yearToSet);
+        objectYear = new AnyYear();
         yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         yearsMappedToMonthsWithAmountsMap = new HashMap<>();
-        InputStream inputStream = null;
         Scanner in = null;
         try {
-            inputStream = context.openFileInput(EXPENSES_FILE);
-            in = new Scanner(inputStream);
+
+            in = new Scanner(context.openFileInput(EXPENSES_FILE));
             int lineIndex = 0;//this is to count the lines
 
             TreeMap tempFirstMap = new TreeMap<Integer, Map<String, ArrayList<String>>>();//to use lastKey to find the higher month
@@ -201,16 +200,9 @@ public class ChartsUtil {
         }
         finally {
 
-            try {
-                if(inputStream != null) {
-                    inputStream.close();
-                }
                 if(in != null) {
                     in.close();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
         /*Call the method to iterate the map*/
@@ -263,7 +255,7 @@ public class ChartsUtil {
         for (Map.Entry<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearEntry : yearsMappedToMonthsWithAmountsMap.entrySet()) {
             String year = yearEntry.getKey();
             Log.e("Year from file is ", year);
-            objectYear = new AnyYear(yearToSet);
+            objectYear = new AnyYear();
 
             yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -442,7 +434,7 @@ public class ChartsUtil {
         mChart.invalidate();
     }
 
-    public Calendar setXYAxisForChart(TextView yearView, LineChart mChart, int year) {
+    public void setXYAxisForChart(LineChart mChart) {
         XAxis xAxis = mChart.getXAxis();
         xAxis.setSpaceBetweenLabels(1);
 
@@ -458,11 +450,6 @@ public class ChartsUtil {
         leftAxis.setDrawLimitLinesBehindData(true);
 
         mChart.getAxisRight().setEnabled(false);
-
-        Calendar calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);// get the current year
-        yearView.setText(YEAR + year);
-        return calendar;
     }
 
     public void casesToShowExpensesForMonth(HashMap<String, AnyYear> yearsMappedToObjectYearsMap,int monthInt, int yearRequested, Activity activity) {
@@ -858,12 +845,11 @@ public class ChartsUtil {
         String fileLine = "";
         String amount = "";
         String date = "";
-        InputStream inputStream = null;
         BufferedReader br = null;
         try {
-            inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
-                    ".moneycontrol/files/expenses.txt");
-            br = new BufferedReader(new InputStreamReader(inputStream));
+
+            br = new BufferedReader(new InputStreamReader(new FileInputStream("/data/data/uk.co.irokottaki" +
+                    ".moneycontrol/files/expenses.txt")));
             String line = "";
             int lineIndex = 0;//this is to count the lines
             while ((line = br.readLine()) != null) {
@@ -943,9 +929,7 @@ public class ChartsUtil {
         }
         finally {
             try {
-                if(inputStream!=null) {
-                    inputStream.close();
-                }
+                
                 if(br!=null) {
                     br.close();
                 }

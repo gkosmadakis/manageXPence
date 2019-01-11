@@ -9,15 +9,11 @@ public class AnyYear implements Serializable {
     private String allLinesInFile;
 
 
-    public AnyYear(YearToSet yearToSet) {
-
-        yearToSet = new YearToSet(0.0f, 0.0f, 0.0f,0.0f, 0.0f, 0.0f,0.0f ,0.0f, 0.0f ,0.0f ,0.0f ,0.0f );
-
-        this.year = yearToSet;
-    }
-
     public AnyYear() {
 
+        YearToSet yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+        this.year = yearToSet;
     }
 
     public YearToSet getYear() {

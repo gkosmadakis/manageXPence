@@ -2,6 +2,7 @@ package uk.co.irokottaki.moneycontrol.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -716,25 +717,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         }
                     }
                 };
-                try {
-                    JSONObject object = null;
-                        try {
-                            if (object != null) {
-                                String sku = object.getString(PRODUCT_ID);
-                                String price = object.getString("price");
 
-                                if (sku.equals("premiumUpgrade")) {
-                                    String mPremiumUpgradePrice = price;
-                                }
-                            }
-                        } catch (JSONException e) {
-                            Log.e("JSONException",e.getMessage());
-                        }
-
-                    //}Remote
-                } catch (Exception e) {
-                    Log.e("Exception", e.getMessage());
-                }
                 //check if the user has purchased the PRO version
                 // If the request is successful, the returned Bundle has a response code of 0.
 
@@ -906,25 +889,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         }
                     }
                 };
-                try {
-                    JSONObject object = null;
-                        try {
-                            //object = new JSONObject(thisResponse);
-                            if (object != null) {
-                                String sku = object.getString("productId");
-                                String price = object.getString("price");
-                                if (sku.equals("premiumUpgrade")) {
-                                    String mPremiumUpgradePrice = price;
-                                }
-                            }
-                        } catch (JSONException e) {
-                            Log.e("JSONException",e.getMessage());
-                        }
 
-                    //}Remote
-                } catch (Exception e) {
-                    Log.e("Exception",e.getMessage());
-                }
                 //check if the user has purchased the PRO version
                 //check if the user is Pro retrieve boolean from SharedPreferences
                 //the user has PRO version so make the import
@@ -1343,12 +1308,11 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     }
 
     private void readDescriptionsFile() {
-        InputStream inputStream = null;
+
         Scanner in = null;
         try {
-            inputStream = openFileInput(DESCRIPTIONS_FILE);
-            in = new Scanner(inputStream);
 
+            in = new Scanner(openFileInput(DESCRIPTIONS_FILE));
             while (in.hasNextLine()) {
                 String descriptionItem = in.nextLine();
                 itemsAddedByUser.add(descriptionItem);
@@ -1358,29 +1322,20 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             Log.e("IOException", e.getMessage());
         }
         finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                if(in != null) {
-                    in.close();
-                }
-            } catch (IOException e) {
-                Log.e("IOException", e.getMessage());
+            if (in != null) {
+                in.close();
             }
-
         }
-    }
 
+    }
+    @TargetApi(19)
     private void deleteDescriptionFromFile() {
         String checkedDescription = addedDescriptionField.getText().toString();
-        FileInputStream fstream = null;
-        BufferedReader br = null;
-        PrintWriter out = null;
-        try {
 
-            fstream = this.openFileInput(DESCRIPTIONS_FILE);
-            br = new BufferedReader(new InputStreamReader(fstream));
+        try (FileInputStream fstream = this.openFileInput(DESCRIPTIONS_FILE);
+             BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+             PrintWriter out = new PrintWriter(openFileOutput(DESCRIPTIONS_FILE, MODE_PRIVATE));){
+
             String strLine;
             StringBuilder fileContent = new StringBuilder();
             while ((strLine = br.readLine()) != null) {
@@ -1389,7 +1344,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     fileContent.append("\r\n");
                 }
             }
-            out = new PrintWriter(openFileOutput(DESCRIPTIONS_FILE, MODE_PRIVATE));
+
             out.write(fileContent.toString());
             out.close();
             Toast.makeText(this, checkedDescription + " removed from your list", Toast
@@ -1397,22 +1352,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         } catch (Exception e) {            //Catch exception if any
             Log.e("Exception", e.getMessage());
         }
-        finally {
-            try {
-                if (fstream!= null) {
-                    fstream.close();
-                }
-                if (br!=null) {
-                    br.close();
-                }
-                if (out!= null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                Log.e("IOException", e.getMessage());
-            }
 
-        }
     }
 
     public void showDialogOnButtonClick() {
@@ -1849,7 +1789,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
                 br = new BufferedReader(new FileReader("/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt"));
                 /*That means the first line of the file is empty so write the header*/
-                if (br.readLine() == null){
+                String line = br.readLine();
+                if (line == null){
                     out.printf("%-" + length + "s %s%n", "Amount  Description", "Date");
                     out.write("\r\n");//write two new lines
                     out.write("\r\n");
@@ -2353,27 +2294,21 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             );
         }
     }
-
+    @TargetApi(19)
     private void exportExpensesFileToSdCard() {
         verifyStoragePermissions(MainActivity.this);
-        FileOutputStream f = null;
-        InputStream inputStream = null;
-        try {
+        File root2 = new File("/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt");
+        //get the directory of the file stored
 
-            File root2 = new File("/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt");
-            //get the directory of the file stored
+        File dirAndFolder = new File(Environment.getExternalStoragePublicDirectory
+                (Environment.DIRECTORY_DOWNLOADS), "");
 
-            File dirAndFolder = new File(Environment.getExternalStoragePublicDirectory
-                    (Environment.DIRECTORY_DOWNLOADS), "");
-
-            if (!dirAndFolder.exists()) {
-                dirAndFolder.mkdir();
-            }
-            File file = new File(dirAndFolder, "expenses" + ".txt");
-            f = new FileOutputStream(file);//pass the directory of the SD card
-            // with the name file in a FileOutputStream
-
-            inputStream = new FileInputStream(root2);
+        if (!dirAndFolder.exists()) {
+            dirAndFolder.mkdir();
+        }
+        File file = new File(dirAndFolder, "expenses" + ".txt");
+        try (FileOutputStream f = new FileOutputStream(file);
+             InputStream inputStream = new FileInputStream(root2);){
 
             byte[] buffer = new byte[1024];
             int len1 = 0;
@@ -2382,18 +2317,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
         } catch (Exception e) {
             Log.e("Exception ", e.getMessage());
-        }
-        finally {
-            try {
-                if(f != null) {
-                    f.close();
-                }
-                if(inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -2880,16 +2803,15 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             Log.e("Exception" , e.getMessage());
         }
     }
-
+    @TargetApi(19)
     private static void addContent(Document document) throws DocumentException {
 
         Paragraph preface = new Paragraph();
-        InputStream inputStream = null;
         BufferedReader br = null;
         try {
-            inputStream = new FileInputStream("/data/data/uk.co.irokottaki" +
-                    ".moneycontrol/files/expenses.txt");
-            br = new BufferedReader(new InputStreamReader(inputStream));
+
+            br = new BufferedReader(new InputStreamReader(new FileInputStream("/data/data/uk.co.irokottaki" +
+                    ".moneycontrol/files/expenses.txt")));
             String line = "";
             while ((line = br.readLine()) != null) {
 
@@ -2935,19 +2857,14 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         } catch (IOException e) {
             Log.e("IOException", e.getMessage());
         }
-
         finally {
-            try {
-                if(inputStream != null) {
-                    inputStream.close();
-                }
-                if(br != null) {
+            if (br != null) {
+                try {
                     br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                Log.e("IOException", e.getMessage());
             }
-
         }
     }
 
@@ -3074,33 +2991,31 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         String dateStringFound = "";
 
-        Map<String, String> dateFormatRegexps = new HashMap<String, String>() {{
-            put("^\\d{8}$", "yyyyMMdd");
-            put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
-            put("^\\d{4}-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd");
-            put("^\\d{1,2}/\\d{1,2}/\\d{4}$", "MM/dd/yyyy");
-            put("^\\d{1,2}/\\d{1,2}/\\d{2}$", "dd/MM/yy");
-            put("^\\d{4}/\\d{1,2}/\\d{1,2}$", "yyyy/MM/dd");
-            put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}$", "dd MMM yyyy");
-            put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}$", "dd MMMM yyyy");
-            put("^\\d{12}$", "yyyyMMddHHmm");
-            put("^\\d{8}\\s\\d{4}$", "yyyyMMdd HHmm");
-            put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}$", "dd-MM-yyyy HH:mm");
-            put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy-MM-dd HH:mm");
-            put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}$", "MM/dd/yyyy HH:mm");
-            put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy/MM/dd HH:mm");
-            put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMM yyyy HH:mm");
-            put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMMM yyyy HH:mm");
-            put("^\\d{14}$", "yyyyMMddHHmmss");
-            put("^\\d{8}\\s\\d{6}$", "yyyyMMdd HHmmss");
-            put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd-MM-yyyy HH:mm:ss");
-            put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy-MM-dd HH:mm:ss");
-            put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "MM/dd/yyyy HH:mm:ss");
-            put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy/MM/dd HH:mm:ss");
-            put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMM yyyy HH:mm:ss");
-            put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMMM yyyy " +
-                    "HH:mm:ss");
-        }};
+        Map<String, String> dateFormatRegexps = new HashMap<String, String>();
+        dateFormatRegexps.put("^\\d{8}$", "yyyyMMdd");
+        dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
+        dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd");
+        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}$", "MM/dd/yyyy");
+        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{2}$", "dd/MM/yy");
+        dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}$", "yyyy/MM/dd");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}$", "dd MMM yyyy");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}$", "dd MMMM yyyy");
+        dateFormatRegexps.put("^\\d{12}$", "yyyyMMddHHmm");
+        dateFormatRegexps.put("^\\d{8}\\s\\d{4}$", "yyyyMMdd HHmm");
+        dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}$", "dd-MM-yyyy HH:mm");
+        dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy-MM-dd HH:mm");
+        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}$", "MM/dd/yyyy HH:mm");
+        dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy/MM/dd HH:mm");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMM yyyy HH:mm");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMMM yyyy HH:mm");
+        dateFormatRegexps.put("^\\d{14}$", "yyyyMMddHHmmss");
+        dateFormatRegexps.put("^\\d{8}\\s\\d{6}$", "yyyyMMdd HHmmss");
+        dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd-MM-yyyy HH:mm:ss");
+        dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy-MM-dd HH:mm:ss");
+        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "MM/dd/yyyy HH:mm:ss");
+        dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy/MM/dd HH:mm:ss");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMM yyyy HH:mm:ss");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMMM yyyy " + "HH:mm:ss");
 
         for (String regexp : dateFormatRegexps.keySet()) {
             if (dateString.toLowerCase(Locale.ENGLISH).matches(regexp)) {

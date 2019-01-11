@@ -125,7 +125,8 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                 " on a year for each expense?" +
                 "</u></font>"));
 
-        Calendar calendar = util.setXYAxisForChart(yearView, mChart, year);
+        util.setXYAxisForChart(mChart);
+        Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);// get the current year
         yearView.setText(YEAR + year);
 

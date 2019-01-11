@@ -84,7 +84,8 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
         //Year Label
         yearView = (TextView) findViewById(R.id.yearlabelSavings);
 
-        Calendar calendar = util.setXYAxisForChart(yearView, mChart, year);
+        util.setXYAxisForChart(mChart);
+        Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);// get the current year
 
 

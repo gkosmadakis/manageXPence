@@ -230,7 +230,6 @@ public class SettingsActivity extends PreferenceActivity {
                             }
                         };
 
-                        extractPrductIdAndPriceFromJSONObject();
                         //check if the user has purchased the PRO version
                         //check if user is Pro by retrieving it from the Shared Preferences
                         //the user has PRO version so proceed to change color
@@ -256,28 +255,6 @@ public class SettingsActivity extends PreferenceActivity {
             });
 
         }//end of onCreate
-
-        private void extractPrductIdAndPriceFromJSONObject() {
-            try {
-                JSONObject object = null;
-                    try {
-                        //object = new JSONObject(thisResponse);
-                        if(object != null) {
-                            String productId = object.getString("productId");
-                            String price = object.getString("price");
-                            if (productId.equals("premiumUpgrade")) {
-                                String mPremiumUpgradePrice = price;
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Log.e("JSONException", e.getMessage());
-                    }
-
-                //}Remote
-            } catch (Exception e) {
-                Log.e("Exception", e.getMessage());
-            }
-        }
 
         private void askPermissions() {
 
