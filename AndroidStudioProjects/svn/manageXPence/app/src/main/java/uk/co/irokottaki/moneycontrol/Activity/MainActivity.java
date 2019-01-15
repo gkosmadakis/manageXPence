@@ -1759,6 +1759,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         EditText date = (EditText) findViewById(R.id.dateText);
         String amountField = amount.getText().toString();
         String dateField = date.getText().toString();
+        String amountText = "";
+        String descriptionText = "";
+        String dateText = "";
 
         if (amountField.equals("") || amountField.equals(" ") || descriptionsItem.getSelectedItem
                 () == null || dateField.equals("")) {
@@ -1781,9 +1784,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 out = new PrintWriter(openFileOutput(EXPENSES_FILE, MODE_APPEND));
                 Spinner dateSpinner = (Spinner) findViewById(R.id.descriptionCombo);
                 date = (EditText) findViewById(R.id.dateText);
-                String amountText = amount.getText().toString();
-                String descriptionText = dateSpinner.getSelectedItem().toString();
-                String dateText = date.getText().toString();
+                amountText = amount.getText().toString();
+                descriptionText = dateSpinner.getSelectedItem().toString();
+                dateText = date.getText().toString();
                 int length = 22;
                 String formatStr = "%-8s%-15s%-10s";
 
@@ -1802,15 +1805,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
                 Toast.makeText(this, "The expense is saved in the file.", Toast.LENGTH_LONG).show();
 
-                /*Need to call again here the readTheFile method in order to take into account the new expense that was added*/
-                /*if the map is null that means there is no expense for the current year. the user is adding the first expense of the year */
-                if (yearsMappedToObjectYearsMap.get(String.valueOf(yearX))==null){
-                    yearsMappedToObjectYearsMap = util.readTheFile();
-                }
-                else {
-                    util.updateMapWithNewExpense(amountText, descriptionText, dateText, yearX, yearsMappedToObjectYearsMap);
-                }
-
             } catch (Exception e) {
                 Toast.makeText(this, "Exception: " + e.toString(), Toast.LENGTH_LONG).show();
                 Log.e("Exception", e.getMessage());
@@ -1826,6 +1820,14 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         Log.e("IOException", e.getMessage());
                     }
                 }
+            }
+            /*Need to call again here the readTheFile method in order to take into account the new expense that was added*/
+            /*if the map is null that means there is no expense for the current year. the user is adding the first expense of the year */
+            if (yearsMappedToObjectYearsMap.get(String.valueOf(yearX))==null){
+                yearsMappedToObjectYearsMap = util.readTheFile();
+            }
+            else {
+                util.updateMapWithNewExpense(amountText, descriptionText, dateText, yearX, yearsMappedToObjectYearsMap);
             }
             if (budgetWarningEnabled) {
                 checkBudgetWarning();//since the expense is written in the file call the budget method is budget warning is enabled
