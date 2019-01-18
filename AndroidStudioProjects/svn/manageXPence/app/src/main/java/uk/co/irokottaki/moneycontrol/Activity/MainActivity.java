@@ -2123,7 +2123,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             Log.e("login activity", "Can not read file: " + e.toString());
         }
         finally{
-            in.close();
+            if(in != null) {
+                in.close();
+            }
         }
 
     }

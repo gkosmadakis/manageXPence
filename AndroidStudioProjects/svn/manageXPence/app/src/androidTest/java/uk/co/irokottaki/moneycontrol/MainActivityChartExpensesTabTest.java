@@ -21,6 +21,7 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -38,15 +39,11 @@ import static org.hamcrest.Matchers.is;
 public class MainActivityChartExpensesTabTest {
 
     @Rule
-    public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen
-            .class);
+    public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen.class);
 
     @Test
-    public void mainActivityChartExpensesTabTest() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
-        // /index.html
+    public void test() {
+
         sleep(3000);
 
         ViewInteraction appCompatEditText = onView(
@@ -58,7 +55,7 @@ public class MainActivityChartExpensesTabTest {
                                                 2)),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("150"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("50"), closeSoftKeyboard());
 
         ViewInteraction appCompatSpinner = onView(
                 allOf(withId(R.id.descriptionCombo),
@@ -75,32 +72,41 @@ public class MainActivityChartExpensesTabTest {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(8);
-        appCompatCheckedTextView.perform(scrollTo());
+                .atPosition(3);
         appCompatCheckedTextView.perform(click());
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.dateButton), withText("Select Date"),
+        ViewInteraction appCompatEditTextFirst = onView(
+                allOf(withId(R.id.dateText),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
                                                 4)),
-                                0),
+                                1),
                         isDisplayed()));
-        appCompatButton.perform(click());
+        appCompatEditTextFirst.perform(replaceText("01/01/2019"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
+                allOf(withId(R.id.saveButton), withText("Save To File"),
                         childAtPosition(
-                                allOf(withClassName(is("com.android.internal.widget" +
-                                                ".ButtonBarLayout")),
+                                allOf(withId(R.id.addExpenses),
                                         childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                3),
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
                         isDisplayed()));
         appCompatButton2.perform(click());
+
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("01/02/2019"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.saveButton), withText("Save To File"),
@@ -113,47 +119,19 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.expenseText), withText("150"),
-                        childAtPosition(
-                                allOf(withId(R.id.linearLayout),
-                                        childAtPosition(
-                                                withId(R.id.addExpenses),
-                                                2)),
-                                1),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("87"));
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.expenseText), withText("87"),
+                allOf(withId(R.id.dateText),
                         childAtPosition(
-                                allOf(withId(R.id.linearLayout),
+                                allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                4)),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("01/03/2019"), closeSoftKeyboard());
 
-        ViewInteraction appCompatSpinner2 = onView(
-                allOf(withId(R.id.descriptionCombo),
-                        childAtPosition(
-                                allOf(withId(R.id.linearLayout2),
-                                        childAtPosition(
-                                                withId(R.id.addExpenses),
-                                                3)),
-                                1),
-                        isDisplayed()));
-        appCompatSpinner2.perform(click());
-
-        DataInteraction appCompatCheckedTextView2 = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(3);
-        appCompatCheckedTextView2.perform(click());
-
-        ViewInteraction appCompatButton4 = onView(
+        ViewInteraction appCompatButton6 = onView(
                 allOf(withId(R.id.saveButton), withText("Save To File"),
                         childAtPosition(
                                 allOf(withId(R.id.addExpenses),
@@ -162,7 +140,296 @@ public class MainActivityChartExpensesTabTest {
                                                 0)),
                                 5),
                         isDisplayed()));
-        appCompatButton4.perform(click());
+        appCompatButton6.perform(click());
+
+
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("01/04/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton9 = onView(
+                allOf(withId(R.id.saveButton), withText("Save To File"),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatButton9.perform(click());
+
+
+        ViewInteraction appCompatEditText5 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText5.perform(replaceText("01/05/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton12 = onView(
+                allOf(withId(R.id.saveButton), withText("Save To File"),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatButton12.perform(click());
+
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText6.perform(replaceText("01/06/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton15 = onView(
+                allOf(withId(R.id.saveButton), withText("Save To File"),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatButton15.perform(click());
+
+        ViewInteraction appCompatEditText7 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText7.perform(replaceText("01/07/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton18 = onView(
+                allOf(withId(R.id.saveButton), withText("Save To File"),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatButton18.perform(click());
+
+
+        ViewInteraction appCompatEditText8 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText8.perform(replaceText("01/08/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton21 = onView(
+                allOf(withId(R.id.saveButton), withText("Save To File"),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatButton21.perform(click());
+
+
+        ViewInteraction appCompatEditText9 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText9.perform(replaceText("01/09/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton24 = onView(
+                allOf(withId(R.id.saveButton), withText("Save To File"),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatButton24.perform(click());
+
+
+        ViewInteraction appCompatEditText10 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText10.perform(replaceText("01/10/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton27 = onView(
+                allOf(withId(R.id.saveButton), withText("Save To File"),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatButton27.perform(click());
+
+
+        ViewInteraction appCompatEditText11 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText11.perform(replaceText("01/11/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton30 = onView(
+                allOf(withId(R.id.saveButton), withText("Save To File"),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatButton30.perform(click());
+
+
+        ViewInteraction appCompatEditText12 = onView(
+                allOf(withId(R.id.dateText),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout3),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText12.perform(replaceText("01/12/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton33 = onView(
+                allOf(withId(R.id.saveButton), withText("Save To File"),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatButton33.perform(click());
+
+        ViewInteraction appCompatEditText14 = onView(
+                allOf(withId(R.id.incomeField),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout4),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                8)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText14.perform(replaceText("10"), closeSoftKeyboard());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
+        // /index.html
+        sleep(3000);
+
+        ViewInteraction appCompatEditText15 = onView(
+                allOf(withId(R.id.incomeField), withText("10"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout4),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                8)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText15.perform(replaceText("100"));
+
+        ViewInteraction appCompatEditText16 = onView(
+                allOf(withId(R.id.incomeField), withText("100"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout4),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                8)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText16.perform(closeSoftKeyboard());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
+        // /index.html
+        sleep(3000);
+
+        ViewInteraction appCompatEditText17 = onView(
+                allOf(withId(R.id.incomeField), withText("100"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout4),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                8)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText17.perform(replaceText("1000"));
+
+        ViewInteraction appCompatEditText18 = onView(
+                allOf(withId(R.id.incomeField), withText("1000"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout4),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                8)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText18.perform(closeSoftKeyboard());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
+        // /index.html
+        sleep(3000);
+
+        ViewInteraction appCompatEditText19 = onView(
+                allOf(withId(R.id.incomeField), withText("1000"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout4),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                8)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText19.perform(pressImeActionButton());
 
         ViewInteraction linearLayout = onView(
                 allOf(childAtPosition(
@@ -174,7 +441,7 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         linearLayout.perform(click());
 
-        ViewInteraction appCompatButton5 = onView(
+        ViewInteraction appCompatButton34 = onView(
                 allOf(withId(R.id.chartButton), withText("Pie Chart"),
                         childAtPosition(
                                 allOf(withId(R.id.ChartExpenses),
@@ -183,7 +450,18 @@ public class MainActivityChartExpensesTabTest {
                                                 2)),
                                 2),
                         isDisplayed()));
-        appCompatButton5.perform(click());
+        appCompatButton34.perform(click());
+
+        ViewInteraction appCompatImageButton12 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton12.perform(click());
 
         ViewInteraction switch_ = onView(
                 allOf(withId(R.id.toggleButton), withText("% or £"),
@@ -196,7 +474,128 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         switch_.perform(click());
 
-        ViewInteraction appCompatImageButton = onView(
+        ViewInteraction appCompatImageButton13 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton13.perform(click());
+
+        ViewInteraction appCompatImageButton14 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton14.perform(click());
+
+        ViewInteraction appCompatImageButton15 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton15.perform(click());
+
+        ViewInteraction appCompatImageButton16 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton16.perform(click());
+
+        ViewInteraction appCompatImageButton17 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton17.perform(click());
+
+        ViewInteraction appCompatImageButton18 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton18.perform(click());
+
+        ViewInteraction appCompatImageButton19 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton19.perform(click());
+
+        ViewInteraction appCompatImageButton20 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton20.perform(click());
+
+        ViewInteraction appCompatImageButton21 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton21.perform(click());
+
+        ViewInteraction appCompatImageButton22 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton22.perform(click());
+
+        ViewInteraction appCompatImageButton23 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.chartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatImageButton23.perform(click());
+
+        ViewInteraction appCompatImageButton24 = onView(
                 allOf(withId(R.id.arrowLeft),
                         childAtPosition(
                                 allOf(withId(R.id.chartView),
@@ -205,29 +604,7 @@ public class MainActivityChartExpensesTabTest {
                                                 0)),
                                 2),
                         isDisplayed()));
-        appCompatImageButton.perform(click());
-
-        ViewInteraction appCompatImageButton2 = onView(
-                allOf(withId(R.id.arrowRight),
-                        childAtPosition(
-                                allOf(withId(R.id.chartView),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatImageButton2.perform(click());
-
-        ViewInteraction appCompatImageButton3 = onView(
-                allOf(withId(R.id.arrowRight),
-                        childAtPosition(
-                                allOf(withId(R.id.chartView),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatImageButton3.perform(click());
+        appCompatImageButton24.perform(click());
 
         ViewInteraction imageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -240,7 +617,7 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         imageButton.perform(click());
 
-        ViewInteraction appCompatButton6 = onView(
+        ViewInteraction appCompatButton35 = onView(
                 allOf(withId(R.id.barChartbutton), withText("Bar Chart"),
                         childAtPosition(
                                 allOf(withId(R.id.ChartExpenses),
@@ -249,7 +626,18 @@ public class MainActivityChartExpensesTabTest {
                                                 2)),
                                 5),
                         isDisplayed()));
-        appCompatButton6.perform(click());
+        appCompatButton35.perform(click());
+
+        ViewInteraction appCompatImageButton25 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton25.perform(click());
 
         ViewInteraction switch_2 = onView(
                 allOf(withId(R.id.switchButton), withText("% or £"),
@@ -262,29 +650,7 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         switch_2.perform(click());
 
-        ViewInteraction appCompatImageButton4 = onView(
-                allOf(withId(R.id.arrowLeft),
-                        childAtPosition(
-                                allOf(withId(R.id.barChartView),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatImageButton4.perform(click());
-
-        ViewInteraction appCompatButton7 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                allOf(withClassName(is("com.android.internal.widget.ButtonBarLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                3),
-                        isDisplayed()));
-        appCompatButton7.perform(click());
-
-        ViewInteraction appCompatImageButton5 = onView(
+        ViewInteraction appCompatImageButton26 = onView(
                 allOf(withId(R.id.arrowRight),
                         childAtPosition(
                                 allOf(withId(R.id.barChartView),
@@ -293,18 +659,117 @@ public class MainActivityChartExpensesTabTest {
                                                 0)),
                                 3),
                         isDisplayed()));
-        appCompatImageButton5.perform(click());
+        appCompatImageButton26.perform(click());
 
-        ViewInteraction switch_3 = onView(
-                allOf(withId(R.id.switchButton), withText("% or £"),
+        ViewInteraction appCompatImageButton27 = onView(
+                allOf(withId(R.id.arrowRight),
                         childAtPosition(
                                 allOf(withId(R.id.barChartView),
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                5),
+                                3),
                         isDisplayed()));
-        switch_3.perform(click());
+        appCompatImageButton27.perform(click());
+
+        ViewInteraction appCompatImageButton28 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton28.perform(click());
+
+        ViewInteraction appCompatImageButton29 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton29.perform(click());
+
+        ViewInteraction appCompatImageButton30 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton30.perform(click());
+
+        ViewInteraction appCompatImageButton31 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton31.perform(click());
+
+        ViewInteraction appCompatImageButton32 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton32.perform(click());
+
+        ViewInteraction appCompatImageButton33 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton33.perform(click());
+
+        ViewInteraction appCompatImageButton34 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton34.perform(click());
+
+        ViewInteraction appCompatImageButton35 = onView(
+                allOf(withId(R.id.arrowRight),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton35.perform(click());
+
+        ViewInteraction appCompatImageButton36 = onView(
+                allOf(withId(R.id.arrowLeft),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        appCompatImageButton36.perform(click());
 
         ViewInteraction imageButton2 = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -317,7 +782,7 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         imageButton2.perform(click());
 
-        ViewInteraction appCompatButton8 = onView(
+        ViewInteraction appCompatButton36 = onView(
                 allOf(withId(R.id.annualChartButton), withText("Annual Chart"),
                         childAtPosition(
                                 allOf(withId(R.id.ChartExpenses),
@@ -326,9 +791,9 @@ public class MainActivityChartExpensesTabTest {
                                                 2)),
                                 8),
                         isDisplayed()));
-        appCompatButton8.perform(click());
+        appCompatButton36.perform(click());
 
-        ViewInteraction appCompatImageButton6 = onView(
+        ViewInteraction appCompatImageButton37 = onView(
                 allOf(withId(R.id.leftYearButton), withContentDescription("Left Year Button"),
                         childAtPosition(
                                 allOf(withId(R.id.annualChartView),
@@ -337,29 +802,58 @@ public class MainActivityChartExpensesTabTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatImageButton6.perform(click());
+        appCompatImageButton37.perform(click());
 
-        ViewInteraction appCompatImageButton7 = onView(
-                allOf(withId(R.id.leftYearButton), withContentDescription("Left Year Button"),
+        ViewInteraction appCompatImageButton38 = onView(
+                allOf(withId(R.id.rigthYearButton), withContentDescription("Right Year Button"),
                         childAtPosition(
                                 allOf(withId(R.id.annualChartView),
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                1),
+                                2),
                         isDisplayed()));
-        appCompatImageButton7.perform(click());
+        appCompatImageButton38.perform(click());
 
-        ViewInteraction appCompatImageButton8 = onView(
-                allOf(withId(R.id.leftYearButton), withContentDescription("Left Year Button"),
+        ViewInteraction appCompatTextView = onView(
+                allOf(withId(R.id.circleTextview), withText("Set Income Circle"),
                         childAtPosition(
                                 allOf(withId(R.id.annualChartView),
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                1),
+                                4),
                         isDisplayed()));
-        appCompatImageButton8.perform(click());
+        appCompatTextView.perform(click());
+
+        ViewInteraction appCompatButton37 = onView(
+                allOf(withId(android.R.id.button1), withText("SET"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton37.perform(scrollTo(), click());
+
+        ViewInteraction appCompatTextView2 = onView(
+                allOf(withId(R.id.circleTextview), withText("Set Income Circle"),
+                        childAtPosition(
+                                allOf(withId(R.id.annualChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatTextView2.perform(click());
+
+        ViewInteraction appCompatButton38 = onView(
+                allOf(withId(android.R.id.button3), withText("Reset"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                0)));
+        appCompatButton38.perform(scrollTo(), click());
 
         ViewInteraction imageButton3 = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -372,7 +866,7 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         imageButton3.perform(click());
 
-        ViewInteraction appCompatButton9 = onView(
+        ViewInteraction appCompatButton39 = onView(
                 allOf(withId(R.id.annualSavingsButton), withText("Savings Chart"),
                         childAtPosition(
                                 allOf(withId(R.id.ChartExpenses),
@@ -381,9 +875,9 @@ public class MainActivityChartExpensesTabTest {
                                                 2)),
                                 11),
                         isDisplayed()));
-        appCompatButton9.perform(click());
+        appCompatButton39.perform(click());
 
-        ViewInteraction appCompatImageButton9 = onView(
+        ViewInteraction appCompatImageButton39 = onView(
                 allOf(withId(R.id.leftYearButton), withContentDescription("Left Year Button"),
                         childAtPosition(
                                 allOf(withId(R.id.annualSavingsView),
@@ -392,7 +886,18 @@ public class MainActivityChartExpensesTabTest {
                                                 0)),
                                 2),
                         isDisplayed()));
-        appCompatImageButton9.perform(click());
+        appCompatImageButton39.perform(click());
+
+        ViewInteraction appCompatImageButton40 = onView(
+                allOf(withId(R.id.rigthYearButton), withContentDescription("Right Year Button"),
+                        childAtPosition(
+                                allOf(withId(R.id.annualSavingsView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatImageButton40.perform(click());
 
         ViewInteraction imageButton4 = onView(
                 allOf(withContentDescription("Navigate up"),

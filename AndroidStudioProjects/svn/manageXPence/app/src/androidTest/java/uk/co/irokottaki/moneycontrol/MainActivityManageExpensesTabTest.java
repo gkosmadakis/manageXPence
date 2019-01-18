@@ -27,6 +27,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -112,13 +113,10 @@ public class MainActivityManageExpensesTabTest {
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
                         childAtPosition(
-                                allOf(withClassName(is("com.android.internal.widget" +
-                                                ".ButtonBarLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                3),
-                        isDisplayed()));
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
@@ -160,7 +158,7 @@ public class MainActivityManageExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                3),
+                                6),
                         isDisplayed()));
         appCompatSpinner2.perform(click());
 
@@ -168,7 +166,7 @@ public class MainActivityManageExpensesTabTest {
                 .inAdapterView(childAtPosition(
                         withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
                         0))
-                .atPosition(40);
+                .atPosition(13);
         appCompatCheckedTextView2.perform(click());
 
         ViewInteraction imageButton = onView(
@@ -252,11 +250,10 @@ public class MainActivityManageExpensesTabTest {
                 allOf(withId(android.R.id.button1), withText("Close"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
+                                        withClassName(is("android.widget.ScrollView")),
                                         0),
-                                2),
-                        isDisplayed()));
-        appCompatButton7.perform(click());
+                                3)));
+        appCompatButton7.perform(scrollTo(),click());
 
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withId(R.id.backUpInfoButton),
@@ -273,10 +270,9 @@ public class MainActivityManageExpensesTabTest {
                 allOf(withId(android.R.id.button1), withText("Close"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
+                                        withClassName(is("android.widget.ScrollView")),
                                         0),
-                                2),
-                        isDisplayed()));
+                                3)));
         appCompatButton8.perform(click());
 
         ViewInteraction appCompatButton9 = onView(
@@ -290,6 +286,26 @@ public class MainActivityManageExpensesTabTest {
                         isDisplayed()));
         appCompatButton9.perform(click());
 
+        ViewInteraction appCompatImageButton3 = onView(
+                allOf(withId(R.id.infoBudgetButton),
+                        childAtPosition(
+                                allOf(withId(R.id.budgetView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatImageButton3.perform(click());
+
+        ViewInteraction appCompatButton1 = onView(
+                allOf(withId(android.R.id.button1), withText("Close"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton1.perform(scrollTo(), click());
+
         onView(withId(R.id.budgetBar)).perform(setProgress(1000));
 
         ViewInteraction imageButton2 = onView(
@@ -302,6 +318,176 @@ public class MainActivityManageExpensesTabTest {
                                 1),
                         isDisplayed()));
         imageButton2.perform(click());
+
+        ViewInteraction appCompatButton10 = onView(
+                allOf(withId(R.id.importButton), withText("Import"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout8),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                12)),
+                                1),
+                        isDisplayed()));
+        appCompatButton10.perform(click());
+
+
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.dateFromTo),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("01/01/2019-18/01/2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton11 = onView(
+                allOf(withId(R.id.addExpensesButton), withText("Sum expenses"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                0),
+                        isDisplayed()));
+        appCompatButton11.perform(click());
+
+        ViewInteraction appCompatButton12 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton12.perform(scrollTo(), click());
+
+        sleep(1000);
+
+        ViewInteraction appCompatEditText7 = onView(
+                allOf(withId(R.id.dateFromTo),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText7.perform(replaceText(""), closeSoftKeyboard());
+
+        sleep(1000);
+
+        ViewInteraction linearLayout2 = onView(
+                allOf(childAtPosition(
+                        allOf(withId(android.R.id.tabs),
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0)),
+                        1),
+                        isDisplayed()));
+        linearLayout2.perform(click());
+
+        ViewInteraction appCompatButton13 = onView(
+                allOf(withId(R.id.addExpensesButton), withText("Sum expenses"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                0),
+                        isDisplayed()));
+        appCompatButton13.perform(click());
+
+        ViewInteraction appCompatButton14 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton14.perform(scrollTo(), click());
+
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.dateFromTo),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("09"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton15 = onView(
+                allOf(withId(R.id.addExpensesButton), withText("Sum expenses"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                0),
+                        isDisplayed()));
+        appCompatButton15.perform(click());
+
+        ViewInteraction appCompatButton16 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton16.perform(scrollTo(), click());
+
+        ViewInteraction appCompatEditText5 = onView(
+                allOf(withId(R.id.dateFromTo), withText("09"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText5.perform(replaceText("01/01/2019-18/01/2019"));
+
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.dateFromTo), withText("01/01/2019-18/01/2019"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText6.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatSpinner3 = onView(
+                allOf(withId(R.id.addExpensesByDescSpinner),
+                        childAtPosition(
+                                allOf(withId(R.id.ManageExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                1)),
+                                2),
+                        isDisplayed()));
+        appCompatSpinner3.perform(click());
+
+        DataInteraction appCompatCheckedTextView3 = onData(anything())
+                .inAdapterView(childAtPosition(
+                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
+                        0))
+                .atPosition(5);
+        appCompatCheckedTextView3.perform(click());
+
+        ViewInteraction appCompatButton17 = onView(
+                allOf(withId(R.id.addExpensesButton), withText("Sum expenses"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                0),
+                        isDisplayed()));
+        appCompatButton17.perform(click());
     }
 
     public static ViewAction setProgress(final int progress) {

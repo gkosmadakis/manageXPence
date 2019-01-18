@@ -73,14 +73,13 @@ public class DialogsAndAnnualExpensesTest {
         appCompatEditText.perform(replaceText("Test"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(android.R.id.button1), withText("ADD"),
+                allOf(withId(android.R.id.button1), withText("Add"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
+                                        withClassName(is("android.widget.ScrollView")),
                                         0),
-                                2),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
+                                3)));
+        appCompatButton2.perform(scrollTo(), click());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.expenseText),
@@ -126,14 +125,11 @@ public class DialogsAndAnnualExpensesTest {
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
                         childAtPosition(
-                                allOf(withClassName(is("com.android.internal.widget" +
-                                                ".ButtonBarLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                3),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton4.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.saveButton), withText("Save To File"),
@@ -145,6 +141,8 @@ public class DialogsAndAnnualExpensesTest {
                                 5),
                         isDisplayed()));
         appCompatButton5.perform(click());
+
+        sleep(3000);
 
         ViewInteraction linearLayout = onView(
                 allOf(childAtPosition(
@@ -171,11 +169,10 @@ public class DialogsAndAnnualExpensesTest {
                 allOf(withId(android.R.id.button1), withText("Close"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
+                                        withClassName(is("android.widget.ScrollView")),
                                         0),
-                                2),
-                        isDisplayed()));
-        appCompatButton6.perform(click());
+                                3)));
+        appCompatButton6.perform(scrollTo(),click());
 
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withId(R.id.backUpInfoButton),
@@ -192,11 +189,10 @@ public class DialogsAndAnnualExpensesTest {
                 allOf(withId(android.R.id.button1), withText("Close"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
+                                        withClassName(is("android.widget.ScrollView")),
                                         0),
-                                2),
-                        isDisplayed()));
-        appCompatButton7.perform(click());
+                                3)));
+        appCompatButton7.perform(scrollTo(),click());
 
         ViewInteraction linearLayout2 = onView(
                 allOf(childAtPosition(
@@ -255,19 +251,17 @@ public class DialogsAndAnnualExpensesTest {
                                         childAtPosition(
                                                 withId(android.R.id.content),
                                                 0)),
-                                4),
-                        isDisplayed()));
+                                4)));
         appCompatButton9.perform(click());
 
         ViewInteraction appCompatButton10 = onView(
                 allOf(withId(android.R.id.button1), withText("Close"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
+                                        withClassName(is("android.widget.ScrollView")),
                                         0),
-                                2),
-                        isDisplayed()));
-        appCompatButton10.perform(click());
+                                3)));
+        appCompatButton10.perform(scrollTo(),click());
 
         ViewInteraction imageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -326,11 +320,10 @@ public class DialogsAndAnnualExpensesTest {
                 allOf(withId(android.R.id.button3), withText("REMOVE"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
+                                        withClassName(is("android.widget.ScrollView")),
                                         0),
-                                1),
-                        isDisplayed()));
-        appCompatButton12.perform(click());
+                                0)));
+        appCompatButton12.perform(scrollTo(),click());
 
         ViewInteraction linearLayout4 = onView(
                 allOf(withId(R.id.addExpenses),

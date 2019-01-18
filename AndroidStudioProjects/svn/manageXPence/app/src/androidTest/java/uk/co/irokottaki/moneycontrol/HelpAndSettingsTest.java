@@ -17,12 +17,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import uk.co.irokottaki.moneycontrol.activity.MainActivity;
+
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -35,17 +38,17 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class HelpSettingsTest {
+public class HelpAndSettingsTest {
 
     @Rule
-    public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen
-            .class);
+    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void helpSettingsTest() {
-
+    public void helpAndSettingsTest() {
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         sleep(3000);
-
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
@@ -53,8 +56,7 @@ public class HelpSettingsTest {
                 allOf(withId(R.id.title), withText("Help"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.support.v7.view.menu" +
-                                                ".ListMenuItemView")),
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
                                         0),
                                 0),
                         isDisplayed()));
@@ -69,19 +71,6 @@ public class HelpSettingsTest {
                                 1),
                         isDisplayed()));
         actionMenuItemView.perform(click());
-
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-
-        ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.title), withText("Next"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.support.v7.view.menu" +
-                                                ".ListMenuItemView")),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatTextView2.perform(click());
 
         ViewInteraction actionMenuItemView2 = onView(
                 allOf(withId(R.id.action_next), withText("Next"), withContentDescription("Next"),
@@ -104,15 +93,26 @@ public class HelpSettingsTest {
         actionMenuItemView3.perform(click());
 
         ViewInteraction actionMenuItemView4 = onView(
-                allOf(withId(R.id.action_previous), withText("Previous"), withContentDescription
-                                ("Previous"),
+                allOf(withId(R.id.action_next), withText("Next"), withContentDescription("Next"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),
                                         2),
-                                0),
+                                1),
                         isDisplayed()));
         actionMenuItemView4.perform(click());
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView2 = onView(
+                allOf(withId(R.id.title), withText("Previous"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView2.perform(click());
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
@@ -120,34 +120,35 @@ public class HelpSettingsTest {
                 allOf(withId(R.id.title), withText("Previous"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.support.v7.view.menu" +
-                                                ".ListMenuItemView")),
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
                                         0),
                                 0),
                         isDisplayed()));
         appCompatTextView3.perform(click());
 
-        ViewInteraction actionMenuItemView5 = onView(
-                allOf(withId(R.id.action_previous), withText("Previous"), withContentDescription
-                                ("Previous"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.action_bar),
-                                        2),
-                                0),
-                        isDisplayed()));
-        actionMenuItemView5.perform(click());
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
-        ViewInteraction actionMenuItemView6 = onView(
-                allOf(withId(R.id.action_previous), withText("Previous"), withContentDescription
-                                ("Previous"),
+        ViewInteraction appCompatTextView4 = onView(
+                allOf(withId(R.id.title), withText("Previous"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.action_bar),
-                                        2),
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
                                 0),
                         isDisplayed()));
-        actionMenuItemView6.perform(click());
+        appCompatTextView4.perform(click());
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView5 = onView(
+                allOf(withId(R.id.title), withText("Previous"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView5.perform(click());
 
         ViewInteraction imageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -162,54 +163,7 @@ public class HelpSettingsTest {
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
-        ViewInteraction appCompatTextView4 = onView(
-                allOf(withId(R.id.title), withText("Settings"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.support.v7.view.menu" +
-                                                ".ListMenuItemView")),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatTextView4.perform(click());
-
-        DataInteraction linearLayout = onData(anything())
-                .inAdapterView(allOf(withId(android.R.id.list),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)))
-                .atPosition(1);
-        linearLayout.perform(click());
-
-        DataInteraction linearLayout2 = onData(anything())
-                .inAdapterView(allOf(withId(android.R.id.list),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)))
-                .atPosition(1);
-        linearLayout2.perform(click());
-
-        DataInteraction linearLayout3 = onData(anything())
-                .inAdapterView(allOf(withId(android.R.id.list),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)))
-                .atPosition(0);
-        linearLayout3.perform(click());
-
-        DataInteraction checkedTextView = onData(anything())
-                .inAdapterView(allOf(withClassName(is("com.android.internal.app.AlertController$RecycleListView")),
-                        childAtPosition(
-                                withClassName(is("android.widget.FrameLayout")),
-                                0)))
-                .atPosition(0);
-        checkedTextView.perform(click());
-
-        pressBack();
-
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-
-        ViewInteraction appCompatTextView5 = onView(
+        ViewInteraction appCompatTextView6 = onView(
                 allOf(withId(R.id.title), withText("Settings"),
                         childAtPosition(
                                 childAtPosition(
@@ -217,25 +171,122 @@ public class HelpSettingsTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatTextView5.perform(click());
+        appCompatTextView6.perform(click());
 
-        DataInteraction linearLayout4 = onData(anything())
+        DataInteraction linearLayout = onData(anything())
                 .inAdapterView(allOf(withId(android.R.id.list),
                         childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
+                                withId(android.R.id.list_container),
                                 0)))
                 .atPosition(0);
-        linearLayout4.perform(click());
+        linearLayout.perform(click());
+
+        DataInteraction checkedTextView = onData(anything())
+                .inAdapterView(allOf(withClassName(is("com.android.internal.app.AlertController$RecycleListView")),
+                        childAtPosition(
+                                withClassName(is("android.widget.FrameLayout")),
+                                0)))
+                .atPosition(1);
+        checkedTextView.perform(click());
+
+        pressBack();
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView7 = onView(
+                allOf(withId(R.id.title), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView7.perform(click());
+
+        DataInteraction linearLayout2 = onData(anything())
+                .inAdapterView(allOf(withId(android.R.id.list),
+                        childAtPosition(
+                                withId(android.R.id.list_container),
+                                0)))
+                .atPosition(0);
+        linearLayout2.perform(click());
 
         DataInteraction checkedTextView2 = onData(anything())
                 .inAdapterView(allOf(withClassName(is("com.android.internal.app.AlertController$RecycleListView")),
                         childAtPosition(
                                 withClassName(is("android.widget.FrameLayout")),
                                 0)))
-                .atPosition(2);
+                .atPosition(0);
         checkedTextView2.perform(click());
 
         pressBack();
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView8 = onView(
+                allOf(withId(R.id.title), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView8.perform(click());
+
+        DataInteraction linearLayout3 = onData(anything())
+                .inAdapterView(allOf(withId(android.R.id.list),
+                        childAtPosition(
+                                withId(android.R.id.list_container),
+                                0)))
+                .atPosition(0);
+        linearLayout3.perform(click());
+
+        DataInteraction checkedTextView3 = onData(anything())
+                .inAdapterView(allOf(withClassName(is("com.android.internal.app.AlertController$RecycleListView")),
+                        childAtPosition(
+                                withClassName(is("android.widget.FrameLayout")),
+                                0)))
+                .atPosition(2);
+        checkedTextView3.perform(click());
+
+        DataInteraction linearLayout4 = onData(anything())
+                .inAdapterView(allOf(withId(android.R.id.list),
+                        childAtPosition(
+                                withId(android.R.id.list_container),
+                                0)))
+                .atPosition(1);
+        linearLayout4.perform(click());
+
+        DataInteraction linearLayout5 = onData(anything())
+                .inAdapterView(allOf(withId(android.R.id.list),
+                        childAtPosition(
+                                withId(android.R.id.list_container),
+                                0)))
+                .atPosition(1);
+        linearLayout5.perform(click());
+
+        pressBack();
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView9 = onView(
+                allOf(withId(R.id.title), withText("Remove Ads"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView9.perform(click());
+
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(android.R.id.button1), withText("Close"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(
