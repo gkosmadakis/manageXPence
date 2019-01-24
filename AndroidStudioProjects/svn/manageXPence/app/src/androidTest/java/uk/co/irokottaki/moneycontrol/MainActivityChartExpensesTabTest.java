@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
@@ -835,6 +836,28 @@ public class MainActivityChartExpensesTabTest {
                                 3)));
         appCompatButton37.perform(scrollTo(), click());
 
+        ViewInteraction imageButton3 = onView(
+                allOf(withContentDescription("Navigate up"),
+                        childAtPosition(
+                                allOf(withId(R.id.action_bar),
+                                        childAtPosition(
+                                                withId(R.id.action_bar_container),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        imageButton3.perform(click());
+
+        ViewInteraction appCompatButton40 = onView(
+                allOf(withId(R.id.annualChartButton), withText("Annual Chart"),
+                        childAtPosition(
+                                allOf(withId(R.id.ChartExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                2)),
+                                8),
+                        isDisplayed()));
+        appCompatButton40.perform(click());
+
         ViewInteraction appCompatTextView2 = onView(
                 allOf(withId(R.id.circleTextview), withText("Set Income Circle"),
                         childAtPosition(
@@ -855,16 +878,7 @@ public class MainActivityChartExpensesTabTest {
                                 0)));
         appCompatButton38.perform(scrollTo(), click());
 
-        ViewInteraction imageButton3 = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        imageButton3.perform(click());
+        pressBack();
 
         ViewInteraction appCompatButton39 = onView(
                 allOf(withId(R.id.annualSavingsButton), withText("Savings Chart"),

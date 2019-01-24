@@ -13,9 +13,12 @@ import android.view.ViewParent;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Calendar;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -38,11 +41,36 @@ import static org.hamcrest.Matchers.is;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityAddEditExpensesTabTest {
+    private String currentDay;
+    private String currentMonth;
+    private int currentYear;
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen
             .class);
 
+    @Before
+    public void setUp(){
+
+        final Calendar calendar = Calendar.getInstance();
+        int currentDayInt = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentMonthInt = calendar.get(Calendar.MONTH);
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonthInt++;
+        if (currentMonthInt < 10){
+            currentMonth = String.format("%02d", currentMonthInt);
+        }
+        else {
+            currentMonth = String.valueOf(currentMonthInt);
+        }
+
+        if (currentDayInt < 10){
+            currentDay = String.format("%02d", currentDayInt);
+        }
+        else {
+            currentDay = String.valueOf(currentDayInt);
+        }
+    }
 
     @Test
     public void mainActivityAddExpensesTabTest() {
@@ -260,7 +288,7 @@ public class MainActivityAddEditExpensesTabTest {
         appCompatButton12.perform(scrollTo(),click());
 
         ViewInteraction appCompatEditText12 = onView(
-                allOf(withId(R.id.SingleEditText), withText("105 Shopping 18/01/2019"),
+                allOf(withId(R.id.SingleEditText), withText("105 Shopping "+currentDay+"/"+currentMonth+"/"+currentYear),
                         childAtPosition(
                                 allOf(withId(R.id.editView),
                                         childAtPosition(
@@ -270,14 +298,14 @@ public class MainActivityAddEditExpensesTabTest {
         appCompatEditText12.perform(scrollTo(), click());
 
         ViewInteraction appCompatEditText14 = onView(
-                allOf(withId(R.id.SingleEditText), withText("105 Shopping 18/01/2019"),
+                allOf(withId(R.id.SingleEditText), withText("105 Shopping "+currentDay+"/"+currentMonth+"/"+currentYear),
                         childAtPosition(
                                 allOf(withId(R.id.editView),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
                                                 0)),
                                 11)));
-        appCompatEditText14.perform(scrollTo(), replaceText("100 Shopping 18/01/2019"));
+        appCompatEditText14.perform(scrollTo(), replaceText("100 Shopping "+currentDay+"/"+currentMonth+"/"+currentYear));
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.editButton),

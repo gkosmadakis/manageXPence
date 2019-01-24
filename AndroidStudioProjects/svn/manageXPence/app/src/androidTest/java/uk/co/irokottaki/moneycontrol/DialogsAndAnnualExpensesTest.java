@@ -226,6 +226,25 @@ public class DialogsAndAnnualExpensesTest {
                         isDisplayed()));
         appCompatTextView.perform(click());
 
+        ViewInteraction appCompatButton13 = onView(
+                allOf(withId(R.id.calculateButton), withText("Calculate"),
+                        childAtPosition(
+                                allOf(withId(R.id.activity_calculate_annual_expenses),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4)));
+        appCompatButton13.perform(click());
+
+        ViewInteraction appCompatButton14 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton14.perform(scrollTo(),click());
+
         ViewInteraction appCompatSpinner4 = onView(
                 allOf(withId(R.id.expensesSpinner),
                         childAtPosition(

@@ -18,12 +18,17 @@ import android.widget.SeekBar;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
@@ -41,10 +46,59 @@ import static org.hamcrest.Matchers.is;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityManageExpensesTabTest {
+    private String currentDay;
+    private String currentMonth;
+    private int currentYear;
+    private String twentyDaysBeforeNow;
+    private String monthTwentyDaysBeforeNow;
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen
             .class);
+
+    @Before
+    public void setUp(){
+
+        final Calendar calendar = Calendar.getInstance();
+        Date currentDate = new Date();
+        int currentDayInt = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentMonthInt = calendar.get(Calendar.MONTH);
+        currentYear = calendar.get(Calendar.YEAR);
+        currentMonthInt++;
+
+        if (currentDayInt < 10){
+            currentDay = String.format("%02d", currentDayInt);
+        }
+        else {
+            currentDay = String.valueOf(currentDayInt);
+        }
+
+        if (currentMonthInt < 10){
+            currentMonth = String.format("%02d", currentMonthInt);
+        }
+        else {
+            currentMonth = String.valueOf(currentMonthInt);
+        }
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.DATE, -20);
+        int twentyDaysBeforeNowInt = calendar.get(Calendar.DAY_OF_MONTH);
+        int monthTwentyDaysBeforeNowInt = calendar.get(Calendar.MONTH);
+        monthTwentyDaysBeforeNowInt++;
+
+        if (twentyDaysBeforeNowInt < 10){
+            twentyDaysBeforeNow = String.format("%02d", twentyDaysBeforeNowInt);
+        }
+        else {
+            twentyDaysBeforeNow = String.valueOf(twentyDaysBeforeNowInt);
+        }
+
+        if (monthTwentyDaysBeforeNowInt < 10){
+            monthTwentyDaysBeforeNow = String.format("%02d", monthTwentyDaysBeforeNowInt);
+        }
+        else {
+            monthTwentyDaysBeforeNow = String.valueOf(monthTwentyDaysBeforeNowInt);
+        }
+    }
 
     @Rule
     public GrantPermissionRule mGrantPermissionRule =
@@ -319,6 +373,21 @@ public class MainActivityManageExpensesTabTest {
                         isDisplayed()));
         imageButton2.perform(click());
 
+        ViewInteraction appCompatButton18 = onView(
+                allOf(withId(R.id.budgetButton), withText("Budget Control"),
+                        childAtPosition(
+                                allOf(withId(R.id.ManageExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                1)),
+                                9),
+                        isDisplayed()));
+        appCompatButton18.perform(click());
+
+        onView(withId(R.id.budgetBar)).perform(setProgress(1200));
+
+        pressBack();
+
         ViewInteraction appCompatButton10 = onView(
                 allOf(withId(R.id.importButton), withText("Import"),
                         childAtPosition(
@@ -340,7 +409,8 @@ public class MainActivityManageExpensesTabTest {
                                                 3)),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("01/01/2019-18/01/2019"), closeSoftKeyboard());
+        String dateRange = twentyDaysBeforeNow+"/"+monthTwentyDaysBeforeNow+"/"+currentYear+"-"+currentDay+"/"+currentMonth+"/"+currentYear;
+        appCompatEditText3.perform(replaceText(dateRange), closeSoftKeyboard());
 
         ViewInteraction appCompatButton11 = onView(
                 allOf(withId(R.id.addExpensesButton), withText("Sum expenses"),
@@ -447,10 +517,10 @@ public class MainActivityManageExpensesTabTest {
                                                 3)),
                                 1),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("01/01/2019-18/01/2019"));
+        appCompatEditText5.perform(replaceText(dateRange));
 
         ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.dateFromTo), withText("01/01/2019-18/01/2019"),
+                allOf(withId(R.id.dateFromTo), withText(dateRange),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayout5),
                                         childAtPosition(
