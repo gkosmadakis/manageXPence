@@ -23,6 +23,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/DialogsAndAnnualExpensesTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/HelpAndSettingsTest.java">
           <value>
             <set />
@@ -119,6 +124,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/ChartsUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/Utils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/test/java/uk/co/irokottaki/moneycontrol/MainActivityTests.java">
           <value>
             <set />
           </value>
@@ -439,6 +454,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/Constants.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/MainActivityTests.java">
           <value>
             <set />
           </value>
