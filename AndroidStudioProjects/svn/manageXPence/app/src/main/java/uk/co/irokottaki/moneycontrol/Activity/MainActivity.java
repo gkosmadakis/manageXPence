@@ -195,18 +195,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     Bundle querySkus;
     final String sku = "android.test.purchased";
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
-    private static Float incomeForJan;
-    private static Float incomeForFeb;
-    private static Float incomeForMar;
-    private static Float incomeForApr;
-    private static Float incomeForMay;
-    private static Float incomeForJun;
-    private static Float incomeForJul;
-    private static Float incomeForAug;
-    private static Float incomeForSep;
-    private static Float incomeForOct;
-    private static Float incomeForNov;
-    private static Float incomeForDec;
     private NumberPicker numberPicker1;
     private boolean isPaymentCircleSet;
     private boolean budgetWarningEnabled;
@@ -620,7 +608,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 processDateCircle();
 
                             } else {
-                                //processBalance();
                                 balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
                                 DecimalFormat df = new DecimalFormat("#.0");
                                 balanceLabel.setText("Balance: " + df.format(balance));
@@ -1028,7 +1015,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             processDateCircle();
 
         } else {
-            //processBalance();
             balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
             DecimalFormat df = new DecimalFormat("#.0");
             balanceLabel.setText("Balance: " + df.format(balance));
@@ -1461,7 +1447,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 valueFromNumPicker1 = 0;
 
                                 // process again the balance
-                                //processBalance();
                                 balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
                                 DecimalFormat df = new DecimalFormat("#.0");
                                 balanceLabel.setText("Balance: " + df.format(balance));
@@ -1509,7 +1494,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
 
             // process again the balance
-            //processBalance();
             balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
             DecimalFormat df = new DecimalFormat("#.0");
             balanceLabel.setText("Balance: " + df.format(balance));
@@ -1558,147 +1542,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             case 12:
                 obj2018.setAmountDec(0f);
                 break;
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void processBalance() {
-
-        if (incomeField != null && incomeField.getText().toString().matches("\\d+")) {
-            String incomeValue = incomeField.getText().toString();
-            incomeForJan = Float.parseFloat(incomeValue);//i initialize the incomes for every
-            // month to avoid null values
-            incomeForFeb = Float.parseFloat(incomeValue);// returned to AnnualSavingsActivity. So
-            // if the user will not
-            incomeForMar = Float.parseFloat(incomeValue);//change the income then i use the
-            // current that has been entered
-            incomeForApr = Float.parseFloat(incomeValue);// if on a month the user changes the
-            // income then this will be
-            incomeForMay = Float.parseFloat(incomeValue);// changed above on the if statements.
-            incomeForJun = Float.parseFloat(incomeValue);
-            incomeForJul = Float.parseFloat(incomeValue);
-            incomeForAug = Float.parseFloat(incomeValue);
-            incomeForSep = Float.parseFloat(incomeValue);
-            incomeForOct = Float.parseFloat(incomeValue);
-            incomeForNov = Float.parseFloat(incomeValue);
-            incomeForDec = Float.parseFloat(incomeValue);
-            Calendar c = Calendar.getInstance();
-            String currentMonth = String.format(Locale.UK, "%tB", c);//get the current month
-            int year = c.getInstance().get(Calendar.YEAR);
-
-            AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
-            monthSum = 0.0;
-            if (currentYear != null) {
-
-                if (currentMonth.equals(JANUARY)) {
-                    incomeForJan = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountJan();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountJan());
-                    }
-                }
-                if (currentMonth.equals(FEBRUARY)) {
-                    incomeForFeb = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountFeb();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountFeb());
-                    }
-                }
-                if (currentMonth.equals(MARCH)) {
-                    incomeForMar = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountMar();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountMar());
-                    }
-                }
-                if (currentMonth.equals(APRIL)) {
-                    incomeForApr = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountApr();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountApr());
-                    }
-                }
-                if (currentMonth.equals(MAY)) {
-                    incomeForMay = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountMay();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountMay());
-                    }
-                }
-                if (currentMonth.equals(JUNE)) {
-                    incomeForJun = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountJun();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountJun());
-                    }
-                }
-                if (currentMonth.equals(JULY)) {
-                    incomeForJul = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountJul();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountJul());
-                    }
-                }
-                if (currentMonth.equals(AUGUST)) {
-                    incomeForAug = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountAug();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountAug());
-                    }
-                }
-                if (currentMonth.equals(SEPTEMBER)) {
-                    incomeForSep = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountSep();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountSep());
-                    }
-                }
-                if (currentMonth.equals(OCTOBER)) {
-                    incomeForOct = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountOct();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountOct());
-                    }
-                }
-                if (currentMonth.equals(NOVEMBER)) {
-                    incomeForNov = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountNov();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountNov());
-                    }
-                }
-                if (currentMonth.equals(DECEMBER)) {
-                    incomeForDec = Float.parseFloat(incomeValue);
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountDec();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountDec());
-                    }
-                }
-            }
-            // this is to avoid invalid double thrown on initial state where income is not added
-            // yet by the user
-            incomeDouble = Double.valueOf(incomeValue);
-            balance = incomeDouble - monthSum;
-            DecimalFormat df = new DecimalFormat("#.0");
-            balanceLabel.setText("Balance: " + df.format(balance));
-
-            //store it in preferences
-            SharedPreferences sp = getSharedPreferences(PREFERENCES, MainActivity.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString(INCOME, incomeValue);
-            editor.apply();
         }
     }
 
@@ -1849,124 +1692,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 getDialogForBudgetWarning(percentWarning, this);
             }
             // warning method
-        }
-    }
-
-
-
-    public void checkBudgetWarning() {
-
-        int sum = 0;
-        //get the budget value as stored in Preferences in Budget Activity
-        SharedPreferences sp = getSharedPreferences(PREFERENCES, BudgetActivity.MODE_PRIVATE);
-        int progressValue = sp.getInt(BUDGETVALUE, 0);
-
-        // i get the current month
-        final Calendar calendar = Calendar.getInstance();//this gets the current month
-        String currentMonth = String.format(Locale.UK, "%tB", calendar);
-        int year = calendar.get(Calendar.YEAR);
-
-        AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
-
-        //1. Check if the user has enabled this feature from settings.2.if yes find the expenses
-        // that have been added so far
-        if (progressValue > 0) {
-            if (currentMonth.equals(JANUARY)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountJan().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountJan().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(FEBRUARY)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountFeb().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountFeb().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(MARCH)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountMar().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountMar().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(APRIL)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountApr().size(); i++) {
-                    sum += currentYear.getYear().getYear().getArrayOfamountApr().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(MAY)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountMay().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountMay().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(JUNE)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountJun().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountJun().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(JULY)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountJul().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountJul().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(AUGUST)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountAug().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountAug().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(SEPTEMBER)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountSep().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountSep().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(OCTOBER)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountOct().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountOct().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(NOVEMBER)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountNov().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountNov().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
-            if (currentMonth.equals(DECEMBER)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountDec().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountDec().get(i);
-                }
-                double percentWarning = (double) sum / (double) progressValue;
-                // show the dialog window
-                getDialogForBudgetWarning(percentWarning, MainActivity.this);
-            }
         }
     }
 
@@ -2745,54 +2470,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.apply();
-    }
-
-    public static Float getIncomeForJan() {
-        return incomeForJan;
-    }
-
-    public static Float getIncomeForFeb() {
-        return incomeForFeb;
-    }
-
-    public static Float getIncomeForMar() {
-        return incomeForMar;
-    }
-
-    public static Float getIncomeForApr() {
-        return incomeForApr;
-    }
-
-    public static Float getIncomeForMay() {
-        return incomeForMay;
-    }
-
-    public static Float getIncomeForJun() {
-        return incomeForJun;
-    }
-
-    public static Float getIncomeForJul() {
-        return incomeForJul;
-    }
-
-    public static Float getIncomeForAug() {
-        return incomeForAug;
-    }
-
-    public static Float getIncomeForSep() {
-        return incomeForSep;
-    }
-
-    public static Float getIncomeForOct() {
-        return incomeForOct;
-    }
-
-    public static Float getIncomeForNov() {
-        return incomeForNov;
-    }
-
-    public static Float getIncomeForDec() {
-        return incomeForDec;
     }
 
     public static ArrayList<String> getitemsAddedByUser() {

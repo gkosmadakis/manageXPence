@@ -288,4 +288,52 @@ public class MainActivityUtil {
         return incomeDouble;
     }
 
+    public static Float getIncomeForJan() {
+        return incomeForJan;
+    }
+
+    public static Float getIncomeForFeb() {
+        return incomeForFeb;
+    }
+
+    public static Float getIncomeForMar() {
+        return incomeForMar;
+    }
+
+    public static Float getIncomeForApr() {
+        return incomeForApr;
+    }
+
+    public static Float getIncomeForMay() {
+        return incomeForMay;
+    }
+
+    public static Float getIncomeForJun() {
+        return incomeForJun;
+    }
+
+    public static Float getIncomeForJul() {
+        return incomeForJul;
+    }
+
+    public static Float getIncomeForAug() {
+        return incomeForAug;
+    }
+
+    public static Float getIncomeForSep() {
+        return incomeForSep;
+    }
+
+    public static Float getIncomeForOct() {
+        return incomeForOct;
+    }
+
+    public static Float getIncomeForNov() {
+        return incomeForNov;
+    }
+
+    public static Float getIncomeForDec() {
+        return incomeForDec;
+    }
+
 }

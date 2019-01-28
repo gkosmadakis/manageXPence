@@ -1084,18 +1084,18 @@ public class ChartsUtil {
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
         //retrieve the incomes from Main Activity
-        Float incomeForJan = MainActivity.getIncomeForJan();
-        Float incomeForFeb = MainActivity.getIncomeForFeb();
-        Float incomeForMar = MainActivity.getIncomeForMar();
-        Float incomeForApr = MainActivity.getIncomeForApr();
-        Float incomeForMay = MainActivity.getIncomeForMay();
-        Float incomeForJun = MainActivity.getIncomeForJun();
-        Float incomeForJul = MainActivity.getIncomeForJul();
-        Float incomeForAug = MainActivity.getIncomeForAug();
-        Float incomeForSep = MainActivity.getIncomeForSep();
-        Float incomeForOct = MainActivity.getIncomeForOct();
-        Float incomeForNov = MainActivity.getIncomeForNov();
-        Float incomeForDec = MainActivity.getIncomeForDec();
+        Float incomeForJan = MainActivityUtil.getIncomeForJan();
+        Float incomeForFeb = MainActivityUtil.getIncomeForFeb();
+        Float incomeForMar = MainActivityUtil.getIncomeForMar();
+        Float incomeForApr = MainActivityUtil.getIncomeForApr();
+        Float incomeForMay = MainActivityUtil.getIncomeForMay();
+        Float incomeForJun = MainActivityUtil.getIncomeForJun();
+        Float incomeForJul = MainActivityUtil.getIncomeForJul();
+        Float incomeForAug = MainActivityUtil.getIncomeForAug();
+        Float incomeForSep = MainActivityUtil.getIncomeForSep();
+        Float incomeForOct = MainActivityUtil.getIncomeForOct();
+        Float incomeForNov = MainActivityUtil.getIncomeForNov();
+        Float incomeForDec = MainActivityUtil.getIncomeForDec();
 
         if (incomeForJan != null || incomeForFeb != null || incomeForMar != null || incomeForApr
                 != null || incomeForMay != null
