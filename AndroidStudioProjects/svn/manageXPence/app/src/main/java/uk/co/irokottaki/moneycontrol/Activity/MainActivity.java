@@ -128,6 +128,7 @@ import uk.co.irokottaki.moneycontrol.Inventory;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.model.YearToSet;
 import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.utils.MainActivityUtil;
 import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
 import uk.co.irokottaki.moneycontrol.Purchase;
 import uk.co.irokottaki.moneycontrol.R;
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private Uri imageUri;
     private ChartsUtil util;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
-
+    private MainActivityUtil mainUtil;
 
     final ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
@@ -273,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         valueFromNumPicker1 = sharedprefs.getInt(VALUEFROMNUMPICKER1, valueFromNumPicker1);
 
         util = new ChartsUtil(this);
+        mainUtil = new MainActivityUtil(this);
 
         /*if (adsDisabled==false) {
             //this is for the ads Millenial Media
@@ -618,7 +620,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 processDateCircle();
 
                             } else {
-                                processBalance();
+                                //processBalance();
+                                balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
+                                DecimalFormat df = new DecimalFormat("#.0");
+                                balanceLabel.setText("Balance: " + df.format(balance));
                                 showStackedBar();
                             }
                         }
@@ -1023,7 +1028,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             processDateCircle();
 
         } else {
-            processBalance();
+            //processBalance();
+            balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
+            DecimalFormat df = new DecimalFormat("#.0");
+            balanceLabel.setText("Balance: " + df.format(balance));
             showStackedBar();
         }
 
@@ -1453,7 +1461,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 valueFromNumPicker1 = 0;
 
                                 // process again the balance
-                                processBalance();
+                                //processBalance();
+                                balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
+                                DecimalFormat df = new DecimalFormat("#.0");
+                                balanceLabel.setText("Balance: " + df.format(balance));
                                 // redraw the graph with the balance
                                 showStackedBar();
 
@@ -1498,7 +1509,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
 
             // process again the balance
-            processBalance();
+            //processBalance();
+            balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
+            DecimalFormat df = new DecimalFormat("#.0");
+            balanceLabel.setText("Balance: " + df.format(balance));
         }
         // redraw the graph with the balance
         showStackedBar();
@@ -1721,14 +1735,14 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         // IMPORTANT: When using negative values in stacked bars, always make sure the negative
         // values are in the array first
         ArrayList<BarEntry> yValues = new ArrayList<>();
-        yValues.add(new BarEntry(new float[]{(float) balance, (float) (incomeDouble - balance)},
+        yValues.add(new BarEntry(new float[]{(float) mainUtil.getBalance(), (float) (mainUtil.getIncomeDouble() - mainUtil.getBalance())},
                 0));
 
         BarDataSet set = new BarDataSet(yValues, "");
         set.setBarSpacePercent(40f);//the height of the bar
         set.setDrawValues(false);//hide the y values appeared inside the bar
 
-        if (balance < 0) {
+        if (mainUtil.getBalance() < 0) {
 
             set.setColors(new int[]{Color.rgb(205, 0, 0)});//, Color.rgb(91, 57, 198)
         } else {
@@ -1830,7 +1844,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 util.updateMapWithNewExpense(amountText, descriptionText, dateText, yearX, yearsMappedToObjectYearsMap);
             }
             if (budgetWarningEnabled) {
-                checkBudgetWarning();//since the expense is written in the file call the budget method is budget warning is enabled
+                //checkBudgetWarning();//since the expense is written in the file call the budget method is budget warning is enabled
+                double percentWarning = mainUtil.checkBudgetWarning(yearsMappedToObjectYearsMap, String.valueOf(monthX), yearX);
+                getDialogForBudgetWarning(percentWarning, this);
             }
             // warning method
         }
@@ -1880,8 +1896,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 getDialogForBudgetWarning(percentWarning, MainActivity.this);
             }
             if (currentMonth.equals(APRIL)) {
-                for (int i = 0; i < util.getObjectYear().getYear().getArrayOfamountApr().size(); i++) {
-                    sum += util.getObjectYear().getYear().getArrayOfamountApr().get(i);
+                for (int i = 0; i < currentYear.getYear().getArrayOfamountApr().size(); i++) {
+                    sum += currentYear.getYear().getYear().getArrayOfamountApr().get(i);
                 }
                 double percentWarning = (double) sum / (double) progressValue;
                 // show the dialog window

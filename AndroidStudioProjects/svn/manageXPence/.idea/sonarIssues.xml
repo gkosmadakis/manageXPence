@@ -3,142 +3,17 @@
   <component name="issues">
     <option name="index">
       <map>
-        <entry key="/Dummy.txt">
+        <entry key="$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="/a.dummy">
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="/fragment.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/build.gradle">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/DialogsAndAnnualExpensesTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/HelpAndSettingsTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/HelpSettingsTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/MainActivityAddEditExpensesTabTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/MainActivityAddExpensesTabTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/MainActivityChartExpensesTabTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/MainActivityManageExpensesTabTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/terst.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/test.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/test2.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/test5.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/test6.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/test7.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/test8.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/test9.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/AnnualChartActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/AnnualSavingsActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/MainActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/SettingsActivity.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/model/AnyYear.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/ChartsUtil.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/Utils.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/test/java/uk/co/irokottaki/moneycontrol/MainActivityTests.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/build.gradle">
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
           <value>
             <set />
           </value>
@@ -348,6 +223,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/ChartActivity.java">
           <value>
             <set />
@@ -458,22 +343,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/MainActivityUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/MainActivityTests.java">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
+        <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/MockEditable.java">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
+        <entry key="/a.dummy">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
+        <entry key="/fragment.java">
           <value>
             <set />
           </value>

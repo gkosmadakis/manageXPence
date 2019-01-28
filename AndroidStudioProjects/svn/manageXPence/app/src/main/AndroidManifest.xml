@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="uk.co.irokottaki.moneycontrol">
 
-    <uses-sdk
-
-        tools:overrideLibrary="com.millennialmedia" />
+    <uses-sdk tools:overrideLibrary="com.millennialmedia,android.support.test.uiautomator.v18" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
