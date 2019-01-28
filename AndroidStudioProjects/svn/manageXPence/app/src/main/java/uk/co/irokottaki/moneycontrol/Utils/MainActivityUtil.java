@@ -3,19 +3,29 @@ package uk.co.irokottaki.moneycontrol.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
 
 import uk.co.irokottaki.moneycontrol.activity.BudgetActivity;
 import uk.co.irokottaki.moneycontrol.activity.MainActivity;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.APRIL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.AUGUST;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.BUDGETVALUE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DECEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.FEBRUARY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.INCOME;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.JANUARY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.JULY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.JUNE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MARCH;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MAY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.NOVEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.OCTOBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SEPTEMBER;
 
 public class MainActivityUtil {
     private static Float incomeForJan;

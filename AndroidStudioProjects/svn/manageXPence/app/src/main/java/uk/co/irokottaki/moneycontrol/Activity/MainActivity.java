@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private ChartsUtil util;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
     private MainActivityUtil mainUtil;
+    Calendar calendar;
 
     final ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
@@ -236,10 +237,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Calendar cal = Calendar.getInstance();
-        yearX = cal.get(Calendar.YEAR);
-        monthX = cal.get(Calendar.MONTH);
-        dayX = cal.get(Calendar.DAY_OF_MONTH);
+        calendar = Calendar.getInstance();
+        yearX = calendar.get(Calendar.YEAR);
+        monthX = calendar.get(Calendar.MONTH);
+        dayX = calendar.get(Calendar.DAY_OF_MONTH);
 
         setContentView(R.layout.activity_main);
         setTitle(HOME);
@@ -608,7 +609,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 processDateCircle();
 
                             } else {
-                                balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
+                                String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                                balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
                                 DecimalFormat df = new DecimalFormat("#.0");
                                 balanceLabel.setText("Balance: " + df.format(balance));
                                 showStackedBar();
@@ -1015,7 +1017,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             processDateCircle();
 
         } else {
-            balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
+            String currentMonth = String.format(Locale.UK, "%tB", calendar);
+            balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
             DecimalFormat df = new DecimalFormat("#.0");
             balanceLabel.setText("Balance: " + df.format(balance));
             showStackedBar();
@@ -1447,7 +1450,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 valueFromNumPicker1 = 0;
 
                                 // process again the balance
-                                balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
+                                String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                                balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
                                 DecimalFormat df = new DecimalFormat("#.0");
                                 balanceLabel.setText("Balance: " + df.format(balance));
                                 // redraw the graph with the balance
@@ -1494,7 +1498,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
 
             // process again the balance
-            balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, String.valueOf(monthX), yearX);
+            balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
             DecimalFormat df = new DecimalFormat("#.0");
             balanceLabel.setText("Balance: " + df.format(balance));
         }
@@ -1687,8 +1691,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 util.updateMapWithNewExpense(amountText, descriptionText, dateText, yearX, yearsMappedToObjectYearsMap);
             }
             if (budgetWarningEnabled) {
-                //checkBudgetWarning();//since the expense is written in the file call the budget method is budget warning is enabled
-                double percentWarning = mainUtil.checkBudgetWarning(yearsMappedToObjectYearsMap, String.valueOf(monthX), yearX);
+                //since the expense is written in the file call the budget method is budget warning is enabled
+                String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                double percentWarning = mainUtil.checkBudgetWarning(yearsMappedToObjectYearsMap, currentMonth, yearX);
                 getDialogForBudgetWarning(percentWarning, this);
             }
             // warning method

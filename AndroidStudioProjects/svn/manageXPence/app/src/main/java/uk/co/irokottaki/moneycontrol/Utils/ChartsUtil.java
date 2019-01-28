@@ -929,7 +929,7 @@ public class ChartsUtil {
         }
         finally {
             try {
-                
+
                 if(br!=null) {
                     br.close();
                 }
