@@ -103,6 +103,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/UploadTask.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/AnnualChartActivity.java">
           <value>
             <set />
@@ -374,6 +379,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/IabResult.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/UploadTask.java">
           <value>
             <set />
           </value>

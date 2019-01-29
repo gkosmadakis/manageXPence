@@ -34,9 +34,10 @@ public class UploadTask extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
+        InputStream inputStream = null;
         try {
             // Upload to Dropbox
-            InputStream inputStream = new FileInputStream(String.valueOf(file));
+            inputStream = new FileInputStream(String.valueOf(file));
             dbxClient.files().uploadBuilder("/" + file.getName()) //Path in the user's Dropbox to
                     // save the file.
                     .withMode(WriteMode.OVERWRITE) //always overwrite existing file
@@ -48,6 +49,15 @@ public class UploadTask extends AsyncTask {
         } catch (IOException ex) {
             Log.e("IOException",ex.getMessage());
             error = ex;
+        }
+        finally {
+            if (inputStream != null){
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return null;
     }
