@@ -167,17 +167,6 @@ public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekB
     }
 
     @Override
-    public Intent getSupportParentActivityIntent() {
-        final Bundle bundle = new Bundle();
-        final Intent intent = new Intent(this, MainActivity.class);
-
-        bundle.putInt(BUDGET, 1);
-        intent.putExtras(bundle);
-
-        return intent;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
             case android.R.id.home: finish();

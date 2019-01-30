@@ -133,17 +133,6 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
     }
 
     @Override
-    public Intent getSupportParentActivityIntent() {
-        final Bundle bundle = new Bundle();
-        final Intent intent = new Intent(this, MainActivity.class);
-
-        bundle.putInt(SAVINGSCHART, 2);
-        intent.putExtras(bundle);
-
-        return intent;
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_annual_chart, menu);

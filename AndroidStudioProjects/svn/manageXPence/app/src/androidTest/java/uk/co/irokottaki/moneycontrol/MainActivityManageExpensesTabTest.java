@@ -475,7 +475,7 @@ public class MainActivityManageExpensesTabTest {
                                                 2)),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("750"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("700"), closeSoftKeyboard());
 
         ViewInteraction appCompatSpinner3 = onView(
                 allOf(withId(R.id.descriptionCombo),

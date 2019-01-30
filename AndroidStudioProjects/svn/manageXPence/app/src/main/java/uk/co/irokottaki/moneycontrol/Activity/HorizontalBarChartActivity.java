@@ -240,17 +240,6 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
     }
 
     @Override
-    public Intent getSupportParentActivityIntent() { // getParentActivityIntent() if you are not
-        // using the Support Library
-        final Bundle bundle = new Bundle();
-        final Intent intent = new Intent(this, MainActivity.class);
-
-        bundle.putInt(BARCHART, 2); // Both constants are defined in your code
-        intent.putExtras(bundle);
-
-        return intent;
-    }
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long

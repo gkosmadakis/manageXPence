@@ -228,17 +228,6 @@ public class ChartActivity extends AppCompatActivity {
     }
 
     @Override
-    public Intent getSupportParentActivityIntent() {
-        final Bundle bundle = new Bundle();
-        final Intent intent = new Intent(this, MainActivity.class);
-
-        bundle.putInt(CHART, 2);
-        intent.putExtras(bundle);
-
-        return intent;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long

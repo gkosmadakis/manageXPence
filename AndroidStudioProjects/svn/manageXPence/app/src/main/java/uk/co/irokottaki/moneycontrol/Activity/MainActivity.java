@@ -893,29 +893,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
         });
 
-        // Get on the current tab when pressing the back button on the top of the activity
-        final Intent intent = getIntent();
-
-        if (intent.hasExtra(CHART)) {
-            final int tab = intent.getExtras().getInt(CHART);
-            switchToTab(tab); // switch to tab 3 from Chart Expenses
-        } else if (intent.hasExtra(BARCHART)) {
-            final int tab = intent.getExtras().getInt(BARCHART);
-            switchToTab(tab); // switch to tab 3 from BarChart Expenses
-        } else if (intent.hasExtra(ANNUALCHART)) {
-            final int tab = intent.getExtras().getInt(ANNUALCHART);
-            switchToTab(tab); // switch to tab 3 from Annual Chart Expenses
-        } else if (intent.hasExtra(SAVINGSCHART)) {
-            final int tab = intent.getExtras().getInt(SAVINGSCHART);
-            switchToTab(tab);//switch to tab 3 savings chart
-        } else if (intent.hasExtra(BUDGET)) {
-            final int tab = intent.getExtras().getInt(BUDGET);
-            switchToTab(tab); // switch to tab 2 from the Budget
-        } else if (intent.hasExtra(REPORT)) {
-            final int tab = intent.getExtras().getInt(REPORT);
-            switchToTab(tab); // switch to tab 2 from the Report
-        }
-
         //this is for the Notifications
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
