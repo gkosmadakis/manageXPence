@@ -1454,4 +1454,47 @@ public class ChartsUtil {
         }
     }
 
+    public void resetExpenseOfCurrentMonth(int currentMonth, YearToSet obj2018) {
+
+        switch (currentMonth) {
+
+            case 1:
+                obj2018.setAmountJan(0f);
+                break;
+            case 2:
+                obj2018.setAmountFeb(0f);
+                break;
+            case 3:
+                obj2018.setAmountMar(0f);
+                break;
+            case 4:
+                obj2018.setAmountApr(0f);
+                break;
+            case 5:
+                obj2018.setAmountMay(0f);
+                break;
+            case 6:
+                obj2018.setAmountJun(0f);
+                break;
+            case 7:
+                obj2018.setAmountJul(0f);
+                break;
+            case 8:
+                obj2018.setAmountAug(0f);
+                break;
+            case 9:
+                obj2018.setAmountSep(0f);
+                break;
+            case 10:
+                obj2018.setAmountOct(0f);
+                break;
+            case 11:
+                obj2018.setAmountNov(0f);
+                break;
+            case 12:
+                obj2018.setAmountDec(0f);
+                break;
+        }
+    }
+
 }

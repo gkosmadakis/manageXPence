@@ -246,6 +246,28 @@ public class MainActivityManageExpensesTabTest {
         // /index.html
         sleep(3000);
 
+
+        ViewInteraction appCompatButton33 = onView(
+                allOf(withId(R.id.importButton), withText("Import"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout8),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                12)),
+                                1),
+                        isDisplayed()));
+        appCompatButton33.perform(click());
+
+
+        ViewInteraction appCompatButton34 = onView(
+                allOf(withId(android.R.id.button1), withText("Close"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton34.perform(scrollTo(),click());
+
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.exportButton), withText("Export"),
                         childAtPosition(
@@ -745,8 +767,74 @@ public class MainActivityManageExpensesTabTest {
                                 3)));
         appCompatButton22.perform(scrollTo(), click());
 
+
+        ViewInteraction appCompatEditText13 = onView(
+                allOf(withId(R.id.dateFromTo),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText13.perform(replaceText("09-01-2019-29-01-2019"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton29 = onView(
+                allOf(withId(R.id.addExpensesButton), withText("Sum expenses"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                0),
+                        isDisplayed()));
+        appCompatButton29.perform(click());
+
+        ViewInteraction appCompatButton30 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton30.perform(scrollTo(), click());
+
+
+        ViewInteraction appCompatEditText14 = onView(
+                allOf(withId(R.id.dateFromTo),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                1),
+                        isDisplayed()));
+        appCompatEditText14.perform(replaceText("09/01/2018-29/01/2018"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton31 = onView(
+                allOf(withId(R.id.addExpensesButton), withText("Sum expenses"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout5),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                3)),
+                                0),
+                        isDisplayed()));
+        appCompatButton31.perform(click());
+
+        sleep(1000);
+
+        ViewInteraction appCompatButton32 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton32.perform(scrollTo(), click());
+
         ViewInteraction appCompatEditText11 = onView(
-                allOf(withId(R.id.dateFromTo), withText("09"),
+                allOf(withId(R.id.dateFromTo), withText("09/01/2018-29/01/2018"),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayout5),
                                         childAtPosition(

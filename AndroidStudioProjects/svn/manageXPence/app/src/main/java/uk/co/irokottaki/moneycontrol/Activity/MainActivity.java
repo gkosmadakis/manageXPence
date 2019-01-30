@@ -1605,16 +1605,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         mChart.invalidate();
     }
 
-    private void sumExpensesForBalance(ArrayList<Float> arrayOfamount) {
-        Float monthSumFloat = 0f;
-
-            for (int i = 0; i < arrayOfamount.size(); i++) {
-                monthSumFloat += arrayOfamount.get(i);
-            }
-
-        monthSum = monthSumFloat;
-    }
-
     public void writeToFile() {
         EditText amount = (EditText) findViewById(R.id.expenseText);
         EditText date = (EditText) findViewById(R.id.dateText);
@@ -1831,8 +1821,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 }// end of while
                 Collections.sort(dates);
                 if (datesMatchedUserInput.isEmpty()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
-                            AlertDialog.THEME_HOLO_LIGHT)
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                             .setTitle("No matches found")
                             .setMessage("The are no expenses in the dates you entered! Please try" +
                                     " with different dates.");
@@ -1893,8 +1882,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         }
 
         double sum = sumFloat;
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, AlertDialog
-                .THEME_HOLO_LIGHT)
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                 .setTitle(desc + " expenses for: " + datesFromTo)
                 .setMessage("You have spent: " + String.format(Locale.ENGLISH, "%.2f", sum));
         AlertDialog alert1;
@@ -2466,15 +2454,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void clear()//this method resets the shared preferences
-    {
-        SharedPreferences prefs = getDefaultSharedPreferences(getApplicationContext());
-        //SharedPreferences prefs; // here you get your prefrences by either of two methods
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.apply();
     }
 
     public static ArrayList<String> getitemsAddedByUser() {

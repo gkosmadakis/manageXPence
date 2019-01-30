@@ -145,4 +145,50 @@ public class ChartsUtilTest {
         assertEquals(expectedValue, chartsUtill.formatReportArea("110      SuperMarket    01/12/2019").toString());
 
     }
+
+    @Test
+    public void testResetExpenseOfCurrentMonth(){
+
+        YearToSet yearToSet = new YearToSet(0.0f, 0.0f, 0.0f,0.0f, 0.0f, 0.0f,0.0f ,0.0f, 0.0f ,0.0f ,0.0f ,0.0f );
+        final Context context = Mockito.mock(Context.class);
+        chartsUtill = new ChartsUtil(context);
+
+        chartsUtill.resetExpenseOfCurrentMonth(1, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountJan(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(2, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountFeb(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(3, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountMar(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(4, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountApr(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(5, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountMay(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(6, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountJun(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(7, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountJul(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(8, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountAug(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(9, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountSep(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(10, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountOct(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(11, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountNov(), DELTA);
+
+        chartsUtill.resetExpenseOfCurrentMonth(12, yearToSet);
+        assertEquals(0.0, yearToSet.getAmountDec(), DELTA);
+    }
+
+
 }

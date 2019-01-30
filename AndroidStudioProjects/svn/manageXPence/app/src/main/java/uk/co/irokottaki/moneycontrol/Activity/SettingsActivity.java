@@ -221,11 +221,7 @@ public class SettingsActivity extends PreferenceActivity {
                                             "during purchase " + result, Toast.LENGTH_SHORT).show();
 
                                 } else if (purchase.getSku().equals(SKU)) {
-                                    Toast.makeText(getAppContext(), "It ENTERED consume method "
-                                            + result, Toast.LENGTH_SHORT).show();
                                     consumeItem();
-                                    Toast.makeText(getAppContext(), "It PASSED consume method " +
-                                            result, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         };
