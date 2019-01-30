@@ -662,6 +662,17 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatImageButton26.perform(click());
 
+        ViewInteraction switch_3 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_3.perform(click());
+
         ViewInteraction appCompatImageButton27 = onView(
                 allOf(withId(R.id.arrowRight),
                         childAtPosition(
@@ -672,6 +683,17 @@ public class MainActivityChartExpensesTabTest {
                                 3),
                         isDisplayed()));
         appCompatImageButton27.perform(click());
+
+        ViewInteraction switch_4 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_4.perform(click());
 
         ViewInteraction appCompatImageButton28 = onView(
                 allOf(withId(R.id.arrowRight),
@@ -684,6 +706,17 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatImageButton28.perform(click());
 
+        ViewInteraction switch_5 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_5.perform(click());
+
         ViewInteraction appCompatImageButton29 = onView(
                 allOf(withId(R.id.arrowRight),
                         childAtPosition(
@@ -694,6 +727,17 @@ public class MainActivityChartExpensesTabTest {
                                 3),
                         isDisplayed()));
         appCompatImageButton29.perform(click());
+
+        ViewInteraction switch_6 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_6.perform(click());
 
         ViewInteraction appCompatImageButton30 = onView(
                 allOf(withId(R.id.arrowRight),
@@ -706,6 +750,17 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatImageButton30.perform(click());
 
+        ViewInteraction switch_7 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_7.perform(click());
+
         ViewInteraction appCompatImageButton31 = onView(
                 allOf(withId(R.id.arrowRight),
                         childAtPosition(
@@ -716,6 +771,17 @@ public class MainActivityChartExpensesTabTest {
                                 3),
                         isDisplayed()));
         appCompatImageButton31.perform(click());
+
+        ViewInteraction switch_8 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_8.perform(click());
 
         ViewInteraction appCompatImageButton32 = onView(
                 allOf(withId(R.id.arrowRight),
@@ -728,6 +794,17 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatImageButton32.perform(click());
 
+        ViewInteraction switch_9 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_9.perform(click());
+
         ViewInteraction appCompatImageButton33 = onView(
                 allOf(withId(R.id.arrowRight),
                         childAtPosition(
@@ -738,6 +815,17 @@ public class MainActivityChartExpensesTabTest {
                                 3),
                         isDisplayed()));
         appCompatImageButton33.perform(click());
+
+        ViewInteraction switch_10 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_10.perform(click());
 
         ViewInteraction appCompatImageButton34 = onView(
                 allOf(withId(R.id.arrowRight),
@@ -750,6 +838,17 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatImageButton34.perform(click());
 
+        ViewInteraction switch_11 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_11.perform(click());
+
         ViewInteraction appCompatImageButton35 = onView(
                 allOf(withId(R.id.arrowRight),
                         childAtPosition(
@@ -760,6 +859,17 @@ public class MainActivityChartExpensesTabTest {
                                 3),
                         isDisplayed()));
         appCompatImageButton35.perform(click());
+
+        ViewInteraction switch_12 = onView(
+                allOf(withId(R.id.switchButton), withText("% or £"),
+                        childAtPosition(
+                                allOf(withId(R.id.barChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        switch_12.perform(click());
 
         ViewInteraction appCompatImageButton36 = onView(
                 allOf(withId(R.id.arrowLeft),

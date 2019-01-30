@@ -3,7 +3,12 @@ package uk.co.irokottaki.moneycontrol;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.widget.EditText;
+
+import com.google.firebase.database.ThrowOnExtraProperties;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +16,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -22,8 +29,13 @@ import uk.co.irokottaki.moneycontrol.model.YearToSet;
 import uk.co.irokottaki.moneycontrol.utils.MainActivityUtil;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -70,13 +82,13 @@ public class MainActivityTests {
     @Test
     public void testProcessBalance(){
 
-        final SharedPreferences sharedPrefs = Mockito.mock(SharedPreferences.class);
-        final Context context = Mockito.mock(Context.class);
+        final SharedPreferences sharedPrefs = mock(SharedPreferences.class);
+        final Context context = mock(Context.class);
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPrefs);
-        final SharedPreferences.Editor editor = Mockito.mock(SharedPreferences.Editor.class);
+        final SharedPreferences.Editor editor = mock(SharedPreferences.Editor.class);
         when(sharedPrefs.edit()).thenReturn(editor);
-        final EditText incomeField = Mockito.mock(EditText.class);
-        final Activity mMockMainActivity = Mockito.mock(MainActivity.class);
+        final EditText incomeField = mock(EditText.class);
+        final Activity mMockMainActivity = mock(MainActivity.class);
 
         MainActivityUtil mainUtil = new MainActivityUtil(context);
         when(mMockMainActivity.findViewById(R.id.incomeField)).thenReturn(incomeField);
@@ -121,8 +133,8 @@ public class MainActivityTests {
     @Test
     public void testCheckBudgetWarning(){
 
-        final SharedPreferences sharedPrefs = Mockito.mock(SharedPreferences.class);
-        final Context context = Mockito.mock(Context.class);
+        final SharedPreferences sharedPrefs = mock(SharedPreferences.class);
+        final Context context = mock(Context.class);
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPrefs);
         when(sharedPrefs.getInt(String.valueOf(anyInt()),anyInt())).thenReturn(1000);
 
@@ -190,4 +202,151 @@ public class MainActivityTests {
 
         return objectYear;
     }
+
+    @Test
+    public void testHasPermissions() {
+        Context context = mock(Context.class);
+        ContextCompat.checkSelfPermission(context, "android.permission.WRITE_EXTERNAL_STORAGE677");
+
+        when(context.checkPermission(eq("android.permission.WRITE_EXTERNAL_STORAGE677"),anyInt(),anyInt())).thenReturn(
+                PackageManager.PERMISSION_DENIED);
+
+        try {
+            setFinalStatic(Build.VERSION.class.getField("SDK_INT"), 25);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        boolean hasPermissions = MainActivity.hasPermissions(context, "android.permission.WRITE_EXTERNAL_STORAGE677");
+        assertFalse(hasPermissions);
+
+        ContextCompat.checkSelfPermission(context, "android.permission.WRITE_EXTERNAL_STORAGE");
+
+        when(context.checkPermission(eq("android.permission.WRITE_EXTERNAL_STORAGE"),anyInt(),anyInt())).thenReturn(
+                PackageManager.PERMISSION_GRANTED);
+
+        hasPermissions = MainActivity.hasPermissions(context, "android.permission.WRITE_EXTERNAL_STORAGE");
+        assertTrue(hasPermissions);
+
+    }
+
+    static void setFinalStatic(Field field, Object newValue) throws Exception {
+        field.setAccessible(true);
+
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+        field.set(null, newValue);
+    }
+
+    @Test
+    public void testTokenExists(){
+
+        final SharedPreferences sharedPrefs = mock(SharedPreferences.class);
+        final Context context = mock(Context.class);
+        when(context.getSharedPreferences(anyString(),anyInt())).thenReturn(sharedPrefs);
+        when(sharedPrefs.getString(anyString(),anyString())).thenReturn("com.example.valdio.dropboxintegration");
+        MainActivityUtil mainActivityUtil = new MainActivityUtil(context);
+
+        boolean tokenExists = mainActivityUtil.tokenExists();
+        assertTrue(tokenExists);
+
+    }
+
+    @Test
+    public void testRetrieveAccessToken(){
+        /*First scenario*/
+        final SharedPreferences sharedPrefs = mock(SharedPreferences.class);
+        final Context context = mock(Context.class);
+        when(context.getSharedPreferences(anyString(),anyInt())).thenReturn(sharedPrefs);
+        when(sharedPrefs.getString(anyString(),anyString())).thenReturn("com.example.valdio.dropboxintegration");
+        MainActivityUtil mainActivityUtil = new MainActivityUtil(context);
+
+        String token = mainActivityUtil.retrieveAccessToken();
+        assertEquals("com.example.valdio.dropboxintegration", token);
+
+        /*Second scenario*/
+        when(sharedPrefs.getString(anyString(),anyString())).thenReturn(null);
+        token = mainActivityUtil.retrieveAccessToken();
+        assertNull(token);
+
+    }
+
+    @Test
+    public void testFindTheDateFormat(){
+
+        String dateToRequest = "20190130";
+        assertEquals("yyyyMMdd", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30-01-2019";
+        assertEquals("dd-MM-yyyy", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "2019-01-30";
+        assertEquals("yyyy-MM-dd", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "01/30/2019";
+        assertEquals("MM/dd/yyyy", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30/01/19";
+        assertEquals("dd/MM/yy", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "2019/01/30";
+        assertEquals("yyyy/MM/dd", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30 Jan 2019";
+        assertEquals("dd MMM yyyy", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30 January 2019";
+        assertEquals("dd MMMM yyyy", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "201901301200";
+        assertEquals("yyyyMMddHHmm", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "20190130 1200";
+        assertEquals("yyyyMMdd HHmm", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30-01-2019 12:00";
+        assertEquals("dd-MM-yyyy HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "2019-01-30 12:00";
+        assertEquals("yyyy-MM-dd HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30/01/2019 12:00";
+        assertEquals("MM/dd/yyyy HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "2019/01/30 12:00";
+        assertEquals("yyyy/MM/dd HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30 Jan 2019 12:00";
+        assertEquals("dd MMM yyyy HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30 January 2019 12:00";
+        assertEquals("dd MMMM yyyy HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "20190130120000";
+        assertEquals("yyyyMMddHHmmss", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "20190130 120000";
+        assertEquals("yyyyMMdd HHmmss", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30-01-2019 12:00:00";
+        assertEquals("dd-MM-yyyy HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "2019-01-30 12:00:00";
+        assertEquals("yyyy-MM-dd HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "01/30/2019 12:00:00";
+        assertEquals("MM/dd/yyyy HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "2019/01/30 12:00:00";
+        assertEquals("yyyy/MM/dd HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30 Jan 2019 12:00:00";
+        assertEquals("dd MMM yyyy HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+
+        dateToRequest = "30 January 2019 12:00:00";
+        assertEquals("dd MMMM yyyy HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+    }
+
 }

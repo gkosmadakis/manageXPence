@@ -251,7 +251,7 @@ public class ReportActivity extends AppCompatActivity {
 
                 int getMonthSelection = monthItems.getSelectedItemPosition();
 
-                util.switchMonthsReport(yearsMappedToObjectYearsMap,getMonthSelection, yearSelected, shortLine, ReportActivity.this);
+                util.switchMonthsReport(yearsMappedToObjectYearsMap,getMonthSelection, yearSelected, ReportActivity.this);
             }
 
             @Override

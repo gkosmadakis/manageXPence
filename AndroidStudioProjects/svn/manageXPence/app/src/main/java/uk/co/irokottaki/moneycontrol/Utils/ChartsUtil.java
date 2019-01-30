@@ -939,7 +939,7 @@ public class ChartsUtil {
         }
     }
 
-    private void addAmountToCurrentOrNextMonth(Float amount, int monthInt, YearToSet obj2018) {
+    public void addAmountToCurrentOrNextMonth(Float amount, int monthInt, YearToSet obj2018) {
 
         switch (monthInt) {
 
@@ -983,7 +983,7 @@ public class ChartsUtil {
 
     }
 
-    public void switchMonthsReport(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int getMonthSelection, int yearRequested, StringBuilder shortLine, Activity activity) {
+    public void switchMonthsReport(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int getMonthSelection, int yearRequested, Activity activity) {
 
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -1035,7 +1035,7 @@ public class ChartsUtil {
      }
 
 
-    private StringBuilder formatReportArea(String fileLine) {
+    public StringBuilder formatReportArea(String fileLine) {
 
         StringBuilder shortLine = new StringBuilder();
         String formatStr = "%-8s%-15s%-10s";

@@ -829,10 +829,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
                         if (item.getTitle().equals(EXPORT_TO_DROPBOX)) {
 
-                            accessToken = retrieveAccessToken();
+                            accessToken = mainUtil.retrieveAccessToken();
 
                             getUserAccount();
-                            if (!tokenExists() || invalidToken) {
+                            if (!mainUtil.tokenExists() || invalidToken) {
                                 //No token Back to LoginActivity
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent
@@ -2590,14 +2590,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         }
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(),
-                inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
     public static boolean hasPermissions(Context context, String... permissions) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null &&
                 permissions != null) {
@@ -2630,54 +2622,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 Log.i("invalidToken", String.valueOf(invalidToken));
             }
         }).execute();
-    }
-
-    public boolean tokenExists() {
-
-        SharedPreferences prefs = getSharedPreferences("com.example.valdio.dropboxintegration",
-                Context.MODE_PRIVATE);
-        String accessToken = prefs.getString("access-token", null);
-
-        return accessToken != null;
-    }
-
-    private boolean checkValidToken() {
-        boolean validToken = false;
-        DbxAppInfo appInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
-        DbxAuthFinish authFinish = null;
-        try {
-            DbxRequestConfig config = new DbxRequestConfig("JavaTutorial/1.0", Locale.getDefault
-                    ().toString());
-            DbxWebAuthNoRedirect webAuth = new DbxWebAuthNoRedirect(config, appInfo);
-            String code = new BufferedReader(new InputStreamReader(System.in)).readLine().trim();
-            authFinish = webAuth.finish(code);
-            validToken = true;
-        } catch (DbxException e) {
-            Log.e("DbxException", e.getMessage());
-            validToken = false;
-        } catch (IOException j) {
-            Log.e("IOException", j.getMessage());
-        }
-
-        if(authFinish!= null) {
-            String accessToken = authFinish.getAccessToken();
-        }
-        return validToken;
-    }
-
-    private String retrieveAccessToken() {
-        //check if accessToken is stored on previous app launches
-        SharedPreferences prefs = getSharedPreferences("com.example.valdio.dropboxintegration",
-                Context.MODE_PRIVATE);
-        String accessToken = prefs.getString("access-token", null);
-        if (accessToken == null) {
-            Log.d("AccessToken Status", "No token found");
-            return null;
-        } else {
-            //accessToken already exists
-            Log.d("AccessToken Status", "Token exists");
-            return accessToken;
-        }
     }
 
     public String getRealPathFromURI(Uri contentUri) {

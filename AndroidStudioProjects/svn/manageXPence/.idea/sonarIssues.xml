@@ -8,12 +8,17 @@
             <set />
           </value>
         </entry>
-        <entry key="/a.dummy">
+        <entry key="$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="/fragment.java">
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
           <value>
             <set />
           </value>
@@ -363,6 +368,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/MainActivityChartExpensesTabTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/MainActivityManageExpensesTabTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/test.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/ChartActivity.java">
           <value>
             <set />
@@ -483,22 +503,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/ChartsUtilTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/MainActivityTests.java">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
+        <entry key="/a.dummy">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
+        <entry key="/fragment.java">
           <value>
             <set />
           </value>

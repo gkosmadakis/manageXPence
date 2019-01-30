@@ -2,6 +2,7 @@ package uk.co.irokottaki.moneycontrol.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -288,6 +289,30 @@ public class MainActivityUtil {
             percentWarning = (double) sum / (double) progressValue;
         }
         return percentWarning;
+    }
+
+    public boolean tokenExists() {
+
+        SharedPreferences prefs = context.getSharedPreferences("com.example.valdio.dropboxintegration",
+                Context.MODE_PRIVATE);
+        String accessToken = prefs.getString("access-token", null);
+
+        return accessToken != null;
+    }
+
+    public String retrieveAccessToken() {
+        //check if accessToken is stored on previous app launches
+        SharedPreferences prefs = context.getSharedPreferences("com.example.valdio.dropboxintegration",
+                Context.MODE_PRIVATE);
+        String accessToken = prefs.getString("access-token", null);
+        if (accessToken == null) {
+            Log.d("AccessToken Status", "No token found");
+            return null;
+        } else {
+            //accessToken already exists
+            Log.d("AccessToken Status", "Token exists");
+            return accessToken;
+        }
     }
 
     public double getBalance() {
