@@ -17,8 +17,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -453,6 +455,18 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatButton34.perform(click());
 
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView3 = onView(
+                allOf(withId(R.id.title), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView3.perform(click());
+
         ViewInteraction appCompatImageButton12 = onView(
                 allOf(withId(R.id.arrowRight),
                         childAtPosition(
@@ -628,6 +642,18 @@ public class MainActivityChartExpensesTabTest {
                                 5),
                         isDisplayed()));
         appCompatButton35.perform(click());
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView4 = onView(
+                allOf(withId(R.id.title), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView4.perform(click());
 
         ViewInteraction appCompatImageButton25 = onView(
                 allOf(withId(R.id.arrowRight),
@@ -860,17 +886,6 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatImageButton35.perform(click());
 
-        ViewInteraction switch_12 = onView(
-                allOf(withId(R.id.switchButton), withText("% or £"),
-                        childAtPosition(
-                                allOf(withId(R.id.barChartView),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                5),
-                        isDisplayed()));
-        switch_12.perform(click());
-
         ViewInteraction appCompatImageButton36 = onView(
                 allOf(withId(R.id.arrowLeft),
                         childAtPosition(
@@ -968,6 +983,18 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatButton40.perform(click());
 
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView5 = onView(
+                allOf(withId(R.id.title), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView5.perform(click());
+
         ViewInteraction appCompatTextView2 = onView(
                 allOf(withId(R.id.circleTextview), withText("Set Income Circle"),
                         childAtPosition(
@@ -1000,6 +1027,18 @@ public class MainActivityChartExpensesTabTest {
                                 11),
                         isDisplayed()));
         appCompatButton39.perform(click());
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView6 = onView(
+                allOf(withId(R.id.title), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView6.perform(click());
 
         ViewInteraction appCompatImageButton39 = onView(
                 allOf(withId(R.id.leftYearButton), withContentDescription("Left Year Button"),

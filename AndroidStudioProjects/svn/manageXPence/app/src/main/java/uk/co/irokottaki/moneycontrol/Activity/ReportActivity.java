@@ -1,13 +1,10 @@
 package uk.co.irokottaki.moneycontrol.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -29,13 +26,28 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ADSDISABLED;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.APRIL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.AUGUST;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DECEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES_REPORT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.FEBRUARY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.JANUARY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.JULY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.JUNE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MARCH;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MAY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.NOVEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.OCTOBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SEPTEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.TOTAL;
 
 
 public class ReportActivity extends AppCompatActivity {

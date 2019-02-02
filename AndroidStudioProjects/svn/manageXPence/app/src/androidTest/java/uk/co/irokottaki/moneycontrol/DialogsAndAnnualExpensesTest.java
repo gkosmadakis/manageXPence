@@ -18,8 +18,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
@@ -292,6 +294,29 @@ public class DialogsAndAnnualExpensesTest {
                                 1),
                         isDisplayed()));
         imageButton.perform(click());
+
+        ViewInteraction appCompatTextView3 = onView(
+                allOf(withId(R.id.specificExpensesOfYear), withText("Hom much do I spend on a year for each expense?"),
+                        childAtPosition(
+                                allOf(withId(R.id.annualChartView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                5),
+                        isDisplayed()));
+        appCompatTextView3.perform(click());
+
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView2 = onView(
+                allOf(withId(R.id.title), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView2.perform(click());
 
         ViewInteraction imageButton2 = onView(
                 allOf(withContentDescription("Navigate up"),

@@ -211,6 +211,18 @@ public class MainActivityManageExpensesTabTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+        ViewInteraction appCompatTextView7 = onView(
+                allOf(withId(R.id.title), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView7.perform(click());
+
         ViewInteraction appCompatSpinner2 = onView(
                 allOf(withId(R.id.monthSpinner),
                         childAtPosition(
@@ -536,7 +548,7 @@ public class MainActivityManageExpensesTabTest {
         appCompatButton24.perform(scrollTo(), click());
 
         ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.expenseText), withText("750"),
+                allOf(withId(R.id.expenseText), withText("700"),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(

@@ -18,6 +18,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/Preferences.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
           <value>
             <set />
@@ -368,6 +373,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/DialogsAndAnnualExpensesTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/LayoutTests.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/MainActivityChartExpensesTabTest.java">
           <value>
             <set />
@@ -503,7 +518,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/Utils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/ChartsUtilTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/LayoutTests.java">
           <value>
             <set />
           </value>

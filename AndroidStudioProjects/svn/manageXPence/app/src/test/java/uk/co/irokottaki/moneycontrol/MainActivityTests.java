@@ -8,12 +8,8 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.widget.EditText;
 
-import com.google.firebase.database.ThrowOnExtraProperties;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.lang.reflect.Field;
@@ -39,9 +35,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MainActivityTests {
+public class MainActivityTests  {
     private static final double DELTA = 1e-15;
-
 
     @Test
     public void testResetExpenseOfCurrentMonth(){
@@ -348,5 +343,6 @@ public class MainActivityTests {
         dateToRequest = "30 January 2019 12:00:00";
         assertEquals("dd MMMM yyyy HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
     }
+
 
 }

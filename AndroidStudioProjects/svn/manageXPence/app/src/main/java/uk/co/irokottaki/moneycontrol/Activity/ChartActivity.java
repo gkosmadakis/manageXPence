@@ -1,6 +1,5 @@
 package uk.co.irokottaki.moneycontrol.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +37,8 @@ import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.PIE_CHART;
 
 public class ChartActivity extends AppCompatActivity {
 

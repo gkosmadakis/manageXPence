@@ -38,7 +38,7 @@ public class Utils {
         this.context = context;
     }
 
-    private void adjustScreenSizeToDevice (RelativeLayout layout) {
+    public void adjustScreenSizeToDevice (RelativeLayout layout) {
 
         float heightInPercentage;
         float widthInPercentage;
