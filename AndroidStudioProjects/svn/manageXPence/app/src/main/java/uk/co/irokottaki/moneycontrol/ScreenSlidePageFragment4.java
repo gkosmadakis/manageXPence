@@ -33,8 +33,8 @@ public class ScreenSlidePageFragment4 extends Fragment {
 
         inflater.inflate(R.menu.activity_screen_slide, menu);
 
-        menu.findItem(R.id.action_next).setEnabled(HelpActivity.mPager.getCurrentItem() <
-                HelpActivity.mPagerAdapter.getCount() - 1);
+        menu.findItem(R.id.action_next).setEnabled(HelpActivity.getmPager().getCurrentItem() <
+                HelpActivity.getmPagerAdapter().getCount() - 1);
 
         // Add a "next" and "previous" button to the action bar
         MenuItem item = menu.add(Menu.NONE, R.id.action_previous, Menu.NONE, R.string

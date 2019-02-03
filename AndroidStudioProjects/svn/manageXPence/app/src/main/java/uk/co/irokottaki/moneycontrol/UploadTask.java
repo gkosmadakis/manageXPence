@@ -55,7 +55,7 @@ public class UploadTask extends AsyncTask {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("IOException", e.getMessage());
                 }
             }
         }

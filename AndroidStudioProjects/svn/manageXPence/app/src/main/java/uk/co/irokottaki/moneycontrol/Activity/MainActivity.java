@@ -1266,7 +1266,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         } catch (Exception e) {
             Toast.makeText(this, "Exception: " + e.toString(), Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+            Log.e("Exception", e.getMessage());
         }
         finally{
             if (out != null) {
@@ -2095,7 +2095,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("IOException",e.getMessage());
         }
         finally {
             try {
@@ -2141,7 +2141,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         fos.close();
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("IOException", e.getMessage());
                 }
             }
         }
@@ -2514,7 +2514,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 try {
                     br.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("IOException", e.getMessage());
                 }
             }
         }

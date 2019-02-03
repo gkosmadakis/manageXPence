@@ -11,8 +11,6 @@ public class AnyYear implements Serializable {
 
     public AnyYear(YearToSet yearToSet) {
 
-        yearToSet = new YearToSet(0.0f, 0.0f, 0.0f,0.0f, 0.0f, 0.0f,0.0f ,0.0f, 0.0f ,0.0f ,0.0f ,0.0f );
-
         this.year = yearToSet;
     }
 

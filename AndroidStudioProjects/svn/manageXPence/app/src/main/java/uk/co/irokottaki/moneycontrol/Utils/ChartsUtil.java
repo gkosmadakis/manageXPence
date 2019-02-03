@@ -934,7 +934,7 @@ public class ChartsUtil {
                     br.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("IOException", e.getMessage());
             }
         }
     }

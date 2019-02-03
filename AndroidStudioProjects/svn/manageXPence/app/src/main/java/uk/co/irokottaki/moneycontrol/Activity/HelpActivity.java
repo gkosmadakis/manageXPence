@@ -35,12 +35,12 @@ public class HelpActivity extends AppCompatActivity {
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
      */
-    public static ViewPager mPager;
+    private static ViewPager mPager;
 
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
-    public static PagerAdapter mPagerAdapter;
+    private static PagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +71,14 @@ public class HelpActivity extends AppCompatActivity {
             // Otherwise, select the previous step.
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
+    }
+
+    public static ViewPager getmPager() {
+        return mPager;
+    }
+
+    public static PagerAdapter getmPagerAdapter() {
+        return mPagerAdapter;
     }
 
     /**
