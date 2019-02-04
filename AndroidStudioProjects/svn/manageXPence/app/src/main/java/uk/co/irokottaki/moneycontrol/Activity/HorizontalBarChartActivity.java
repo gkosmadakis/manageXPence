@@ -81,24 +81,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         dataSets = new ArrayList<>();
         data = new BarData(xAxis, dataSets);// initialize data to avoid null pointers
 
-        final Calendar calendar = Calendar.getInstance();
-
-        String currentMonth = String.format(Locale.UK, "%tB", calendar);
-        year = calendar.get(Calendar.YEAR);// get the current year
-
-        monthLabel.setText(currentMonth);
-
-        String getCurrentMonthDisplayed = monthLabel.getText().toString();
-        monthInt = 0;
-        try {
-            java.util.Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse
-                    (getCurrentMonthDisplayed);
-            calendar.setTime(date);// here i convert the String month in an integer to be used on
-            // the switch-case
-            monthInt = calendar.get(Calendar.MONTH);
-        } catch (ParseException e) {
-            Log.e("ParseException",e.getMessage());
-        }
+        util.displayMonthToLabel(this);
 
         // switch button listener
         toggleAmount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

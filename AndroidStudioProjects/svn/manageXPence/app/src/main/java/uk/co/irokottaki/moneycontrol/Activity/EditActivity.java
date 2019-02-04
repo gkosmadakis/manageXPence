@@ -565,15 +565,15 @@ public class EditActivity extends AppCompatActivity {
             // has taken value, i pass this value
         }
         // in lineToCompare
-        FileInputStream fstream = null;
-        BufferedReader br = null;
+        FileInputStream fileInputStream = null;
+        BufferedReader bufferedReader = null;
         PrintWriter out = null;
         try {
-            fstream = this.openFileInput(EXPENSES_FILE);
-            br = new BufferedReader(new InputStreamReader(fstream));
+            fileInputStream = this.openFileInput(EXPENSES_FILE);
+            bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
             String strLine;
             StringBuilder fileContent = new StringBuilder();
-            while ((strLine = br.readLine()) != null) {
+            while ((strLine = bufferedReader.readLine()) != null) {
 
                 //if the line in the file is not the same with the one selected by the user
                 if (!strLine.replaceAll("\\s+", " ").equals(lineToCompare.trim())) {
@@ -612,16 +612,16 @@ public class EditActivity extends AppCompatActivity {
             Log.e("Error: ", e.getMessage());
         }
         finally {
-            if (fstream!= null){
+            if (fileInputStream!= null){
                 try {
-                    fstream.close();
+                    fileInputStream.close();
                 } catch (IOException e) {
                     Log.e("IOException", e.getMessage());
                 }
             }
-            if (br!= null){
+            if (bufferedReader!= null){
                 try {
-                    br.close();
+                    bufferedReader.close();
                 } catch (IOException e) {
                     Log.e("IOException", e.getMessage());
                 }

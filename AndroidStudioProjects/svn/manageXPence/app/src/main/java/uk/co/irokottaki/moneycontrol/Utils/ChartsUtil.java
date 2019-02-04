@@ -31,7 +31,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +50,6 @@ import uk.co.irokottaki.moneycontrol.activity.AnnualSavingsActivity;
 import uk.co.irokottaki.moneycontrol.activity.CalculateAnnualExpensesActivity;
 import uk.co.irokottaki.moneycontrol.activity.ChartActivity;
 import uk.co.irokottaki.moneycontrol.activity.HorizontalBarChartActivity;
-import uk.co.irokottaki.moneycontrol.activity.MainActivity;
 import uk.co.irokottaki.moneycontrol.activity.ReportActivity;
 import uk.co.irokottaki.moneycontrol.model.YearToSet;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
@@ -1073,10 +1071,10 @@ public class ChartsUtil {
                setData(year.getYear().getAmountJan(), year.getYear().getAmountFeb(), year.getYear().getAmountMar(), year.getYear().getAmountApr(),
                        year.getYear().getAmountMay(), year.getYear().getAmountJun(), year.getYear().getAmountJul(), year.getYear().getAmountAug(),
                        year.getYear().getAmountSep(), year.getYear().getAmountOct(), year.getYear().getAmountNov(), year.getYear().getAmountDec(),
-                       ((AnnualChartActivity) activity).getmChart());
+                       ((AnnualChartActivity) activity).getAnnualChart());
            }
            else {
-               setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, ((AnnualChartActivity) activity).getmChart());
+               setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, ((AnnualChartActivity) activity).getAnnualChart());
            }
     }
 
@@ -1109,10 +1107,10 @@ public class ChartsUtil {
                         incomeForMay - year.getYear().getAmountMay(), incomeForJun - year.getYear().getAmountJun(), incomeForJul -
                                 year.getYear().getAmountJul(), incomeForAug - year.getYear().getAmountAug(),
                         incomeForSep - year.getYear().getAmountSep(), incomeForOct - year.getYear().getAmountOct(), incomeForNov -
-                                year.getYear().getAmountNov(), incomeForDec - year.getYear().getAmountDec(), ((AnnualSavingsActivity) activity).getmChart());
+                                year.getYear().getAmountNov(), incomeForDec - year.getYear().getAmountDec(), ((AnnualSavingsActivity) activity).getAnnualSavingsChart());
 
             } else {
-                setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, ((AnnualSavingsActivity) activity).getmChart());
+                setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, ((AnnualSavingsActivity) activity).getAnnualSavingsChart());
             }
         }
 
@@ -1494,6 +1492,45 @@ public class ChartsUtil {
             case 12:
                 obj2018.setAmountDec(0f);
                 break;
+        }
+    }
+
+    public void displayMonthToLabel(Activity activity) {
+
+        final Calendar calendar = Calendar.getInstance();
+        String currentMonth = String.format(Locale.UK, "%tB", calendar);
+
+        if(activity instanceof ChartActivity) {
+            ((ChartActivity) activity).setYear(calendar.get(Calendar.YEAR));// get the current year
+            ((ChartActivity) activity).getMonthLabel().setText(currentMonth);
+            String getCurrentMonthDisplayed = ((ChartActivity) activity).getMonthLabel().getText().toString();
+            ((ChartActivity) activity).setMonthInt(0);
+
+            try {
+                java.util.Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse
+                        (getCurrentMonthDisplayed);
+                calendar.setTime(date);// here i convert the String month in an integer to be used on
+                // the switch-case
+                ((ChartActivity) activity).setMonthInt(calendar.get(Calendar.MONTH));
+            } catch (ParseException e) {
+                Log.e("ParseException", e.getMessage());
+            }
+        }
+        else {
+            ((HorizontalBarChartActivity) activity).setYear(calendar.get(Calendar.YEAR));// get the current year
+            ((HorizontalBarChartActivity) activity).getMonthLabel().setText(currentMonth);
+            String getCurrentMonthDisplayed = ((HorizontalBarChartActivity) activity).getMonthLabel().getText().toString();
+            ((HorizontalBarChartActivity) activity).setMonthInt(0);
+
+            try {
+                java.util.Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse
+                        (getCurrentMonthDisplayed);
+                calendar.setTime(date);// here i convert the String month in an integer to be used on
+                // the switch-case
+                ((HorizontalBarChartActivity) activity).setMonthInt(calendar.get(Calendar.MONTH));
+            } catch (ParseException e) {
+                Log.e("ParseException", e.getMessage());
+            }
         }
     }
 

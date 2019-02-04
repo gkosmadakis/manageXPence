@@ -47,7 +47,7 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class AnnualChartActivity extends AppCompatActivity implements OnChartGestureListener,
         OnChartValueSelectedListener {
-    private LineChart mChart;
+    private LineChart annualChart;
     ImageButton leftYearButton;
     ImageButton rightYearButton;
     private int year;
@@ -79,24 +79,24 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, AnnualChartActivity.this);
 
-        mChart = (LineChart) findViewById(R.id.annualChartLayout);
-        mChart.setOnChartGestureListener(this);
-        mChart.setOnChartValueSelectedListener(this);
-        mChart.setDrawGridBackground(false);
+        annualChart = (LineChart) findViewById(R.id.annualChartLayout);
+        annualChart.setOnChartGestureListener(this);
+        annualChart.setOnChartValueSelectedListener(this);
+        annualChart.setDrawGridBackground(false);
 
         // no description text
-        mChart.setDescription("");
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
+        annualChart.setDescription("");
+        annualChart.setNoDataTextDescription("You need to provide data for the chart.");
 
         // enable touch gestures
-        mChart.setTouchEnabled(true);
+        annualChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
+        annualChart.setDragEnabled(true);
+        annualChart.setScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
+        annualChart.setPinchZoom(true);
 
         // Arrow buttons
         leftYearButton = new ImageButton(this);
@@ -125,7 +125,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                 " on a year for each expense?" +
                 "</u></font>"));
 
-        util.setXYAxisForChart(mChart);
+        util.setXYAxisForChart(annualChart);
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);// get the current year
         yearView.setText(YEAR + year);
@@ -154,12 +154,12 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
             }
             util.setData(yearToSet.getAmountJan(), yearToSet.getAmountFeb(), yearToSet.getAmountMar(), yearToSet.getAmountApr(),
                     yearToSet.getAmountMay(), yearToSet.getAmountJun(), yearToSet.getAmountJul(), yearToSet.getAmountAug(),
-                    yearToSet.getAmountSep(), yearToSet.getAmountOct(), yearToSet.getAmountNov(), yearToSet.getAmountDec(), mChart);
+                    yearToSet.getAmountSep(), yearToSet.getAmountOct(), yearToSet.getAmountNov(), yearToSet.getAmountDec(), annualChart);
 
         } else {
             util.setData(yearToSet.getAmountJan(), yearToSet.getAmountFeb(), yearToSet.getAmountMar(), yearToSet.getAmountApr(),
                     yearToSet.getAmountMay(), yearToSet.getAmountJun(), yearToSet.getAmountJul(), yearToSet.getAmountAug(),
-                    yearToSet.getAmountSep(), yearToSet.getAmountOct(), yearToSet.getAmountNov(), yearToSet.getAmountDec(), mChart);
+                    yearToSet.getAmountSep(), yearToSet.getAmountOct(), yearToSet.getAmountNov(), yearToSet.getAmountDec(), annualChart);
 
         }
         //listener of the income circle button
@@ -174,7 +174,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
     }
     /*the expenses file is empty so just set to 0 the data*/
     else {
-            util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,mChart);
+            util.setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, annualChart);
         }
 
         //Listener to events on clicking the image arrows
@@ -200,10 +200,10 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
             }
         });
 
-        mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
+        annualChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
 
         // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
+        Legend l = annualChart.getLegend();
 
         // modify the legend
         l.setForm(Legend.LegendForm.LINE);
@@ -270,7 +270,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                                             (valueFromNumPicker1, currentMonth,yearToSet);
                                     util.setData(yearToSet.getAmountJan(),yearToSet.getAmountFeb(),yearToSet.getAmountMar(),yearToSet.getAmountApr(),
                                             yearToSet.getAmountMay(),yearToSet.getAmountJun(), yearToSet.getAmountJul(),yearToSet.getAmountAug(),
-                                            yearToSet.getAmountSep(),yearToSet.getAmountOct(), yearToSet.getAmountNov(),yearToSet.getAmountDec(), mChart);
+                                            yearToSet.getAmountSep(),yearToSet.getAmountOct(), yearToSet.getAmountNov(),yearToSet.getAmountDec(), annualChart);
 
                                 } catch (ParseException e) {
                                     Log.e("ParseException",e.getMessage());
@@ -304,7 +304,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                                 final YearToSet yearToSetNew = currentYear.getYear();
                                 util.setData(yearToSetNew.getAmountJan(),yearToSetNew.getAmountFeb(),yearToSetNew.getAmountMar(),yearToSetNew.getAmountApr(),
                                         yearToSetNew.getAmountMay(),yearToSetNew.getAmountJun(), yearToSetNew.getAmountJul(),yearToSetNew.getAmountAug(),
-                                        yearToSetNew.getAmountSep(),yearToSetNew.getAmountOct(), yearToSetNew.getAmountNov(),yearToSetNew.getAmountDec(), mChart);
+                                        yearToSetNew.getAmountSep(),yearToSetNew.getAmountOct(), yearToSetNew.getAmountNov(),yearToSetNew.getAmountDec(), annualChart);
 
                                 // store in preferences the boolean to set the circle and the
                                 // values from the number pickers.
@@ -321,8 +321,8 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         alertDialogBuilder.show();
     }
 
-    public LineChart getmChart() {
-        return mChart;
+    public LineChart getAnnualChart() {
+        return annualChart;
     }
 
     @Override

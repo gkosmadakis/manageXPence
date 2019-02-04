@@ -161,22 +161,7 @@ public class ChartActivity extends AppCompatActivity {
         l.setXEntrySpace(7);
         l.setYEntrySpace(5);
 
-        final Calendar calendar = Calendar.getInstance();//this gets the current month
-        String currentMonth = String.format(Locale.UK, "%tB", calendar);
-        year = calendar.get(Calendar.YEAR);// get the current year
-        monthLabel.setText(currentMonth);// and displays it on the month field
-        String getCurrentMonthDisplayed = monthLabel.getText().toString();
-
-        monthInt = 0;
-        try {
-            java.util.Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse
-                    (getCurrentMonthDisplayed);
-            calendar.setTime(date);// here i convert the String month in an integer to be used on
-            // the switch-case
-            monthInt = calendar.get(Calendar.MONTH);
-        } catch (ParseException e) {
-            Log.e("Parse exception",e.getMessage());
-        }
+        util.displayMonthToLabel(this);
 
         arrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -32,22 +32,7 @@ import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.ADSDISABLED;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.APRIL;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.AUGUST;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.DECEMBER;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES_REPORT;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.FEBRUARY;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.JANUARY;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.JULY;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.JUNE;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.MARCH;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.MAY;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.NOVEMBER;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.OCTOBER;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.SEPTEMBER;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.TOTAL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 
 public class ReportActivity extends AppCompatActivity {

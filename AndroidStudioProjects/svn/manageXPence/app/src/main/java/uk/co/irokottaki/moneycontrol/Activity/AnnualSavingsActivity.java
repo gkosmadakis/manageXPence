@@ -32,7 +32,7 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
 
 public class AnnualSavingsActivity extends AppCompatActivity implements OnChartGestureListener, OnChartValueSelectedListener {
 
-    private LineChart mChart;
+    private LineChart annualSavingsChart;
     ImageButton leftYearButton;
     ImageButton rightYearButton;
     private int year;
@@ -59,20 +59,20 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, AnnualSavingsActivity.this);
 
-        mChart = (LineChart) findViewById(R.id.annualSavingsLayout);
-        mChart.setOnChartGestureListener(this);
-        mChart.setOnChartValueSelectedListener(this);
-        mChart.setDrawGridBackground(false);
+        annualSavingsChart = (LineChart) findViewById(R.id.annualSavingsLayout);
+        annualSavingsChart.setOnChartGestureListener(this);
+        annualSavingsChart.setOnChartValueSelectedListener(this);
+        annualSavingsChart.setDrawGridBackground(false);
 
         // enable touch gestures
-        mChart.setTouchEnabled(true);
+        annualSavingsChart.setTouchEnabled(true);
 
         // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
+        annualSavingsChart.setDragEnabled(true);
+        annualSavingsChart.setScaleEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
+        annualSavingsChart.setPinchZoom(true);
 
         // Arrow buttons
         leftYearButton = new ImageButton(this);
@@ -84,7 +84,7 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
         //Year Label
         yearView = (TextView) findViewById(R.id.yearlabelSavings);
 
-        util.setXYAxisForChart(mChart);
+        util.setXYAxisForChart(annualSavingsChart);
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);// get the current year
         yearView.setText(YEAR + year);
@@ -118,18 +118,18 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
             }
         });
 
-        mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
+        annualSavingsChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
 
         // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
+        Legend l = annualSavingsChart.getLegend();
 
         // modify the legend
         l.setForm(Legend.LegendForm.LINE);
 
     }// end of onCreate
 
-    public LineChart getmChart() {
-        return mChart;
+    public LineChart getAnnualSavingsChart() {
+        return annualSavingsChart;
     }
 
     @Override
