@@ -20,5 +20,9 @@ public class MultiMapTests {
         value.add("10 Test 04/02/2019");
 
         assertEquals(value, testMap.get("Test"));
+
+        testMap.put("Test", "20 Test 05/02/2019");
+        value.add("20 Test 05/02/2019");
+        assertEquals(value, testMap.get("Test"));
     }
 }

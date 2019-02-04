@@ -418,6 +418,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/HelpAndSettingsTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/LayoutTests.java">
           <value>
             <set />
