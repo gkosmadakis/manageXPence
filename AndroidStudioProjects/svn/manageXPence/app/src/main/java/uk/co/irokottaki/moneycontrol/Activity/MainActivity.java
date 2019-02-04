@@ -913,10 +913,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
     }
 
-    private void switchToTab(int tab) {
-        tabHost.setCurrentTab(tab);
-    }
-
     public void consumeItem() {
 
         mHelper.queryInventoryAsync(mReceivedInventoryListener);

@@ -103,6 +103,31 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/ScreenSlidePageFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/ScreenSlidePageFragment2.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/ScreenSlidePageFragment3.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/ScreenSlidePageFragment4.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/ScreenSlidePageFragment5.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/UploadTask.java">
           <value>
             <set />
@@ -118,7 +143,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/ChartActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/EditActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/HelpActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/HorizontalBarChartActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/ReportActivity.java">
           <value>
             <set />
           </value>
@@ -549,6 +599,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/MainActivityTests.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/MultiMapTests.java">
           <value>
             <set />
           </value>
