@@ -1,13 +1,20 @@
 package uk.co.irokottaki.moneycontrol.utils;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
+import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.activity.BudgetActivity;
 import uk.co.irokottaki.moneycontrol.activity.MainActivity;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
@@ -15,7 +22,13 @@ import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.APRIL;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.AUGUST;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.BUDGETVALUE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.CANCEL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.CLOSE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DATE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.DECEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DESCRIPTION;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ENTERTAINMENT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSE_AMOUNT;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.FEBRUARY;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.INCOME;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.JANUARY;
@@ -27,6 +40,7 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.NOVEMBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.OCTOBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.SEPTEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SHOPPING;
 
 public class MainActivityUtil {
     private static Float incomeForJan;
@@ -45,6 +59,12 @@ public class MainActivityUtil {
     private double monthSum;
     private double balance;
     private double incomeDouble;
+    private boolean expenseFound;
+    private boolean dateFound;
+    private boolean descFound;
+    private String expense;
+    private String description;
+    private String date;
 
 
     public MainActivityUtil(Context context){
@@ -315,6 +335,278 @@ public class MainActivityUtil {
         }
     }
 
+    public void setExpenseFieldsFromCameraExtractedText(String textResponseFromHaven, Activity activity) {
+
+        expense = "";
+        description = "";
+        date = "";
+
+        if (textResponseFromHaven == null || textResponseFromHaven.isEmpty()
+                || !textResponseFromHaven.replaceAll("\\s+", "").matches(".*[a-zA-Z]+.*")) {
+            // response is null so do nothing, print a message to user to take
+            // another picture
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                    .setTitle("Did not capture that. Try again!")
+                    .setMessage("There was nothing captured from your image or the characters are" +
+                            " not recognisable. " +
+                            "Please take a better resolution photo!");
+            AlertDialog alert1;
+            builder.setPositiveButton(CLOSE,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            alert1 = builder.create();
+            alert1.show();
+        }
+        // at this point check if the output contains text characters. Remove all whitespaces and
+        // new line and check
+        else if (textResponseFromHaven.replaceAll("\\s+", " ").matches(".*[a-zA-Z]+.*")) {
+            String[] wordForExpenses = new String[]{"total", "amount", "subtotal", "Visa Debit " +
+                    "£", "total sale:", "total gbp"};
+
+            for (String wordForExpense : wordForExpenses) {
+                if (textResponseFromHaven.toLowerCase(Locale.ENGLISH).contains(wordForExpense)) {
+                    // get the expense
+                    //it is the substring of TOTAL plus one char and tha next space found in the
+                    // response
+                    String[] split = textResponseFromHaven.toLowerCase(Locale.ENGLISH).split
+                            (wordForExpense.toLowerCase(Locale.US));
+                    String amount = split[1].trim();
+                    //String amountTillFirstSpace = amount.substring(0, amount.indexOf("\n"));
+                    //check that the first character is number
+                    if (Character.isDigit(amount.trim().charAt(0))) {
+                        int j = 0;
+                        for (int k = 0; k < amount.length(); k++) {
+                            Character charToCheck = amount.charAt(k);
+                            //if the character is not a number and is one of . - space
+                            if (!Character.isDigit(charToCheck) &&
+                                    charToCheck.toString().equals(".") || charToCheck.toString()
+                                    .equals("-")
+                                    || charToCheck.toString().equals(" ")) {
+                                expense = expense.concat(".");
+                                j++;
+                            } else if (Character.isDigit(charToCheck)) {
+                                expense = expense.concat(String.valueOf(Character.getNumericValue(amount
+                                        .trim().charAt(j))));
+                                expenseFound = true;
+                                j++;
+                            }
+                        }
+                    }
+                }
+            }
+            String[] wordForDates = new String[]{"Date:", DATE};
+            for (String wordForDate : wordForDates) {
+                //check if the word date exists in the receipt
+                if (textResponseFromHaven.toLowerCase(Locale.ENGLISH).contains(wordForDate
+                        .toLowerCase(Locale.US))) {
+                    //check if the next word after the word Date is a valid date like mm/dd/yyyy
+                    String[] split = textResponseFromHaven.toLowerCase(Locale.ENGLISH).split
+                            (wordForDate.toLowerCase(Locale.US).trim());
+                    String potentialDate = split[1].trim().substring(0, split[1].trim().indexOf("" +
+                            " "));
+
+
+                    // if the date string checked is null then date not found in the Map
+                    if (findTheDateFormat(potentialDate) == null) {
+                        date = null;
+                    }
+                    // if it is a valid date then return it. Check
+                    // substring after the word Date and count the length of the string returned
+                    // from the findTheDateFormat
+                    else {
+
+                        //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+                        date = potentialDate;
+                        dateFound = true;
+                        break;
+                    }
+                    Log.e("Date Found in RECEIPT: ", date);
+                    // get the date
+                    //NEED TO MAKE SURE THAT THE WORDSFORDATES IS THE ACTUAL DATE AND NOT THE
+                    // WORD DATE/
+
+                } else {
+                    String[] splitResponseToStrings = textResponseFromHaven.replaceAll("\n", "")
+                            .split(" ");
+                    for (int j = 0; j < splitResponseToStrings.length; j++) {
+                        if (splitResponseToStrings[j].contains("/")) {
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy", Locale
+                                    .US);
+                            splitResponseToStrings[j] = formatter.format(splitResponseToStrings[j]);
+                        }
+                        if (findTheDateFormat(splitResponseToStrings[j]) != null) {
+                            date = splitResponseToStrings[j];
+                        }
+                    }
+                }
+            }
+
+            String[] wordForSuperMarket = new String[]{"Tesco", "Groceries", "Morrisons", "Asda",
+                    "Lidl", "Waitrose", "Sandwich"};
+            String[] wordForEntertainment = new String[]{"Course", "Table", "Drink",
+                    "Restaurants", "Coffee"};
+            String[] wordForShopping = new String[]{"Jacket", "Trouser", "Cycles", "Medium",
+                    "Large", "Small",};
+            String[] wordForPetrol = new String[]{"Unleaded", "Petrol", "Petroleum"};
+            for (String aWordForSuperMarket : wordForSuperMarket) {
+                if (textResponseFromHaven.contains(aWordForSuperMarket)) {
+                    // get the description
+                    description = "Supermarket";
+                    descFound = true;
+                    break;
+                }
+            }
+            for (String aWordForEntertainment : wordForEntertainment) {
+                if (textResponseFromHaven.contains(aWordForEntertainment)) {
+                    description = ENTERTAINMENT;
+                    descFound = true;
+                    break;
+                }
+            }
+            for (String aWordForShopping : wordForShopping) {
+                if (textResponseFromHaven.contains(aWordForShopping)) {
+                    description = SHOPPING;
+                    descFound = true;
+                    break;
+                }
+            }
+            for (String aWordForPetrol : wordForPetrol) {
+                if (textResponseFromHaven.contains(aWordForPetrol)) {
+                    description = "Petrol";
+                    descFound = true;
+                    break;
+                }
+            }
+        }
+        //showDialogsWithDataFoundFromCapture(exp, desc, date, activity);
+    }
+
+    private void showDialogsWithDataFoundFromCapture(final String expenseAmount, final String
+            description, final String date, final Activity activity) {
+
+        if (expenseFound && dateFound && descFound) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                    .setTitle("Expense, Date and Description Found")
+                    .setMessage("Expense Amount: " + expenseAmount + "\n" +
+                            "Description: " + description + "\n" +
+                            "Date: " + date + "\n" + "\n" + "\n" +
+                            "Is that correct?");
+            AlertDialog alert1;
+
+            builder.setPositiveButton("Yes, Set them and save to file the Expense",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            ((MainActivity)activity).getExpensesField().setText(expenseAmount);
+                            ((MainActivity)activity).getDateText().setText(date);
+
+                            if (description!=null) {
+                                int spinnerPosition = ((MainActivity)activity).getSpinnerAdapter().getPosition(description);
+                                ((MainActivity)activity).getDescriptionsItem().setSelection(spinnerPosition + 1);
+                            }
+                        }
+                    });
+
+            builder.setNegativeButton("No, I want to edit one of the fields", new DialogInterface.OnClickListener
+                    () {
+                public void onClick(DialogInterface dialog, int id) {
+                    ((MainActivity)activity).getExpensesField().setText(expenseAmount);
+                    ((MainActivity)activity).getDateText().setText(date);
+                    if (description != null) {
+                        int spinnerPosition = ((MainActivity)activity).getSpinnerAdapter().getPosition(description);
+                        ((MainActivity)activity).getDescriptionsItem().setSelection(spinnerPosition + 1);
+                    }
+                    dialog.cancel();
+                }
+            });
+            alert1 = builder.create();
+            alert1.show();
+        }
+
+        // something was not detected from the receipt
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                    .setTitle("Found")
+                    .setMessage( EXPENSE_AMOUNT + ": " + expenseAmount + "\n" +
+                            DESCRIPTION +": " + description + "\n" +
+                            DATE +": " + date);
+            AlertDialog alert1;
+
+            builder.setNegativeButton(CANCEL, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.setPositiveButton("Add or Edit the fields needed", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (expenseAmount != null && !expenseAmount.equals("")) {
+                        ((MainActivity)activity).getExpensesField().setText(expenseAmount);
+                    }
+
+                    if (description != null && !description.equals("")) {
+                        int spinnerPosition = ((MainActivity)activity).getSpinnerAdapter().getPosition(description);
+                        ((MainActivity)activity).getDescriptionsItem().setSelection(spinnerPosition + 1);
+                    }
+
+                    if (date != null && !date.equals("")) {
+                        ((MainActivity)activity).getDateText().setText(date);
+                    }
+                    dialog.cancel();
+                }
+            });
+            alert1 = builder.create();
+            alert1.show();
+        }
+    }
+
+
+    public static String findTheDateFormat(String dateString) {
+
+        String dateStringFound = "";
+
+        Map<String, String> dateFormatRegexps = new HashMap<String, String>();
+        dateFormatRegexps.put("^\\d{8}$", "yyyyMMdd");
+        dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
+        dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd");
+        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}$", "MM/dd/yyyy");
+        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{2}$", "dd/MM/yy");
+        dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}$", "yyyy/MM/dd");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}$", "dd MMM yyyy");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}$", "dd MMMM yyyy");
+        dateFormatRegexps.put("^\\d{12}$", "yyyyMMddHHmm");
+        dateFormatRegexps.put("^\\d{8}\\s\\d{4}$", "yyyyMMdd HHmm");
+        dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}$", "dd-MM-yyyy HH:mm");
+        dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy-MM-dd HH:mm");
+        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}$", "MM/dd/yyyy HH:mm");
+        dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy/MM/dd HH:mm");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMM yyyy HH:mm");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMMM yyyy HH:mm");
+        dateFormatRegexps.put("^\\d{14}$", "yyyyMMddHHmmss");
+        dateFormatRegexps.put("^\\d{8}\\s\\d{6}$", "yyyyMMdd HHmmss");
+        dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd-MM-yyyy HH:mm:ss");
+        dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy-MM-dd HH:mm:ss");
+        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "MM/dd/yyyy HH:mm:ss");
+        dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy/MM/dd HH:mm:ss");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMM yyyy HH:mm:ss");
+        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMMM yyyy " + "HH:mm:ss");
+
+        for (String regexp : dateFormatRegexps.keySet()) {
+            if (dateString.toLowerCase(Locale.ENGLISH).matches(regexp)) {
+
+                dateStringFound = dateFormatRegexps.get(regexp);
+                break;
+            } else {
+                dateStringFound = null;// unknown format so handle it in the call
+
+            }
+        }
+
+        return dateStringFound;
+    }
+
     public double getBalance() {
         return balance;
     }
@@ -371,4 +663,27 @@ public class MainActivityUtil {
         return incomeForDec;
     }
 
+    public boolean isExpenseFound() {
+        return expenseFound;
+    }
+
+    public boolean isDateFound() {
+        return dateFound;
+    }
+
+    public boolean isDescFound() {
+        return descFound;
+    }
+
+    public String getExpense() {
+        return expense;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getDate() {
+        return date;
+    }
 }

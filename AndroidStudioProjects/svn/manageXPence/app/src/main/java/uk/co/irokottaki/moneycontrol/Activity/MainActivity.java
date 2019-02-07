@@ -1124,7 +1124,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         } catch (JSONException e) {
             Log.e("JSONException",e.getMessage());
         }
-        setExpenseFieldsFromCameraExtractedText(textFound);
+        mainUtil.setExpenseFieldsFromCameraExtractedText(textFound, this);
+
+        if (mainUtil.isExpenseFound() && mainUtil.isDateFound() && mainUtil.isDescFound()) {
+            showDialogsWithDataFoundFromCapture(mainUtil.getExpense(), mainUtil.getDescription(),mainUtil.getDate());
+            writeToFile();
+        }
     }
 
     @Override
@@ -2100,155 +2105,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         }
     }
 
-    private void setExpenseFieldsFromCameraExtractedText(String textResponseFromHaven) {
-
-        String exp = "";
-        String date = "";
-        String desc = "";
-
-        if (textResponseFromHaven == null || textResponseFromHaven.isEmpty()
-                || !textResponseFromHaven.replaceAll("\\s+", "").matches(".*[a-zA-Z]+.*")) {
-            // response is null so do nothing, print a message to user to take
-            // another picture
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog)
-                    .setTitle("Did not capture that. Try again!")
-                    .setMessage("There was nothing captured from your image or the characters are" +
-                            " not recognisable. " +
-                            "Please take a better resolution photo!");
-            AlertDialog alert1;
-            builder.setPositiveButton(CLOSE,
-                    new OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            alert1 = builder.create();
-            alert1.show();
-        }
-        // at this point check if the output contains text characters. Remove all whitespaces and
-        // new line and check
-        else if (textResponseFromHaven.replaceAll("\\s+", " ").matches(".*[a-zA-Z]+.*")) {
-            String[] wordForExpenses = new String[]{"total", "amount", "subtotal", "Visa Debit " +
-                    "£", "total sale:", "total gbp"};
-
-            for (String wordForExpense : wordForExpenses) {
-                if (textResponseFromHaven.toLowerCase(Locale.ENGLISH).contains(wordForExpense)) {
-                    // get the expense
-                    //it is the substring of TOTAL plus one char and tha next space found in the
-                    // response
-                    String[] split = textResponseFromHaven.toLowerCase(Locale.ENGLISH).split
-                            (wordForExpense.toLowerCase(Locale.US));
-                    String amount = split[1].trim();
-                    String amountTillFirstSpace = amount.substring(0, amount.indexOf("\n"));
-                    //check that the first character is number
-                    if (Character.isDigit(amount.trim().charAt(0))) {
-                        int j = 0;
-                        for (int k = 0; k < amountTillFirstSpace.length(); k++) {
-                            Character charToCheck = amountTillFirstSpace.charAt(k);
-                            //if the character is not a number and is one of . - space
-                            if (!Character.isDigit(charToCheck) &&
-                                    charToCheck.toString().equals(".") || charToCheck.toString()
-                                    .equals("-")
-                                    || charToCheck.toString().equals(" ")) {
-                                exp = exp.concat(".");
-                                j++;
-                            } else if (Character.isDigit(charToCheck)) {
-                                exp = exp.concat(String.valueOf(Character.getNumericValue(amount
-                                        .trim().charAt(j))));
-                                expenseFound = true;
-                                j++;
-                            }
-                        }
-                    }
-                }
-            }
-            String[] wordForDates = new String[]{"Date:", DATE};
-            for (String wordForDate : wordForDates) {
-                //check if the word date exists in the receipt
-                if (textResponseFromHaven.toLowerCase(Locale.ENGLISH).contains(wordForDate
-                        .toLowerCase(Locale.US))) {
-                    //check if the next word after the word Date is a valid date like mm/dd/yyyy
-                    String[] split = textResponseFromHaven.toLowerCase(Locale.ENGLISH).split
-                            (wordForDate.toLowerCase(Locale.US).trim());
-                    String potentialDate = split[1].trim().substring(0, split[1].trim().indexOf("" +
-                            " "));
-
-
-                    // if the date string checked is null then date not found in the Map
-                    if (findTheDateFormat(potentialDate) == null) {
-                        date = null;
-                    }
-                    // if it is a valid date then return it. Check
-                    // substring after the word Date and count the length of the string returned
-                    // from the findTheDateFormat
-                    else {
-
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-                        date = formatter.format(potentialDate);
-                        dateFound = true;
-                        break;
-                    }
-                    Log.e("Date Found in RECEIPT: ", date);
-                    // get the date
-                    //NEED TO MAKE SURE THAT THE WORDSFORDATES IS THE ACTUAL DATE AND NOT THE
-                    // WORD DATE/
-
-                } else {
-                    String[] splitResponseToStrings = textResponseFromHaven.replaceAll("\n", "")
-                            .split(" ");
-                    for (int j = 0; j < splitResponseToStrings.length; j++) {
-                        if (splitResponseToStrings[j].contains("/")) {
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy", Locale
-                                    .US);
-                            splitResponseToStrings[j] = formatter.format(splitResponseToStrings[j]);
-                        }
-                        if (findTheDateFormat(splitResponseToStrings[j]) != null) {
-                            date = splitResponseToStrings[j];
-                        }
-                    }
-                }
-            }
-
-            String[] wordForSuperMarket = new String[]{"Tesco", "Groceries", "Morrisons", "Asda",
-                    "Lidl", "Waitrose", "Sandwich"};
-            String[] wordForEntertainment = new String[]{"Course", "Table", "Drink",
-                    "Restaurants", "Coffee"};
-            String[] wordForShopping = new String[]{"Jacket", "Trouser", "Cycles", "Medium",
-                    "Large", "Small",};
-            String[] wordForPetrol = new String[]{"Unleaded", "Petrol", "Petroleum"};
-            for (String aWordForSuperMarket : wordForSuperMarket) {
-                if (textResponseFromHaven.contains(aWordForSuperMarket)) {
-                    // get the description
-                    desc = "Supermarket";
-                    descFound = true;
-                    break;
-                }
-            }
-            for (String aWordForEntertainment : wordForEntertainment) {
-                if (textResponseFromHaven.contains(aWordForEntertainment)) {
-                    desc = ENTERTAINMENT;
-                    descFound = true;
-                    break;
-                }
-            }
-            for (String aWordForShopping : wordForShopping) {
-                if (textResponseFromHaven.contains(aWordForShopping)) {
-                    desc = SHOPPING;
-                    descFound = true;
-                    break;
-                }
-            }
-            for (String aWordForPetrol : wordForPetrol) {
-                if (textResponseFromHaven.contains(aWordForPetrol)) {
-                    desc = "Petrol";
-                    descFound = true;
-                    break;
-                }
-            }
-        }
-        showDialogsWithDataFoundFromCapture(exp, desc, date);
-    }
-
     private void showDialogsWithDataFoundFromCapture(final String expenseAmount, final String
             description, final String date) {
 
@@ -2534,6 +2390,22 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(columnIndex);
+    }
+
+    public EditText getExpensesField() {
+        return expensesField;
+    }
+
+    public EditText getDateText() {
+        return dateText;
+    }
+
+    public Spinner getDescriptionsItem() {
+        return descriptionsItem;
+    }
+
+    public ArrayAdapter<String> getSpinnerAdapter() {
+        return spinnerAdapter;
     }
 
     public static String findTheDateFormat(String dateString) {

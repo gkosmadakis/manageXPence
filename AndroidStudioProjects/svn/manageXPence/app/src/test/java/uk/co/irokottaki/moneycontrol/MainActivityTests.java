@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.lang.reflect.Field;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 import uk.co.irokottaki.moneycontrol.activity.MainActivity;
+import uk.co.irokottaki.moneycontrol.activity.ReportActivity;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.model.YearToSet;
 import uk.co.irokottaki.moneycontrol.utils.MainActivityUtil;
@@ -236,77 +238,107 @@ public class MainActivityTests  {
     public void testFindTheDateFormat(){
 
         String dateToRequest = "20190130";
-        assertEquals("yyyyMMdd", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyyMMdd", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30-01-2019";
-        assertEquals("dd-MM-yyyy", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd-MM-yyyy", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "2019-01-30";
-        assertEquals("yyyy-MM-dd", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyy-MM-dd", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "01/30/2019";
-        assertEquals("MM/dd/yyyy", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("MM/dd/yyyy", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30/01/19";
-        assertEquals("dd/MM/yy", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd/MM/yy", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "2019/01/30";
-        assertEquals("yyyy/MM/dd", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyy/MM/dd", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30 Jan 2019";
-        assertEquals("dd MMM yyyy", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd MMM yyyy", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30 January 2019";
-        assertEquals("dd MMMM yyyy", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd MMMM yyyy", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "201901301200";
-        assertEquals("yyyyMMddHHmm", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyyMMddHHmm", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "20190130 1200";
-        assertEquals("yyyyMMdd HHmm", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyyMMdd HHmm", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30-01-2019 12:00";
-        assertEquals("dd-MM-yyyy HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd-MM-yyyy HH:mm", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "2019-01-30 12:00";
-        assertEquals("yyyy-MM-dd HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyy-MM-dd HH:mm", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30/01/2019 12:00";
-        assertEquals("MM/dd/yyyy HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("MM/dd/yyyy HH:mm", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "2019/01/30 12:00";
-        assertEquals("yyyy/MM/dd HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyy/MM/dd HH:mm", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30 Jan 2019 12:00";
-        assertEquals("dd MMM yyyy HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd MMM yyyy HH:mm", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30 January 2019 12:00";
-        assertEquals("dd MMMM yyyy HH:mm", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd MMMM yyyy HH:mm", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "20190130120000";
-        assertEquals("yyyyMMddHHmmss", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyyMMddHHmmss", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "20190130 120000";
-        assertEquals("yyyyMMdd HHmmss", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyyMMdd HHmmss", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30-01-2019 12:00:00";
-        assertEquals("dd-MM-yyyy HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd-MM-yyyy HH:mm:ss", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "2019-01-30 12:00:00";
-        assertEquals("yyyy-MM-dd HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyy-MM-dd HH:mm:ss", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "01/30/2019 12:00:00";
-        assertEquals("MM/dd/yyyy HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("MM/dd/yyyy HH:mm:ss", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "2019/01/30 12:00:00";
-        assertEquals("yyyy/MM/dd HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("yyyy/MM/dd HH:mm:ss", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30 Jan 2019 12:00:00";
-        assertEquals("dd MMM yyyy HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd MMM yyyy HH:mm:ss", MainActivityUtil.findTheDateFormat(dateToRequest));
 
         dateToRequest = "30 January 2019 12:00:00";
-        assertEquals("dd MMMM yyyy HH:mm:ss", MainActivity.findTheDateFormat(dateToRequest));
+        assertEquals("dd MMMM yyyy HH:mm:ss", MainActivityUtil.findTheDateFormat(dateToRequest));
     }
 
+    @Test
+    public void testSetExpenseFieldsFromCameraExtractedText(){
+
+        final Context context = mock(Context.class);
+        final Activity mMockMainActivity = Mockito.mock(MainActivity.class);
+        MainActivityUtil util = new MainActivityUtil(context);
+        String testString = "Date: 06/02/2019 Tesco Amount 30";
+        util.setExpenseFieldsFromCameraExtractedText(testString, mMockMainActivity);
+        assertTrue(util.isExpenseFound());
+        assertTrue(util.isDescFound());
+        assertTrue(util.isDateFound());
+
+        testString = "Date: 06/02/2019 Table Amount 30";
+        util.setExpenseFieldsFromCameraExtractedText(testString, mMockMainActivity);
+        assertTrue(util.isExpenseFound());
+        assertTrue(util.isDescFound());
+        assertTrue(util.isDateFound());
+
+        testString = "Date: 06/02/2019 Jacket Amount 30";
+        util.setExpenseFieldsFromCameraExtractedText(testString, mMockMainActivity);
+        assertTrue(util.isExpenseFound());
+        assertTrue(util.isDescFound());
+        assertTrue(util.isDateFound());
+
+        testString = "Date: 06/02/2019 Petrol Amount 30";
+        util.setExpenseFieldsFromCameraExtractedText(testString, mMockMainActivity);
+        assertTrue(util.isExpenseFound());
+        assertTrue(util.isDescFound());
+        assertTrue(util.isDateFound());
+    }
 
 }
