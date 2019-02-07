@@ -188,12 +188,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/MainActivityUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/Utils.java">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/test/java/uk/co/irokottaki/moneycontrol/MainActivityTests.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/test/java/uk/co/irokottaki/moneycontrol/ScreenSlidePageFragmentTests.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/test/java/uk/co/irokottaki/moneycontrol/ScreenSlidePageFragmentsTests3.java">
           <value>
             <set />
           </value>
@@ -438,6 +453,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/ScreenSlidePageFragmentTests.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/androidTest/java/uk/co/irokottaki/moneycontrol/test.java">
           <value>
             <set />
@@ -609,6 +629,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/MultiMapTests.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/ScreenSlidePageFragmentTests.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/test/java/uk/co/irokottaki/moneycontrol/UtilsTests.java">
           <value>
             <set />
           </value>
