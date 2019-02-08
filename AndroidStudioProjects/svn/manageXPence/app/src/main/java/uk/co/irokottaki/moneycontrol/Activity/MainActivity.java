@@ -1961,6 +1961,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             );
         }
     }
+
     @TargetApi(19)
     private void exportExpensesFileToSdCard() {
         verifyStoragePermissions(MainActivity.this);
@@ -2264,6 +2265,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             Log.e("Exception" , e.getMessage());
         }
     }
+
     @TargetApi(19)
     private static void addContent(Document document) throws DocumentException {
 
@@ -2390,66 +2392,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(columnIndex);
-    }
-
-    public EditText getExpensesField() {
-        return expensesField;
-    }
-
-    public EditText getDateText() {
-        return dateText;
-    }
-
-    public Spinner getDescriptionsItem() {
-        return descriptionsItem;
-    }
-
-    public ArrayAdapter<String> getSpinnerAdapter() {
-        return spinnerAdapter;
-    }
-
-    public static String findTheDateFormat(String dateString) {
-
-        String dateStringFound = "";
-
-        Map<String, String> dateFormatRegexps = new HashMap<String, String>();
-        dateFormatRegexps.put("^\\d{8}$", "yyyyMMdd");
-        dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
-        dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd");
-        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}$", "MM/dd/yyyy");
-        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{2}$", "dd/MM/yy");
-        dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}$", "yyyy/MM/dd");
-        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}$", "dd MMM yyyy");
-        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}$", "dd MMMM yyyy");
-        dateFormatRegexps.put("^\\d{12}$", "yyyyMMddHHmm");
-        dateFormatRegexps.put("^\\d{8}\\s\\d{4}$", "yyyyMMdd HHmm");
-        dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}$", "dd-MM-yyyy HH:mm");
-        dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy-MM-dd HH:mm");
-        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}$", "MM/dd/yyyy HH:mm");
-        dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy/MM/dd HH:mm");
-        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMM yyyy HH:mm");
-        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMMM yyyy HH:mm");
-        dateFormatRegexps.put("^\\d{14}$", "yyyyMMddHHmmss");
-        dateFormatRegexps.put("^\\d{8}\\s\\d{6}$", "yyyyMMdd HHmmss");
-        dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd-MM-yyyy HH:mm:ss");
-        dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy-MM-dd HH:mm:ss");
-        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "MM/dd/yyyy HH:mm:ss");
-        dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy/MM/dd HH:mm:ss");
-        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMM yyyy HH:mm:ss");
-        dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMMM yyyy " + "HH:mm:ss");
-
-        for (String regexp : dateFormatRegexps.keySet()) {
-            if (dateString.toLowerCase(Locale.ENGLISH).matches(regexp)) {
-
-                dateStringFound = dateFormatRegexps.get(regexp);
-                break;
-            } else {
-                dateStringFound = null;// unknown format so handle it in the call
-
-            }
-        }
-
-        return dateStringFound;
     }
 
     /**

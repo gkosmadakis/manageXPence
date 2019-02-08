@@ -38,11 +38,11 @@ public class ScreenSlidePageFragmentTests {
                 .visible()
                 .get();
 
-        screenSlidePageFragment = new Fragment();
-        screenSlidePageFragment2 = new Fragment();
-        screenSlidePageFragment3 = new Fragment();
-        screenSlidePageFragment4 = new Fragment();
-        screenSlidePageFragment5 = new Fragment();
+        screenSlidePageFragment = new ScreenSlidePageFragment();
+        screenSlidePageFragment2 = new ScreenSlidePageFragment2();
+        screenSlidePageFragment3 = new ScreenSlidePageFragment3();
+        screenSlidePageFragment4 = new ScreenSlidePageFragment4();
+        screenSlidePageFragment5 = new ScreenSlidePageFragment5();
 
         helpActivity.getSupportFragmentManager().beginTransaction().add(R.id.pager,screenSlidePageFragment,null).commit();
         helpActivity.getSupportFragmentManager().beginTransaction().add(R.id.pager,screenSlidePageFragment2,null).commit();
@@ -57,9 +57,8 @@ public class ScreenSlidePageFragmentTests {
 
         context = screenSlidePageFragment.getContext();
         menu = shadowOf(helpActivity).getOptionsMenu();
-        menu.findItem(R.id.action_previous).setEnabled(true);
         screenSlidePageFragment.onCreateOptionsMenu(menu, new MenuInflater(context));
-        assertTrue(menu.findItem(R.id.action_previous).isEnabled());
+        assertFalse(menu.findItem(R.id.action_previous).isEnabled());
     }
 
     @Test
@@ -67,7 +66,6 @@ public class ScreenSlidePageFragmentTests {
 
         context = screenSlidePageFragment2.getContext();
         menu = shadowOf(helpActivity).getOptionsMenu();
-        menu.findItem(R.id.action_previous).setEnabled(false);
         screenSlidePageFragment2.onCreateOptionsMenu(menu, new MenuInflater(context));
         assertFalse(menu.findItem(R.id.action_previous).isEnabled());
     }
@@ -77,7 +75,6 @@ public class ScreenSlidePageFragmentTests {
 
         context = screenSlidePageFragment3.getContext();
         menu = shadowOf(helpActivity).getOptionsMenu();
-        menu.findItem(R.id.action_previous).setEnabled(false);
         screenSlidePageFragment3.onCreateOptionsMenu(menu, new MenuInflater(context));
         assertFalse(menu.findItem(R.id.action_previous).isEnabled());
     }
@@ -87,7 +84,6 @@ public class ScreenSlidePageFragmentTests {
 
         context = screenSlidePageFragment4.getContext();
         menu = shadowOf(helpActivity).getOptionsMenu();
-        menu.findItem(R.id.action_previous).setEnabled(false);
         screenSlidePageFragment4.onCreateOptionsMenu(menu, new MenuInflater(context));
         assertFalse(menu.findItem(R.id.action_previous).isEnabled());
     }
@@ -97,8 +93,7 @@ public class ScreenSlidePageFragmentTests {
 
         context = screenSlidePageFragment5.getContext();
         menu = shadowOf(helpActivity).getOptionsMenu();
-        menu.findItem(R.id.action_previous).setEnabled(true);
         screenSlidePageFragment5.onCreateOptionsMenu(menu, new MenuInflater(context));
-       assertTrue(menu.findItem(R.id.action_previous).isEnabled());
+        assertFalse(menu.findItem(R.id.action_previous).isEnabled());
     }
 }
