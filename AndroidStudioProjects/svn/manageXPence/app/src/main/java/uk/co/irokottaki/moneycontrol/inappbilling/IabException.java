@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package uk.co.irokottaki.moneycontrol;
+package uk.co.irokottaki.moneycontrol.inappbilling;
 
 /**
  * Exception thrown when something went wrong with in-app billing.

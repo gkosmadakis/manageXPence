@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package uk.co.irokottaki.moneycontrol;
+package uk.co.irokottaki.moneycontrol.inappbilling;
 
 import android.text.TextUtils;
 import android.util.Base64;
@@ -27,6 +27,8 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+
+import uk.co.irokottaki.moneycontrol.BuildConfig;
 
 /**
  * Security-related methods. For a secure implementation, all of this code

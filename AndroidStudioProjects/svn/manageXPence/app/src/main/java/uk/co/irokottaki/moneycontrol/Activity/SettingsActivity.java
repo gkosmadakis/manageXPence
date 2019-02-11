@@ -41,10 +41,10 @@ import com.android.vending.billing.IInAppBillingService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
-import uk.co.irokottaki.moneycontrol.IabHelper;
-import uk.co.irokottaki.moneycontrol.IabResult;
-import uk.co.irokottaki.moneycontrol.Inventory;
-import uk.co.irokottaki.moneycontrol.Purchase;
+import uk.co.irokottaki.moneycontrol.inappbilling.IabHelper;
+import uk.co.irokottaki.moneycontrol.inappbilling.IabResult;
+import uk.co.irokottaki.moneycontrol.inappbilling.Inventory;
+import uk.co.irokottaki.moneycontrol.inappbilling.Purchase;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 

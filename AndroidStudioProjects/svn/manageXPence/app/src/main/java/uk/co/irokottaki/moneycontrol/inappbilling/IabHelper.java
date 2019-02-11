@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package uk.co.irokottaki.moneycontrol;
+package uk.co.irokottaki.moneycontrol.inappbilling;
 
 import android.app.Activity;
 import android.app.PendingIntent;

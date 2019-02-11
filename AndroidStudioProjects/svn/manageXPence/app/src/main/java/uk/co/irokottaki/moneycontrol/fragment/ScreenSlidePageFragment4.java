@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol;
+package uk.co.irokottaki.moneycontrol.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import uk.co.irokottaki.moneycontrol.activity.HelpActivity;
 
-public class ScreenSlidePageFragment2 extends Fragment {
+public class ScreenSlidePageFragment4 extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class ScreenSlidePageFragment2 extends Fragment {
                              Bundle savedInstanceState) {
 
         return inflater.inflate(
-                R.layout.fragment_screen_slide_page2, container, false);
+                R.layout.fragment_screen_slide_page4, container, false);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ScreenSlidePageFragment2 extends Fragment {
 
         inflater.inflate(R.menu.activity_screen_slide, menu);
 
-        menu.findItem(R.id.action_previous).setEnabled(HelpActivity.getmPager().getCurrentItem() > 0);
+        menu.findItem(R.id.action_next).setEnabled(HelpActivity.getmPager().getCurrentItem() > 0);
 
         // Add a "next" and "previous" button to the action bar
         MenuItem item = menu.add(Menu.NONE, R.id.action_previous, Menu.NONE, R.string
@@ -44,6 +44,5 @@ public class ScreenSlidePageFragment2 extends Fragment {
         item2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
     }
-
 
 }

@@ -12,6 +12,11 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import uk.co.irokottaki.moneycontrol.activity.HelpActivity;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment2;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment3;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment4;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment5;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

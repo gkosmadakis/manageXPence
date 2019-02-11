@@ -8,12 +8,22 @@
             <set />
           </value>
         </entry>
-        <entry key="/a.dummy">
+        <entry key="$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="/fragment.java">
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/Preferences.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
           <value>
             <set />
           </value>
@@ -583,6 +593,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/inappbilling/IabBroadcastReceiver.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/uk/co/irokottaki/moneycontrol/model/AnyYear.java">
           <value>
             <set />
@@ -643,22 +658,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
+        <entry key="/a.dummy">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/Preferences.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
+        <entry key="/fragment.java">
           <value>
             <set />
           </value>

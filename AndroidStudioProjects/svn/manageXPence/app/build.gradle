@@ -108,6 +108,11 @@ sonarqube {
         property "sonar.junit.reportsPath", "build/reports/coverage/debug"
         property "sonar.cobertura.reportPath", "build/reports/coverage/debug/cobertura.xml"
         property "sonar.java.coveragePlugin", "cobertura"
-        property "sonar.coverage.exclusions", " **/src/main/java/uk/co/irokottaki/moneycontrol/AlarmReceiver*,**/src/main/java/uk/co/irokottaki/moneycontrol/DropboxClient*,**/src/main/java/uk/co/irokottaki/moneycontrol/IabBroadcastReceiver*,**/src/main/java/uk/co/irokottaki/moneycontrol/IabException*,**/src/main/java/uk/co/irokottaki/moneycontrol/IabResult*,**/src/main/java/uk/co/irokottaki/moneycontrol/Inventory*,**/src/main/java/uk/co/irokottaki/moneycontrol/Purchase*,**/src/main/java/uk/co/irokottaki/moneycontrol/Security*,**/src/main/java/uk/co/irokottaki/moneycontrol/SkuDetails*,**/src/main/java/uk/co/irokottaki/moneycontrol/UploadTask*,**/src/main/java/uk/co/irokottaki/moneycontrol/UserAccountTask*, **/src/main/java/uk/co/irokottaki/moneycontrol/IabHelper*,**/src/main/java/uk/co/irokottaki/moneycontrol/activity/LoginActivity*"
+        property "sonar.coverage.exclusions",   "**/src/main/java/uk/co/irokottaki/moneycontrol/AlarmReceiver*," +
+                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/DropboxClient*," +
+                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/inappbilling*," +
+                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/UploadTask*," +
+                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/UserAccountTask*," +
+                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/activity/LoginActivity*"
     }
 }

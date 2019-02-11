@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol;
+package uk.co.irokottaki.moneycontrol.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.activity.HelpActivity;
 
 public class ScreenSlidePageFragment extends Fragment {

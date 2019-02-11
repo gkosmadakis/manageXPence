@@ -14,11 +14,11 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
 import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.ScreenSlidePageFragment;
-import uk.co.irokottaki.moneycontrol.ScreenSlidePageFragment2;
-import uk.co.irokottaki.moneycontrol.ScreenSlidePageFragment3;
-import uk.co.irokottaki.moneycontrol.ScreenSlidePageFragment4;
-import uk.co.irokottaki.moneycontrol.ScreenSlidePageFragment5;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment2;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment3;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment4;
+import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment5;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
 import static uk.co.irokottaki.moneycontrol.utils.Constants.HELP;

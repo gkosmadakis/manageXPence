@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package uk.co.irokottaki.moneycontrol;
+package uk.co.irokottaki.moneycontrol.inappbilling;
 
 /**
  * Represents the result of an in-app billing operation.

@@ -1,4 +1,4 @@
-package uk.co.irokottaki.moneycontrol;
+package uk.co.irokottaki.moneycontrol.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,9 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.activity.HelpActivity;
 
-public class ScreenSlidePageFragment3 extends Fragment {
+public class ScreenSlidePageFragment2 extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class ScreenSlidePageFragment3 extends Fragment {
                              Bundle savedInstanceState) {
 
         return inflater.inflate(
-                R.layout.fragment_screen_slide_page3, container, false);
+                R.layout.fragment_screen_slide_page2, container, false);
     }
 
     @Override
@@ -44,5 +45,6 @@ public class ScreenSlidePageFragment3 extends Fragment {
         item2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
     }
+
 
 }
