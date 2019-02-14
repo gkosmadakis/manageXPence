@@ -112,7 +112,7 @@
     <string name="search_by_description">Search by Description</string>
     <string name="enter_description">Enter description</string>
     <string name="enter_amount">Enter amount</string>
-    <string name="search_by_amount">Search by Amount</string>
+    <string name="search">Search</string>
     <string name="results">Results</string>
     <string name="select">Select</string>
     <string name="delete">Delete</string>
