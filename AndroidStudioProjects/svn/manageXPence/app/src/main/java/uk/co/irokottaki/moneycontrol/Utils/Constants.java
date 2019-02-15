@@ -98,4 +98,5 @@ public class Constants {
     public static final String DESCRIPTIONS_FILE = "descriptions.txt";
     public static final String BUDGET_WARNING = "Budget Warning!";
     public static final String SAVE = "Save";
+    public static final String BALANCE = "Balance: ";
 }

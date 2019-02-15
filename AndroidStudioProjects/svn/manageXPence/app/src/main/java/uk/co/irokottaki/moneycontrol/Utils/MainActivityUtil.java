@@ -370,7 +370,6 @@ public class MainActivityUtil {
                     String[] split = textResponseFromHaven.toLowerCase(Locale.ENGLISH).split
                             (wordForExpense.toLowerCase(Locale.US));
                     String amount = split[1].trim();
-                    //String amountTillFirstSpace = amount.substring(0, amount.indexOf("\n"));
                     //check that the first character is number
                     if (Character.isDigit(amount.trim().charAt(0))) {
                         int j = 0;
@@ -414,7 +413,6 @@ public class MainActivityUtil {
                     // from the findTheDateFormat
                     else {
 
-                        //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
                         date = potentialDate;
                         dateFound = true;
                         break;
@@ -484,7 +482,7 @@ public class MainActivityUtil {
 
         String dateStringFound = "";
 
-        Map<String, String> dateFormatRegexps = new HashMap<String, String>();
+        Map<String, String> dateFormatRegexps = new HashMap<>();
         dateFormatRegexps.put("^\\d{8}$", "yyyyMMdd");
         dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
         dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd");

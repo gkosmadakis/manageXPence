@@ -78,8 +78,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         util.populateYearSpinnerAndSetCurrentYear(yearsMappedToObjectYearsMap,year, yearList, CalculateAnnualExpensesActivity.this);
 
         //calculate Button
-        Button calculateButton = new Button(this);
-        calculateButton = (Button) findViewById(R.id.calculateButton);
+        Button calculateButton = (Button) findViewById(R.id.calculateButton);
 
         calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override

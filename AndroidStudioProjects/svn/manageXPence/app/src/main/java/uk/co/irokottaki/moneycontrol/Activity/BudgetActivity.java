@@ -4,10 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,13 +20,16 @@ import java.util.Locale;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.CLOSE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.INFORMATION;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.OK;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
 
 public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     private TextView warningDisplay;
     private TextView budgetWarningValue;
-    private static final int step = 1;
+    private static final int STEP = 1;
     private static final int MAX = 2000;
     private static final int MIN = 0;
     private int progress = 0;
@@ -47,8 +48,7 @@ public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekB
         utils.setBackgroundAndAdjustLayout(layout, BudgetActivity.this);
 
         //Button for information
-        ImageButton infoBudgetButton = new ImageButton(this);
-        infoBudgetButton = (ImageButton) findViewById(R.id.infoBudgetButton);
+        ImageButton infoBudgetButton = (ImageButton) findViewById(R.id.infoBudgetButton);
 
         //Seek bar
         SeekBar budgetSeekBar = (SeekBar) findViewById(R.id.budgetBar);
@@ -95,7 +95,7 @@ public class BudgetActivity extends AppCompatActivity implements SeekBar.OnSeekB
         });
 
 
-        budgetSeekBar.setMax((MAX - MIN) / step);
+        budgetSeekBar.setMax((MAX - MIN) / STEP);
 
         warningDisplay.setText("Warning set on: " + budgetSeekBar.getProgress() + "/" +
                 budgetSeekBar.getMax());

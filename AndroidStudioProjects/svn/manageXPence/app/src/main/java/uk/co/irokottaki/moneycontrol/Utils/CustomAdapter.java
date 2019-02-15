@@ -34,7 +34,7 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.SAVE;
 
 public class CustomAdapter extends BaseAdapter implements ListAdapter {
 
-    private ArrayList<String> list = new ArrayList<String>();
+    private ArrayList<String> list = new ArrayList<>();
     private Context context;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
     private ChartsUtil util;
@@ -73,12 +73,12 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
         }
 
         //Handle TextView and display string from your list
-        TextView listItemText = (TextView)view.findViewById(R.id.list_item_string);
+        TextView listItemText = view.findViewById(R.id.list_item_string);
         listItemText.setText(list.get(position));
 
         //Handle buttons and add onClickListeners
-        Button editBtn = (Button)view.findViewById(R.id.edit_btn);
-        Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
+        Button editBtn = view.findViewById(R.id.edit_btn);
+        Button deleteBtn = view.findViewById(R.id.delete_btn);
 
         editBtn.setOnClickListener(new View.OnClickListener(){
             @Override

@@ -39,13 +39,7 @@ public class ReportActivity extends AppCompatActivity {
     private Spinner monthItems;
     private ArrayList<String> monthsAddedToSpinner;
     private TextView reportView;
-    private StringBuilder shortLine;
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static final String[] PERMISSIONS_STORAGE = {
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private final String TAG = "Millenial Media";
+    private final static String TAG = "Millenial Media";
     private InlineAd inlineAd;
     private boolean adsDisabled;
     private ChartsUtil util;
@@ -155,10 +149,6 @@ public class ReportActivity extends AppCompatActivity {
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, ReportActivity.this);
 
-        // Text view for year and month
-        TextView yearView = (TextView) findViewById(R.id.yearView);
-        TextView monthView = (TextView) findViewById(R.id.monthView);
-
         // Spinner with the months
         monthItems = (Spinner) findViewById(R.id.monthSpinner);
 
@@ -206,17 +196,6 @@ public class ReportActivity extends AppCompatActivity {
         final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
         int year = calendar.get(Calendar.YEAR);// get the current year
-
-        //convert month String to integer
-        int monthInt = 0;
-        try {
-            java.util.Date date = new SimpleDateFormat("MMM", Locale.ENGLISH).parse(currentMonth);
-            calendar.setTime(date);// here i convert the String month in an integer
-            monthInt = calendar.get(Calendar.MONTH);
-
-        } catch (ParseException e) {
-            Log.e("ParseException", e.getMessage());
-        }
 
         util.populateYearSpinnerAndSetCurrentYear(yearsMappedToObjectYearsMap, year, yearList, ReportActivity.this);
 

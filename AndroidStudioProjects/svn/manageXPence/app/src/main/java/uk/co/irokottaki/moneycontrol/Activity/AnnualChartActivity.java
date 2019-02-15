@@ -106,8 +106,7 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         rightYearButton = (ImageButton) findViewById(R.id.rigthYearButton);
 
         //Circle Button
-        TextView circleTextview = new TextView(this);
-        circleTextview = (TextView) findViewById(R.id.circleTextview);
+        TextView circleTextview = (TextView) findViewById(R.id.circleTextview);
         if(Build.VERSION.SDK_INT >= 24) {
             circleTextview.setText(Html.fromHtml("<font color=#0000FF> <u> Set Income Circle", 26));
         }

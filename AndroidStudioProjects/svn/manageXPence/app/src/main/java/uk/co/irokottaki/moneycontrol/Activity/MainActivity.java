@@ -160,12 +160,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private String accessToken;
     private ArrayList<String> allDescriptions;//descriptions
     RelativeLayout layout;
-    protected PreferenceManager mPreferenceManager;
     private LinkedHashSet<String> uniqueDescriptions;
     ArrayList<Float> uniqueAmounts;
-    private double monthSum;
     private double balance;
-    private double incomeDouble;
     TabHost tabHost;
     private final Handler handler = new Handler();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -178,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private final static String TAG2 = "In App Billing";
     private InlineAd inlineAd;
     IabHelper mHelper;
-    final String base64EncodedPublicKey =
+    final static String base64EncodedPublicKey =
             "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqcYpXYA3pWCTMjOYJNNC70rNhXmbwxI5i4sGCtmZWN" +
                     "+eVFvrvtBtlwm8Wxwab8wf4CyLUxthccmgSd2Wmb6lHYVHG9/F7VSn+u3f9tnu8x" +
                     "+Oh30fyiSr4Wdesz0yfTwflVipA4wNwcEjxJoO0t8CCEyswQZcAzLAMzkodlMVwcdWx0kJ39qJxxuT8LWFlqwDpUSlLm6sPr+XmbD/vhfmd1h+qNQTteVte2Q5vVLSAk1/hCsqLCzrDp0BJ30w4f0nzEBn3g/7KIn3KQQp+6JE+xJanavahcvAU//PTDmy8t/bYxiFtn8kquBCL9xcHa/2Nw8PTEhzeWx3hCRUAugruwIDAQAB";
@@ -186,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private boolean userIsPro;
     IInAppBillingService mService;
     Bundle querySkus;
-    final String sku = "android.test.purchased";
+    final static String sku = "android.test.purchased";
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
     private NumberPicker numberPicker1;
     private boolean isPaymentCircleSet;
@@ -195,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private boolean expenseFound;
     private boolean dateFound;
     private boolean descFound;
-    private final static String apikey = "2990d40f-d7ca-4fdb-bacd-98d3cbe6eef5";
+    private final static String APIKEY = "2990d40f-d7ca-4fdb-bacd-98d3cbe6eef5";
     private static final int TAKE_PICTURE = 1;
     HODClient hodClient;
     private final static String APP_KEY = "h5x1321simc1oxm";
@@ -240,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams
                 .SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        hodClient = new HODClient(apikey, this);
+        hodClient = new HODClient(APIKEY, this);
 
         SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         adsDisabled = sharedprefs.getBoolean(ADSDISABLED, false);/*retrieve the boolean value for ads*/
@@ -470,8 +467,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         saveToFile = (Button) findViewById(R.id.saveButton);
 
         //Income label, income field
-        TextView incomeLabel = new TextView(this);
-        incomeLabel = (TextView) findViewById(R.id.incomeLabel);
+        TextView incomeLabel = (TextView) findViewById(R.id.incomeLabel);
 
         incomeField = new EditText(this);
         incomeField = (EditText) findViewById(R.id.incomeField);
@@ -482,22 +478,19 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         incomeField.setText(incomeStored);
 
         //cicle Button
-        Button circleButton = new Button(this);
-        circleButton = (Button) findViewById(R.id.circleButton);
+        Button circleButton = (Button) findViewById(R.id.circleButton);
 
         //Balance Label
         balanceLabel = new TextView(this);
         balanceLabel = (TextView) findViewById(R.id.balanceView);
 
         //Edit Button
-        Button editButton = new Button(this);
-        editButton = (Button) findViewById(R.id.editButton);
+        Button editButton = (Button) findViewById(R.id.editButton);
 
         // END OF FIRST TAB
 
         //Add expenses button
-        Button addExpensesButton = new Button(this);
-        addExpensesButton = (Button) findViewById(R.id.addExpensesButton);
+        Button addExpensesButton = (Button) findViewById(R.id.addExpensesButton);
 
         //add expenses by description Spinner
         addExpensesByDescription = (Spinner) findViewById(R.id.addExpensesByDescSpinner);
@@ -508,32 +501,25 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 .layout.spinnernothingselected, this));
 
         //Information with example date range button
-        ImageButton infoDateRangeButton = new ImageButton(this);
-        infoDateRangeButton = (ImageButton) findViewById(R.id.infoDateRange);
+        ImageButton infoDateRangeButton = (ImageButton) findViewById(R.id.infoDateRange);
 
         //Button for the Budget Control
-        Button budgetButton = new Button(this);
-        budgetButton = (Button) findViewById(R.id.budgetButton);
+        Button budgetButton = (Button) findViewById(R.id.budgetButton);
 
         //Report button
-        Button reportButton = new Button(this);
-        reportButton = (Button) findViewById(R.id.reportButton);
+        Button reportButton = (Button) findViewById(R.id.reportButton);
 
         //Chart button
-        Button chartButton = new Button(this);
-        chartButton = (Button) findViewById(R.id.chartButton);
+        Button chartButton = (Button) findViewById(R.id.chartButton);
 
         //Bar Chart button
-        Button barChartButton = new Button(this);
-        barChartButton = (Button) findViewById(R.id.barChartbutton);
+        Button barChartButton = (Button) findViewById(R.id.barChartbutton);
 
         //Annual Chart Button
-        Button annualChartButton = new Button(this);
-        annualChartButton = (Button) findViewById(R.id.annualChartButton);
+        Button annualChartButton = (Button) findViewById(R.id.annualChartButton);
 
         //Savings Chart Button
-        Button savingsButton = new Button(this);
-        savingsButton = (Button) findViewById(R.id.annualSavingsButton);
+        Button savingsButton = (Button) findViewById(R.id.annualSavingsButton);
 
         // Back up Info button
         backUpInfoButton = new ImageButton(this);
@@ -544,8 +530,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         exportButton = (Button) findViewById(R.id.exportButton);
 
         //import button
-        Button importButton = new Button(this);
-        importButton = (Button) findViewById(R.id.importButton);
+        Button importButton = (Button) findViewById(R.id.importButton);
 
         showDialogOnButtonClick();
 
@@ -605,7 +590,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 String currentMonth = String.format(Locale.UK, "%tB", calendar);
                                 balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
                                 DecimalFormat df = new DecimalFormat("#.0");
-                                balanceLabel.setText("Balance: " + df.format(balance));
+                                balanceLabel.setText(BALANCE + df.format(balance));
                                 showStackedBar();
                             }
                         }
@@ -986,7 +971,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             String currentMonth = String.format(Locale.UK, "%tB", calendar);
             balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
             DecimalFormat df = new DecimalFormat("#.0");
-            balanceLabel.setText("Balance: " + df.format(balance));
+            balanceLabel.setText(BALANCE + df.format(balance));
             showStackedBar();
         }
 
@@ -1314,7 +1299,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
 
             out.write(fileContent.toString());
-            out.close();
             Toast.makeText(this, checkedDescription + " removed from your list", Toast
                     .LENGTH_LONG).show();
         } catch (Exception e) {            //Catch exception if any
@@ -1375,10 +1359,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         numberPicker1.setMinValue(1);
         numberPicker1.setWrapSelectorWheel(true);
 
-        //Labels before the number pickers
-        TextView numberPickerLabel1 = new TextView(this);
-        numberPickerLabel1 = npView.findViewById(R.id.numberPickerLabel1);
-
         if ((valueFromNumPicker1 != 0)) {
             numberPicker1.setValue(valueFromNumPicker1);
         }
@@ -1424,7 +1404,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 String currentMonth = String.format(Locale.UK, "%tB", calendar);
                                 balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
                                 DecimalFormat df = new DecimalFormat("#.0");
-                                balanceLabel.setText("Balance: " + df.format(balance));
+                                balanceLabel.setText(BALANCE + df.format(balance));
                                 // redraw the graph with the balance
                                 showStackedBar();
 
@@ -1471,7 +1451,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             // process again the balance
             balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
             DecimalFormat df = new DecimalFormat("#.0");
-            balanceLabel.setText("Balance: " + df.format(balance));
+            balanceLabel.setText(BALANCE + df.format(balance));
         }
         // redraw the graph with the balance
         showStackedBar();
@@ -1678,7 +1658,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         if (dates.isEmpty()) {
             return;
         }
-        EditText datesField = (EditText) findViewById(R.id.dateFromTo);
+
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy", Locale.US);
         Date dateIntheFile = null;
         Set<Date> datesMatchedUserInput = new TreeSet<>();
@@ -1702,7 +1682,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (++lineIndex > 2 && !line.equals(""))//i need to read after the first line
                     {
 
-                        expenseAmount = line.substring(0, line.indexOf(" "));//take the amount
+                        expenseAmount = line.substring(0, line.indexOf(' '));//take the amount
                         // from the file
                         int index = line.lastIndexOf(' ');
                         desc = line.substring(line.indexOf(' '), index).trim();//take the
@@ -2035,7 +2015,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         if (strLine.replaceAll("\\s+", " ").contains(TWOTHOUSANDFIFTEEN) || (strLine
                                 .replaceAll("\\s+", " ").contains(TWOTHOUSANDSIXTEEN))) {
                             amount = strLine.replaceAll("\\s+", " ").substring(0, strLine.indexOf
-                                    (" "));
+                                    (' '));
                             int index = strLine.replaceAll("\\s+", " ").lastIndexOf(' ');
                             desc = strLine.replaceAll("\\s+", " ").substring(strLine.indexOf(' ')
                                     , index).trim();
@@ -2295,7 +2275,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         table.addCell(new Phrase(lineTrimmed.substring(0, lineTrimmed.indexOf(' ' +
                                 "")), f1));
                         table.addCell(new Phrase(lineTrimmed.substring(lineTrimmed.indexOf(' '),
-                                lineTrimmed.lastIndexOf(" ")).trim(), f1));
+                                lineTrimmed.lastIndexOf(' ')).trim(), f1));
                         table.addCell(new Phrase(lineTrimmed.substring(lineTrimmed.lastIndexOf(' ' +
                                 ""), lineTrimmed.length()).trim(), f1));
 
@@ -2303,7 +2283,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                         // add all the columns of the file amount description and date in a table
                         // to be formatted correctly
                         table.addCell(line.substring(0, line.indexOf(' ')));
-                        table.addCell(line.substring(line.indexOf(" "), line.lastIndexOf(' '))
+                        table.addCell(line.substring(line.indexOf(' '), line.lastIndexOf(' '))
                                 .trim());
                         table.addCell(line.substring(line.lastIndexOf(' '), line.length()).trim());
                     }

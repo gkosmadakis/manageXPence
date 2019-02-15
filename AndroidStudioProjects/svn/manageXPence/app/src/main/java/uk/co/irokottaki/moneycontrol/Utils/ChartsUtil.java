@@ -111,7 +111,7 @@ public class ChartsUtil {
                     desc = line.substring(line.indexOf(' '), index).trim();
                     date = line.substring(index, line.length());
                     String extractMonthFromDate = date.substring(date.indexOf('/') + 1, date
-                            .lastIndexOf("/"));
+                            .lastIndexOf('/'));
                     if (extractMonthFromDate.startsWith("0")) {
                         extractMonthFromDate = extractMonthFromDate.replace("0", "");
                     }
@@ -1051,7 +1051,7 @@ public class ChartsUtil {
             if (i >= 0 && !lines[i].equals("")) {
                 amount = lines[i].substring(0, lines[i].indexOf(' '));
                 shortDesc = lines[i].substring(lines[i].indexOf(' '), lines[i].lastIndexOf
-                        (" ")).trim();
+                        (' ')).trim();
                 date = lines[i].substring(lines[i].lastIndexOf(' '), lines[i].length())
                         .trim();
                 shortLine.append(String.format(formatStr, amount, shortDesc, date)).trimToSize();

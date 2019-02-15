@@ -3,7 +3,6 @@ package uk.co.irokottaki.moneycontrol.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,20 +21,17 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
-import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
+import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.BAR_CHART;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSE;
 
 public class HorizontalBarChartActivity extends ActionBarActivity {
 
