@@ -44,7 +44,11 @@ android {
             includeAndroidResources = true
         }
         unitTests.returnDefaultValues = true
-
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
     }
 }
 
@@ -76,7 +80,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:2.2.1"
-
+    testImplementation 'org.robolectric:shadows-support-v4:3.0'
     androidTestImplementation('com.schibsted.spain:barista:2.7.0') {
         exclude group: 'com.android.support'
 
@@ -93,6 +97,9 @@ apply plugin: "org.sonarqube"
 
 sonarqube {
     properties {
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-26/android.jar," +
+
+        "${project.buildDir}/intermediates/app_classes/debug/packageAppClassesDebug/classes.jar"
         property "sonar.projectName", "ManageXpence"
         property "sonar.projectKey", "uk.co.irokottaki.moneycontrol"
         property "sonar.host.url", "http://localhost:9000"
@@ -102,17 +109,66 @@ sonarqube {
         property "sonar.password", "admin"
         property "sonar.profile", "Sonar way"
         property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.test", "src/android/java, src/test/java"
+        property "sonar.test", "./src/android/java, ./src/test/java"
         property "sonar.dynamicAnalysis", "reuseReports"
 
         property "sonar.junit.reportsPath", "build/reports/coverage/debug"
-        property "sonar.cobertura.reportPath", "build/reports/coverage/debug/cobertura.xml"
+        //property "sonar.cobertura.reportPath", "build/reports/coverage/debug/cobertura.xml"
         property "sonar.java.coveragePlugin", "cobertura"
         property "sonar.coverage.exclusions",   "**/src/main/java/uk/co/irokottaki/moneycontrol/AlarmReceiver*," +
-                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/DropboxClient*," +
-                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/inappbilling*," +
-                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/UploadTask*," +
-                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/UserAccountTask*," +
-                                                "**/src/main/java/uk/co/irokottaki/moneycontrol/activity/LoginActivity*"
+                "**/src/main/java/uk/co/irokottaki/moneycontrol/DropboxClient*," +
+                "**/src/main/java/uk/co/irokottaki/moneycontrol/inappbilling/*," +
+                "**/src/main/java/uk/co/irokottaki/moneycontrol/UploadTask*," +
+                "**/src/main/java/uk/co/irokottaki/moneycontrol/UserAccountTask*," +
+                "**/src/main/java/uk/co/irokottaki/moneycontrol/activity/LoginActivity*"
+
+        property "sonar.jacoco.reportPath", fileTree(dir: project.projectDir, includes: ['**/*.exec'])
+        property "sonar.java.test.binaries", "${project.buildDir}/intermediates/app_classes/debug"
+        property "sonar.jacoco.itReportPath", fileTree(dir: project.projectDir, includes: ['**/*.ec'])
+        property "sonar.java.test.libraries", libraries
+        property "sonar.android.lint.report", "./build/outputs/lint-results.xml"
+        property "sonar.libraries", libraries
+        property "sonar.java.libraries", libraries
+        property "sonar.import_unknown_files", true
     }
+}
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion "0.7.6.201602180812"
+}
+// run ./gradlew clean createDebugCoverageReport jacocoTestReport
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports"
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+    def fileFilter = ['**/R.class',
+                      '**/R$*.class',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*',
+                      'android/**/*.*',
+                      '**/Lambda$*.class', //Retrolambda
+                      '**/Lambda.class',
+                      '**/*Lambda.class',
+                      '**/*Lambda*.class',
+                      '**/*Lambda*.*',
+                      '**/*Builder.*',
+                      '**/*_MembersInjector.class', //Dagger2 generated code
+                      '**/*_MembersInjector*.*', //Dagger2 generated code
+                      '**/*_*Factory*.*', //Dagger2 generated code
+                      '**/*Component*.*', //Dagger2 generated code
+                      '**/*Module*.*' //Dagger2 generated code
+    ]
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
+
+    def mainSrc = "${project.projectDir}/src/main/java"
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: project.projectDir, includes:
+            ['**/*.exec’ , ‘**/*.ec'])
+}
+task wrapper( type: Wrapper ) {
+    gradleVersion = '2.13'
 }
