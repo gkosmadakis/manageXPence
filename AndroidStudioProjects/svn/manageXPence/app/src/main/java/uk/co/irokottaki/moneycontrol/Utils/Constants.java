@@ -13,7 +13,6 @@ public class Constants {
     public static final String ISPAYMENTCIRCLE = "isPaymentCircle";
     public static final String VALUEFROMNUMPICKER1 = "valueFromNumPicker1";
     public static final String VALUEFROMNUMPICKER1ANNUAL = "valueFromNumPicker1Annual";
-    public static final String VALUEFROMNUMPICKER2 = "valueFromNumPicker2";
     public static final String BACKGROUND_COLOR = "background_color";
     public static final String COLOR_WHITE = "#ffffff";
     public static final String COLOR_TRANSPARENT = "#00000000";
@@ -43,12 +42,6 @@ public class Constants {
     public static final CharSequence EXPORT_TO_DROPBOX = "Export to DROPBOX";
     public static final CharSequence EXPORT_TXT = "Export TXT";
     public static final CharSequence EXPORT_PDF = "Export PDF";
-    public static final String CHART = "Chart";
-    public static final String BARCHART = "BarChart";
-    public static final String ANNUALCHART = "AnnualChart";
-    public static final String SAVINGSCHART = "SavingsChart";
-    public static final String BUDGET = "Budget";
-    public static final String REPORT = "Report";
     public static final String ONE = "1";
     public static final String TWO = "2";
     public static final String THREE = "3";
@@ -63,8 +56,6 @@ public class Constants {
     public static final String TWELVE = "12";
     public static final String TWOTHOUSANDFIFTEEN = "2015";
     public static final String TWOTHOUSANDSIXTEEN = "2016";
-    public static final String TWOTHOUSANDSEVENTEEN = "2017";
-    public static final String TWOTHOUSANDEIGHTEEN = "2018";
     public static final String OK = "OK";
     public static final String REMOVE = "REMOVE";
     public static final String CANCEL = "Cancel";
@@ -101,12 +92,10 @@ public class Constants {
     public static final String ANNUAL_EXPENSES = "Annual Expenses";
     public static final String CALCULATE_ANNUAL_EXPENSES = "Calculate Annual Expenses";
     public static final String SAVINGS_CHART = "Savings Chart";
-    public static final String ANNUAL_SAVINGS = "Annual Savings";
-    public static final String EMPTY_RESULTS_FIELD = "Empty Results Field";
     public static final String EXPENSES_FILE = "expenses.txt";
     public static final String YEARS_MAPPED_TO_OBJECT_YEARS_MAP = "yearsMappedToObjectYearsMap";
     public static final String ERROR_DURING_PURCHASE = "Error occured during purchase ";
-    public static final String PRODUCT_ID = "productId";
     public static final String DESCRIPTIONS_FILE = "descriptions.txt";
     public static final String BUDGET_WARNING = "Budget Warning!";
+    public static final String SAVE = "Save";
 }

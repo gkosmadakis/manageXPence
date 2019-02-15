@@ -32,6 +32,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.schibsted.spain.barista.interaction.BaristaSleepInteractions.sleep;
 import static org.hamcrest.Matchers.allOf;
@@ -257,6 +258,64 @@ public class MainActivityAddEditExpensesTabTest {
         appCompatButton10.perform(scrollTo());
         appCompatButton10.perform(click());
 
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.searchByDescText),
+                        childAtPosition(
+                                allOf(withId(R.id.editView),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                2)));
+        appCompatEditText2.perform(replaceText("bvc"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton25 = onView(
+                allOf(withId(R.id.searchButton), withText("Search"),
+                        childAtPosition(
+                                allOf(withId(R.id.editView),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                4)));
+        appCompatButton25.perform(click());
+
+        ViewInteraction appCompatButton27 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton27.perform(click());
+
+        ViewInteraction appCompatEditText16 = onView(
+                allOf(withId(R.id.searchByAmountText),
+                        childAtPosition(
+                                allOf(withId(R.id.editView),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                3)));
+        appCompatEditText16.perform(replaceText("12"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton28 = onView(
+                allOf(withId(R.id.searchButton), withText("Search"),
+                        childAtPosition(
+                                allOf(withId(R.id.editView),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                4)));
+        appCompatButton28.perform(click());
+
+        ViewInteraction appCompatButton29 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton29.perform(scrollTo(), click());
+
         ViewInteraction appCompatEditText10 = onView(
                 allOf(withId(R.id.searchByDescText),
                         childAtPosition(
@@ -264,149 +323,137 @@ public class MainActivityAddEditExpensesTabTest {
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
                                                 0)),
-                                3)));
-        appCompatEditText10.perform(scrollTo(), replaceText("Shopping"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton11 = onView(
-                allOf(withId(R.id.searchByDescButton), withText("Search by Description"),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
                                 2)));
-        appCompatButton11.perform(scrollTo(), click());
+        appCompatEditText10.perform(replaceText("Shopping"), closeSoftKeyboard());
 
-        ViewInteraction appCompatButton12 = onView(
-                allOf(withId(R.id.selectButton), withText("Select"),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                8)));
-        appCompatButton12.perform(scrollTo(),click());
-
-        ViewInteraction appCompatEditText12 = onView(
-                allOf(withId(R.id.SingleEditText), withText("105 Shopping "+currentDay+"/"+currentMonth+"/"+currentYear),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                11)));
-        appCompatEditText12.perform(scrollTo(), click());
-
-        ViewInteraction appCompatEditText14 = onView(
-                allOf(withId(R.id.SingleEditText), withText("105 Shopping "+currentDay+"/"+currentMonth+"/"+currentYear),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                11)));
-        appCompatEditText14.perform(scrollTo(), replaceText("100 Shopping "+currentDay+"/"+currentMonth+"/"+currentYear));
-
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withId(R.id.editButton),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                10)));
-        appCompatImageButton.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton7 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton7.perform(scrollTo(), click());
-
-        ViewInteraction imageButton = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        imageButton.perform(click());
-
-        sleep(2000);
-
-        ViewInteraction appCompatButton13 = onView(
-                allOf(withId(R.id.editButton), withText("Edit"),
-                        childAtPosition(
-                                allOf(withId(R.id.addExpenses),
-                                        childAtPosition(
-                                                withId(android.R.id.tabcontent),
-                                                0)),
-                                13),
-                        isDisplayed()));
-        appCompatButton13.perform(click());
-
-        ViewInteraction appCompatEditText11 = onView(
+        ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.searchByAmountText),
                         childAtPosition(
                                 allOf(withId(R.id.editView),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
                                                 0)),
-                                4)));
-        appCompatEditText11.perform(scrollTo(), replaceText("100"), closeSoftKeyboard());
+                                3),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("105"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(R.id.searchButton), withText("Search"),
+                        childAtPosition(
+                                allOf(withId(R.id.editView),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
+
+        ViewInteraction appCompatButton7 = onView(
+                allOf(withId(R.id.edit_btn), withText("Edit"),
+                        childAtPosition(
+                                withParent(withId(R.id.listView)),
+                                1),
+                        isDisplayed()));
+        appCompatButton7.perform(click());
+
+        ViewInteraction appCompatEditText11 = onView(
+                allOf(withId(R.id.editField), withText("105 Shopping "+currentDay+"/"+currentMonth+"/"+currentYear),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.custom),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText11.perform(replaceText("100 Shopping "+currentDay+"/"+currentMonth+"/"+currentYear));
+
+        ViewInteraction appCompatEditText12 = onView(
+                allOf(withId(R.id.editField), withText("100 Shopping "+currentDay+"/"+currentMonth+"/"+currentYear),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.custom),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText12.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatButton8 = onView(
+                allOf(withId(android.R.id.button1), withText("Save"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton8.perform(scrollTo(), click());
+
+        ViewInteraction appCompatButton9 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton9.perform(scrollTo(), click());
+
+        ViewInteraction appCompatEditText13 = onView(
+                allOf(withId(R.id.searchByAmountText), withText("105"),
+                        childAtPosition(
+                                allOf(withId(R.id.editView),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatEditText13.perform(replaceText("100"));
+
+        ViewInteraction appCompatEditText14 = onView(
+                allOf(withId(R.id.searchByDescText), withText("Shopping"),
+                        childAtPosition(
+                                allOf(withId(R.id.editView),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        appCompatEditText14.perform(replaceText(""));
+
+        ViewInteraction appCompatEditText15 = onView(
+                allOf(withId(R.id.searchByAmountText), withText("100"),
+                        childAtPosition(
+                                allOf(withId(R.id.editView),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatEditText15.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatButton12 = onView(
+                allOf(withId(R.id.searchButton), withText("Search"),
+                        childAtPosition(
+                                allOf(withId(R.id.editView),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatButton12.perform(click());
+
+        ViewInteraction appCompatButton13 = onView(
+                allOf(withId(R.id.delete_btn), withText("Delete"),
+                        childAtPosition(
+                                withParent(withId(R.id.listView)),
+                                2),
+                        isDisplayed()));
+        appCompatButton13.perform(click());
 
         ViewInteraction appCompatButton14 = onView(
-                allOf(withId(R.id.searchByAmountButton), withText("Search by Amount"),
+                allOf(withId(android.R.id.button1), withText("OK"),
                         childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                5)));
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
         appCompatButton14.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton15 = onView(
-                allOf(withId(R.id.selectButton), withText("Select"),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                8)));
-        appCompatButton15.perform(scrollTo(), click());
-
-        ViewInteraction appCompatImageButton2 = onView(
-                allOf(withId(R.id.deleteButton),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                9)));
-        appCompatImageButton2.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton16 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton16.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton17 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton17.perform(scrollTo(), click());
 
         ViewInteraction imageButton3 = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -440,169 +487,35 @@ public class MainActivityAddEditExpensesTabTest {
                                                 withClassName(is("android.widget.LinearLayout")),
                                                 0)),
                                 1)));
-        appCompatImageButton3.perform(scrollTo(), click());
+        appCompatImageButton3.perform(click());
 
-        ViewInteraction appCompatButton6 = onView(
+        ViewInteraction appCompatButton15 = onView(
                 allOf(withId(android.R.id.button1), withText("Close"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        appCompatButton6.perform(scrollTo(), click());
+        appCompatButton15.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton26 = onView(
-                allOf(withId(R.id.searchByDescButton), withText("Search by Description"),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                2)));
-        appCompatButton26.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton8 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton8.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton9 = onView(
-                allOf(withId(R.id.searchByAmountButton), withText("Search by Amount"),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                5)));
-        appCompatButton9.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton20 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton20.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton21 = onView(
-                allOf(withId(R.id.selectButton), withText("Select"),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                8)));
-        appCompatButton21.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton22 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton22.perform(scrollTo(), click());
-
-        ViewInteraction appCompatImageButton4 = onView(
-                allOf(withId(R.id.editButton),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                10)));
-        appCompatImageButton4.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton23 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton23.perform(scrollTo(), click());
-
-        ViewInteraction appCompatImageButton5 = onView(
-                allOf(withId(R.id.deleteButton),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                9)));
-        appCompatImageButton5.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton24 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton24.perform(scrollTo(), click());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.searchByDescText),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                3)));
-        appCompatEditText2.perform(scrollTo(), replaceText("bvc"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton25 = onView(
-                allOf(withId(R.id.searchByDescButton), withText("Search by Description"),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                2)));
-        appCompatButton25.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton27 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton27.perform(scrollTo(), click());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.searchByAmountText),
+                allOf(withId(R.id.searchButton), withText("Search"),
                         childAtPosition(
                                 allOf(withId(R.id.editView),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
                                                 0)),
                                 4)));
-        appCompatEditText3.perform(scrollTo(), replaceText("12"), closeSoftKeyboard());
+        appCompatButton26.perform(click());
 
-        ViewInteraction appCompatButton28 = onView(
-                allOf(withId(R.id.searchByAmountButton), withText("Search by Amount"),
-                        childAtPosition(
-                                allOf(withId(R.id.editView),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                5)));
-        appCompatButton28.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton29 = onView(
+        ViewInteraction appCompatButton16 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        appCompatButton29.perform(scrollTo(), click());
+        appCompatButton16.perform(scrollTo(), click());
 
         pressBack();
 

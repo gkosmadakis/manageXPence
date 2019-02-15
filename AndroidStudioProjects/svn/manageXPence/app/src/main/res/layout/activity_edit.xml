@@ -1,13 +1,8 @@
-<ScrollView xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:fillViewport="true">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
     <!-- 600width  935height-->
     <RelativeLayout
@@ -37,156 +32,72 @@
             android:id="@+id/ImageView" />
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/infoEditButton"
-            android:src="@drawable/ic_info_outline_black_24dp"
-            android:background="#0000"
-            tools:ignore="contentDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/ImageView"
+            android:layout_alignRight="@+id/ImageView"
+            android:layout_alignParentTop="true"
             android:layout_gravity="end"
-            android:layout_alignRight="@+id/searchByDescButton"
-            android:layout_alignEnd="@+id/searchByDescButton"
-            android:layout_alignParentTop="true" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="@string/search_by_description"
-            android:id="@+id/searchByDescButton"
-            android:background="@drawable/buttonsearchstyle"
-            android:layout_below="@+id/infoEditButton"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:textSize="12sp" />
+            android:background="#0000"
+            android:src="@drawable/ic_info_outline_black_24dp"
+            tools:ignore="contentDescription" />
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/searchByDescText"
-            android:inputType="text"
-            android:hint="@string/enter_description"
-            android:textSize="16sp"
-            android:layout_alignTop="@+id/searchByDescButton"
-            android:layout_alignParentLeft="true"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/searchByDescButton"
-            android:layout_toStartOf="@+id/searchByDescButton" />
+            android:layout_alignParentLeft="true"
+            android:hint="@string/enter_description"
+            android:inputType="text"
+            android:textSize="16sp" />
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/searchByAmountText"
-            android:inputType="text"
-            android:hint="@string/enter_amount"
-            android:textSize="16sp"
-            android:layout_below="@+id/searchByDescButton"
-            android:layout_alignParentLeft="true"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchByDescText"
             android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/searchByDescText"
-            android:layout_alignEnd="@+id/searchByDescText" />
+            android:layout_alignParentLeft="true"
+            android:hint="@string/enter_amount"
+            android:inputType="text"
+            android:textSize="16sp" />
 
         <Button
+            android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="@string/search_by_amount"
-            android:id="@+id/searchByAmountButton"
+            android:layout_below="@+id/infoEditButton"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@+id/searchByAmountText"
+            android:layout_toRightOf="@+id/searchByAmountText"
             android:background="@drawable/buttonsearchstyle"
-            android:layout_alignBottom="@+id/searchByAmountText"
-            android:layout_alignRight="@+id/searchByDescButton"
-            android:layout_alignEnd="@+id/searchByDescButton"
-            android:layout_alignLeft="@+id/searchByDescButton"
-            android:layout_alignStart="@+id/searchByDescButton"
+            android:text="@string/search"
             android:textSize="12sp" />
+
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/results"
             android:id="@+id/resultsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/searchByAmountText"
-            android:layout_alignLeft="@+id/editButton"
-            android:layout_alignStart="@+id/editButton" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="1dp"
+            android:text="@string/results"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-
-        <EditText
+        <ListView
+            android:id="@+id/listView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fadeScrollbars="false"
-            android:id="@+id/editLine"
-            android:scrollbars="vertical"
-            android:inputType="none"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/searchByAmountButton"
-            android:layout_alignEnd="@+id/searchByAmountButton"
-            android:layout_below="@+id/resultsLabel" />
-
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="@string/select"
-            android:id="@+id/selectButton"
-            android:background="@drawable/buttonselectstyle"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:layout_below="@+id/SingleEditText"
-
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="@string/delete"
-            tools:ignore="contentDescription"
-            android:id="@+id/deleteButton"
-            android:src="@drawable/ic_delete_black_24dp"
-            android:background="#0000"
-            android:layout_alignTop="@+id/editButton"
+            android:layout_below="@+id/resultsLabel"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="@string/edit"
-            tools:ignore="contentDescription"
-            android:id="@+id/editButton"
-            android:src="@drawable/ic_done_black_24dp"
-            android:background="#0000"
-            android:layout_alignTop="@+id/selectButton"
-            android:layout_centerHorizontal="true" />
-
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/SingleEditText"
-            android:inputType="text"
-            android:selectAllOnFocus="true"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:layout_alignRight="@+id/searchByAmountButton"
-            android:layout_alignEnd="@+id/searchByAmountButton"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/editLine" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:id="@+id/adEditView"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/selectButton">
+            android:paddingBottom="60dp" />
 
-        </FrameLayout>
 
 
     </RelativeLayout>
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>
