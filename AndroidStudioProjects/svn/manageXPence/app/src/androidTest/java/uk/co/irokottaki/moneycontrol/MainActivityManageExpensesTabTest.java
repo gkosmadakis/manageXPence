@@ -1,6 +1,7 @@
 package uk.co.irokottaki.moneycontrol;
 
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -14,6 +15,11 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiSelector;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -57,10 +63,17 @@ public class MainActivityManageExpensesTabTest {
     private int currentYear;
     private String twentyDaysBeforeNow;
     private String monthTwentyDaysBeforeNow;
+    private UiDevice mDevice;
 
     @Rule
     public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen
             .class);
+
+    @Before
+    public void startMainActivityFromHomeScreen() {
+        // Initialize UiDevice instance
+        mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+    }
 
     @Before
     public void setUp(){
@@ -123,7 +136,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText.perform(click());
@@ -134,12 +147,10 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("200"), closeSoftKeyboard());
-
-        //pressBack();
 
         ViewInteraction appCompatSpinner = onView(
                 allOf(withId(R.id.descriptionCombo),
@@ -147,7 +158,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout2),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                3)),
+                                                4)),
                                 1),
                         isDisplayed()));
         appCompatSpinner.perform(click());
@@ -165,7 +176,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 0),
                         isDisplayed()));
         appCompatButton.perform(click());
@@ -186,7 +197,7 @@ public class MainActivityManageExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton3.perform(click());
 
@@ -256,8 +267,7 @@ public class MainActivityManageExpensesTabTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
         // /index.html
-        sleep(3000);
-
+        sleep(1000);
 
         ViewInteraction appCompatButton33 = onView(
                 allOf(withId(R.id.importButton), withText("Import"),
@@ -306,7 +316,7 @@ public class MainActivityManageExpensesTabTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
         // /index.html
-        sleep(3000);
+        sleep(1000);
 
         ViewInteraction appCompatButton6 = onView(
                 allOf(withId(R.id.exportButton), withText("Export"),
@@ -328,6 +338,85 @@ public class MainActivityManageExpensesTabTest {
                                 0),
                         isDisplayed()));
         appCompatTextView2.perform(click());
+
+        ViewInteraction appCompatButton35 = onView(
+                allOf(withId(R.id.exportButton), withText("Export"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout8),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                12)),
+                                0),
+                        isDisplayed()));
+        appCompatButton35.perform(click());
+
+        ViewInteraction appCompatTextView3 = onView(
+                allOf(withId(R.id.title), withText("Export to DROPBOX"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView3.perform(click());
+
+        ViewInteraction appCompatButton36 = onView(
+                allOf(withId(R.id.sign_in_button), withText("Sign in"),
+                        childAtPosition(
+                                allOf(withId(R.id.loginActivityView),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        appCompatButton36.perform(click());
+
+        UiObject openWith = mDevice.findObject(new UiSelector().text("JUST ONCE"));
+        try {
+            openWith.clickAndWaitForNewWindow();
+        } catch (UiObjectNotFoundException e) {
+            Log.e("UiObjectNotFoundException",e.getMessage());
+        }
+
+        UiObject allowBtn = mDevice.findObject(new UiSelector().className("android.widget.Button").index(1));
+        try {
+            allowBtn.clickAndWaitForNewWindow();
+        } catch (UiObjectNotFoundException e) {
+            Log.e("UiObjectNotFoundException",e.getMessage());
+        }
+
+        sleep(1000);
+
+        ViewInteraction linearLayout2 = onView(
+                allOf(childAtPosition(
+                        allOf(withId(android.R.id.tabs),
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0)),
+                        1),
+                        isDisplayed()));
+        linearLayout2.perform(click());
+
+        ViewInteraction appCompatButton37 = onView(
+                allOf(withId(R.id.exportButton), withText("Export"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout8),
+                                        childAtPosition(
+                                                withId(R.id.ManageExpenses),
+                                                12)),
+                                0),
+                        isDisplayed()));
+        appCompatButton37.perform(click());
+
+        ViewInteraction appCompatTextView9 = onView(
+                allOf(withId(R.id.title), withText("Export to DROPBOX"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView9.perform(click());
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.infoDateRange),
@@ -400,7 +489,7 @@ public class MainActivityManageExpensesTabTest {
                                 3)));
         appCompatButton1.perform(scrollTo(), click());
 
-        onView(withId(R.id.budgetBar)).perform(clickSeekBar(1000));
+        onView(withId(R.id.budgetBar)).perform(clickSeekBar(1200));
 
         ViewInteraction appCompatButton27 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
@@ -421,30 +510,6 @@ public class MainActivityManageExpensesTabTest {
                                 1),
                         isDisplayed()));
         imageButton2.perform(click());
-
-        ViewInteraction appCompatButton18 = onView(
-                allOf(withId(R.id.budgetButton), withText("Budget Control"),
-                        childAtPosition(
-                                allOf(withId(R.id.ManageExpenses),
-                                        childAtPosition(
-                                                withId(android.R.id.tabcontent),
-                                                1)),
-                                9),
-                        isDisplayed()));
-        appCompatButton18.perform(click());
-
-        onView(withId(R.id.budgetBar)).perform(clickSeekBar(1200));
-
-        ViewInteraction appCompatButton28 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton28.perform(scrollTo(), click());
-
-        pressBack();
 
         ViewInteraction linearLayout3 = onView(
                 allOf(childAtPosition(
@@ -718,7 +783,7 @@ public class MainActivityManageExpensesTabTest {
 
         sleep(1000);
 
-        ViewInteraction linearLayout2 = onView(
+        ViewInteraction linearLayout4 = onView(
                 allOf(childAtPosition(
                         allOf(withId(android.R.id.tabs),
                                 childAtPosition(
@@ -726,7 +791,7 @@ public class MainActivityManageExpensesTabTest {
                                         0)),
                         1),
                         isDisplayed()));
-        linearLayout2.perform(click());
+        linearLayout4.perform(click());
 
         ViewInteraction appCompatButton19 = onView(
                 allOf(withId(R.id.addExpensesButton), withText("Sum expenses"),

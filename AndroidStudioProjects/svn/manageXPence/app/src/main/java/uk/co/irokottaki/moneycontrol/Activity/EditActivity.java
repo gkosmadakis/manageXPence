@@ -48,7 +48,7 @@ public class EditActivity extends AppCompatActivity {
     private EditText descField;
     private EditText amountField;
     private ArrayList<String> allTheLinesInFile = new ArrayList<>();
-    private final static String TAG = "Millenial Media";
+    private static final  String TAG = "Millenial Media";
     private InlineAd inlineAd;
     private boolean adsDisabled;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
@@ -301,11 +301,12 @@ public class EditActivity extends AppCompatActivity {
             }
 
             /* Finally if the results list has elements that means there are results then show them */
-            if (resultsList.size() > 0) {
+            if (!resultsList.isEmpty()) {
                 resultsLabel.setVisibility(View.VISIBLE);
                 CustomAdapter adapter = new CustomAdapter(resultsList, this);
                 ListView lView = (ListView) findViewById(R.id.listView);
                 lView.setAdapter(adapter);
+                yearsMappedToObjectYearsMap = adapter.getYearsMappedToObjectYearsMap();
             }
 
             else {

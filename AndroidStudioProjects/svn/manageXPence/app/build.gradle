@@ -8,8 +8,8 @@ android {
         applicationId "uk.co.irokottaki.moneycontrol"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 32
-        versionName "6.0"
+        versionCode 40
+        versionName "6.5"
 
         // Enabling multidex support.
         multiDexEnabled true
@@ -74,7 +74,6 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
-    //testImplementation 'com.android.support.test:rules:1.0.2'
     testImplementation 'org.robolectric:robolectric:3.8'
     testImplementation "org.robolectric:multidex:3.4.2"
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.1'
@@ -113,14 +112,8 @@ sonarqube {
         property "sonar.dynamicAnalysis", "reuseReports"
 
         property "sonar.junit.reportsPath", "build/reports/coverage/debug"
-        //property "sonar.cobertura.reportPath", "build/reports/coverage/debug/cobertura.xml"
-        property "sonar.java.coveragePlugin", "cobertura"
         property "sonar.coverage.exclusions",   "**/src/main/java/uk/co/irokottaki/moneycontrol/AlarmReceiver*," +
-                "**/src/main/java/uk/co/irokottaki/moneycontrol/DropboxClient*," +
-                "**/src/main/java/uk/co/irokottaki/moneycontrol/inappbilling/*," +
-                "**/src/main/java/uk/co/irokottaki/moneycontrol/UploadTask*," +
-                "**/src/main/java/uk/co/irokottaki/moneycontrol/UserAccountTask*," +
-                "**/src/main/java/uk/co/irokottaki/moneycontrol/activity/LoginActivity*"
+                "**/src/main/java/uk/co/irokottaki/moneycontrol/inappbilling/*"
 
         property "sonar.jacoco.reportPath", fileTree(dir: project.projectDir, includes: ['**/*.exec'])
         property "sonar.java.test.binaries", "${project.buildDir}/intermediates/app_classes/debug"
@@ -130,6 +123,7 @@ sonarqube {
         property "sonar.libraries", libraries
         property "sonar.java.libraries", libraries
         property "sonar.import_unknown_files", true
+        property "sonar.scm.disabled", true
     }
 }
 apply plugin: 'jacoco'

@@ -59,7 +59,7 @@ public class DialogsAndAnnualExpensesTest {
                                 allOf(withId(R.id.linearLayout2),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                3)),
+                                                4)),
                                 2),
                         isDisplayed()));
         appCompatButton.perform(click());
@@ -89,7 +89,7 @@ public class DialogsAndAnnualExpensesTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("50"), closeSoftKeyboard());
@@ -100,7 +100,7 @@ public class DialogsAndAnnualExpensesTest {
                                 allOf(withId(R.id.linearLayout2),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                3)),
+                                                4)),
                                 1),
                         isDisplayed()));
         appCompatSpinner3.perform(click());
@@ -119,7 +119,7 @@ public class DialogsAndAnnualExpensesTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 0),
                         isDisplayed()));
         appCompatButton3.perform(click());
@@ -140,11 +140,11 @@ public class DialogsAndAnnualExpensesTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton5.perform(click());
 
-        sleep(3000);
+        sleep(1000);
 
         ViewInteraction linearLayout = onView(
                 allOf(childAtPosition(
@@ -339,13 +339,131 @@ public class DialogsAndAnnualExpensesTest {
                         isDisplayed()));
         linearLayout3.perform(click());
 
+        ViewInteraction appCompatButton15 = onView(
+                allOf(withId(R.id.addDescButton), withText("Add"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout2),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                2),
+                        isDisplayed()));
+        appCompatButton15.perform(click());
+
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.edittext),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.custom),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("Mortgage"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton16 = onView(
+                allOf(withId(android.R.id.button1), withText("Add"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton16.perform(scrollTo(),click());
+
+        ViewInteraction appCompatButton17 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton17.perform(scrollTo(),click());
+
+
+        ViewInteraction appCompatButton18 = onView(
+                allOf(withId(R.id.addDescButton), withText("Add"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout2),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                2),
+                        isDisplayed()));
+        appCompatButton18.perform(click());
+
+        ViewInteraction appCompatEditText5 = onView(
+                allOf(withId(R.id.edittext),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.custom),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText5.perform(replaceText("Mortgage"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton19 = onView(
+                allOf(withId(android.R.id.button3), withText("REMOVE"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                0)));
+        appCompatButton19.perform(scrollTo(),click());
+
+        ViewInteraction appCompatButton20 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton17.perform(scrollTo(),click());
+
+        ViewInteraction appCompatButton21 = onView(
+                allOf(withId(R.id.addDescButton), withText("Add"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout2),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                4)),
+                                2),
+                        isDisplayed()));
+        appCompatButton21.perform(click());
+
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.edittext),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.custom),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText6.perform(replaceText("dfgdfg"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton22 = onView(
+                allOf(withId(android.R.id.button3), withText("REMOVE"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                0)));
+        appCompatButton22.perform(scrollTo(),click());
+
+        ViewInteraction appCompatButton23 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton23.perform(scrollTo(),click());
+
         ViewInteraction appCompatButton11 = onView(
                 allOf(withId(R.id.addDescButton), withText("Add"),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayout2),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                3)),
+                                                4)),
                                 2),
                         isDisplayed()));
         appCompatButton11.perform(click());

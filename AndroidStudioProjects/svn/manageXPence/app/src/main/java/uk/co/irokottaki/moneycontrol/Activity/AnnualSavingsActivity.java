@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -15,22 +14,20 @@ import android.widget.TextView;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+
 import java.util.Calendar;
 import java.util.HashMap;
 
+import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
-import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SAVINGS_CHART;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.YEAR;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.YEARS_MAPPED_TO_OBJECT_YEARS_MAP;
 
-public class AnnualSavingsActivity extends AppCompatActivity implements OnChartGestureListener, OnChartValueSelectedListener {
+public class AnnualSavingsActivity extends AppCompatActivity {
 
     private LineChart annualSavingsChart;
     ImageButton leftYearButton;
@@ -52,7 +49,6 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
         Intent intent = getIntent();
         HashMap<String,AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) intent.getSerializableExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP);
 
-
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.annualSavingsView);
 
         //this is to change the background color of the activity when user changes it from settings
@@ -60,8 +56,6 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
         utils.setBackgroundAndAdjustLayout(layout, AnnualSavingsActivity.this);
 
         annualSavingsChart = (LineChart) findViewById(R.id.annualSavingsLayout);
-        annualSavingsChart.setOnChartGestureListener(this);
-        annualSavingsChart.setOnChartValueSelectedListener(this);
         annualSavingsChart.setDrawGridBackground(false);
 
         // enable touch gestures
@@ -157,59 +151,5 @@ public class AnnualSavingsActivity extends AppCompatActivity implements OnChartG
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    @Override
-    public void onChartGestureStart(MotionEvent motionEvent, ChartTouchListener.ChartGesture
-            chartGesture) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartGestureEnd(MotionEvent motionEvent, ChartTouchListener.ChartGesture
-            chartGesture) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartLongPressed(MotionEvent motionEvent) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartDoubleTapped(MotionEvent motionEvent) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartSingleTapped(MotionEvent motionEvent) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartScale(MotionEvent motionEvent, float v, float v1) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartTranslate(MotionEvent motionEvent, float v, float v1) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onValueSelected(Entry entry, int i, Highlight highlight) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onNothingSelected() {
-        /*Not used*/
-    }
-
 
 }

@@ -111,17 +111,18 @@
     <string name="percent">%</string>
     <string name="search_by_description">Search by Description</string>
     <string name="enter_description">Enter description</string>
-    <string name="enter_amount">Enter amount</string>
+    <string name="enter_amount"><font size="13">Enter amount</font></string>
     <string name="search">Search</string>
     <string name="results">Results</string>
     <string name="select">Select</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="add_an_expense">Add an Expense:</string>
-    <string name="expense_amount">Expense Amount</string>
-    <string name="expense_description">Expense Description</string>
+    <string name="expense_amount">Amount</string>
+    <string name="expense_description">Description</string>
     <string name="add">Add</string>
     <string name="select_date">Select Date</string>
+    <string name="end_date">End Date</string>
     <string name="save_to_file">Save To File</string>
     <string name="add_your_income">Add your income:</string>
     <string name="enter_your_income">Enter your income:</string>

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import org.junit.Test;
@@ -15,13 +16,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 import uk.co.irokottaki.moneycontrol.activity.MainActivity;
-import uk.co.irokottaki.moneycontrol.activity.ReportActivity;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.model.YearToSet;
 import uk.co.irokottaki.moneycontrol.utils.MainActivityUtil;
@@ -34,6 +37,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -340,5 +344,30 @@ public class MainActivityTests  {
         assertTrue(util.isDescFound());
         assertTrue(util.isDateFound());
     }
+
+    @Test
+    public void testProcessExpenseRepeatingAmount() throws ParseException {
+        final Context context = mock(Context.class);
+        String testAmount = "50";
+        String testDescription = "SuperMarket";
+
+        final Activity mMockMainActivity = mock(MainActivity.class);
+        final CheckBox repeatCheckBox = mock(CheckBox.class);
+        when(mMockMainActivity.findViewById(R.id.repeatCheckBox)).thenReturn(repeatCheckBox);
+        when(repeatCheckBox.isChecked()).thenReturn(true);
+        ArrayList datesTheRepeatingExpenseOccurs = new ArrayList();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString1 = "25/03/2019";
+        String dateString2 = "25/04/2019";
+        Date date1 = sdf.parse(dateString1);
+        Date date2 = sdf.parse(dateString2);
+        datesTheRepeatingExpenseOccurs.add(date1);
+        datesTheRepeatingExpenseOccurs.add(date2);
+
+        MainActivityUtil util = new MainActivityUtil(context);
+        assertTrue(util.processExpenseRepeatingAmount(testAmount,testDescription,repeatCheckBox,datesTheRepeatingExpenseOccurs,mMockMainActivity));
+
+    }
+
 
 }

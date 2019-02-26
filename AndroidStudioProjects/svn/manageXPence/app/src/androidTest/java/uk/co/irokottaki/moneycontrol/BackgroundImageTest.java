@@ -126,7 +126,7 @@ public class BackgroundImageTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                13),
+                                14),
                         isDisplayed()));
         appCompatButton.perform(scrollTo());
         appCompatButton.perform(click());

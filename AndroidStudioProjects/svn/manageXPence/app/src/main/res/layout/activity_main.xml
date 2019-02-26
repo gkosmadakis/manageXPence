@@ -1,5 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:id="@+id/scrollView">
@@ -10,7 +11,7 @@
         android:orientation="vertical">
 
         <!--  w:360 h 640-->
-        <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout
             android:id="@+id/mainActivityView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,10 +74,22 @@
                                 android:text="@string/add_an_expense"
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
+
+                            <ImageButton
+                                android:id="@+id/addExpensesInfoBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#0000"
+                                android:src="@drawable/ic_info_outline_black_24dp"
+                                tools:ignore="contentDescription"
+                                android:layout_marginTop="-20dp"
+                                android:layout_gravity="end"/>
+
                             <View
                                 android:layout_width="fill_parent"
                                 android:layout_height="1dip"
                                 android:background="#000000" />
+
 
                             <LinearLayout
                                 android:id="@+id/linearLayout"
@@ -94,12 +107,28 @@
 
                                 <EditText
                                     android:id="@+id/expenseText"
-                                    android:layout_width="200dp"
+                                    android:layout_width="100dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="end"
                                     android:hint="@string/enter_amount"
                                     android:inputType="none"
                                     android:maxLength="7" />
+
+                                <CheckBox
+                                    android:id="@+id/repeatCheckBox"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:text="Repeat" />
+
+                                <Button
+                                    android:id="@+id/endDateButton"
+                                    android:layout_width="60dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/buttonsavestyle"
+                                    android:layout_marginLeft="15dp"
+                                    android:text="@string/end_date" />
 
                             </LinearLayout>
 
@@ -161,7 +190,7 @@
 
                                 <EditText
                                     android:id="@+id/dateText"
-                                    android:layout_width="214dp"
+                                    android:layout_width="120dp"
                                     android:layout_height="wrap_content"
                                     android:cursorVisible="false"
                                     android:focusable="false"

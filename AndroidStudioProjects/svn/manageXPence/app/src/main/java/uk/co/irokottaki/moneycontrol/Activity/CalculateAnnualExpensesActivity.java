@@ -140,8 +140,8 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         return annualExpenseDouble;
     }
 
-    public Double setAnnualExpenseDouble(double expense) {
-        return this.annualExpenseDouble = expense;
+    public void setAnnualExpenseDouble(Double annualExpenseDouble) {
+        this.annualExpenseDouble = annualExpenseDouble;
     }
 
     @Override

@@ -55,7 +55,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText.perform(replaceText("50"), closeSoftKeyboard());
@@ -66,7 +66,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout2),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                3)),
+                                                4)),
                                 1),
                         isDisplayed()));
         appCompatSpinner.perform(click());
@@ -84,7 +84,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditTextFirst.perform(replaceText("01/01/2019"), closeSoftKeyboard());
@@ -96,7 +96,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -106,7 +106,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("01/02/2019"), closeSoftKeyboard());
@@ -118,7 +118,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton3.perform(click());
 
@@ -129,7 +129,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText3.perform(replaceText("01/03/2019"), closeSoftKeyboard());
@@ -141,7 +141,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton6.perform(click());
 
@@ -152,7 +152,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText4.perform(replaceText("01/04/2019"), closeSoftKeyboard());
@@ -164,7 +164,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton9.perform(click());
 
@@ -175,7 +175,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText5.perform(replaceText("01/05/2019"), closeSoftKeyboard());
@@ -187,7 +187,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton12.perform(click());
 
@@ -197,7 +197,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText6.perform(replaceText("01/06/2019"), closeSoftKeyboard());
@@ -209,7 +209,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton15.perform(click());
 
@@ -219,7 +219,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText7.perform(replaceText("01/07/2019"), closeSoftKeyboard());
@@ -231,7 +231,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton18.perform(click());
 
@@ -242,7 +242,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText8.perform(replaceText("01/08/2019"), closeSoftKeyboard());
@@ -254,7 +254,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton21.perform(click());
 
@@ -265,7 +265,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText9.perform(replaceText("01/09/2019"), closeSoftKeyboard());
@@ -277,7 +277,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton24.perform(click());
 
@@ -288,7 +288,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText10.perform(replaceText("01/10/2019"), closeSoftKeyboard());
@@ -300,7 +300,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton27.perform(click());
 
@@ -311,7 +311,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText11.perform(replaceText("01/11/2019"), closeSoftKeyboard());
@@ -323,7 +323,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton30.perform(click());
 
@@ -334,7 +334,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 1),
                         isDisplayed()));
         appCompatEditText12.perform(replaceText("01/12/2019"), closeSoftKeyboard());
@@ -346,7 +346,7 @@ public class MainActivityChartExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton33.perform(click());
 
@@ -356,7 +356,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText14.perform(replaceText("10"), closeSoftKeyboard());
@@ -365,7 +365,7 @@ public class MainActivityChartExpensesTabTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
         // /index.html
-        sleep(3000);
+        sleep(1000);
 
         ViewInteraction appCompatEditText15 = onView(
                 allOf(withId(R.id.incomeField), withText("10"),
@@ -373,7 +373,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText15.perform(replaceText("100"));
@@ -384,7 +384,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText16.perform(closeSoftKeyboard());
@@ -393,7 +393,7 @@ public class MainActivityChartExpensesTabTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
         // /index.html
-        sleep(3000);
+        sleep(1000);
 
         ViewInteraction appCompatEditText17 = onView(
                 allOf(withId(R.id.incomeField), withText("100"),
@@ -401,7 +401,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText17.perform(replaceText("1000"));
@@ -412,7 +412,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText18.perform(closeSoftKeyboard());
@@ -421,7 +421,7 @@ public class MainActivityChartExpensesTabTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
         // /index.html
-        sleep(3000);
+        sleep(1000);
 
         ViewInteraction appCompatEditText19 = onView(
                 allOf(withId(R.id.incomeField), withText("1000"),
@@ -429,7 +429,7 @@ public class MainActivityChartExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText19.perform(pressImeActionButton());

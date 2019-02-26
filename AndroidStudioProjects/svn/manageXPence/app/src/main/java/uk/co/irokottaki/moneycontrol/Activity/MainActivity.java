@@ -43,6 +43,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -95,6 +97,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -140,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private Button exportButton;
     ImageButton backUpInfoButton;
     ImageButton photoButton;
+    ImageButton addExpensesInfoBtn;
     EditText expensesField;
     EditText dateText;
     EditText addedDescriptionField;
@@ -152,7 +156,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private int monthX;
     private int dayX;
     private int valueFromNumPicker1;
-    static final int DIALOG_ID = 0;
+    static final int SELECT_DATE_DIALOG_ID = 0;
+    static final int SELECT_END_DATE_DIALOG_ID = 1;
     private TextView balanceLabel;
     ArrayAdapter<String> spinnerAdapter;
     private static ArrayList<String> itemsAddedByUser;
@@ -171,11 +176,11 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     ImageView imageView;
-    private final static String TAG = "Millenial Media";
-    private final static String TAG2 = "In App Billing";
+    private static final  String TAG = "Millenial Media";
+    private static final  String TAG2 = "In App Billing";
     private InlineAd inlineAd;
     IabHelper mHelper;
-    final static String base64EncodedPublicKey =
+    static final String BASE_64_ENCODED_PUBLIC_KEY =
             "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqcYpXYA3pWCTMjOYJNNC70rNhXmbwxI5i4sGCtmZWN" +
                     "+eVFvrvtBtlwm8Wxwab8wf4CyLUxthccmgSd2Wmb6lHYVHG9/F7VSn+u3f9tnu8x" +
                     "+Oh30fyiSr4Wdesz0yfTwflVipA4wNwcEjxJoO0t8CCEyswQZcAzLAMzkodlMVwcdWx0kJ39qJxxuT8LWFlqwDpUSlLm6sPr+XmbD/vhfmd1h+qNQTteVte2Q5vVLSAk1/hCsqLCzrDp0BJ30w4f0nzEBn3g/7KIn3KQQp+6JE+xJanavahcvAU//PTDmy8t/bYxiFtn8kquBCL9xcHa/2Nw8PTEhzeWx3hCRUAugruwIDAQAB";
@@ -183,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private boolean userIsPro;
     IInAppBillingService mService;
     Bundle querySkus;
-    final static String sku = "android.test.purchased";
+    static final String SKU = "android.test.purchased";
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
     private NumberPicker numberPicker1;
     private boolean isPaymentCircleSet;
@@ -192,16 +197,19 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private boolean expenseFound;
     private boolean dateFound;
     private boolean descFound;
-    private final static String APIKEY = "2990d40f-d7ca-4fdb-bacd-98d3cbe6eef5";
+    private static final String APIKEY = "2990d40f-d7ca-4fdb-bacd-98d3cbe6eef5";
     private static final int TAKE_PICTURE = 1;
     HODClient hodClient;
-    private final static String APP_KEY = "h5x1321simc1oxm";
-    private final static String APP_SECRET = "y2hrku7km5xdtvi";
+    private static final String APP_KEY = "h5x1321simc1oxm";
+    private static final String APP_SECRET = "y2hrku7km5xdtvi";
     private Uri imageUri;
     private ChartsUtil util;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
     private MainActivityUtil mainUtil;
     Calendar calendar;
+    private CheckBox repeatCheckBox;
+    private Button endDateBtn;
+    private ArrayList datesTheRepeatingExpenseOccurs;
 
     final ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
@@ -375,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         z.setTextSize(10);
 
         // compute your public key and store it in BASE_64_ENCODED_PUBLIC_KEY
-        mHelper = new IabHelper(MainActivity.this, base64EncodedPublicKey);
+        mHelper = new IabHelper(MainActivity.this, BASE_64_ENCODED_PUBLIC_KEY);
         mHelper.enableDebugLogging(true);
 
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
@@ -398,11 +406,15 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         //Query a purchase
         final ArrayList<String> skuList = new ArrayList<>();
-        skuList.add(sku);
+        skuList.add(SKU);
         querySkus = new Bundle();
         querySkus.putStringArrayList("ITEM_ID_LIST", skuList);
 
         // START OF FIRST TAB
+        /* Info button*/
+        addExpensesInfoBtn = new ImageButton(this);
+        addExpensesInfoBtn = (ImageButton) findViewById(R.id.addExpensesInfoBtn);
+
         //Expenses Label
         TextView expensesLabel = new TextView(this);
         expensesLabel.setText(EXPENSE_AMOUNT);
@@ -410,6 +422,21 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         //Expenses TextField
         expensesField = new EditText(this);
         expensesField = (EditText) findViewById(R.id.expenseText);
+
+        //Repeat checkbox
+        repeatCheckBox = new CheckBox(this);
+        repeatCheckBox = (CheckBox) findViewById(R.id.repeatCheckBox);
+
+        //end date button
+        endDateBtn = new Button(this);
+        //endDateBtn = (Button) findViewById(R.id.endDateButton);
+        endDateBtn.setVisibility(View.GONE);
+        if(repeatCheckBox.isChecked()) {
+            endDateBtn.setVisibility(View.VISIBLE);
+        }
+        else {
+            endDateBtn.setVisibility(View.GONE);
+        }
 
         //Description Label
         TextView descriptionLabel = new TextView(this);
@@ -466,9 +493,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         saveToFile.setBackgroundColor(Color.BLUE);
         saveToFile = (Button) findViewById(R.id.saveButton);
 
-        //Income label, income field
-        TextView incomeLabel = (TextView) findViewById(R.id.incomeLabel);
-
+        //income field
         incomeField = new EditText(this);
         incomeField = (EditText) findViewById(R.id.incomeField);
 
@@ -477,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         String incomeStored = prefers.getString(INCOME, "");
         incomeField.setText(incomeStored);
 
-        //cicle Button
+        //circle Button
         Button circleButton = (Button) findViewById(R.id.circleButton);
 
         //Balance Label
@@ -544,7 +569,26 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             @Override
             public void onClick(View view) {
 
-                writeToFile();
+                if (expensesField.getText().toString().equals("") || expensesField.getText().toString().equals(" ") || descriptionsItem.getSelectedItem
+                        () == null || dateText.getText().toString().equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
+                            .setTitle(EMPTY_FIELD)
+                            .setMessage("Some of the fields are empty, fill them all and try again");
+                    AlertDialog alert1;
+                    builder.setPositiveButton(OK,
+                            new OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alert1 = builder.create();
+                    alert1.show();
+                }
+                else {
+                    writeToFile(expensesField.getText().toString(), descriptionsItem.getSelectedItem().toString(), dateText.getText().toString());
+                    /* Is it a repeating expense */
+                    mainUtil.processExpenseRepeatingAmount(expensesField.getText().toString(), descriptionsItem.getSelectedItem().toString(), repeatCheckBox, datesTheRepeatingExpenseOccurs, MainActivity.this);
+                }
             }
         });
 
@@ -561,6 +605,19 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             @Override
             public void onClick(View v) {
                 showNumberPickerDialogOnButtonClick();
+            }
+        });
+
+        repeatCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    endDateBtn.setVisibility(View.VISIBLE);
+                }
+                else {
+                    endDateBtn.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -667,9 +724,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     Log.d(TAG2, "Querying Inventory Failed: " + result);
                     return;
                 }
-                Log.d(TAG2, "Title: " + inv.getSkuDetails(sku).getTitle());
-                Log.d(TAG2, "Description: " + inv.getSkuDetails(sku).getDescription());
-                Log.d(TAG2, "Price = " + inv.getSkuDetails(sku).getPrice());
+                Log.d(TAG2, "Title: " + inv.getSkuDetails(SKU).getTitle());
+                Log.d(TAG2, "Description: " + inv.getSkuDetails(SKU).getDescription());
+                Log.d(TAG2, "Price = " + inv.getSkuDetails(SKU).getPrice());
 
             }
         };
@@ -684,7 +741,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                             Toast.makeText(MainActivity.this, ERROR_DURING_PURCHASE +
                                     result, Toast.LENGTH_SHORT).show();
 
-                        } else if (purchase.getSku().equals(sku)) {
+                        } else if (purchase.getSku().equals(SKU)) {
                             //consumeItem();
                         }
                     }
@@ -761,6 +818,30 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 Intent intentSavingsChart = new Intent(view.getContext(), AnnualSavingsActivity.class);
                 intentSavingsChart.putExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP, yearsMappedToObjectYearsMap);
                 startActivity(intentSavingsChart);
+            }
+        });
+
+        addExpensesInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
+                        R.style.Theme_AppCompat_Light_Dialog)
+                        .setTitle(INFORMATION)
+                        .setMessage("To save an expense you need to add: " +
+                                "\n 1. The expense amount. " +
+                                "\n 2. Optional: if it is a repeating expense then check the Repeat tickbox and then select the end date of the expense. " +
+                                "\n 3. The description of the expense, if you don't find it in the dropdown then you can " +
+                                "add or remove your own description by pressing the ADD button" +
+                                "\n 4. The date of the expense. This is the current date.");
+                AlertDialog alert1;
+                builder.setPositiveButton(CLOSE,
+                        new OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                alert1 = builder.create();
+                alert1.show();
             }
         });
 
@@ -856,7 +937,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                             Toast.makeText(MainActivity.this, "Error occured during purchase " +
                                     result, Toast.LENGTH_SHORT).show();
                             return;
-                        } else if (purchase.getSku().equals(sku)) {
+                        } else if (purchase.getSku().equals(SKU)) {
                             //consumeItem();
                         }
                     }
@@ -910,7 +991,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 Toast.makeText(MainActivity.this, "Error occured during purchase " + result,
                         Toast.LENGTH_SHORT).show();
             } else {
-                mHelper.consumeAsync(inventory.getPurchase(sku), mConsumeFinishedListener);
+                mHelper.consumeAsync(inventory.getPurchase(SKU), mConsumeFinishedListener);
             }
         }
     };
@@ -980,6 +1061,12 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         serviceIntent.setPackage("com.android.vending");
         bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
 
+        if(repeatCheckBox.isChecked()) {
+            endDateBtn = (Button) findViewById(R.id.endDateButton);
+        }
+        else {
+            endDateBtn.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -1087,7 +1174,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         // Keith 09/03/2009\nTable 9/1 1:53 PM\nGuests: 3 20021\nEggs Avocado 9.00\nGrill Chix
         // Sandnich 8.00\nGrill Chix Sandwich 9.00\nGreen SaIad\nIced Blood 2.00\n4 Items\nSub
         // Total 28.00\nTax 2.18\nTotal 30•20\nPECEIS;com,left:1,top:11,width:299,height:357";
-        String textFound = "";
+        StringBuilder textFound = new StringBuilder();
         try {
             JSONObject mainObject = new JSONObject(response);
             JSONArray textBlockArray = mainObject.getJSONArray("actions");
@@ -1100,7 +1187,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     if (count > 0) {
                         for (int n = 0; n < count; n++) {
                             JSONObject texts = textArray.getJSONObject(n);
-                            textFound += texts.getString("text");
+                            textFound.append(texts.getString("text"));
                         }
                     }
                 }
@@ -1108,11 +1195,11 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         } catch (JSONException e) {
             Log.e("JSONException",e.getMessage());
         }
-        mainUtil.setExpenseFieldsFromCameraExtractedText(textFound, this);
+        mainUtil.setExpenseFieldsFromCameraExtractedText(textFound.toString(), this);
 
         if (mainUtil.isExpenseFound() && mainUtil.isDateFound() && mainUtil.isDescFound()) {
             showDialogsWithDataFoundFromCapture(mainUtil.getExpense(), mainUtil.getDescription(),mainUtil.getDate());
-            writeToFile();
+            writeToFile(mainUtil.getExpense(), mainUtil.getDescription(),mainUtil.getDate());
         }
     }
 
@@ -1313,7 +1400,17 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDialog(DIALOG_ID);
+                        showDialog(SELECT_DATE_DIALOG_ID);
+                    }
+                }
+        );
+
+        endDateBtn = (Button)findViewById(R.id.endDateButton);
+        endDateBtn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialog(SELECT_END_DATE_DIALOG_ID);
                     }
                 }
         );
@@ -1321,8 +1418,11 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        if (id == DIALOG_ID)
+        if (id == SELECT_DATE_DIALOG_ID)
             return new DatePickerDialog(this, dpickerListener, yearX, monthX, dayX);
+
+        if (id == SELECT_END_DATE_DIALOG_ID)
+            return new DatePickerDialog(this, dpickerListenerForEndDate, yearX, monthX, dayX);
         return null;
     }
 
@@ -1344,6 +1444,43 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             Toast.makeText(MainActivity.this, strDate, Toast.LENGTH_LONG).show();
             TextView dateTextField = (TextView) findViewById(R.id.dateText);
             dateTextField.setText(strDate);
+
+        }
+    };
+
+    private final DatePickerDialog.OnDateSetListener dpickerListenerForEndDate
+            = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            int yearToEnd = year;
+            int monthToEnd = monthOfYear;
+            int dayToEnd = dayOfMonth;
+
+            datesTheRepeatingExpenseOccurs = new ArrayList();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(yearToEnd, monthToEnd, dayToEnd);
+
+            SimpleDateFormat formatForEndDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+            String dateToEndRepeatingExpense = formatForEndDate.format(calendar.getTime());
+
+            Toast.makeText(MainActivity.this, dateToEndRepeatingExpense, Toast.LENGTH_LONG).show();
+            /* Add the first expense that is the last month of the repeating expense */
+
+            while (yearToEnd >= yearX && monthToEnd > monthX){
+                Date result = calendar.getTime();
+                datesTheRepeatingExpenseOccurs.add(result);
+
+                calendar.add(Calendar.MONTH,-1);
+
+                monthToEnd--;
+
+                if (monthToEnd < 1) {
+
+                    yearToEnd--;
+                    monthToEnd = 12;
+                }
+            }
+            Collections.reverse(datesTheRepeatingExpenseOccurs);
         }
     };
 
@@ -1428,7 +1565,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         Log.i("First Date: ", String.valueOf(valueFromNumPicker1));
 
-        final Calendar calendar = Calendar.getInstance();//this gets the current month
         String currentMonth = String.format(Locale.UK, "%tB", calendar);
         int year = calendar.get(Calendar.YEAR);
         AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
@@ -1448,6 +1584,18 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 Log.e("ParseException", e.getMessage());
             }
 
+            /* Here if the current day is greater than the day set as salary day by the user then i add one month to the current month so that the balance
+            * will be calculated and shown based on the monthSum of the next month */
+            int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+            if (currentDay > valueFromNumPicker1) {
+                int month = calendar.get(Calendar.MONTH);
+                month++;
+                DateFormatSymbols dfs = new DateFormatSymbols();
+                String[] months = dfs.getMonths();
+                if (month >= 0 && month <= 11 ) {
+                    currentMonth = months[month];
+                }
+            }
             // process again the balance
             balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
             DecimalFormat df = new DecimalFormat("#.0");
@@ -1513,17 +1661,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         mChart.invalidate();
     }
 
-    public void writeToFile() {
-        EditText amount = (EditText) findViewById(R.id.expenseText);
-        EditText date = (EditText) findViewById(R.id.dateText);
-        String amountField = amount.getText().toString();
-        String dateField = date.getText().toString();
-        String amountText = "";
-        String descriptionText = "";
-        String dateText = "";
+    public void writeToFile(String amountText, String descriptionText, String dateString) {
 
-        if (amountField.equals("") || amountField.equals(" ") || descriptionsItem.getSelectedItem
-                () == null || dateField.equals("")) {
+        if (amountText.equals("") || amountText.equals(" ") || descriptionsItem.getSelectedItem
+                () == null || dateString.equals("")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle(EMPTY_FIELD)
                     .setMessage("Some of the fields are empty, fill them all and try again");
@@ -1539,13 +1680,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         } else {
             PrintWriter out = null;
             BufferedReader br = null;
+
             try {
                 out = new PrintWriter(openFileOutput(EXPENSES_FILE, MODE_APPEND));
-                Spinner dateSpinner = (Spinner) findViewById(R.id.descriptionCombo);
-                date = (EditText) findViewById(R.id.dateText);
-                amountText = amount.getText().toString();
-                descriptionText = dateSpinner.getSelectedItem().toString();
-                dateText = date.getText().toString();
                 int length = 22;
                 String formatStr = "%-8s%-15s%-10s";
 
@@ -1558,11 +1695,10 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     out.write("\r\n");
                 }
 
-                out.append(String.format(formatStr, amountText, descriptionText, dateText));
+                out.append(String.format(formatStr, amountText, descriptionText, dateString));
                 //write the expense
                 out.write("\r\n");//write a new line
-
-                Toast.makeText(this, "The expense is saved in the file.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "The expense is saved in the file.", Toast.LENGTH_SHORT).show();
 
             } catch (Exception e) {
                 Toast.makeText(this, "Exception: " + e.toString(), Toast.LENGTH_LONG).show();
@@ -1586,15 +1722,14 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 yearsMappedToObjectYearsMap = util.readTheFile();
             }
             else {
-                util.updateMapWithNewExpense(amountText, descriptionText, dateText, yearX, yearsMappedToObjectYearsMap);
+                util.updateMapWithNewExpense(amountText, descriptionText, dateString, yearX, yearsMappedToObjectYearsMap);
             }
             if (budgetWarningEnabled) {
-                //since the expense is written in the file call the budget method is budget warning is enabled
+                //since the expense is written in the file call the budget method if budget warning is enabled
                 String currentMonth = String.format(Locale.UK, "%tB", calendar);
                 double percentWarning = mainUtil.checkBudgetWarning(yearsMappedToObjectYearsMap, currentMonth, yearX);
                 getDialogForBudgetWarning(percentWarning, this);
             }
-            // warning method
         }
     }
 
@@ -1711,8 +1846,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 int i = 0;
                                 for (Iterator<String> s = uniqueDescriptions.iterator(); s
                                         .hasNext(); i++) {
-                                    String descFound = s.next();
-                                    if (desc.equals(descFound)) {
+                                    String descriptionFound = s.next();
+                                    if (desc.equals(descriptionFound)) {
                                         Float amountWithDuplicate = uniqueAmounts.get(i) + Float
                                                 .valueOf(expenseAmount);//add up the amounts if
                                         // there are
@@ -1910,14 +2045,14 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                     Log.e("ParseException", e.getMessage());
                 }
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(startdate);
+                Calendar calendarForDate = Calendar.getInstance();
+                calendarForDate.setTime(startdate);
 
                 if (endDate != null) {
-                    while (calendar.getTime().getTime() <= endDate.getTime()) {
-                        Date result = calendar.getTime();//take the date
+                    while (calendarForDate.getTime().getTime() <= endDate.getTime()) {
+                        Date result = calendarForDate.getTime();//take the date
                         dates.add(result);//add it to dates arraylist
-                        calendar.add(Calendar.DATE, 1);
+                        calendarForDate.add(Calendar.DATE, 1);
                     }
                 }
 
@@ -2108,7 +2243,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                                 descriptionsItem.setSelection(spinnerPosition + 1);
                             }
                             //write the expenses to the file
-                            writeToFile();
+                            writeToFile(expenseAmount, description, date);
                         }
                     });
 

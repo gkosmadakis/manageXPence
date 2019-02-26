@@ -310,5 +310,7 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
         }
     }
 
-
+    public HashMap<String, AnyYear> getYearsMappedToObjectYearsMap() {
+        return yearsMappedToObjectYearsMap;
+    }
 }

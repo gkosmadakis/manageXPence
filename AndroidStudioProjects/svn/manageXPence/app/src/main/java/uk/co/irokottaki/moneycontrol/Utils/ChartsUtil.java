@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -15,11 +16,11 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
@@ -45,17 +46,51 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.activity.AnnualChartActivity;
 import uk.co.irokottaki.moneycontrol.activity.AnnualSavingsActivity;
 import uk.co.irokottaki.moneycontrol.activity.CalculateAnnualExpensesActivity;
 import uk.co.irokottaki.moneycontrol.activity.ChartActivity;
 import uk.co.irokottaki.moneycontrol.activity.HorizontalBarChartActivity;
 import uk.co.irokottaki.moneycontrol.activity.ReportActivity;
-import uk.co.irokottaki.moneycontrol.model.YearToSet;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
-import uk.co.irokottaki.moneycontrol.R;
+import uk.co.irokottaki.moneycontrol.model.YearToSet;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.AMOUNT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ANNUAL_EXPENSES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.APRIL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.AUGUST;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DATE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DECEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DESCRIPTION;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EIGHT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ELEVEN;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES_FILE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES_FOR;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.FEBRUARY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.FIVE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.FOUR;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.INCOME;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.JANUARY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.JULY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.JUNE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MARCH;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MAY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.NINE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.NOVEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.OCTOBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.OK;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ONE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SEPTEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SEVEN;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SIX;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.TEN;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.THREE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.TWELVE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.TWO;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.YEAR;
 
 public class ChartsUtil {
 
@@ -72,7 +107,7 @@ public class ChartsUtil {
 	              Key: Shopping-> 35, 55,100 */
     private HashMap<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearsMappedToMonthsWithAmountsMap;
     private TreeMap<Integer, Map<Integer, String>> yearsMappedToMonthsWithFileLines;
-    private String allLinesInFile;
+    private StringBuilder allLinesInFile;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
 
     public ChartsUtil(Context context) {
@@ -101,7 +136,7 @@ public class ChartsUtil {
             LinkedHashSet<String> descriptionsSet = new LinkedHashSet<>();
             yearsMappedToMonthsWithFileLines = new TreeMap<>();
             TreeMap tempFileLinesMap = new TreeMap<Integer, String>();
-            String fileLines = "";
+            StringBuilder fileLines = new StringBuilder();
             while (in.hasNextLine()) {
 
                 String line = in.nextLine();
@@ -174,21 +209,21 @@ public class ChartsUtil {
 
                             tempFileLinesMap = (TreeMap) yearsMappedToMonthsWithFileLines.get(Integer.parseInt(extractYearFromDate));
                             if (tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate)) != null) {
-                                String linesFound = (String) tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate));
-                                linesFound += line + "\n";
+                                StringBuilder linesFound = new StringBuilder((String)tempFileLinesMap.get(Integer.parseInt(extractMonthFromDate)));
+                                linesFound.append(line + "\n");
                                 fileLines = linesFound;
                             }
                             else {
-                                fileLines = "";
-                                fileLines += line + "\n";
+                                fileLines = new StringBuilder();
+                                fileLines.append(line + "\n");
                             }
                     }
                     else {
                         tempFileLinesMap = new TreeMap<String, String>();
-                        fileLines = "";
-                        fileLines += line + "\n";
+                        fileLines = new StringBuilder();
+                        fileLines.append(line + "\n");
                     }
-                    tempFileLinesMap.put(Integer.parseInt(extractMonthFromDate), fileLines);
+                    tempFileLinesMap.put(Integer.parseInt(extractMonthFromDate), fileLines.toString());
                     yearsMappedToMonthsWithFileLines.put(Integer.parseInt(extractYearFromDate), tempFileLinesMap);
 
                 }
@@ -231,21 +266,21 @@ public class ChartsUtil {
     }
 
     private String iterateFileLinesMap(String monthRequested, String yearRequested){
-        String line = "";
-        allLinesInFile = "";
+        StringBuilder line = new StringBuilder();
+        allLinesInFile = new StringBuilder();
         for (Map.Entry<Integer, Map<Integer, String>> yearEntry : yearsMappedToMonthsWithFileLines.entrySet()) {
             int year = yearEntry.getKey();
             for ( Map.Entry<Integer, String> monthEntry : yearEntry.getValue().entrySet()) {
                 int month = monthEntry.getKey();
 
-                allLinesInFile+= monthEntry.getValue();
+                allLinesInFile.append(monthEntry.getValue());
                 if (monthRequested.equals(String.valueOf(month)) && yearRequested.equals(String.valueOf(year))) {
-                    line += monthEntry.getValue();
+                    line.append(monthEntry.getValue());
                     break;
                     }
                 }
             }
-            return line;
+            return line.toString();
         }
 
     private HashMap iterateMainMap() {
@@ -367,7 +402,7 @@ public class ChartsUtil {
             }
             obj.setAmountAndDescDec(totalExpensesForMonth, set, amounts, fileLine);
         }
-        obj.setAllLinesInFile(allLinesInFile);
+        obj.setAllLinesInFile(allLinesInFile.toString());
     }
 
     public AnyYear getObjectYear() {
@@ -840,7 +875,6 @@ public class ChartsUtil {
                                                                              String currentMonth, YearToSet obj2018)
             throws ParseException {
 
-        String fileLine = "";
         String amount = "";
         String date = "";
         BufferedReader br = null;
@@ -852,13 +886,8 @@ public class ChartsUtil {
             int lineIndex = 0;//this is to count the lines
             while ((line = br.readLine()) != null) {
 
-                if (lineIndex == 0) {
-                    fileLine = line + "\n" + "\n";// need to catch the space and write only one
-                    // space after the header.
-                }
-
                 if (++lineIndex > 2 && !line.equals("") && !line.equals("r")) {
-                    fileLine += line + "\n";
+
                     int index = line.lastIndexOf(' ');
                     amount = line.substring(0, line.indexOf(' '));
                     date = line.substring(index, line.length());
@@ -882,40 +911,37 @@ public class ChartsUtil {
                     int monthInt = calendar.get(Calendar.MONTH) + 1;
                     int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-                    if (salaryDay != 0 && currentMonth != null) {
-                        if (salaryDay <= extractDayFromDateInt &&
-                                extractMonthFromDate.equals(String.valueOf(monthInt - 1)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate)) {
+                    /*if the year read from the file is not the current year then jump up to the while statement and continue reading the file */
+                    if (currentYear != Integer.parseInt(extractYearFromDate)) {
+                        continue;
+                    }
+
+                    if (salaryDay <= extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt - 1))) {
                             /*if the salary day set by the user is before the day of the expense
                             made and the expense made in the
                             previous month then the expense is added in the current month*/
-                            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt, obj2018);
-                        }
+                        addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt, obj2018);
+                    }
                             /*else if the salary day set by the user is after the day of the
                             expense made and the expense made
                             on the current month then the expense amount is added in the current
                             month*/
-                        else if (salaryDay > extractDayFromDateInt &&
-                                extractMonthFromDate.equals(String.valueOf(monthInt)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate)) {
+                    else if (salaryDay > extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt))) {
 
-                            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt,obj2018);
-                        } else if (salaryDay <= extractDayFromDateInt &&
-                                extractMonthFromDate.equals(String.valueOf(monthInt)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate)) {
+                        addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt,obj2018);
+
+                    } else if (salaryDay <= extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt))) {
                             /*if the day set by the user is before the day of the expense made
                             and the expense made in the
                             current month then the expense is added in the next month*/
-                            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt + 1,obj2018);
-                        } else if (salaryDay > extractDayFromDateInt &&
-                                extractMonthFromDate.equals(String.valueOf(monthInt - 1)) &&
-                                currentYear == Integer.parseInt(extractYearFromDate)) {
+                        addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt + 1,obj2018);
+
+                    } else if (salaryDay > extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt - 1))) {
                             /*if the day set by the user is after the day of the expense made and
                              the expense made in the
                             previous month then the expense is added in the previous month*/
-                            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt - 1,obj2018);
+                        addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt - 1,obj2018);
 
-                        }
                     }
                 }
             }
@@ -1079,27 +1105,27 @@ public class ChartsUtil {
     }
 
     public void setSavings(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, Activity activity) {
+
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
-        //retrieve the incomes from Main Activity
-        Float incomeForJan = MainActivityUtil.getIncomeForJan();
-        Float incomeForFeb = MainActivityUtil.getIncomeForFeb();
-        Float incomeForMar = MainActivityUtil.getIncomeForMar();
-        Float incomeForApr = MainActivityUtil.getIncomeForApr();
-        Float incomeForMay = MainActivityUtil.getIncomeForMay();
-        Float incomeForJun = MainActivityUtil.getIncomeForJun();
-        Float incomeForJul = MainActivityUtil.getIncomeForJul();
-        Float incomeForAug = MainActivityUtil.getIncomeForAug();
-        Float incomeForSep = MainActivityUtil.getIncomeForSep();
-        Float incomeForOct = MainActivityUtil.getIncomeForOct();
-        Float incomeForNov = MainActivityUtil.getIncomeForNov();
-        Float incomeForDec = MainActivityUtil.getIncomeForDec();
+        //retrieve the incomes from Shared Preferences
+        SharedPreferences sp = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        String incomeValue = sp.getString(INCOME, "");
 
-        if (incomeForJan != null || incomeForFeb != null || incomeForMar != null || incomeForApr
-                != null || incomeForMay != null
-                || incomeForJun != null || incomeForJul != null || incomeForAug != null ||
-                incomeForSep != null || incomeForOct != null ||
-                incomeForNov != null || incomeForDec != null) {
+        if (!incomeValue.equals("")) {
+
+            Float incomeForJan = Float.parseFloat(incomeValue);
+            Float incomeForFeb = Float.parseFloat(incomeValue);
+            Float incomeForMar = Float.parseFloat(incomeValue);
+            Float incomeForApr = Float.parseFloat(incomeValue);
+            Float incomeForMay = Float.parseFloat(incomeValue);
+            Float incomeForJun = Float.parseFloat(incomeValue);
+            Float incomeForJul = Float.parseFloat(incomeValue);
+            Float incomeForAug = Float.parseFloat(incomeValue);
+            Float incomeForSep = Float.parseFloat(incomeValue);
+            Float incomeForOct = Float.parseFloat(incomeValue);
+            Float incomeForNov = Float.parseFloat(incomeValue);
+            Float incomeForDec = Float.parseFloat(incomeValue);
 
             if (year != null) {
                 setData(incomeForJan - year.getYear().getAmountJan(), incomeForFeb - year.getYear().getAmountFeb(), incomeForMar -
@@ -1113,7 +1139,6 @@ public class ChartsUtil {
                 setData(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, ((AnnualSavingsActivity) activity).getAnnualSavingsChart());
             }
         }
-
     }
 
 

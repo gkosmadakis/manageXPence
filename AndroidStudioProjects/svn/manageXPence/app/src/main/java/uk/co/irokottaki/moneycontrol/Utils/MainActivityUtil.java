@@ -2,14 +2,21 @@ package uk.co.irokottaki.moneycontrol.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -39,18 +46,6 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.SEPTEMBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.SHOPPING;
 
 public class MainActivityUtil {
-    private static Float incomeForJan;
-    private static Float incomeForFeb;
-    private static Float incomeForMar;
-    private static Float incomeForApr;
-    private static Float incomeForMay;
-    private static Float incomeForJun;
-    private static Float incomeForJul;
-    private static Float incomeForAug;
-    private static Float incomeForSep;
-    private static Float incomeForOct;
-    private static Float incomeForNov;
-    private static Float incomeForDec;
     private Context context;
     private double monthSum;
     private double balance;
@@ -61,6 +56,7 @@ public class MainActivityUtil {
     private String expense;
     private String description;
     private String date;
+    private ArrayList datesTheRepeatingExpenseOccurs;
 
 
     public MainActivityUtil(Context context){
@@ -74,30 +70,12 @@ public class MainActivityUtil {
 
         if (incomeField != null && incomeField.getText().toString().matches("\\d+")) {
             String incomeValue = incomeField.getText().toString();
-            incomeForJan = Float.parseFloat(incomeValue);//i initialize the incomes for every
-            // month to avoid null values
-            incomeForFeb = Float.parseFloat(incomeValue);// returned to AnnualSavingsActivity. So
-            // if the user will not
-            incomeForMar = Float.parseFloat(incomeValue);//change the income then i use the
-            // current that has been entered
-            incomeForApr = Float.parseFloat(incomeValue);// if on a month the user changes the
-            // income then this will be
-            incomeForMay = Float.parseFloat(incomeValue);// changed above on the if statements.
-            incomeForJun = Float.parseFloat(incomeValue);
-            incomeForJul = Float.parseFloat(incomeValue);
-            incomeForAug = Float.parseFloat(incomeValue);
-            incomeForSep = Float.parseFloat(incomeValue);
-            incomeForOct = Float.parseFloat(incomeValue);
-            incomeForNov = Float.parseFloat(incomeValue);
-            incomeForDec = Float.parseFloat(incomeValue);
-
 
             AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
             monthSum = 0.0;
             if (currentYear != null) {
 
                 if (currentMonth.equals(JANUARY)) {
-                    incomeForJan = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountJan();
                     } else {
@@ -105,7 +83,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(FEBRUARY)) {
-                    incomeForFeb = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountFeb();
                     } else {
@@ -113,7 +90,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(MARCH)) {
-                    incomeForMar = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountMar();
                     } else {
@@ -121,7 +97,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(APRIL)) {
-                    incomeForApr = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountApr();
                     } else {
@@ -129,7 +104,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(MAY)) {
-                    incomeForMay = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountMay();
                     } else {
@@ -137,7 +111,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(JUNE)) {
-                    incomeForJun = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountJun();
                     } else {
@@ -145,7 +118,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(JULY)) {
-                    incomeForJul = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountJul();
                     } else {
@@ -153,7 +125,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(AUGUST)) {
-                    incomeForAug = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountAug();
                     } else {
@@ -161,7 +132,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(SEPTEMBER)) {
-                    incomeForSep = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountSep();
                     } else {
@@ -169,7 +139,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(OCTOBER)) {
-                    incomeForOct = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountOct();
                     } else {
@@ -177,7 +146,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(NOVEMBER)) {
-                    incomeForNov = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountNov();
                     } else {
@@ -185,7 +153,6 @@ public class MainActivityUtil {
                     }
                 }
                 if (currentMonth.equals(DECEMBER)) {
-                    incomeForDec = Float.parseFloat(incomeValue);
                     if (isPaymentCircleSet) {
                         monthSum = currentYear.getYear().getAmountDec();
                     } else {
@@ -359,124 +326,137 @@ public class MainActivityUtil {
         // at this point check if the output contains text characters. Remove all whitespaces and
         // new line and check
         else if (textResponseFromHaven.replaceAll("\\s+", " ").matches(".*[a-zA-Z]+.*")) {
-            String[] wordForExpenses = new String[]{"total", "amount", "subtotal", "Visa Debit " +
-                    "£", "total sale:", "total gbp"};
 
-            for (String wordForExpense : wordForExpenses) {
-                if (textResponseFromHaven.toLowerCase(Locale.ENGLISH).contains(wordForExpense)) {
-                    // get the expense
-                    //it is the substring of TOTAL plus one char and tha next space found in the
-                    // response
-                    String[] split = textResponseFromHaven.toLowerCase(Locale.ENGLISH).split
-                            (wordForExpense.toLowerCase(Locale.US));
-                    String amount = split[1].trim();
-                    //check that the first character is number
-                    if (Character.isDigit(amount.trim().charAt(0))) {
-                        int j = 0;
-                        for (int k = 0; k < amount.length(); k++) {
-                            Character charToCheck = amount.charAt(k);
-                            //if the character is not a number and is one of . - space
-                            if (!Character.isDigit(charToCheck) &&
-                                    charToCheck.toString().equals(".") || charToCheck.toString()
-                                    .equals("-")
-                                    || charToCheck.toString().equals(" ")) {
-                                expense = expense.concat(".");
-                                j++;
-                            } else if (Character.isDigit(charToCheck)) {
-                                expense = expense.concat(String.valueOf(Character.getNumericValue(amount
-                                        .trim().charAt(j))));
-                                expenseFound = true;
-                                j++;
-                            }
-                        }
-                    }
-                }
+            processWordForExpenses(textResponseFromHaven);
+
+            processWordForDates(textResponseFromHaven);
+
+            processWordForDescription(textResponseFromHaven);
+        }
+    }
+
+    private void processWordForDescription(String textResponseFromHaven) {
+
+        String[] wordForSuperMarket = new String[]{"Tesco", "Groceries", "Morrisons", "Asda",
+                "Lidl", "Waitrose", "Sandwich"};
+        String[] wordForEntertainment = new String[]{"Course", "Table", "Drink",
+                "Restaurants", "Coffee"};
+        String[] wordForShopping = new String[]{"Jacket", "Trouser", "Cycles", "Medium",
+                "Large", "Small",};
+        String[] wordForPetrol = new String[]{"Unleaded", "Petrol", "Petroleum"};
+        for (String aWordForSuperMarket : wordForSuperMarket) {
+            if (textResponseFromHaven.contains(aWordForSuperMarket)) {
+                // get the description
+                description = "Supermarket";
+                descFound = true;
+                break;
             }
-            String[] wordForDates = new String[]{"Date:", DATE};
-            for (String wordForDate : wordForDates) {
-                //check if the word date exists in the receipt
-                if (textResponseFromHaven.toLowerCase(Locale.ENGLISH).contains(wordForDate
-                        .toLowerCase(Locale.US))) {
-                    //check if the next word after the word Date is a valid date like mm/dd/yyyy
-                    String[] split = textResponseFromHaven.toLowerCase(Locale.ENGLISH).split
-                            (wordForDate.toLowerCase(Locale.US).trim());
-                    String potentialDate = split[1].trim().substring(0, split[1].trim().indexOf("" +
-                            " "));
-
-
-                    // if the date string checked is null then date not found in the Map
-                    if (findTheDateFormat(potentialDate) == null) {
-                        date = null;
-                    }
-                    // if it is a valid date then return it. Check
-                    // substring after the word Date and count the length of the string returned
-                    // from the findTheDateFormat
-                    else {
-
-                        date = potentialDate;
-                        dateFound = true;
-                        break;
-                    }
-                    Log.e("Date Found in RECEIPT: ", date);
-                    // get the date
-                    //NEED TO MAKE SURE THAT THE WORDSFORDATES IS THE ACTUAL DATE AND NOT THE
-                    // WORD DATE/
-
-                } else {
-                    String[] splitResponseToStrings = textResponseFromHaven.replaceAll("\n", "")
-                            .split(" ");
-                    for (int j = 0; j < splitResponseToStrings.length; j++) {
-                        if (splitResponseToStrings[j].contains("/")) {
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy", Locale
-                                    .US);
-                            splitResponseToStrings[j] = formatter.format(splitResponseToStrings[j]);
-                        }
-                        if (findTheDateFormat(splitResponseToStrings[j]) != null) {
-                            date = splitResponseToStrings[j];
-                        }
-                    }
-                }
+        }
+        for (String aWordForEntertainment : wordForEntertainment) {
+            if (textResponseFromHaven.contains(aWordForEntertainment)) {
+                description = ENTERTAINMENT;
+                descFound = true;
+                break;
             }
+        }
+        for (String aWordForShopping : wordForShopping) {
+            if (textResponseFromHaven.contains(aWordForShopping)) {
+                description = SHOPPING;
+                descFound = true;
+                break;
+            }
+        }
+        for (String aWordForPetrol : wordForPetrol) {
+            if (textResponseFromHaven.contains(aWordForPetrol)) {
+                description = "Petrol";
+                descFound = true;
+                break;
+            }
+        }
+    }
 
-            String[] wordForSuperMarket = new String[]{"Tesco", "Groceries", "Morrisons", "Asda",
-                    "Lidl", "Waitrose", "Sandwich"};
-            String[] wordForEntertainment = new String[]{"Course", "Table", "Drink",
-                    "Restaurants", "Coffee"};
-            String[] wordForShopping = new String[]{"Jacket", "Trouser", "Cycles", "Medium",
-                    "Large", "Small",};
-            String[] wordForPetrol = new String[]{"Unleaded", "Petrol", "Petroleum"};
-            for (String aWordForSuperMarket : wordForSuperMarket) {
-                if (textResponseFromHaven.contains(aWordForSuperMarket)) {
-                    // get the description
-                    description = "Supermarket";
-                    descFound = true;
+    private void processWordForDates(String textResponseFromHaven) {
+
+        String[] wordForDates = new String[]{"Date:", DATE};
+
+        for (String wordForDate : wordForDates) {
+            //check if the word date exists in the receipt
+            if (textResponseFromHaven.toLowerCase(Locale.ENGLISH).contains(wordForDate
+                    .toLowerCase(Locale.US))) {
+                //check if the next word after the word Date is a valid date like mm/dd/yyyy
+                String[] split = textResponseFromHaven.toLowerCase(Locale.ENGLISH).split
+                        (wordForDate.toLowerCase(Locale.US).trim());
+                String potentialDate = split[1].trim().substring(0, split[1].trim().indexOf("" + " "));
+
+                // if the date string checked is null then date not found in the Map
+                if (findTheDateFormat(potentialDate) == null) {
+                    date = null;
+                }
+                // if it is a valid date then return it. Check
+                // substring after the word Date and count the length of the string returned
+                // from the findTheDateFormat
+                else {
+                    date = potentialDate;
+                    dateFound = true;
                     break;
                 }
-            }
-            for (String aWordForEntertainment : wordForEntertainment) {
-                if (textResponseFromHaven.contains(aWordForEntertainment)) {
-                    description = ENTERTAINMENT;
-                    descFound = true;
-                    break;
-                }
-            }
-            for (String aWordForShopping : wordForShopping) {
-                if (textResponseFromHaven.contains(aWordForShopping)) {
-                    description = SHOPPING;
-                    descFound = true;
-                    break;
-                }
-            }
-            for (String aWordForPetrol : wordForPetrol) {
-                if (textResponseFromHaven.contains(aWordForPetrol)) {
-                    description = "Petrol";
-                    descFound = true;
-                    break;
+                Log.e("Date Found in RECEIPT: ", date);
+                // get the date
+                //NEED TO MAKE SURE THAT THE WORDSFORDATES IS THE ACTUAL DATE AND NOT THE
+                // WORD DATE/
+
+            } else {
+                String[] splitResponseToStrings = textResponseFromHaven.replaceAll("\n", "")
+                        .split(" ");
+                for (int j = 0; j < splitResponseToStrings.length; j++) {
+                    if (splitResponseToStrings[j].contains("/")) {
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy", Locale
+                                .US);
+                        splitResponseToStrings[j] = formatter.format(splitResponseToStrings[j]);
+                    }
+                    if (findTheDateFormat(splitResponseToStrings[j]) != null) {
+                        date = splitResponseToStrings[j];
+                    }
                 }
             }
         }
     }
 
+    private void processWordForExpenses(String textResponseFromHaven) {
+        String[] wordForExpenses = new String[]{"total", "amount", "subtotal", "Visa Debit " +
+                "£", "total sale:", "total gbp"};
+
+        for (String wordForExpense : wordForExpenses) {
+            if (textResponseFromHaven.toLowerCase(Locale.ENGLISH).contains(wordForExpense)) {
+                // get the expense
+                //it is the substring of TOTAL plus one char and tha next space found in the
+                // response
+                String[] split = textResponseFromHaven.toLowerCase(Locale.ENGLISH).split
+                        (wordForExpense.toLowerCase(Locale.US));
+                String amount = split[1].trim();
+                //check that the first character is number
+                if (Character.isDigit(amount.trim().charAt(0))) {
+                    int j = 0;
+                    for (int k = 0; k < amount.length(); k++) {
+                        Character charToCheck = amount.charAt(k);
+                        //if the character is not a number and is one of . - space
+                        if (!Character.isDigit(charToCheck) &&
+                                charToCheck.toString().equals(".") || charToCheck.toString()
+                                .equals("-")
+                                || charToCheck.toString().equals(" ")) {
+                            expense = expense.concat(".");
+                            j++;
+                        } else if (Character.isDigit(charToCheck)) {
+                            expense = expense.concat(String.valueOf(Character.getNumericValue(amount
+                                    .trim().charAt(j))));
+                            expenseFound = true;
+                            j++;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public static String findTheDateFormat(String dateString) {
 
@@ -522,60 +502,29 @@ public class MainActivityUtil {
         return dateStringFound;
     }
 
+    public boolean processExpenseRepeatingAmount(String amount, String description, CheckBox repeatCheckBox, ArrayList datesTheRepeatingExpenseOccurs, Activity activity) {
+
+        boolean expenseIsAdded = false;
+
+        if(repeatCheckBox.isChecked()){
+
+            for (Object dateThatExpenseOcurrs: datesTheRepeatingExpenseOccurs){
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                String dateThatExpenseOccursString = formatter.format(dateThatExpenseOcurrs);
+
+                ((MainActivity)activity).writeToFile(amount,description, dateThatExpenseOccursString);
+                expenseIsAdded = true;
+            }
+        }
+        return expenseIsAdded;
+    }
+
     public double getBalance() {
         return balance;
     }
 
     public double getIncomeDouble() {
         return incomeDouble;
-    }
-
-    public static Float getIncomeForJan() {
-        return incomeForJan;
-    }
-
-    public static Float getIncomeForFeb() {
-        return incomeForFeb;
-    }
-
-    public static Float getIncomeForMar() {
-        return incomeForMar;
-    }
-
-    public static Float getIncomeForApr() {
-        return incomeForApr;
-    }
-
-    public static Float getIncomeForMay() {
-        return incomeForMay;
-    }
-
-    public static Float getIncomeForJun() {
-        return incomeForJun;
-    }
-
-    public static Float getIncomeForJul() {
-        return incomeForJul;
-    }
-
-    public static Float getIncomeForAug() {
-        return incomeForAug;
-    }
-
-    public static Float getIncomeForSep() {
-        return incomeForSep;
-    }
-
-    public static Float getIncomeForOct() {
-        return incomeForOct;
-    }
-
-    public static Float getIncomeForNov() {
-        return incomeForNov;
-    }
-
-    public static Float getIncomeForDec() {
-        return incomeForDec;
     }
 
     public boolean isExpenseFound() {

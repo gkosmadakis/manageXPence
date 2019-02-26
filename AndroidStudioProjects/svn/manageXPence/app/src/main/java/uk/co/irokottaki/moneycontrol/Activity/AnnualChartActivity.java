@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
@@ -25,28 +24,30 @@ import android.widget.TextView;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.model.YearToSet;
 import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
-import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ANNUAL_CHART;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.CANCEL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.IS_PAYMENT_CIRCLE_ANNUAL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.RESET;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SET;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.VALUEFROMNUMPICKER1ANNUAL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.YEAR;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.YEARS_MAPPED_TO_OBJECT_YEARS_MAP;
 
 
-public class AnnualChartActivity extends AppCompatActivity implements OnChartGestureListener,
-        OnChartValueSelectedListener {
+public class AnnualChartActivity extends AppCompatActivity {
     private LineChart annualChart;
     ImageButton leftYearButton;
     ImageButton rightYearButton;
@@ -80,8 +81,6 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         utils.setBackgroundAndAdjustLayout(layout, AnnualChartActivity.this);
 
         annualChart = (LineChart) findViewById(R.id.annualChartLayout);
-        annualChart.setOnChartGestureListener(this);
-        annualChart.setOnChartValueSelectedListener(this);
         annualChart.setDrawGridBackground(false);
 
         // no description text
@@ -297,9 +296,8 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
                                 isPaymentCircleSetAnnual = false;
                                 valueFromNumPicker1 = 0;
 
-                                util.readTheFile();
                                 // Get the object years to access the months data expenses
-                                AnyYear currentYear = yearsMappedToObjectYearsMap.get(String.valueOf(year));
+                                AnyYear currentYear = util.readTheFile().get(String.valueOf(year));
                                 final YearToSet yearToSetNew = currentYear.getYear();
                                 util.setData(yearToSetNew.getAmountJan(),yearToSetNew.getAmountFeb(),yearToSetNew.getAmountMar(),yearToSetNew.getAmountApr(),
                                         yearToSetNew.getAmountMay(),yearToSetNew.getAmountJun(), yearToSetNew.getAmountJul(),yearToSetNew.getAmountAug(),
@@ -350,55 +348,4 @@ public class AnnualChartActivity extends AppCompatActivity implements OnChartGes
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onChartGestureStart(MotionEvent motionEvent, ChartTouchListener.ChartGesture
-            chartGesture) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartGestureEnd(MotionEvent motionEvent, ChartTouchListener.ChartGesture
-            chartGesture) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartLongPressed(MotionEvent motionEvent) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartDoubleTapped(MotionEvent motionEvent) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartSingleTapped(MotionEvent motionEvent) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartScale(MotionEvent motionEvent, float v, float v1) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onChartTranslate(MotionEvent motionEvent, float v, float v1) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onValueSelected(Entry entry, int i, Highlight highlight) {
-        /*Not used*/
-    }
-
-    @Override
-    public void onNothingSelected() {
-        /*Not used*/
-    }
 }

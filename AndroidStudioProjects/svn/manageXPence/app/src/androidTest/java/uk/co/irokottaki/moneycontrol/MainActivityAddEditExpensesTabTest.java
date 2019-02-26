@@ -82,6 +82,26 @@ public class MainActivityAddEditExpensesTabTest {
 
         sleep(3000);
 
+        ViewInteraction appCompatImageButton2 = onView(
+                allOf(withId(R.id.addExpensesInfoBtn),
+                        childAtPosition(
+                                allOf(withId(R.id.addExpenses),
+                                        childAtPosition(
+                                                withId(android.R.id.tabcontent),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton2.perform(click());
+
+        ViewInteraction appCompatButton11 = onView(
+                allOf(withId(android.R.id.button1), withText("Close"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton11.perform(click());
+
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.saveButton), withText("Save To File"),
                         childAtPosition(
@@ -89,7 +109,7 @@ public class MainActivityAddEditExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton.perform(click());
 
@@ -108,7 +128,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText.perform(replaceText("105"), closeSoftKeyboard());
@@ -119,7 +139,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout2),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                3)),
+                                                4)),
                                 1),
                         isDisplayed()));
         appCompatSpinner.perform(click());
@@ -137,7 +157,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 0),
                         isDisplayed()));
         appCompatButton3.perform(click());
@@ -158,7 +178,7 @@ public class MainActivityAddEditExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton5.perform(click());
 
@@ -168,7 +188,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText4.perform(replaceText("10"), closeSoftKeyboard());
@@ -177,7 +197,7 @@ public class MainActivityAddEditExpensesTabTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
         // /index.html
-        sleep(3000);
+        sleep(1000);
 
         ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.incomeField), withText("10"),
@@ -185,7 +205,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText5.perform(replaceText("100"));
@@ -196,7 +216,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText6.perform(closeSoftKeyboard());
@@ -205,7 +225,7 @@ public class MainActivityAddEditExpensesTabTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
         // /index.html
-        sleep(3000);
+        sleep(1000);
 
         ViewInteraction appCompatEditText7 = onView(
                 allOf(withId(R.id.incomeField), withText("100"),
@@ -213,7 +233,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText7.perform(replaceText("1000"));
@@ -224,7 +244,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText8.perform(closeSoftKeyboard());
@@ -233,7 +253,7 @@ public class MainActivityAddEditExpensesTabTest {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource
         // /index.html
-        sleep(3000);
+        sleep(1000);
 
         ViewInteraction appCompatEditText9 = onView(
                 allOf(withId(R.id.incomeField), withText("1000"),
@@ -241,7 +261,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 1),
                         isDisplayed()));
         appCompatEditText9.perform(pressImeActionButton());
@@ -253,7 +273,7 @@ public class MainActivityAddEditExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                13),
+                                14),
                         isDisplayed()));
         appCompatButton10.perform(scrollTo());
         appCompatButton10.perform(click());
@@ -466,7 +486,7 @@ public class MainActivityAddEditExpensesTabTest {
                         isDisplayed()));
         imageButton3.perform(click());
 
-        sleep(2000);
+        sleep(1000);
 
         ViewInteraction appCompatButton18 = onView(
                 allOf(withId(R.id.editButton), withText("Edit"),
@@ -475,7 +495,7 @@ public class MainActivityAddEditExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                13),
+                                14),
                         isDisplayed()));
         appCompatButton18.perform(click());
 
@@ -525,7 +545,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 2),
                         isDisplayed()));
         appCompatButton30.perform(click());
@@ -545,7 +565,7 @@ public class MainActivityAddEditExpensesTabTest {
                                 allOf(withId(R.id.linearLayout4),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                8)),
+                                                9)),
                                 2),
                         isDisplayed()));
         appCompatButton32.perform(click());
@@ -559,6 +579,57 @@ public class MainActivityAddEditExpensesTabTest {
                                 0)));
         appCompatButton33.perform(scrollTo(), click());
 
+        ViewInteraction appCompatCheckBox = onView(
+                allOf(withId(R.id.repeatCheckBox), withText("Repeat"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                3)),
+                                2),
+                        isDisplayed()));
+        appCompatCheckBox.perform(click());
+
+        ViewInteraction appCompatButton17 = onView(
+                allOf(withId(R.id.endDateButton), withText("End Date"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                3)),
+                                3),
+                        isDisplayed()));
+        appCompatButton17.perform(click());
+
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withClassName(is("android.support.v7.widget.AppCompatImageButton")), withContentDescription("Next month"),
+                        childAtPosition(
+                                allOf(withClassName(is("android.widget.DayPickerView")),
+                                        childAtPosition(
+                                                withClassName(is("com.android.internal.widget.DialogViewAnimator")),
+                                                0)),
+                                2)));
+        appCompatImageButton.perform(scrollTo(), click());
+
+        ViewInteraction appCompatButton19 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        appCompatButton19.perform(scrollTo(), click());
+
+        ViewInteraction appCompatCheckBox2 = onView(
+                allOf(withId(R.id.repeatCheckBox), withText("Repeat"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withId(R.id.addExpenses),
+                                                3)),
+                                2),
+                        isDisplayed()));
+        appCompatCheckBox2.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
