@@ -2,6 +2,8 @@ package uk.co.irokottaki.moneycontrol.model;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import uk.co.irokottaki.moneycontrol.YearInterface;
 
@@ -19,30 +21,30 @@ public class YearToSet extends AnyYear implements YearInterface {
     private Float amountOct;
     private Float amountNov;
     private Float amountDec;
-    private LinkedHashSet<String> descriptionsForJan;
-    private LinkedHashSet<String> descriptionsForFeb;
-    private LinkedHashSet<String> descriptionsForMar;
-    private LinkedHashSet<String> descriptionsForApr;
-    private LinkedHashSet<String> descriptionsForMay;
-    private LinkedHashSet<String> descriptionsForJun;
-    private LinkedHashSet<String> descriptionsForJul;
-    private LinkedHashSet<String> descriptionsForAug;
-    private LinkedHashSet<String> descriptionsForSep;
-    private LinkedHashSet<String> descriptionsForOct;
-    private LinkedHashSet<String> descriptionsForNov;
-    private LinkedHashSet<String> descriptionsForDec;
-    private ArrayList<Float> arrayOfamountJan;
-    private ArrayList<Float> arrayOfamountFeb;
-    private ArrayList<Float> arrayOfamountMar;
-    private ArrayList<Float> arrayOfamountApr;
-    private ArrayList<Float> arrayOfamountMay;
-    private ArrayList<Float> arrayOfamountJun;
-    private ArrayList<Float> arrayOfamountJul;
-    private ArrayList<Float> arrayOfamountAug;
-    private ArrayList<Float> arrayOfamountSep;
-    private ArrayList<Float> arrayOfamountOct;
-    private ArrayList<Float> arrayOfamountNov;
-    private ArrayList<Float> arrayOfamountDec;
+    private Set<String> descriptionsForJan;
+    private Set<String> descriptionsForFeb;
+    private Set<String> descriptionsForMar;
+    private Set<String> descriptionsForApr;
+    private Set<String> descriptionsForMay;
+    private Set<String> descriptionsForJun;
+    private Set<String> descriptionsForJul;
+    private Set<String> descriptionsForAug;
+    private Set<String> descriptionsForSep;
+    private Set<String> descriptionsForOct;
+    private Set<String> descriptionsForNov;
+    private Set<String> descriptionsForDec;
+    private List<Float> arrayOfamountJan;
+    private List<Float> arrayOfamountFeb;
+    private List<Float> arrayOfamountMar;
+    private List<Float> arrayOfamountApr;
+    private List<Float> arrayOfamountMay;
+    private List<Float> arrayOfamountJun;
+    private List<Float> arrayOfamountJul;
+    private List<Float> arrayOfamountAug;
+    private List<Float> arrayOfamountSep;
+    private List<Float> arrayOfamountOct;
+    private List<Float> arrayOfamountNov;
+    private List<Float> arrayOfamountDec;
     private String fileLineJan;
     private String fileLineFeb;
     private String fileLineMar;
@@ -85,7 +87,7 @@ public class YearToSet extends AnyYear implements YearInterface {
         descriptionsForOct = new LinkedHashSet<>();
         descriptionsForNov = new LinkedHashSet<>();
         descriptionsForDec = new LinkedHashSet<>();
-        arrayOfamountJan = new ArrayList<>();
+        arrayOfamountJan = new ArrayList();
         arrayOfamountFeb = new ArrayList<>();
         arrayOfamountMar = new ArrayList<>();
         arrayOfamountApr = new ArrayList<>();
@@ -124,12 +126,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountJan() {
+    public List<Float> getArrayOfamountJan() {
         return arrayOfamountJan;
     }
 
     @Override
-    public void setArrayOfamountJan(ArrayList<Float> arrayOfamountJan) {
+    public void setArrayOfamountJan(List<Float> arrayOfamountJan) {
         this.arrayOfamountJan = arrayOfamountJan;
     }
 
@@ -144,12 +146,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForJan() {
+    public Set<String> getDescriptionsForJan() {
         return descriptionsForJan;
     }
 
     @Override
-    public void setDescriptionsForJan(LinkedHashSet<String> descriptionsForJan) {
+    public void setDescriptionsForJan(Set<String> descriptionsForJan) {
         this.descriptionsForJan = descriptionsForJan;
     }
 
@@ -164,12 +166,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountFeb() {
+    public List<Float> getArrayOfamountFeb() {
         return arrayOfamountFeb;
     }
 
     @Override
-    public void setArrayOfamountFeb(ArrayList<Float> arrayOfamountFeb) {
+    public void setArrayOfamountFeb(List<Float> arrayOfamountFeb) {
         this.arrayOfamountFeb = arrayOfamountFeb;
     }
 
@@ -184,12 +186,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForFeb() {
+    public Set<String> getDescriptionsForFeb() {
         return descriptionsForFeb;
     }
 
     @Override
-    public void setDescriptionsForFeb(LinkedHashSet<String> descriptionsForFeb) {
+    public void setDescriptionsForFeb(Set<String> descriptionsForFeb) {
         this.descriptionsForFeb = descriptionsForFeb;
     }
 
@@ -204,12 +206,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountMar() {
+    public List<Float> getArrayOfamountMar() {
         return arrayOfamountMar;
     }
 
     @Override
-    public void setArrayOfamountMar(ArrayList<Float> arrayOfamountMar) {
+    public void setArrayOfamountMar(List<Float> arrayOfamountMar) {
         this.arrayOfamountMar = arrayOfamountMar;
     }
 
@@ -224,12 +226,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForMar() {
+    public Set<String> getDescriptionsForMar() {
         return descriptionsForMar;
     }
 
     @Override
-    public void setDescriptionsForMar(LinkedHashSet<String> descriptionsForMar) {
+    public void setDescriptionsForMar(Set<String> descriptionsForMar) {
         this.descriptionsForMar = descriptionsForMar;
     }
 
@@ -244,12 +246,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountApr() {
+    public List<Float> getArrayOfamountApr() {
         return arrayOfamountApr;
     }
 
     @Override
-    public void setArrayOfamountApr(ArrayList<Float> arrayOfamountApr) {
+    public void setArrayOfamountApr(List<Float> arrayOfamountApr) {
         this.arrayOfamountApr = arrayOfamountApr;
     }
 
@@ -264,12 +266,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForApr() {
+    public Set<String> getDescriptionsForApr() {
         return descriptionsForApr;
     }
 
     @Override
-    public void setDescriptionsForApr(LinkedHashSet<String> descriptionsForApr) {
+    public void setDescriptionsForApr(Set<String> descriptionsForApr) {
         this.descriptionsForApr = descriptionsForApr;
     }
 
@@ -284,12 +286,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountMay() {
+    public List<Float> getArrayOfamountMay() {
         return arrayOfamountMay;
     }
 
     @Override
-    public void setArrayOfamountMay(ArrayList<Float> arrayOfamountMay) {
+    public void setArrayOfamountMay(List<Float> arrayOfamountMay) {
         this.arrayOfamountMay = arrayOfamountMay;
     }
 
@@ -304,12 +306,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForMay() {
+    public Set<String> getDescriptionsForMay() {
         return descriptionsForMay;
     }
 
     @Override
-    public void setDescriptionsForMay(LinkedHashSet<String> descriptionsForMay) {
+    public void setDescriptionsForMay(Set<String> descriptionsForMay) {
         this.descriptionsForMay = descriptionsForMay;
     }
 
@@ -324,12 +326,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountJun() {
+    public List<Float> getArrayOfamountJun() {
         return arrayOfamountJun;
     }
 
     @Override
-    public void setArrayOfamountJun(ArrayList<Float> arrayOfamountJun) {
+    public void setArrayOfamountJun(List<Float> arrayOfamountJun) {
         this.arrayOfamountJun = arrayOfamountJun;
     }
 
@@ -344,12 +346,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForJun() {
+    public Set<String> getDescriptionsForJun() {
         return descriptionsForJun;
     }
 
     @Override
-    public void setDescriptionsForJun(LinkedHashSet<String> descriptionsForJun) {
+    public void setDescriptionsForJun(Set<String> descriptionsForJun) {
         this.descriptionsForJun = descriptionsForJun;
     }
 
@@ -364,12 +366,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountJul() {
+    public List<Float> getArrayOfamountJul() {
         return arrayOfamountJul;
     }
 
     @Override
-    public void setArrayOfamountJul(ArrayList<Float> arrayOfamountJul) {
+    public void setArrayOfamountJul(List<Float> arrayOfamountJul) {
         this.arrayOfamountJul = arrayOfamountJul;
     }
 
@@ -384,12 +386,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForJul() {
+    public Set<String> getDescriptionsForJul() {
         return descriptionsForJul;
     }
 
     @Override
-    public void setDescriptionsForJul(LinkedHashSet<String> descriptionsForJul) {
+    public void setDescriptionsForJul(Set<String> descriptionsForJul) {
         this.descriptionsForJul = descriptionsForJul;
     }
 
@@ -404,12 +406,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountAug() {
+    public List<Float> getArrayOfamountAug() {
         return arrayOfamountAug;
     }
 
     @Override
-    public void setArrayOfamountAug(ArrayList<Float> arrayOfamountAug) {
+    public void setArrayOfamountAug(List<Float> arrayOfamountAug) {
         this.arrayOfamountAug = arrayOfamountAug;
     }
 
@@ -424,12 +426,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForAug() {
+    public Set<String> getDescriptionsForAug() {
         return descriptionsForAug;
     }
 
     @Override
-    public void setDescriptionsForAug(LinkedHashSet<String> descriptionsForAug) {
+    public void setDescriptionsForAug(Set<String> descriptionsForAug) {
         this.descriptionsForAug = descriptionsForAug;
     }
 
@@ -443,12 +445,12 @@ public class YearToSet extends AnyYear implements YearInterface {
         this.amountSep = amountSep;
     }
     @Override
-    public ArrayList<Float> getArrayOfamountSep() {
+    public List<Float> getArrayOfamountSep() {
         return arrayOfamountSep;
     }
 
     @Override
-    public void setArrayOfamountSep(ArrayList<Float> arrayOfamountSep) {
+    public void setArrayOfamountSep(List<Float> arrayOfamountSep) {
         this.arrayOfamountSep = arrayOfamountSep;
     }
 
@@ -463,12 +465,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForSep() {
+    public Set<String> getDescriptionsForSep() {
         return descriptionsForSep;
     }
 
     @Override
-    public void setDescriptionsForSep(LinkedHashSet<String> descriptionsForSep) {
+    public void setDescriptionsForSep(Set<String> descriptionsForSep) {
         this.descriptionsForSep = descriptionsForSep;
     }
 
@@ -483,12 +485,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountOct() {
+    public List<Float> getArrayOfamountOct() {
         return arrayOfamountOct;
     }
 
     @Override
-    public void setArrayOfamountOct(ArrayList<Float> arrayOfamountOct) {
+    public void setArrayOfamountOct(List<Float> arrayOfamountOct) {
         this.arrayOfamountOct = arrayOfamountOct;
     }
 
@@ -503,12 +505,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForOct() {
+    public Set<String> getDescriptionsForOct() {
         return descriptionsForOct;
     }
 
     @Override
-    public void setDescriptionsForOct(LinkedHashSet<String> descriptionsForOct) {
+    public void setDescriptionsForOct(Set<String> descriptionsForOct) {
         this.descriptionsForOct = descriptionsForOct;
     }
 
@@ -523,12 +525,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountNov() {
+    public List<Float> getArrayOfamountNov() {
         return arrayOfamountNov;
     }
 
     @Override
-    public void setArrayOfamountNov(ArrayList<Float> arrayOfamountNov) {
+    public void setArrayOfamountNov(List<Float> arrayOfamountNov) {
         this.arrayOfamountNov = arrayOfamountNov;
     }
 
@@ -543,12 +545,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForNov() {
+    public Set<String> getDescriptionsForNov() {
         return descriptionsForNov;
     }
 
     @Override
-    public void setDescriptionsForNov(LinkedHashSet<String> descriptionsForNov) {
+    public void setDescriptionsForNov(Set<String> descriptionsForNov) {
         this.descriptionsForNov = descriptionsForNov;
     }
 
@@ -563,12 +565,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public ArrayList<Float> getArrayOfamountDec() {
+    public List<Float> getArrayOfamountDec() {
         return arrayOfamountDec;
     }
 
     @Override
-    public void setArrayOfamountDec(ArrayList<Float> arrayOfamountDec) {
+    public void setArrayOfamountDec(List<Float> arrayOfamountDec) {
         this.arrayOfamountDec = arrayOfamountDec;
     }
 
@@ -583,12 +585,12 @@ public class YearToSet extends AnyYear implements YearInterface {
     }
 
     @Override
-    public LinkedHashSet<String> getDescriptionsForDec() {
+    public Set<String> getDescriptionsForDec() {
         return descriptionsForDec;
     }
 
     @Override
-    public void setDescriptionsForDec(LinkedHashSet<String> descriptionsForDec) {
+    public void setDescriptionsForDec(Set<String> descriptionsForDec) {
         this.descriptionsForDec = descriptionsForDec;
     }
 

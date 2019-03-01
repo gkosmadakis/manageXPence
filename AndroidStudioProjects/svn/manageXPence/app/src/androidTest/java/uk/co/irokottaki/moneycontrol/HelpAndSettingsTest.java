@@ -62,9 +62,6 @@ public class HelpAndSettingsTest {
                         isDisplayed()));
         appCompatTextView.perform(click());
 
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-        pressBack();
-
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.action_next), withText("Next"), withContentDescription("Next"),
                         childAtPosition(
@@ -74,9 +71,6 @@ public class HelpAndSettingsTest {
                                 1),
                         isDisplayed()));
         actionMenuItemView.perform(click());
-
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-        pressBack();
 
         ViewInteraction actionMenuItemView2 = onView(
                 allOf(withId(R.id.action_next), withText("Next"), withContentDescription("Next"),
@@ -88,9 +82,6 @@ public class HelpAndSettingsTest {
                         isDisplayed()));
         actionMenuItemView2.perform(click());
 
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-        pressBack();
-
         ViewInteraction actionMenuItemView3 = onView(
                 allOf(withId(R.id.action_next), withText("Next"), withContentDescription("Next"),
                         childAtPosition(
@@ -100,9 +91,6 @@ public class HelpAndSettingsTest {
                                 1),
                         isDisplayed()));
         actionMenuItemView3.perform(click());
-
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-        pressBack();
 
         ViewInteraction actionMenuItemView4 = onView(
                 allOf(withId(R.id.action_next), withText("Next"), withContentDescription("Next"),
@@ -128,6 +116,7 @@ public class HelpAndSettingsTest {
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
+        sleep(500);
         ViewInteraction appCompatTextView3 = onView(
                 allOf(withId(R.id.title), withText("Previous"),
                         childAtPosition(
@@ -140,6 +129,7 @@ public class HelpAndSettingsTest {
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
+        sleep(500);
         ViewInteraction appCompatTextView4 = onView(
                 allOf(withId(R.id.title), withText("Previous"),
                         childAtPosition(
@@ -152,6 +142,7 @@ public class HelpAndSettingsTest {
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
+        sleep(1000);
         ViewInteraction appCompatTextView5 = onView(
                 allOf(withId(R.id.title), withText("Previous"),
                         childAtPosition(

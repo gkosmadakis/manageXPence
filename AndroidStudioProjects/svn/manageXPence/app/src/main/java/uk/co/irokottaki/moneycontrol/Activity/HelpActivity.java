@@ -2,7 +2,6 @@ package uk.co.irokottaki.moneycontrol.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -25,7 +24,6 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.HELP;
 
 public class HelpActivity extends AppCompatActivity {
     RelativeLayout layout;
-    protected PreferenceManager mPreferenceManager;
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
@@ -141,7 +139,7 @@ public class HelpActivity extends AppCompatActivity {
                 // Navigate "up" the demo structure to the launchpad activity.
                 // See http://developer.android.com/design/patterns/navigation.html for more.
                 NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
-                return true;
+                return super.onOptionsItemSelected(item);
         }
     }
 

@@ -99,6 +99,8 @@
 
     <string name="year">Year:</string>
     <string name="textview">TextView</string>
+    <string name="year_spending_text">Hom much do I spend on a year for each expense?</string>
+    <string name="set_income_circle">Set Income Circle</string>
     <string name="set_a_budget_warning">Set a Budget Warning</string>
     <string name="_0">0</string>
     <string name="warning_set_on">Warning set on:</string>
@@ -154,5 +156,6 @@
     <string name="enter_text_here">Enter text here..</string>
     <string name="salary_day">Salary Day</string>
     <string name="to_current">To Current:</string>
+    <string name="PATH_TO_EXPORT_EXPENSES">/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt</string>
 
 </resources>

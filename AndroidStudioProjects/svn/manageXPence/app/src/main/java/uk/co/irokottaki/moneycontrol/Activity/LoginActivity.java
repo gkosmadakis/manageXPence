@@ -21,7 +21,6 @@ import uk.co.irokottaki.moneycontrol.utils.Utils;
 
 
 public class LoginActivity extends AppCompatActivity {
-    private RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Button signInButton = (Button) findViewById(R.id.sign_in_button);
 
-        layout = (RelativeLayout) findViewById(R.id.loginActivityView);
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.loginActivityView);
 
         Utils utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, LoginActivity.this);

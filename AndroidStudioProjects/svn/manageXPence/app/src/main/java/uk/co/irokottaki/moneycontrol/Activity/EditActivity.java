@@ -1,10 +1,9 @@
 package uk.co.irokottaki.moneycontrol.activity;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,8 +16,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.millennialmedia.InlineAd;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +30,6 @@ import uk.co.irokottaki.moneycontrol.utils.CustomAdapter;
 import uk.co.irokottaki.moneycontrol.utils.MultiMap;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.ADSDISABLED;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.CLOSE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.EDIT_AN_EXPENSE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.EMPTY_FIELD;
@@ -41,16 +37,14 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.EMPTY_SPACE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES_FILE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.INFORMATION;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.OK;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
 
 public class EditActivity extends AppCompatActivity {
 
     private EditText descField;
     private EditText amountField;
     private ArrayList<String> allTheLinesInFile = new ArrayList<>();
-    private static final  String TAG = "Millenial Media";
-    private InlineAd inlineAd;
-    private boolean adsDisabled;
+    /*private static final  String TAG = "Millenial Media";
+    private InlineAd inlineAd;*/
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
     private ChartsUtil util;
     private TextView resultsLabel;
@@ -62,11 +56,11 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
         setTitle(EDIT_AN_EXPENSE);
 
-        SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        adsDisabled = sharedprefs.getBoolean(ADSDISABLED, false);//retrieve the boolean value
+        /*SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        boolean adsDisabled = sharedprefs.getBoolean(ADSDISABLED, false);//retrieve the boolean value
         // for ads
 
-        /*if (adsDisabled==false) {
+        if (adsDisabled==false) {
             //this is for the ads Millenial Media
             MMSDK.initialize(this); // pass in current activity instance
 
@@ -212,12 +206,12 @@ public class EditActivity extends AppCompatActivity {
 
     }//end of onCreate method
 
+    @TargetApi(19)
     private void readTheLines() {
-        InputStream inputStream = null;
-        Scanner in = null;
-        try {
-            inputStream = openFileInput(EXPENSES_FILE);
-            in = new Scanner(inputStream);
+
+        try (InputStream inputStream = openFileInput(EXPENSES_FILE);
+             Scanner in = new Scanner(inputStream);){
+
             int lineIndex = 0;
             allTheLinesInFile = new ArrayList<>();
             while (in.hasNextLine()) {
@@ -227,22 +221,9 @@ public class EditActivity extends AppCompatActivity {
                     allTheLinesInFile.add(line.trim().replaceAll("\\s+", " "));
                 }
             }
-            inputStream.close();
         } catch (IOException e) {
             Log.i("EDITACTIVITY", "File not found");
 
-        }
-        finally{
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    Log.e("IOException",e.getMessage());
-                }
-            }
-            if (in != null) {
-                in.close();
-            }
         }
     }
 
@@ -306,7 +287,7 @@ public class EditActivity extends AppCompatActivity {
                 CustomAdapter adapter = new CustomAdapter(resultsList, this);
                 ListView lView = (ListView) findViewById(R.id.listView);
                 lView.setAdapter(adapter);
-                yearsMappedToObjectYearsMap = adapter.getYearsMappedToObjectYearsMap();
+                yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) adapter.getYearsMappedToObjectYearsMap();
             }
 
             else {
@@ -334,7 +315,7 @@ public class EditActivity extends AppCompatActivity {
         // send the updated map back to MainActivity when user presses the back button
         //here i need to send the updated map that holds as key the year and as value the anyYear object
         if (yearsMappedToObjectYearsMap == null){
-            yearsMappedToObjectYearsMap = util.readTheFile();
+            yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) util.readTheFile();
         }
         Intent intent = new Intent();
         intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
@@ -357,20 +338,18 @@ public class EditActivity extends AppCompatActivity {
 
         /* send the updated map back to MainActivity when user presses the back button on the top of activity and avoid the call to onCreate of mainActivity that
         will trigger the readTheFile again*/
-        switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
-            case android.R.id.home:
-                //here i need to send the updated map that holds as key the year and as value the anyYear object
-                if (yearsMappedToObjectYearsMap == null){
-                    yearsMappedToObjectYearsMap = util.readTheFile();
-                }
-                Intent intent = new Intent();
-                intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
-                setResult(1, intent);
-                finish();
-                return true;
+        int id = item.getItemId();// This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
+        if (id == android.R.id.home) {//here i need to send the updated map that holds as key the year and as value the anyYear object
+            if (yearsMappedToObjectYearsMap == null) {
+                yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) util.readTheFile();
+            }
+            Intent intent = new Intent();
+            intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+            setResult(1, intent);
+            finish();
+            return true;
         }
 
-        int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;

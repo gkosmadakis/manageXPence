@@ -1,5 +1,6 @@
 package uk.co.irokottaki.moneycontrol;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -32,12 +33,12 @@ public class UploadTask extends AsyncTask {
     }
 
 
+    @TargetApi(19)
     @Override
     protected Object doInBackground(Object[] params) {
-        InputStream inputStream = null;
-        try {
+
+        try (InputStream inputStream = new FileInputStream(String.valueOf(file));){
             // Upload to Dropbox
-            inputStream = new FileInputStream(String.valueOf(file));
             dbxClient.files().uploadBuilder("/" + file.getName()) //Path in the user's Dropbox to
                     // save the file.
                     .withMode(WriteMode.OVERWRITE) //always overwrite existing file
@@ -49,15 +50,6 @@ public class UploadTask extends AsyncTask {
         } catch (IOException ex) {
             Log.e("IOException",ex.getMessage());
             error = ex;
-        }
-        finally {
-            if (inputStream != null){
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    Log.e("IOException", e.getMessage());
-                }
-            }
         }
         return null;
     }

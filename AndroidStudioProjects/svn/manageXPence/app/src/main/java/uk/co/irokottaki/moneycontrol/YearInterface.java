@@ -1,151 +1,151 @@
 package uk.co.irokottaki.moneycontrol;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public interface YearInterface {
 
      Float getAmountJan();
      void setAmountJan(Float amountJan);
 
-     ArrayList<Float> getArrayOfamountJan();
-     void setArrayOfamountJan(ArrayList<Float> arrayOfamountJan);
+     List<Float> getArrayOfamountJan();
+     void setArrayOfamountJan(List<Float> arrayOfamountJan);
 
      String getFileLineJan();
      void setFileLineJan(String fileLineJan);
 
-     LinkedHashSet<String> getDescriptionsForJan();
-     void setDescriptionsForJan(LinkedHashSet<String> descriptionsForJan);
+     Set<String> getDescriptionsForJan();
+     void setDescriptionsForJan(Set<String> descriptionsForJan);
 
      Float getAmountFeb();
      void setAmountFeb(Float amountFeb);
 
-     ArrayList<Float> getArrayOfamountFeb();
-     void setArrayOfamountFeb(ArrayList<Float> arrayOfamountFeb);
+     List<Float> getArrayOfamountFeb();
+     void setArrayOfamountFeb(List<Float> arrayOfamountFeb);
 
      String getFileLineFeb();
      void setFileLineFeb(String fileLineFeb);
 
-     LinkedHashSet<String> getDescriptionsForFeb();
-     void setDescriptionsForFeb(LinkedHashSet<String> descriptionsForFeb);
+     Set<String> getDescriptionsForFeb();
+     void setDescriptionsForFeb(Set<String> descriptionsForFeb);
 
      Float getAmountMar();
      void setAmountMar(Float amountMar);
 
-     ArrayList<Float> getArrayOfamountMar();
-     void setArrayOfamountMar(ArrayList<Float> arrayOfamountMar);
+     List<Float> getArrayOfamountMar();
+     void setArrayOfamountMar(List<Float> arrayOfamountMar);
 
      String getFileLineMar();
      void setFileLineMar(String fileLineMar);
 
-     LinkedHashSet<String> getDescriptionsForMar();
-     void setDescriptionsForMar(LinkedHashSet<String> descriptionsForMar);
+     Set<String> getDescriptionsForMar();
+     void setDescriptionsForMar(Set<String> descriptionsForMar);
 
      Float getAmountApr();
      void setAmountApr(Float amountApr);
 
-     ArrayList<Float> getArrayOfamountApr();
-     void setArrayOfamountApr(ArrayList<Float> arrayOfamountApr);
+     List<Float> getArrayOfamountApr();
+     void setArrayOfamountApr(List<Float> arrayOfamountApr);
 
      String getFileLineApr();
      void setFileLineApr(String fileLineApr);
 
-     LinkedHashSet<String> getDescriptionsForApr();
-     void setDescriptionsForApr(LinkedHashSet<String> descriptionsForApr);
+     Set<String> getDescriptionsForApr();
+     void setDescriptionsForApr(Set<String> descriptionsForApr);
 
      Float getAmountMay();
      void setAmountMay(Float amountMay);
 
-     ArrayList<Float> getArrayOfamountMay();
-     void setArrayOfamountMay(ArrayList<Float> arrayOfamountMay);
+     List<Float> getArrayOfamountMay();
+     void setArrayOfamountMay(List<Float> arrayOfamountMay);
 
      String getFileLineMay();
      void setFileLineMay(String fileLineMay);
 
-     LinkedHashSet<String> getDescriptionsForMay();
-     void setDescriptionsForMay(LinkedHashSet<String> descriptionsForMay);
+     Set<String> getDescriptionsForMay();
+     void setDescriptionsForMay(Set<String> descriptionsForMay);
 
      Float getAmountJun();
      void setAmountJun(Float amountJun);
 
-     ArrayList<Float> getArrayOfamountJun();
-     void setArrayOfamountJun(ArrayList<Float> arrayOfamountJun);
+     List<Float> getArrayOfamountJun();
+     void setArrayOfamountJun(List<Float> arrayOfamountJun);
 
      String getFileLineJun();
      void setFileLineJun(String fileLineJun);
 
-     LinkedHashSet<String> getDescriptionsForJun();
-     void setDescriptionsForJun(LinkedHashSet<String> descriptionsForJun);
+     Set<String> getDescriptionsForJun();
+     void setDescriptionsForJun(Set<String> descriptionsForJun);
 
      Float getAmountJul();
      void setAmountJul(Float amountJul);
 
-     ArrayList<Float> getArrayOfamountJul();
-     void setArrayOfamountJul(ArrayList<Float> arrayOfamountJul);
+     List<Float> getArrayOfamountJul();
+     void setArrayOfamountJul(List<Float> arrayOfamountJul);
 
      String getFileLineJul();
      void setFileLineJul(String fileLineJul);
 
-     LinkedHashSet<String> getDescriptionsForJul();
-     void setDescriptionsForJul(LinkedHashSet<String> descriptionsForJul);
+     Set<String> getDescriptionsForJul();
+     void setDescriptionsForJul(Set<String> descriptionsForJul);
 
      Float getAmountAug();
      void setAmountAug(Float amountAug);
 
-     ArrayList<Float> getArrayOfamountAug();
-     void setArrayOfamountAug(ArrayList<Float> arrayOfamountAug);
+     List<Float> getArrayOfamountAug();
+     void setArrayOfamountAug(List<Float> arrayOfamountAug);
 
      String getFileLineAug();
      void setFileLineAug(String fileLineAug);
 
-     LinkedHashSet<String> getDescriptionsForAug();
-     void setDescriptionsForAug(LinkedHashSet<String> descriptionsForAug);
+     Set<String> getDescriptionsForAug();
+     void setDescriptionsForAug(Set<String> descriptionsForAug);
 
      Float getAmountSep();
      void setAmountSep(Float amountSep);
 
-     ArrayList<Float> getArrayOfamountSep();
-     void setArrayOfamountSep(ArrayList<Float> arrayOfamountSep);
+     List<Float> getArrayOfamountSep();
+     void setArrayOfamountSep(List<Float> arrayOfamountSep);
 
      String getFileLineSep();
      void setFileLineSep(String fileLineSep);
 
-     LinkedHashSet<String> getDescriptionsForSep();
-     void setDescriptionsForSep(LinkedHashSet<String> descriptionsForSep);
+     Set<String> getDescriptionsForSep();
+     void setDescriptionsForSep(Set<String> descriptionsForSep);
 
      Float getAmountOct();
      void setAmountOct(Float amountOct);
 
-     ArrayList<Float> getArrayOfamountOct();
-     void setArrayOfamountOct(ArrayList<Float> arrayOfamountOct);
+     List<Float> getArrayOfamountOct();
+     void setArrayOfamountOct(List<Float> arrayOfamountOct);
 
      String getFileLineOct();
      void setFileLineOct(String fileLineOct);
 
-     LinkedHashSet<String> getDescriptionsForOct();
-     void setDescriptionsForOct(LinkedHashSet<String> descriptionsForOct);
+     Set<String> getDescriptionsForOct();
+     void setDescriptionsForOct(Set<String> descriptionsForOct);
 
      Float getAmountNov();
      void setAmountNov(Float amountNov);
 
-     ArrayList<Float> getArrayOfamountNov();
-     void setArrayOfamountNov(ArrayList<Float> arrayOfamountNov);
+     List<Float> getArrayOfamountNov();
+     void setArrayOfamountNov(List<Float> arrayOfamountNov);
 
      String getFileLineNov();
      void setFileLineNov(String fileLineNov);
 
-     LinkedHashSet<String> getDescriptionsForNov();
-     void setDescriptionsForNov(LinkedHashSet<String> descriptionsForNov);
+     Set<String> getDescriptionsForNov();
+     void setDescriptionsForNov(Set<String> descriptionsForNov);
 
      Float getAmountDec();
      void setAmountDec(Float amountDec);
 
-     ArrayList<Float> getArrayOfamountDec();
-     void setArrayOfamountDec(ArrayList<Float> arrayOfamountDec);
+     List<Float> getArrayOfamountDec();
+     void setArrayOfamountDec(List<Float> arrayOfamountDec);
 
      String getFileLineDec();
      void setFileLineDec(String fileLineDec);
 
-     LinkedHashSet<String> getDescriptionsForDec();
-     void setDescriptionsForDec(LinkedHashSet<String> descriptionsForDec);
+     Set<String> getDescriptionsForDec();
+     void setDescriptionsForDec(Set<String> descriptionsForDec);
 }

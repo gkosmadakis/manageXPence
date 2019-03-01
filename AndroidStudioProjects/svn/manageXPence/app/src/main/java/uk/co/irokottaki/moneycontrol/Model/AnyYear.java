@@ -1,8 +1,8 @@
 package uk.co.irokottaki.moneycontrol.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class AnyYear implements Serializable {
     private YearToSet year;
@@ -22,7 +22,7 @@ public class AnyYear implements Serializable {
         return year;
     }
 
-    public void setAmountAndDescJan(Float amountJan, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescJan(Float amountJan, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountJan(amountJan);
         this.year.setDescriptionsForJan(descriptionSet);
@@ -30,7 +30,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineJan(fileLine);
     }
 
-    public void setAmountAndDescFeb(Float amountFeb,  LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescFeb(Float amountFeb, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountFeb(amountFeb);
         this.year.setDescriptionsForFeb(descriptionSet);
@@ -38,7 +38,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineFeb(fileLine);
     }
 
-    public void setAmountAndDescMar(Float amountMar, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescMar(Float amountMar, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountMar(amountMar);
         this.year.setDescriptionsForMar(descriptionSet);
@@ -46,7 +46,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineMar(fileLine);
     }
 
-    public void setAmountAndDescApr(Float amountApr, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescApr(Float amountApr, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountApr(amountApr);
         this.year.setDescriptionsForApr(descriptionSet);
@@ -54,7 +54,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineApr(fileLine);
     }
 
-    public void setAmountAndDescMay(Float amountMay, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescMay(Float amountMay, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountMay(amountMay);
         this.year.setDescriptionsForMay(descriptionSet);
@@ -62,7 +62,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineMay(fileLine);
     }
 
-    public void setAmountAndDescJun(Float amountJun, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescJun(Float amountJun, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountJun(amountJun);
         this.year.setDescriptionsForJun(descriptionSet);
@@ -70,7 +70,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineJun(fileLine);
     }
 
-    public void setAmountAndDescJul(Float amountJul, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescJul(Float amountJul, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountJul(amountJul);
         this.year.setDescriptionsForJul(descriptionSet);
@@ -78,7 +78,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineJul(fileLine);
     }
 
-    public void setAmountAndDescAug(Float amountAug, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescAug(Float amountAug, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountAug(amountAug);
         this.year.setDescriptionsForAug(descriptionSet);
@@ -86,7 +86,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineAug(fileLine);
     }
 
-    public void setAmountAndDescSep(Float amountSep, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescSep(Float amountSep, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountSep(amountSep);
         this.year.setDescriptionsForSep(descriptionSet);
@@ -94,7 +94,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineSep(fileLine);
     }
 
-    public void setAmountAndDescOct(Float amountOct, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescOct(Float amountOct, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountOct(amountOct);
         this.year.setDescriptionsForOct(descriptionSet);
@@ -102,7 +102,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineOct(fileLine);
     }
 
-    public void setAmountAndDescNov(Float amountNov, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescNov(Float amountNov, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountNov(amountNov);
         this.year.setDescriptionsForNov(descriptionSet);
@@ -110,7 +110,7 @@ public class AnyYear implements Serializable {
         this.year.setFileLineNov(fileLine);
     }
 
-    public void setAmountAndDescDec(Float amountDec, LinkedHashSet descriptionSet, ArrayList<Float> amounts, String fileLine) {
+    public void setAmountAndDescDec(Float amountDec, Set descriptionSet, List<Float> amounts, String fileLine) {
 
         this.year.setAmountDec(amountDec);
         this.year.setDescriptionsForDec(descriptionSet);

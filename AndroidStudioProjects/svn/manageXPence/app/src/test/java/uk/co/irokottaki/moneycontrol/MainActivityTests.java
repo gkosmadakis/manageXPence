@@ -369,5 +369,50 @@ public class MainActivityTests  {
 
     }
 
+    @Test
+    public void testPopulateDatesTheRepeatingExpenseOccursList(){
+
+        final Context context = mock(Context.class);
+        MainActivityUtil util = new MainActivityUtil(context);
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        /* the case when the repeating expense is ending the current year*/
+        ArrayList datesTheRepeatingExpenseOccurs = (ArrayList) util.populateDatesTheRepeatingExpenseOccursList(currentYear, currentMonth+4, currentDay, currentYear, currentMonth);
+
+        SimpleDateFormat formattter = new SimpleDateFormat("dd/MM/yyyy");
+
+        calendar.set(currentYear, currentMonth+1, currentDay);
+        Date candidateDate = calendar.getTime();
+
+        assertTrue(formattter.format(datesTheRepeatingExpenseOccurs.get(0)).equals(formattter.format(candidateDate)));
+
+        calendar.set(currentYear, currentMonth+2, currentDay);
+        candidateDate = calendar.getTime();
+        assertTrue(formattter.format(datesTheRepeatingExpenseOccurs.get(1)).equals(formattter.format(candidateDate)));
+
+        calendar.set(currentYear, currentMonth+3, currentDay);
+        candidateDate = calendar.getTime();
+        assertTrue(formattter.format(datesTheRepeatingExpenseOccurs.get(2)).equals(formattter.format(candidateDate)));
+
+        calendar.set(currentYear, currentMonth+4, currentDay);
+        candidateDate = calendar.getTime();
+        assertTrue(formattter.format(datesTheRepeatingExpenseOccurs.get(3)).equals(formattter.format(candidateDate)));
+
+        /* the case when the repeating expense is ending the next year*/
+        datesTheRepeatingExpenseOccurs = (ArrayList) util.populateDatesTheRepeatingExpenseOccursList(currentYear+1, currentMonth+4, currentDay, currentYear, currentMonth);
+
+        assertTrue(datesTheRepeatingExpenseOccurs.size() == 16);
+
+        calendar.set(currentYear+1, currentMonth+4, currentDay);
+        assertTrue(formattter.format(datesTheRepeatingExpenseOccurs.get(15)).equals(formattter.format(calendar.getTime())));
+
+        calendar.set(currentYear, currentMonth+1, currentDay);
+        assertTrue(formattter.format(datesTheRepeatingExpenseOccurs.get(0)).equals(formattter.format(calendar.getTime())));
+
+    }
+
 
 }

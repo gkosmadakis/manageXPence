@@ -22,6 +22,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
@@ -29,18 +31,19 @@ import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import static android.content.Context.MODE_PRIVATE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.CANCEL;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES_FILE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.IOEXCEPTION;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.OK;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.SAVE;
 
 public class CustomAdapter extends BaseAdapter implements ListAdapter {
 
-    private ArrayList<String> list = new ArrayList<>();
+    private List<String> list = new ArrayList<>();
     private Context context;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
     private ChartsUtil util;
     private EditText editExpenseField;
 
-    public CustomAdapter(ArrayList<String> list, Context context) {
+    public CustomAdapter(List<String> list, Context context) {
         this.list = list;
         this.context = context;
         util = new ChartsUtil(context);
@@ -137,6 +140,7 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
     }
 
 
+    @TargetApi(19)
     private void processEdit(String lineToUpdate, String lineUpdated) {
 
         String amountEdited = lineUpdated.substring(0, lineUpdated.indexOf(' '));
@@ -208,7 +212,7 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
                 out.close();
                 fstream.close();
 
-                yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
+                yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) util.readTheFile();// call to update the map
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog)
                         .setTitle("Edit Expense")
                         .setMessage("The expense is successfully edited");
@@ -221,21 +225,21 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
             } catch (FileNotFoundException e) {
                 Log.e("File not found ", e.toString());
             } catch (IOException e) {
-                Log.e("IOException: ", e.toString());
+                Log.e(IOEXCEPTION, e.toString());
             }
             finally {
                 if (fstream!= null){
                     try {
                         fstream.close();
                     } catch (IOException e) {
-                        Log.e("IOException", e.getMessage());
+                        Log.e(IOEXCEPTION, e.getMessage());
                     }
                 }
                 if (br!= null){
                     try {
                         br.close();
                     } catch (IOException e) {
-                        Log.e("IOException", e.getMessage());
+                        Log.e(IOEXCEPTION, e.getMessage());
                     }
                 }
             }
@@ -276,7 +280,7 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
                 out.close();//because the next expense is added will go straight into that line
             }
 
-            yearsMappedToObjectYearsMap = util.readTheFile();// call to update the map
+            yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) util.readTheFile();// call to update the map
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog)
                     .setTitle("Expense Deletion")
                     .setMessage("The expense is deleted");
@@ -294,14 +298,14 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                    Log.e("IOException", e.getMessage());
+                    Log.e(IOEXCEPTION, e.getMessage());
                 }
             }
             if (bufferedReader!= null){
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
-                    Log.e("IOException", e.getMessage());
+                    Log.e(IOEXCEPTION, e.getMessage());
                 }
             }
             if (out!= null){
@@ -310,7 +314,7 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
         }
     }
 
-    public HashMap<String, AnyYear> getYearsMappedToObjectYearsMap() {
+    public Map<String, AnyYear> getYearsMappedToObjectYearsMap() {
         return yearsMappedToObjectYearsMap;
     }
 }

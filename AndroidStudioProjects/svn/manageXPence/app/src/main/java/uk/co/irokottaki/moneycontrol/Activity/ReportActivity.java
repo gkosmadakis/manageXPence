@@ -1,8 +1,6 @@
 package uk.co.irokottaki.moneycontrol.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.millennialmedia.InlineAd;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -29,7 +25,6 @@ import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
-import static uk.co.irokottaki.moneycontrol.utils.Constants.ADSDISABLED;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.APRIL;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.AUGUST;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.DECEMBER;
@@ -42,7 +37,6 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.MARCH;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.MAY;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.NOVEMBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.OCTOBER;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.SEPTEMBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.TOTAL;
 
@@ -51,9 +45,8 @@ public class ReportActivity extends AppCompatActivity {
     private Spinner monthItems;
     private ArrayList<String> monthsAddedToSpinner;
     private TextView reportView;
-    private static final String TAG = "Millenial Media";
-    private InlineAd inlineAd;
-    private boolean adsDisabled;
+    /*private static final String TAG = "Millenial Media";
+    private InlineAd inlineAd;*/
     private ChartsUtil util;
     private Spinner yearList;
     private int yearSelected;
@@ -66,11 +59,11 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report);
         setTitle(EXPENSES_REPORT);
 
-        SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        adsDisabled = sharedprefs.getBoolean(ADSDISABLED, false);//retrieve the boolean value
+        /*SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        boolean adsDisabled = sharedprefs.getBoolean(ADSDISABLED, false);//retrieve the boolean value
         // for ads
 
-        /*if (adsDisabled==false) {
+        if (adsDisabled==false) {
             //this is for the ads Millenial Media
             MMSDK.initialize(this); // pass in current activity instance
 
@@ -280,11 +273,11 @@ public class ReportActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
-             case android.R.id.home: finish();
-             return true;
+        int id = item.getItemId();// This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
+        if (id == android.R.id.home) {
+            finish();
+            return true;
         }
-        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

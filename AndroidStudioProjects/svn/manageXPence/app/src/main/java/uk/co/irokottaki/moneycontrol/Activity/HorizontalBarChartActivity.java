@@ -94,37 +94,7 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
                 Intent intent = getIntent();
                 HashMap<String, AnyYear> yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
 
-                if (isChecked) {
-                    //depending on the month the user is i need to show the percentages for that
-                    // month
-
-                    if (!valueSet1.isEmpty()) {
-                        util.calculatePercentagesAndModifyYAxis(yearsMappedToObjectYearsMap,monthInt, year, HorizontalBarChartActivity.this, dataSets);
-                    }
-                    if (dataSets != null) {
-                        data.setValueFormatter(new PercentFormatter());//this adds % in the
-                        // percentage
-                    }
-                    chart.invalidate();
-                    stateSwitchButton = true;//this is to know that the switch is ON
-                } else {
-                    //here i revert back to the actual numbers
-                    if (!valueSet1.isEmpty()) {
-                        util.revertToNumbersAndModifyYAxis(yearsMappedToObjectYearsMap, monthInt, year, HorizontalBarChartActivity.this, dataSets);
-                    }
-                    if (dataSets != null) {
-                        data.setValueFormatter(new ValueFormatter() {
-                            @Override
-                            public String getFormattedValue(float v, Entry entry, int i,
-                                                            ViewPortHandler viewPortHandler) {
-                                return Float.toString(v);//this returns the value as a float as
-                                // it used to be
-                            }
-                        });
-                    }
-                    chart.invalidate();
-                    stateSwitchButton = false;//this is to know that the switch is OFF
-                }
+                showBarChartAccordingToTheSwitchBtn(isChecked, yearsMappedToObjectYearsMap);
             }
         });
 
@@ -149,6 +119,40 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         data = new BarData(xAxis, dataSets);
 
     }//end of create method
+
+    private void showBarChartAccordingToTheSwitchBtn(boolean isChecked, HashMap<String, AnyYear> yearsMappedToObjectYearsMap) {
+        if (isChecked) {
+            //depending on the month the user is i need to show the percentages for that
+            // month
+
+            if (!valueSet1.isEmpty()) {
+                util.calculatePercentagesAndModifyYAxis(yearsMappedToObjectYearsMap,monthInt, year, HorizontalBarChartActivity.this, dataSets);
+            }
+            if (dataSets != null) {
+                data.setValueFormatter(new PercentFormatter());//this adds % in the
+                // percentage
+            }
+            chart.invalidate();
+            stateSwitchButton = true;//this is to know that the switch is ON
+        } else {
+            //here i revert back to the actual numbers
+            if (!valueSet1.isEmpty()) {
+                util.revertToNumbersAndModifyYAxis(yearsMappedToObjectYearsMap, monthInt, year, HorizontalBarChartActivity.this, dataSets);
+            }
+            if (dataSets != null) {
+                data.setValueFormatter(new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float v, Entry entry, int i,
+                                                    ViewPortHandler viewPortHandler) {
+                        return Float.toString(v);//this returns the value as a float as
+                        // it used to be
+                    }
+                });
+            }
+            chart.invalidate();
+            stateSwitchButton = false;//this is to know that the switch is OFF
+        }
+    }
 
 
     public HorizontalBarChart getChart() {
@@ -223,11 +227,11 @@ public class HorizontalBarChartActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
-            case android.R.id.home: finish();
-                return true;
+        int id = item.getItemId();// This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
+        if (id == android.R.id.home) {
+            finish();
+            return true;
         }
-        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

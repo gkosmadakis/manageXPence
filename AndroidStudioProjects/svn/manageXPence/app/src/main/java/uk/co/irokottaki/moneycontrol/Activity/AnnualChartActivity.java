@@ -6,10 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -106,12 +105,7 @@ public class AnnualChartActivity extends AppCompatActivity {
 
         //Circle Button
         TextView circleTextview = (TextView) findViewById(R.id.circleTextview);
-        if(Build.VERSION.SDK_INT >= 24) {
-            circleTextview.setText(Html.fromHtml("<font color=#0000FF> <u> Set Income Circle", 26));
-        }
-        else {
-            circleTextview.setText(Html.fromHtml("<font color=#0000FF> <u> Set Income Circle"));
-        }
+        circleTextview.setTextColor(Color.parseColor("#0000FF"));
 
         //Year Label
         final TextView yearView = (TextView) findViewById(R.id.yearlabel);
@@ -119,9 +113,7 @@ public class AnnualChartActivity extends AppCompatActivity {
         //Bottom Label for each expense in a year
         TextView specificexpenseForYear = (TextView) findViewById(R.id.specificExpensesOfYear);
         specificexpenseForYear.setMovementMethod(LinkMovementMethod.getInstance());
-        specificexpenseForYear.setText(Html.fromHtml("<font color=#0000FF> <u>Hom much do I spend" +
-                " on a year for each expense?" +
-                "</u></font>"));
+        specificexpenseForYear.setTextColor(Color.parseColor("#0000FF"));
 
         util.setXYAxisForChart(annualChart);
         Calendar calendar = Calendar.getInstance();
@@ -334,11 +326,11 @@ public class AnnualChartActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) { // This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
-            case android.R.id.home: finish();
-                return true;
+        int id = item.getItemId();// This is added to avoid the call on the onCreate method of MainActivity because it will read again the file and iterate the map
+        if (id == android.R.id.home) {
+            finish();
+            return true;
         }
-        int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

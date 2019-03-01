@@ -1,25 +1,26 @@
 package uk.co.irokottaki.moneycontrol.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 
 import uk.co.irokottaki.moneycontrol.activity.BudgetActivity;
 import uk.co.irokottaki.moneycontrol.activity.MainActivity;
@@ -29,21 +30,28 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.APRIL;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.AUGUST;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.BUDGETVALUE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.CLOSE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.COUNCIL_TAX;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.DATE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.DECEMBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DESCRIPTIONS_FILE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.ENTERTAINMENT;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.FEBRUARY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_BILLS;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_RENT;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.INCOME;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.JANUARY;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.JULY;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.JUNE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.MARCH;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.MAY;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MORTGAGE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.NOVEMBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.OCTOBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.SEPTEMBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.SHOPPING;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SUPERMARKET;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.TRAVEL;
 
 public class MainActivityUtil {
     private Context context;
@@ -56,7 +64,6 @@ public class MainActivityUtil {
     private String expense;
     private String description;
     private String date;
-    private ArrayList datesTheRepeatingExpenseOccurs;
 
 
     public MainActivityUtil(Context context){
@@ -64,7 +71,7 @@ public class MainActivityUtil {
         this.context = context;
     }
 
-    public double processBalance(EditText incomeField, HashMap<String, AnyYear> yearsMappedToObjectYearsMap, boolean isPaymentCircleSet, String currentMonth, int year) {
+    public double processBalance(EditText incomeField, Map<String, AnyYear> yearsMappedToObjectYearsMap, boolean isPaymentCircleSet, String currentMonth, int year) {
 
         balance = 0.0;
 
@@ -75,90 +82,18 @@ public class MainActivityUtil {
             monthSum = 0.0;
             if (currentYear != null) {
 
-                if (currentMonth.equals(JANUARY)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountJan();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountJan());
-                    }
-                }
-                if (currentMonth.equals(FEBRUARY)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountFeb();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountFeb());
-                    }
-                }
-                if (currentMonth.equals(MARCH)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountMar();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountMar());
-                    }
-                }
-                if (currentMonth.equals(APRIL)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountApr();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountApr());
-                    }
-                }
-                if (currentMonth.equals(MAY)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountMay();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountMay());
-                    }
-                }
-                if (currentMonth.equals(JUNE)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountJun();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountJun());
-                    }
-                }
-                if (currentMonth.equals(JULY)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountJul();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountJul());
-                    }
-                }
-                if (currentMonth.equals(AUGUST)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountAug();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountAug());
-                    }
-                }
-                if (currentMonth.equals(SEPTEMBER)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountSep();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountSep());
-                    }
-                }
-                if (currentMonth.equals(OCTOBER)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountOct();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountOct());
-                    }
-                }
-                if (currentMonth.equals(NOVEMBER)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountNov();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountNov());
-                    }
-                }
-                if (currentMonth.equals(DECEMBER)) {
-                    if (isPaymentCircleSet) {
-                        monthSum = currentYear.getYear().getAmountDec();
-                    } else {
-                        sumExpensesForBalance(currentYear.getYear().getArrayOfamountDec());
-                    }
-                }
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, JANUARY, currentYear.getYear().getAmountJan(), currentYear.getYear().getArrayOfamountJan());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, FEBRUARY, currentYear.getYear().getAmountFeb(), currentYear.getYear().getArrayOfamountFeb());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, MARCH, currentYear.getYear().getAmountMar(), currentYear.getYear().getArrayOfamountMar());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, APRIL, currentYear.getYear().getAmountApr(), currentYear.getYear().getArrayOfamountApr());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, MAY, currentYear.getYear().getAmountMay(), currentYear.getYear().getArrayOfamountMay());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, JUNE, currentYear.getYear().getAmountJun(), currentYear.getYear().getArrayOfamountJun());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, JULY, currentYear.getYear().getAmountJul(), currentYear.getYear().getArrayOfamountJul());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, AUGUST, currentYear.getYear().getAmountAug(), currentYear.getYear().getArrayOfamountAug());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, SEPTEMBER, currentYear.getYear().getAmountSep(), currentYear.getYear().getArrayOfamountSep());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, OCTOBER, currentYear.getYear().getAmountOct(), currentYear.getYear().getArrayOfamountOct());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, NOVEMBER, currentYear.getYear().getAmountNov(), currentYear.getYear().getArrayOfamountNov());
+                processBalanceForMonth(isPaymentCircleSet, currentMonth, DECEMBER, currentYear.getYear().getAmountDec(), currentYear.getYear().getArrayOfamountDec());
             }
             // this is to avoid invalid double thrown on initial state where income is not added
             // yet by the user
@@ -174,7 +109,17 @@ public class MainActivityUtil {
         return balance;
     }
 
-    private void sumExpensesForBalance(ArrayList<Float> arrayOfamount) {
+    private void processBalanceForMonth(boolean isPaymentCircleSet, String currentMonth, String month, Float amountForMonth, List<Float> arrayOfamount) {
+        if (currentMonth.equals(month)) {
+            if (isPaymentCircleSet) {
+                monthSum = amountForMonth;
+            } else {
+                sumExpensesForBalance(arrayOfamount);
+            }
+        }
+    }
+
+    private void sumExpensesForBalance(List<Float> arrayOfamount) {
         Float monthSumFloat = 0f;
 
         for (int i = 0; i < arrayOfamount.size(); i++) {
@@ -184,7 +129,7 @@ public class MainActivityUtil {
         monthSum = monthSumFloat;
     }
 
-    public double checkBudgetWarning(HashMap<String, AnyYear> yearsMappedToObjectYearsMap, String currentMonth, int year) {
+    public double checkBudgetWarning(Map<String, AnyYear> yearsMappedToObjectYearsMap, String currentMonth, int year) {
 
         int sum = 0;
         //get the budget value as stored in Preferences in Budget Activity
@@ -197,81 +142,30 @@ public class MainActivityUtil {
         //1. Check if the user has enabled this feature from settings.2.if yes find the expenses
         // that have been added so far
         if (progressValue > 0) {
-            if (currentMonth.equals(JANUARY)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountJan().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountJan().get(i);
-                }
-
-            }
-            if (currentMonth.equals(FEBRUARY)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountFeb().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountFeb().get(i);
-                }
-
-            }
-            if (currentMonth.equals(MARCH)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountMar().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountMar().get(i);
-                }
-
-            }
-            if (currentMonth.equals(APRIL)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountApr().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountApr().get(i);
-                }
-
-            }
-            if (currentMonth.equals(MAY)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountMay().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountMay().get(i);
-                }
-
-            }
-            if (currentMonth.equals(JUNE)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountJun().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountJun().get(i);
-                }
-
-            }
-            if (currentMonth.equals(JULY)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountJul().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountJul().get(i);
-                }
-
-            }
-            if (currentMonth.equals(AUGUST)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountAug().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountAug().get(i);
-                }
-
-            }
-            if (currentMonth.equals(SEPTEMBER)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountSep().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountSep().get(i);
-                }
-
-            }
-            if (currentMonth.equals(OCTOBER)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountOct().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountOct().get(i);
-                }
-
-            }
-            if (currentMonth.equals(NOVEMBER)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountNov().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountNov().get(i);
-                }
-
-            }
-            if (currentMonth.equals(DECEMBER)) {
-                for (int i = 0; i < currentYear.getYear().getArrayOfamountDec().size(); i++) {
-                    sum += currentYear.getYear().getArrayOfamountDec().get(i);
-                }
-
-            }
+            sum = checkBudgetForMonth(currentMonth, sum, JANUARY, currentYear.getYear().getArrayOfamountJan());
+            sum = checkBudgetForMonth(currentMonth, sum, FEBRUARY, currentYear.getYear().getArrayOfamountFeb());
+            sum = checkBudgetForMonth(currentMonth, sum, MARCH, currentYear.getYear().getArrayOfamountMar());
+            sum = checkBudgetForMonth(currentMonth, sum, APRIL, currentYear.getYear().getArrayOfamountApr());
+            sum = checkBudgetForMonth(currentMonth, sum, MAY, currentYear.getYear().getArrayOfamountMay());
+            sum = checkBudgetForMonth(currentMonth, sum, JUNE, currentYear.getYear().getArrayOfamountJun());
+            sum = checkBudgetForMonth(currentMonth, sum, JULY, currentYear.getYear().getArrayOfamountJul());
+            sum = checkBudgetForMonth(currentMonth, sum, AUGUST, currentYear.getYear().getArrayOfamountAug());
+            sum = checkBudgetForMonth(currentMonth, sum, SEPTEMBER, currentYear.getYear().getArrayOfamountSep());
+            sum = checkBudgetForMonth(currentMonth, sum, OCTOBER, currentYear.getYear().getArrayOfamountOct());
+            sum = checkBudgetForMonth(currentMonth, sum, NOVEMBER, currentYear.getYear().getArrayOfamountNov());
+            sum = checkBudgetForMonth(currentMonth, sum, DECEMBER, currentYear.getYear().getArrayOfamountDec());
             percentWarning = (double) sum / (double) progressValue;
         }
         return percentWarning;
+    }
+
+    private int checkBudgetForMonth(String currentMonth, int sum, String month, List<Float> arrayOfamount) {
+        if (currentMonth.equals(month)) {
+            for (int i = 0; i < arrayOfamount.size(); i++) {
+                sum += arrayOfamount.get(i);
+            }
+        }
+        return sum;
     }
 
     public boolean tokenExists() {
@@ -502,7 +396,7 @@ public class MainActivityUtil {
         return dateStringFound;
     }
 
-    public boolean processExpenseRepeatingAmount(String amount, String description, CheckBox repeatCheckBox, ArrayList datesTheRepeatingExpenseOccurs, Activity activity) {
+    public boolean processExpenseRepeatingAmount(String amount, String description, CheckBox repeatCheckBox, List datesTheRepeatingExpenseOccurs, Activity activity) {
 
         boolean expenseIsAdded = false;
 
@@ -517,6 +411,67 @@ public class MainActivityUtil {
             }
         }
         return expenseIsAdded;
+    }
+
+    public List populateDatesTheRepeatingExpenseOccursList(int yearToEnd, int monthToEnd, int dayToEnd, int yearX, int monthX) {
+
+        ArrayList datesTheRepeatingExpenseOccurs = new ArrayList();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(yearToEnd, monthToEnd, dayToEnd);
+
+        SimpleDateFormat formatForEndDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        String dateToEndRepeatingExpense = formatForEndDate.format(calendar.getTime());
+
+        Log.i("End Date Selected: ",dateToEndRepeatingExpense);
+        /* Iterate over from the ending year selected by user. if monthToEnd is greater than the current month then add it to the list */
+        while (yearToEnd >= yearX) {
+
+            if (monthToEnd > monthX) {
+                Date result = calendar.getTime();
+                datesTheRepeatingExpenseOccurs.add(result);
+
+                calendar.add(Calendar.MONTH, -1);
+
+                monthToEnd--;
+            }
+            else{
+                yearToEnd--;
+                /*if monthToEnd is equal to current month then i decrease the year by one and set the monthToEnd to 13 so that it will go to the first if
+                * for the rest of the months. When it finishes yearToEnd will be decreased again by one and will exit the while loop.*/
+                monthToEnd = 12+monthX;
+            }
+        }
+        Collections.reverse(datesTheRepeatingExpenseOccurs);
+
+        return datesTheRepeatingExpenseOccurs;
+    }
+
+    @TargetApi(19)
+    public List readDescriptionsFile() {
+
+        ArrayList itemsAddedByUser = new ArrayList();
+        itemsAddedByUser.add(HOUSE_RENT);
+        itemsAddedByUser.add(SHOPPING);
+        itemsAddedByUser.add(SUPERMARKET);
+        itemsAddedByUser.add(TRAVEL);
+        itemsAddedByUser.add(MORTGAGE);
+        itemsAddedByUser.add(COUNCIL_TAX);
+        itemsAddedByUser.add(HOUSE_BILLS);
+        itemsAddedByUser.add(ENTERTAINMENT);
+
+        try (Scanner in = new Scanner(context.openFileInput(DESCRIPTIONS_FILE));){
+
+
+            while (in.hasNextLine()) {
+                String descriptionItem = in.nextLine();
+                itemsAddedByUser.add(descriptionItem);
+            }
+
+        } catch (IOException e) {
+            Log.e("IOException", e.getMessage());
+        }
+
+    return itemsAddedByUser;
     }
 
     public double getBalance() {

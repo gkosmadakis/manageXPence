@@ -864,17 +864,6 @@ public class MainActivityChartExpensesTabTest {
                         isDisplayed()));
         appCompatImageButton34.perform(click());
 
-        ViewInteraction switch_11 = onView(
-                allOf(withId(R.id.switchButton), withText("% or £"),
-                        childAtPosition(
-                                allOf(withId(R.id.barChartView),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                5),
-                        isDisplayed()));
-        switch_11.perform(click());
-
         ViewInteraction appCompatImageButton35 = onView(
                 allOf(withId(R.id.arrowRight),
                         childAtPosition(

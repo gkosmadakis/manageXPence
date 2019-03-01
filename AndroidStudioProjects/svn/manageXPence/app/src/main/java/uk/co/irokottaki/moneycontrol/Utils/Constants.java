@@ -99,4 +99,9 @@ public class Constants {
     public static final String BUDGET_WARNING = "Budget Warning!";
     public static final String SAVE = "Save";
     public static final String BALANCE = "Balance: ";
+    public static final String ERROR_OCCURED_DURING_PURCHASE = "Error occured during purchase ";
+    public static final String EXCEPTION = "Exception ";
+    public static final String PARSE_EXCEPTION = "ParseException ";
+    public static final String REMINDER_TO_TURN_OFF_NOTIFICATIONS = "*** Remember you can always turn off these notifications from the Settings.";
+    public static final String IOEXCEPTION = "IOException ";
 }

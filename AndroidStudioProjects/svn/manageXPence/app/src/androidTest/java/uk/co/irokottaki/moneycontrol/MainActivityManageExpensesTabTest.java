@@ -549,7 +549,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText3.perform(replaceText("700"), closeSoftKeyboard());
@@ -560,7 +560,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout2),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                3)),
+                                                4)),
                                 1),
                         isDisplayed()));
         appCompatSpinner3.perform(click());
@@ -578,7 +578,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout3),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                4)),
+                                                5)),
                                 0),
                         isDisplayed()));
         appCompatButton10.perform(click());
@@ -599,7 +599,7 @@ public class MainActivityManageExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton12.perform(click());
 
@@ -618,7 +618,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText4.perform(replaceText("50"));
@@ -629,7 +629,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText5.perform(closeSoftKeyboard());
@@ -640,7 +640,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout2),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                3)),
+                                                4)),
                                 1),
                         isDisplayed()));
         appCompatSpinner4.perform(click());
@@ -659,7 +659,7 @@ public class MainActivityManageExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton13.perform(click());
 
@@ -678,7 +678,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText6.perform(replaceText("151"));
@@ -689,7 +689,7 @@ public class MainActivityManageExpensesTabTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withId(R.id.addExpenses),
-                                                2)),
+                                                3)),
                                 1),
                         isDisplayed()));
         appCompatEditText7.perform(closeSoftKeyboard());
@@ -701,7 +701,7 @@ public class MainActivityManageExpensesTabTest {
                                         childAtPosition(
                                                 withId(android.R.id.tabcontent),
                                                 0)),
-                                5),
+                                6),
                         isDisplayed()));
         appCompatButton14.perform(click());
 

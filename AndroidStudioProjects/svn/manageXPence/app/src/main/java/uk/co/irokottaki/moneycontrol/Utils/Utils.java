@@ -198,7 +198,7 @@ public class Utils {
                     // margin that is set on the xml view file
                     imageView.setLayoutParams(marginParams);
                 }
-                layout.setBackgroundDrawable(imageView.getDrawable());
+                layout.setBackground(imageView.getDrawable());
             } else {
                 layout.setBackground(imageView.getDrawable());
             }

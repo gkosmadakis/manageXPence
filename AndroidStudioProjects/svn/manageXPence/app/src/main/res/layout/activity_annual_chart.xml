@@ -55,7 +55,7 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:text="@string/textview"
+        android:text="@string/set_income_circle"
         android:id="@+id/circleTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:text="@string/textview"
+        android:text="@string/year_spending_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -1,5 +1,6 @@
 package uk.co.irokottaki.moneycontrol.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -41,9 +42,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
 
 import uk.co.irokottaki.moneycontrol.R;
@@ -98,14 +101,14 @@ public class ChartsUtil {
     private AnyYear objectYear;
     private Context context;
     /*This map has all the data needed from the file. The first  key String on the map is the year, the second map contains the months as key,
-    * and another map which contains a set with the descriptions and an arraylist with the expense amounts. An example could be
+    * and another map which contains a set with the descriptions and an List with the expense amounts. An example could be
     * 2018=> 11=> Key: Supermarket-> 25,20,11
 				  Key: Shopping-> 10,20
 				  Key: House Rent-> 265
 	  20=> 05=> Key: Travel-> 250,200
 	              Key: Mortgage-> 400
 	              Key: Shopping-> 35, 55,100 */
-    private HashMap<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearsMappedToMonthsWithAmountsMap;
+    private HashMap<String, TreeMap<String, LinkedHashMap<String, List<Float>>>> yearsMappedToMonthsWithAmountsMap;
     private TreeMap<Integer, Map<Integer, String>> yearsMappedToMonthsWithFileLines;
     private StringBuilder allLinesInFile;
     private HashMap<String, AnyYear> yearsMappedToObjectYearsMap;
@@ -115,7 +118,8 @@ public class ChartsUtil {
         this.context = context;
     }
 
-    public HashMap<String,AnyYear> readTheFile() {
+    @TargetApi(19)
+    public Map<String,AnyYear> readTheFile() {
 
         Float amount;
         String desc;
@@ -124,16 +128,15 @@ public class ChartsUtil {
         objectYear = new AnyYear(yearToSet);
         yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         yearsMappedToMonthsWithAmountsMap = new HashMap<>();
-        Scanner in = null;
-        try {
 
-            in = new Scanner(context.openFileInput(EXPENSES_FILE));
+        try (Scanner in = new Scanner(context.openFileInput(EXPENSES_FILE));){
+
             int lineIndex = 0;//this is to count the lines
 
-            TreeMap tempFirstMap = new TreeMap<Integer, Map<String, ArrayList<String>>>();//to use lastKey to find the higher month
-            LinkedHashMap tempSecondMap = new LinkedHashMap<String, ArrayList<Float>>();//to maintain insertion order
-            ArrayList tempList = new ArrayList<Float>();
-            LinkedHashSet<String> descriptionsSet = new LinkedHashSet<>();
+            TreeMap tempFirstMap = new TreeMap<Integer, Map<String, List<String>>>();//to use lastKey to find the higher month
+            LinkedHashMap tempSecondMap = new LinkedHashMap<String, List<Float>>();//to maintain insertion order
+            List tempList = new ArrayList();
+            Set<String> descriptionsSet = new LinkedHashSet<>();
             yearsMappedToMonthsWithFileLines = new TreeMap<>();
             TreeMap tempFileLinesMap = new TreeMap<Integer, String>();
             StringBuilder fileLines = new StringBuilder();
@@ -153,7 +156,7 @@ public class ChartsUtil {
                     String extractYearFromDate = date.substring(date.lastIndexOf('/') + 1, date
                             .length());
                     /*Here I store the data to the map, key is the year, value is another map, the tempMap with key as the month
-                     * and value an arraylist with the amounts of this month*/
+                     * and value an List with the amounts of this month*/
                     if (yearsMappedToMonthsWithAmountsMap.containsKey(extractYearFromDate)) {
                         /*if the key = year is in the map then get the tempFirstMap*/
                         tempFirstMap = yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
@@ -165,8 +168,8 @@ public class ChartsUtil {
                             tempSecondMap = (LinkedHashMap) tempFirstMap.get(Integer.parseInt(extractMonthFromDate));
 
                             if(tempSecondMap.get(desc) != null) {
-                                tempList = (ArrayList) tempSecondMap.get(desc);//tempList size is always 1
-                                descriptionsSet = new LinkedHashSet();
+                                tempList = (List) tempSecondMap.get(desc);//tempList size is always 1
+                                descriptionsSet = new LinkedHashSet<>();
                                 descriptionsSet.add(desc);//descriptionsSet size is always 1
                                 addAmountsWithDuplicates(descriptionsSet,desc, String.valueOf(amount), tempList);
                             }
@@ -181,7 +184,7 @@ public class ChartsUtil {
                             tempFirstMap = yearsMappedToMonthsWithAmountsMap.get(extractYearFromDate);
                             tempSecondMap = new LinkedHashMap();
                             descriptionsSet = new LinkedHashSet<>();
-                            tempList = new ArrayList<String>();
+                            tempList = new ArrayList();
 
                             tempList.add(amount);
                             descriptionsSet.add(desc);
@@ -193,7 +196,7 @@ public class ChartsUtil {
                         tempFirstMap = new TreeMap();
                         tempSecondMap = new LinkedHashMap();
                         descriptionsSet = new LinkedHashSet<>();
-                        tempList = new ArrayList<String>();
+                        tempList = new ArrayList();
 
                         tempList.add(amount);
                         descriptionsSet.add(desc);
@@ -231,12 +234,6 @@ public class ChartsUtil {
         } catch (FileNotFoundException e) {
             Log.e("File not found ", e.getMessage());
         }
-        finally {
-
-                if(in != null) {
-                    in.close();
-                }
-        }
 
         /*Call the method to iterate the map*/
         yearsMappedToObjectYearsMap = new HashMap<>();
@@ -245,8 +242,8 @@ public class ChartsUtil {
         return yearsMappedToObjectYearsMap;
     }
 
-    private static void addAmountsWithDuplicates(LinkedHashSet descriptions, String desc, String
-            amount, ArrayList<Float> arrayAmount) {
+    private static void addAmountsWithDuplicates(Set descriptions, String desc, String
+            amount, List<Float> arrayAmount) {
         Float amountWithDuplicate;
         if (descriptions.contains(desc)) {
             int i = 0;
@@ -285,23 +282,23 @@ public class ChartsUtil {
 
     private HashMap iterateMainMap() {
 
-        for (Map.Entry<String, TreeMap<String, LinkedHashMap<String, ArrayList<Float>>>> yearEntry : yearsMappedToMonthsWithAmountsMap.entrySet()) {
+        for (Map.Entry<String, TreeMap<String, LinkedHashMap<String, List<Float>>>> yearEntry : yearsMappedToMonthsWithAmountsMap.entrySet()) {
             String year = yearEntry.getKey();
             Log.e("Year from file is ", year);
             objectYear = new AnyYear(yearToSet);
 
             yearToSet = new YearToSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
-            for (Map.Entry<String, LinkedHashMap<String, ArrayList<Float>>> monthEntry : yearEntry.getValue().entrySet()) {
+            for (Map.Entry<String, LinkedHashMap<String, List<Float>>> monthEntry : yearEntry.getValue().entrySet()) {
                 String month = String.valueOf(monthEntry.getKey());
                 Log.e("Month from file is ", month);
 
-                LinkedHashMap<String, ArrayList<Float>> secondMap = monthEntry.getValue();
-                LinkedHashSet descriptionsSet = new LinkedHashSet<String>(secondMap.keySet());
+                LinkedHashMap<String, List<Float>> secondMap = monthEntry.getValue();
+                Set descriptionsSet = new LinkedHashSet(secondMap.keySet());
 
                 Log.e("Description in file ", descriptionsSet.toString());
-                ArrayList amounts = new ArrayList<Float>();
-                for (ArrayList<Float> listFloats : secondMap.values()) {
+                List amounts = new ArrayList();
+                for (List<Float> listFloats : secondMap.values()) {
                     for(Float amountFloat : listFloats) {
                         amounts.add(amountFloat);
                     }
@@ -315,7 +312,7 @@ public class ChartsUtil {
         return yearsMappedToObjectYearsMap;
     }
 
-    private void processAmountsForEveryMonth(String month, ArrayList<Float> amounts, AnyYear obj, LinkedHashSet set, String fileLine){
+    private void processAmountsForEveryMonth(String month, List<Float> amounts, AnyYear obj, Set set, String fileLine){
 
         if (month.equals(ONE)) {
             Float totalExpensesForMonth = 0.0f;
@@ -414,14 +411,14 @@ public class ChartsUtil {
 
         String [] monthData = new String[]{JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER,
                 OCTOBER, NOVEMBER, DECEMBER};
-        ArrayList<String> xVals = new ArrayList<>();
+        List<String> xVals = new ArrayList<>();
         for (String aMonthData : monthData) {
             xVals.add((aMonthData).substring(0, 3));
         }
 
-        ArrayList<Entry> yVals = new ArrayList<>();
+        List<Entry> yVals = new ArrayList<>();
 
-        ArrayList<Float> addAlltheMonths = new ArrayList<>();
+        List<Float> addAlltheMonths = new ArrayList<>();
         addAlltheMonths.add(jan);
         addAlltheMonths.add(feb);
         addAlltheMonths.add(mar);
@@ -455,7 +452,7 @@ public class ChartsUtil {
         set1.setFillAlpha(65);
         set1.setFillColor(Color.BLACK);
 
-        ArrayList<LineDataSet> dataSets = new ArrayList<>();
+        List<LineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
@@ -485,7 +482,7 @@ public class ChartsUtil {
         mChart.getAxisRight().setEnabled(false);
     }
 
-    public void casesToShowExpensesForMonth(HashMap<String, AnyYear> yearsMappedToObjectYearsMap,int monthInt, int yearRequested, Activity activity) {
+    public void casesToShowExpensesForMonth(Map<String, AnyYear> yearsMappedToObjectYearsMap,int monthInt, int yearRequested, Activity activity) {
 
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -540,12 +537,15 @@ public class ChartsUtil {
                     showExpensesForMonth(DECEMBER, year.getYear().getDescriptionsForDec(),
                             year.getYear().getArrayOfamountDec(), activity, yearRequested, yearsMappedToObjectYearsMap);
                     break;
+                 default:
+                     Log.i("CaseToShowExpense Month", String.valueOf(monthInt));
+                     break;
             }// end of switch
         }
     }
 
-    private void showExpensesForMonth(String month, LinkedHashSet descriptions, ArrayList<Float>
-            arrayAmount, Activity activity, int yearRequested, HashMap<String,AnyYear> yearsMappedToObjectYearsMap) {
+    private void showExpensesForMonth(String month, Set descriptions, List<Float>
+            arrayAmount, Activity activity, int yearRequested, Map<String,AnyYear> yearsMappedToObjectYearsMap) {
 
         if (activity instanceof ChartActivity) {
 
@@ -575,7 +575,7 @@ public class ChartsUtil {
         modifyData(activity,yearsMappedToObjectYearsMap);
     }
 
-    private void modifyData(Activity activity,HashMap<String,AnyYear>yearsMappedToObjectYearsMap) {
+    private void modifyData(Activity activity,Map<String,AnyYear>yearsMappedToObjectYearsMap) {
 
         if (activity instanceof ChartActivity) {
             addColors(activity);
@@ -659,7 +659,7 @@ public class ChartsUtil {
 
     private void addColors(Activity activity) {
         //add many colors
-        ArrayList<Integer> colors = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
         for (int c : ColorTemplate.JOYFUL_COLORS)
@@ -675,7 +675,7 @@ public class ChartsUtil {
         ((ChartActivity) activity).getDataSet().setColors(colors);
     }
 
-    public void calculatePercentagesAndModifyYAxis(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int monthInt, int yearRequested, Activity activity, ArrayList<BarDataSet> dataSets) {
+    public void calculatePercentagesAndModifyYAxis(Map<String,AnyYear> yearsMappedToObjectYearsMap, int monthInt, int yearRequested, Activity activity, List<BarDataSet> dataSets) {
 
         AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -729,10 +729,13 @@ public class ChartsUtil {
                 calculatePercentages(year.getYear().getArrayOfamountDec(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
+            default:
+                Log.i("Calculate%&Modify Month", String.valueOf(monthInt));
+                break;
         }
     }
 
-    private void modifyYAxis(Activity activity, ArrayList<BarDataSet> dataSets) {
+    private void modifyYAxis(Activity activity, List<BarDataSet> dataSets) {
         ((HorizontalBarChartActivity) activity).setData(new BarData(((HorizontalBarChartActivity) activity).getxAxis(), dataSets));
         if (dataSets != null) {
             ((HorizontalBarChartActivity) activity).getChart().setData(((HorizontalBarChartActivity) activity).getData());
@@ -741,7 +744,7 @@ public class ChartsUtil {
         }
     }
 
-    private void calculatePercentages(ArrayList<Float> arrayOfamount, Activity activity) {
+    private void calculatePercentages(List<Float> arrayOfamount, Activity activity) {
 
         int total = 0;
         double percentage = 0;
@@ -758,7 +761,7 @@ public class ChartsUtil {
         }
     }
 
-    public void revertToNumbersAndModifyYAxis(HashMap<String, AnyYear> yearsMappedToObjectYearsMap,int monthInt, int yearRequested, Activity activity, ArrayList<BarDataSet> dataSets) {
+    public void revertToNumbersAndModifyYAxis(Map<String, AnyYear> yearsMappedToObjectYearsMap,int monthInt, int yearRequested, Activity activity, List<BarDataSet> dataSets) {
 
         AnyYear year =  yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -812,10 +815,13 @@ public class ChartsUtil {
                 revertPercentagesToNumbers(year.getYear().getArrayOfamountDec(), activity);
                 modifyYAxis(activity, dataSets);
                 break;
+                default:
+                Log.i("revert2Num&Modify Month", String.valueOf(monthInt));
+                    break;
         }
     }
 
-    private void revertPercentagesToNumbers(ArrayList<Float> arrayOfamount, Activity activity) {
+    private void revertPercentagesToNumbers(List<Float> arrayOfamount, Activity activity) {
 
         for (int j = 0; j < arrayOfamount.size(); j++) {
             ((HorizontalBarChartActivity) activity).getValueSet1().set(j, new BarEntry(arrayOfamount.get(j), j));//i replace all the items
@@ -823,7 +829,7 @@ public class ChartsUtil {
         }
     }
 
-    public void calculateSelectedExpenses(HashMap<String,AnyYear>yearsMappedToObjectYearsMap,int yearRequested, Spinner expensesList, Activity activity) {
+    public void calculateSelectedExpenses(Map<String,AnyYear>yearsMappedToObjectYearsMap,int yearRequested, Spinner expensesList, Activity activity) {
 
         String selectedExpense = expensesList.getSelectedItem().toString();
 
@@ -856,8 +862,8 @@ public class ChartsUtil {
 
     }
 
-    private void calculateExpensesByMonth(LinkedHashSet descriptions, String selectedExpense,
-                                          ArrayList<Float> arrayAmount, Activity activity) {
+    private void calculateExpensesByMonth(Set descriptions, String selectedExpense,
+                                          List<Float> arrayAmount, Activity activity) {
 
         Iterator itr = descriptions.iterator();
         int i = 0;
@@ -870,6 +876,7 @@ public class ChartsUtil {
         }
     }
 
+    @TargetApi(19)
     @SuppressWarnings("StringConcatenationInLoop")
     public void readTheFileToRecalculateMonthExpensesDueToIncomeChangeCircle(int salaryDay,
                                                                              String currentMonth, YearToSet obj2018)
@@ -877,11 +884,11 @@ public class ChartsUtil {
 
         String amount = "";
         String date = "";
-        BufferedReader br = null;
-        try {
 
-            br = new BufferedReader(new InputStreamReader(new FileInputStream("/data/data/uk.co.irokottaki" +
-                    ".moneycontrol/files/expenses.txt")));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("/data/data/uk.co.irokottaki" +
+                ".moneycontrol/files/expenses.txt")));){
+
+
             String line = "";
             int lineIndex = 0;//this is to count the lines
             while ((line = br.readLine()) != null) {
@@ -916,33 +923,7 @@ public class ChartsUtil {
                         continue;
                     }
 
-                    if (salaryDay <= extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt - 1))) {
-                            /*if the salary day set by the user is before the day of the expense
-                            made and the expense made in the
-                            previous month then the expense is added in the current month*/
-                        addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt, obj2018);
-                    }
-                            /*else if the salary day set by the user is after the day of the
-                            expense made and the expense made
-                            on the current month then the expense amount is added in the current
-                            month*/
-                    else if (salaryDay > extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt))) {
-
-                        addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt,obj2018);
-
-                    } else if (salaryDay <= extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt))) {
-                            /*if the day set by the user is before the day of the expense made
-                            and the expense made in the
-                            current month then the expense is added in the next month*/
-                        addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt + 1,obj2018);
-
-                    } else if (salaryDay > extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt - 1))) {
-                            /*if the day set by the user is after the day of the expense made and
-                             the expense made in the
-                            previous month then the expense is added in the previous month*/
-                        addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt - 1,obj2018);
-
-                    }
+                    checkExpenseDateAgainstSalaryDay(salaryDay, obj2018, amount, extractDayFromDateInt, extractMonthFromDate, monthInt);
                 }
             }
 
@@ -951,15 +932,36 @@ public class ChartsUtil {
         } catch (IOException e) {
             Log.e("IOException",e.getMessage());
         }
-        finally {
-            try {
+    }
 
-                if(br!=null) {
-                    br.close();
-                }
-            } catch (IOException e) {
-                Log.e("IOException", e.getMessage());
-            }
+    private void checkExpenseDateAgainstSalaryDay(int salaryDay, YearToSet obj2018, String amount, int extractDayFromDateInt, String extractMonthFromDate, int monthInt) {
+
+        if (salaryDay <= extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt - 1))) {
+                /*if the salary day set by the user is before the day of the expense
+                made and the expense made in the
+                previous month then the expense is added in the current month*/
+            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt, obj2018);
+        }
+                /*else if the salary day set by the user is after the day of the
+                expense made and the expense made
+                on the current month then the expense amount is added in the current
+                month*/
+        else if (salaryDay > extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt))) {
+
+            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt,obj2018);
+
+        } else if (salaryDay <= extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt))) {
+                /*if the day set by the user is before the day of the expense made
+                and the expense made in the
+                current month then the expense is added in the next month*/
+            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt + 1,obj2018);
+
+        } else if (salaryDay > extractDayFromDateInt && extractMonthFromDate.equals(String.valueOf(monthInt - 1))) {
+                /*if the day set by the user is after the day of the expense made and
+                 the expense made in the
+                previous month then the expense is added in the previous month*/
+            addAmountToCurrentOrNextMonth(Float.valueOf(amount), monthInt - 1,obj2018);
+
         }
     }
 
@@ -1003,11 +1005,14 @@ public class ChartsUtil {
             case 12:
                 obj2018.setAmountDec(obj2018.getAmountDec()+amount);
                 break;
+                default:
+                    Log.i("+Amnt2CurrntOrNxt Month",String.valueOf(monthInt));
+                    break;
         }
 
     }
 
-    public void switchMonthsReport(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int getMonthSelection, int yearRequested, Activity activity) {
+    public void switchMonthsReport(Map<String,AnyYear> yearsMappedToObjectYearsMap, int getMonthSelection, int yearRequested, Activity activity) {
 
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -1087,7 +1092,7 @@ public class ChartsUtil {
         return shortLine;
     }
 
-    public void switchAmountsBetweenYears(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, TextView yearView, Activity activity) {
+    public void switchAmountsBetweenYears(Map<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, TextView yearView, Activity activity) {
 
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -1104,7 +1109,7 @@ public class ChartsUtil {
            }
     }
 
-    public void setSavings(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, Activity activity) {
+    public void setSavings(Map<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, Activity activity) {
 
         AnyYear year = yearsMappedToObjectYearsMap.get(String.valueOf(yearRequested));
 
@@ -1142,9 +1147,9 @@ public class ChartsUtil {
     }
 
 
-    public void populateYearSpinnerAndSetCurrentYear(HashMap<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, Spinner yearList, Activity activity) {
+    public void populateYearSpinnerAndSetCurrentYear(Map<String,AnyYear> yearsMappedToObjectYearsMap, int yearRequested, Spinner yearList, Activity activity) {
 
-        ArrayList<String> yearsFoundInFile = new ArrayList<>();
+        List<String> yearsFoundInFile = new ArrayList<>();
 
         for (String yearKey : yearsMappedToObjectYearsMap.keySet()) {
 
@@ -1168,7 +1173,7 @@ public class ChartsUtil {
         yearList.setSelection(index);
     }
 
-    public void updateMapWithNewExpense(String amount, String descriptionText, String date, int currentYear, HashMap<String,AnyYear> yearsMappedToObjectYearsMap) {
+    public void updateMapWithNewExpense(String amount, String descriptionText, String date, int currentYear, Map<String,AnyYear> yearsMappedToObjectYearsMap) {
         // get the anyYear object
         AnyYear anyYear = yearsMappedToObjectYearsMap.get(String.valueOf(currentYear));
 
@@ -1183,8 +1188,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(ONE)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountJan() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForJan();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJan();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForJan();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJan();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1202,8 +1207,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(TWO)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountFeb() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForFeb();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountFeb();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForFeb();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountFeb();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1221,8 +1226,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(THREE)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountMar() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForMar();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountMar();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForMar();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountMar();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1240,8 +1245,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(FOUR)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountApr() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForApr();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountApr();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForApr();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountApr();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1259,8 +1264,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(FIVE)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountMay() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForMay();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountMay();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForMay();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountMay();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1278,8 +1283,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(SIX)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountJun() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForJun();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJun();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForJun();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJun();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1297,8 +1302,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(SEVEN)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountJul() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForJul();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJul();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForJul();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountJul();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1316,8 +1321,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(EIGHT)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountAug() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForAug();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountAug();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForAug();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountAug();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1335,8 +1340,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(NINE)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountSep() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForSep();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountSep();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForSep();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountSep();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1354,8 +1359,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(TEN)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountOct() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForOct();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountOct();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForOct();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountOct();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1373,8 +1378,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(ELEVEN)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountNov() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForNov();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountNov();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForNov();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountNov();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1392,8 +1397,8 @@ public class ChartsUtil {
             if (monthTheExpenseWritten.equals(TWELVE)) {
 
                 Float updatedTotalExpensesForMonth = anyYear.getYear().getAmountDec() + Float.valueOf(amount);
-                LinkedHashSet existingDescriptionsSet = anyYear.getYear().getDescriptionsForDec();
-                ArrayList<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountDec();
+                Set existingDescriptionsSet = anyYear.getYear().getDescriptionsForDec();
+                List<Float> updatedArrayOfAmounts = anyYear.getYear().getArrayOfamountDec();
                 //that means the expense added already exists in the set so it is a duplicate
                 if (existingDescriptionsSet.contains(descriptionText)) {
 
@@ -1416,7 +1421,7 @@ public class ChartsUtil {
 
         final Calendar calendar = Calendar.getInstance();
         Intent intent = activity.getIntent();
-        HashMap<String, AnyYear>  yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
+        HashMap<String, AnyYear>  yearsMappedToObjectYearsMapLocal = (HashMap<String, AnyYear> ) intent.getSerializableExtra("yearsMappedToObjectYearsMap");
 
         if (activity instanceof HorizontalBarChartActivity) {
             int monthInt = ((HorizontalBarChartActivity) activity).getMonthInt();
@@ -1437,13 +1442,11 @@ public class ChartsUtil {
                 ((HorizontalBarChartActivity) activity).setMonthInt(12);
             }
             //the expenses file is empty so just set Data to start the activity*//*
-            if (yearsMappedToObjectYearsMap.isEmpty()) {
-                BarData data = ((HorizontalBarChartActivity) activity).getData();
-                data = new BarData(((HorizontalBarChartActivity) activity).getxAxis(), ((HorizontalBarChartActivity) activity).getDataSets());
+            if (yearsMappedToObjectYearsMapLocal.isEmpty()) {
                 String currentMonth = String.format(Locale.UK, "%tB", calendar);
                 ((HorizontalBarChartActivity) activity).getMonthLabel().setText(currentMonth + " " + calendar.get(Calendar.YEAR));
             } else {
-                casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, ((HorizontalBarChartActivity) activity).getMonthInt(), ((HorizontalBarChartActivity) activity).getYearInt(), activity);
+                casesToShowExpensesForMonth(yearsMappedToObjectYearsMapLocal, ((HorizontalBarChartActivity) activity).getMonthInt(), ((HorizontalBarChartActivity) activity).getYearInt(), activity);
             }
         }
         else {
@@ -1466,13 +1469,11 @@ public class ChartsUtil {
                 ((ChartActivity) activity).setMonthInt(12);
             }
             //the expenses file is empty so just set Data to start the activity*//*
-            if (yearsMappedToObjectYearsMap.isEmpty()) {
-                PieData data = ((ChartActivity) activity).getData();
-                data = new PieData(((ChartActivity) activity).getxVals(), ((ChartActivity) activity).getDataSet());
+            if (yearsMappedToObjectYearsMapLocal.isEmpty()) {
                 String currentMonth = String.format(Locale.UK, "%tB", calendar);
                 ((ChartActivity) activity).getMonthLabel().setText(currentMonth + " " + calendar.get(Calendar.YEAR));
             } else {
-                casesToShowExpensesForMonth(yearsMappedToObjectYearsMap, ((ChartActivity) activity).getMonthInt(), ((ChartActivity) activity).getYearInt(), activity);
+                casesToShowExpensesForMonth(yearsMappedToObjectYearsMapLocal, ((ChartActivity) activity).getMonthInt(), ((ChartActivity) activity).getYearInt(), activity);
             }
         }
     }
@@ -1517,6 +1518,9 @@ public class ChartsUtil {
             case 12:
                 obj2018.setAmountDec(0f);
                 break;
+                default:
+                    Log.i("resetXpnseCurrent Month", String.valueOf(currentMonth));
+                    break;
         }
     }
 

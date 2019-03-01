@@ -21,6 +21,7 @@ import java.util.HashMap;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
+import uk.co.irokottaki.moneycontrol.utils.MainActivityUtil;
 import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
@@ -49,7 +50,8 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
 
         //retrieve the spinner items from main activity so whatever is populated in the main
         // activity to be displayed here as well
-        ArrayList itemsAddedByUser = MainActivity.getitemsAddedByUser();
+        MainActivityUtil mainUtil = new MainActivityUtil(this);
+        ArrayList itemsAddedByUser = (ArrayList) mainUtil.readDescriptionsFile();
         //retrieve the data for calculation
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_calculate_annual_expenses);
@@ -165,16 +167,11 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
         /*Pass the map back to AnnualChartActivity when user presses the back button on the top of activity*/
         Intent intent = new Intent();
         intent.putExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP, yearsMappedToObjectYearsMap);
         setResult(-1, intent);
         finish();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return true;
     }
