@@ -104,4 +104,5 @@ public class Constants {
     public static final String PARSE_EXCEPTION = "ParseException ";
     public static final String REMINDER_TO_TURN_OFF_NOTIFICATIONS = "*** Remember you can always turn off these notifications from the Settings.";
     public static final String IOEXCEPTION = "IOException ";
+    public static final String DATE_FORMAT = "dd/MM/yy";
 }

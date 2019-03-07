@@ -9,19 +9,28 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
+import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.activity.BudgetActivity;
 import uk.co.irokottaki.moneycontrol.activity.MainActivity;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
@@ -32,13 +41,16 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.BUDGETVALUE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.CLOSE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.COUNCIL_TAX;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.DATE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DATE_FORMAT;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.DECEMBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.DESCRIPTIONS_FILE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.ENTERTAINMENT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES_FILE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.FEBRUARY;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_BILLS;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_RENT;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.INCOME;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.IOEXCEPTION;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.JANUARY;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.JULY;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.JUNE;
@@ -47,6 +59,8 @@ import static uk.co.irokottaki.moneycontrol.utils.Constants.MAY;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.MORTGAGE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.NOVEMBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.OCTOBER;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.OK;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.PARSE_EXCEPTION;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.SEPTEMBER;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.SHOPPING;
@@ -294,24 +308,28 @@ public class MainActivityUtil {
                     dateFound = true;
                     break;
                 }
-                Log.e("Date Found in RECEIPT: ", date);
+                Log.i("Date Found in RECEIPT: ", date);
                 // get the date
                 //NEED TO MAKE SURE THAT THE WORDSFORDATES IS THE ACTUAL DATE AND NOT THE
                 // WORD DATE/
 
             } else {
-                String[] splitResponseToStrings = textResponseFromHaven.replaceAll("\n", "")
-                        .split(" ");
-                for (int j = 0; j < splitResponseToStrings.length; j++) {
-                    if (splitResponseToStrings[j].contains("/")) {
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy", Locale
-                                .US);
-                        splitResponseToStrings[j] = formatter.format(splitResponseToStrings[j]);
-                    }
-                    if (findTheDateFormat(splitResponseToStrings[j]) != null) {
-                        date = splitResponseToStrings[j];
-                    }
-                }
+                processWordForDatesBasedOnSlash(textResponseFromHaven);
+            }
+        }
+    }
+
+    private void processWordForDatesBasedOnSlash(String textResponseFromHaven) {
+        String[] splitResponseToStrings = textResponseFromHaven.replaceAll("\n", "")
+                .split(" ");
+        for (int j = 0; j < splitResponseToStrings.length; j++) {
+            if (splitResponseToStrings[j].contains("/")) {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy", Locale
+                        .US);
+                splitResponseToStrings[j] = formatter.format(splitResponseToStrings[j]);
+            }
+            if (findTheDateFormat(splitResponseToStrings[j]) != null) {
+                date = splitResponseToStrings[j];
             }
         }
     }
@@ -330,24 +348,28 @@ public class MainActivityUtil {
                 String amount = split[1].trim();
                 //check that the first character is number
                 if (Character.isDigit(amount.trim().charAt(0))) {
-                    int j = 0;
-                    for (int k = 0; k < amount.length(); k++) {
-                        Character charToCheck = amount.charAt(k);
-                        //if the character is not a number and is one of . - space
-                        if (!Character.isDigit(charToCheck) &&
-                                charToCheck.toString().equals(".") || charToCheck.toString()
-                                .equals("-")
-                                || charToCheck.toString().equals(" ")) {
-                            expense = expense.concat(".");
-                            j++;
-                        } else if (Character.isDigit(charToCheck)) {
-                            expense = expense.concat(String.valueOf(Character.getNumericValue(amount
-                                    .trim().charAt(j))));
-                            expenseFound = true;
-                            j++;
-                        }
-                    }
+                    processWordForExpenseDigit(amount);
                 }
+            }
+        }
+    }
+
+    private void processWordForExpenseDigit(String amount) {
+        int j = 0;
+        for (int k = 0; k < amount.length(); k++) {
+            Character charToCheck = amount.charAt(k);
+            //if the character is not a number and is one of . - space
+            if (!Character.isDigit(charToCheck) &&
+                    charToCheck.toString().equals(".") || charToCheck.toString()
+                    .equals("-")
+                    || charToCheck.toString().equals(" ")) {
+                expense = expense.concat(".");
+                j++;
+            } else if (Character.isDigit(charToCheck)) {
+                expense = expense.concat(String.valueOf(Character.getNumericValue(amount
+                        .trim().charAt(j))));
+                expenseFound = true;
+                j++;
             }
         }
     }
@@ -361,7 +383,7 @@ public class MainActivityUtil {
         dateFormatRegexps.put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
         dateFormatRegexps.put("^\\d{4}-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd");
         dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{4}$", "MM/dd/yyyy");
-        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{2}$", "dd/MM/yy");
+        dateFormatRegexps.put("^\\d{1,2}/\\d{1,2}/\\d{2}$", DATE_FORMAT);
         dateFormatRegexps.put("^\\d{4}/\\d{1,2}/\\d{1,2}$", "yyyy/MM/dd");
         dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}$", "dd MMM yyyy");
         dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}$", "dd MMMM yyyy");
@@ -382,10 +404,10 @@ public class MainActivityUtil {
         dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMM yyyy HH:mm:ss");
         dateFormatRegexps.put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMMM yyyy " + "HH:mm:ss");
 
-        for (String regexp : dateFormatRegexps.keySet()) {
-            if (dateString.toLowerCase(Locale.ENGLISH).matches(regexp)) {
+        for (Map.Entry<String, String> entry : dateFormatRegexps.entrySet()) {
+            if (dateString.toLowerCase(Locale.ENGLISH).matches(entry.getKey())) {
 
-                dateStringFound = dateFormatRegexps.get(regexp);
+                dateStringFound = dateFormatRegexps.get(entry.getKey());
                 break;
             } else {
                 dateStringFound = null;// unknown format so handle it in the call
@@ -461,18 +483,306 @@ public class MainActivityUtil {
 
         try (Scanner in = new Scanner(context.openFileInput(DESCRIPTIONS_FILE));){
 
-
             while (in.hasNextLine()) {
                 String descriptionItem = in.nextLine();
                 itemsAddedByUser.add(descriptionItem);
             }
 
         } catch (IOException e) {
-            Log.e("IOException", e.getMessage());
+            Log.e(IOEXCEPTION, e.getMessage());
         }
 
     return itemsAddedByUser;
     }
+
+    public List getDaysBetweenDates(Activity activity, String datesFromTo) {
+
+        ArrayList dates = new ArrayList<>();//the arraylist where i store the dates
+
+        if (validateDatesFromToField(activity, datesFromTo)) {
+            return dates;
+        }
+
+        String[] token = datesFromTo.split("-");//store dates splitted by -
+        String firstdate = token[0];//take the first date entered by the user
+        String lastdate = token[1];//take the second date entered by the user
+
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+        Date startdate;
+        startdate = null;
+
+        if (!firstdate.matches("^(3[01]|[12][0-9]|0[1-9])/(1[0-2]|0[1-9])/[0-9]{4}$")
+                || !lastdate.matches("^(3[01]|[12][0-9]|0[1-9])/(1[0-2]|0[1-9])/[0-9]{4}$")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity,
+                    R.style.Theme_AppCompat_Light_Dialog)
+                    .setTitle("Wrong Format!")
+                    .setMessage("Dates should be entered in the dd/MM/yyyy format.Please " +
+                            "supply a correct date range");
+            builder.setPositiveButton(OK,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert1 = builder.create();
+            alert1.show();
+        } else {
+
+            try {
+                startdate = format.parse(firstdate);
+            } catch (ParseException e) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity,
+                        R.style.Theme_AppCompat_Light_Dialog)
+                        .setTitle("Wrong Format!")
+                        .setMessage("Please supply a correct date range.");
+                builder.setPositiveButton(OK,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert1 = builder.create();
+                alert1.show();
+                Log.e(PARSE_EXCEPTION, e.getMessage());
+            }
+            Date endDate;
+            endDate = null;
+            try {
+                endDate = format.parse(lastdate);//convert the second date into Date
+
+            } catch (ParseException e) {
+
+                Log.e(PARSE_EXCEPTION, e.getMessage());
+            }
+
+            Calendar calendarForDate = Calendar.getInstance();
+            calendarForDate.setTime(startdate);
+
+            if (endDate != null) {
+                while (calendarForDate.getTime().getTime() <= endDate.getTime()) {
+                    Date result = calendarForDate.getTime();//take the date
+                    dates.add(result);//add it to dates arraylist
+                    calendarForDate.add(Calendar.DATE, 1);
+                }
+            }
+
+        }
+        // 15/09/2015-17/09/2015 dates will store 15/09/2015 16/09/2015 17/09/2015
+        return dates;
+    }
+
+    public boolean validateDatesFromToField(Activity activity, String datesFromTo) {
+
+        boolean isNotValid = false;
+        if (datesFromTo.equals("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.Theme_AppCompat_Light_Dialog)
+                    .setTitle("Empty Field!")
+                    .setMessage("Add expenses field is empty.Please supply a date range");
+            builder.setPositiveButton(OK,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert1 = builder.create();
+            alert1.show();
+            isNotValid = true;
+        } else if (!datesFromTo.matches("^[0-9].*") || !datesFromTo.contains("-")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.Theme_AppCompat_Light_Dialog)
+                    .setTitle("Wrong Date!")
+                    .setMessage("You entered words for a date or a single date. " +
+                            "Please supply a correct date range in the format dd/MM/yyyy");
+            builder.setPositiveButton(OK,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert1 = builder.create();
+            alert1.show();
+            isNotValid = true;
+        }
+        return isNotValid;
+    }
+
+    @TargetApi(19)
+    public double addTheExpenses(Activity activity, String datesFromTo, Spinner addExpensesByDescription) {
+
+        double sum = 0.0;
+        ArrayList dates = (ArrayList<Date>) getDaysBetweenDates(activity, datesFromTo);
+        if(dates.isEmpty()) {
+            return sum;
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+        Date dateIntheFile = null;
+        Set<Date> datesMatchedUserInput = new TreeSet<>();
+        String expenseAmount = null;
+        List expensesList = new ArrayList();
+        Set uniqueDescriptions = new LinkedHashSet<>();
+        List<Float> uniqueAmounts = new ArrayList<>();
+
+        String desc = "";
+        String dateLocal = "";
+
+        try (InputStream inputStream = context.openFileInput(EXPENSES_FILE);
+             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+             Scanner in = new Scanner(inputStreamReader);) {
+
+            //read the file
+            int lineIndex = 0;//this is to count the lines
+            while (in.hasNextLine()) {
+                String line = in.nextLine();
+                //i need to read after the first line
+                if (++lineIndex > 2 && !line.equals("")) {
+
+                    expenseAmount = line.substring(0, line.indexOf(' '));//take the amount
+                    // from the file
+                    int index = line.lastIndexOf(' ');
+                    desc = line.substring(line.indexOf(' '), index).trim();//take the
+                    // description
+                    dateLocal = line.substring(index, line.length());//take the date
+                    dateIntheFile = getDate(format, dateIntheFile, dateLocal);
+
+                    double firstDateAmountNumber;
+                    if (dates.contains(dateIntheFile)) {
+                        datesMatchedUserInput.add(dateIntheFile);//add the Date in a list
+                        // that will maintain them as the while loop checks all the dates.
+                        String firstDateAmount = expenseAmount;//if the dates taken from the
+                        // input are the same
+                        firstDateAmountNumber = Double.parseDouble(firstDateAmount);//with
+                        // those in the file
+                        expensesList.add(firstDateAmountNumber);//then look each line and find
+                        // the amount given. Add the amount in the list of expenses.
+
+                        //process the addition of expenses for a description
+                        processDuplicateAmounts(expenseAmount, uniqueDescriptions, uniqueAmounts, desc);
+                    }
+                }
+            }// end of while
+            Collections.sort(dates);
+            if (datesMatchedUserInput.isEmpty()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.Theme_AppCompat_Light_Dialog)
+                        .setTitle("No matches found")
+                        .setMessage("The are no expenses in the dates you entered! Please try" +
+                                " with different dates.");
+                builder.setPositiveButton(OK,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert1 = builder.create();
+                alert1.show();
+            }
+            Date nextValue = null;
+            for (Date aDatesMatchedUserInput : datesMatchedUserInput) {
+                nextValue = aDatesMatchedUserInput;
+            }
+            if (dates.contains(nextValue) && addExpensesByDescription.getSelectedItemPosition
+                    () == 0) {
+                sum = sumTheExpenses(datesFromTo, activity, expensesList);//this sums up all the expenses for the date range. it is
+                // not inside the other if
+                // because it would pop up all the
+                // times the while loop is counting
+            } else if (dates.contains(nextValue) && addExpensesByDescription
+                    .getSelectedItemPosition() > 0) {
+                String descSelected = addExpensesByDescription.getSelectedItem().toString();
+                sum = sumTheExpensesByDescription(descSelected, activity, datesFromTo, addExpensesByDescription, uniqueDescriptions, uniqueAmounts);
+            }
+
+        } catch (IOException e) {
+            Log.e("Main activity util", "Can not read file: " + e.toString());
+        }
+
+        return sum;
+    }
+
+    private void processDuplicateAmounts(String expenseAmount, Set uniqueDescriptions, List<Float> uniqueAmounts, String desc) {
+        if (uniqueDescriptions.contains(desc)) {
+            int i = 0;
+            for (Iterator<String> s = uniqueDescriptions.iterator(); s
+                    .hasNext(); i++) {
+                String descriptionFound = s.next();
+                if (desc.equals(descriptionFound)) {
+                    Float amountWithDuplicate = uniqueAmounts.get(i) + Float
+                            .valueOf(expenseAmount);//add up the amounts if there are duplicates
+                    uniqueAmounts.set(i, amountWithDuplicate);
+                }
+            }
+        } else {
+            uniqueDescriptions.add(desc);
+            uniqueAmounts.add(Float.valueOf(expenseAmount));
+        }
+    }
+
+    public double sumTheExpensesByDescription(String desc, Activity activity, String datesFromTo, Spinner addExpensesByDescription, Set uniqueDescriptions, List<Float> uniqueAmounts) {
+
+        Float sumFloat = 0f;
+        if (desc.equals(addExpensesByDescription.getSelectedItem().toString())) {
+            Iterator<String> itr = uniqueDescriptions.iterator();
+            int i = 0;
+            while (itr.hasNext()) {
+                String descIterated = itr.next();
+                if (desc.equals(descIterated)) {
+                    sumFloat += uniqueAmounts.get(i);
+                }
+                i++;
+            }
+        }
+
+        double sum = sumFloat;
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.Theme_AppCompat_Light_Dialog)
+                .setTitle(desc + " expenses for: " + datesFromTo)
+                .setMessage("You have spent: " + String.format(Locale.ENGLISH, "%.2f", sum));
+        AlertDialog alert1;
+        builder.setPositiveButton(OK,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        alert1 = builder.create();
+        alert1.show();
+
+        return sum;
+    }
+
+    public double sumTheExpenses(String datesFromTo, Activity activity, List<Double> expensesList) {
+
+        double sum = 0;
+        for (int i = 0; i < expensesList.size(); i++) {
+            sum += expensesList.get(i);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.Theme_AppCompat_Light_Dialog)
+                .setTitle("Expenses for: " + datesFromTo)
+                .setMessage("You have spent: " + String.format(Locale.ENGLISH, "%.2f", sum));
+        AlertDialog alert1;
+        builder.setPositiveButton(OK,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        alert1 = builder.create();
+        alert1.show();
+
+        return sum;
+    }
+
+    private Date getDate(SimpleDateFormat format, Date dateIntheFile, String date) {
+
+        try {
+            dateIntheFile = format.parse(date);//convert the date into Date
+
+        } catch (ParseException e) {
+
+            Log.e(PARSE_EXCEPTION, e.getMessage());
+        }
+        return dateIntheFile;
+    }
+
 
     public double getBalance() {
         return balance;

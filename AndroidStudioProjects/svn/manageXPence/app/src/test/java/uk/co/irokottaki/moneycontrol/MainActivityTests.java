@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,11 +25,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import uk.co.irokottaki.moneycontrol.activity.MainActivity;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.model.YearToSet;
 import uk.co.irokottaki.moneycontrol.utils.MainActivityUtil;
+import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -39,6 +43,14 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.COUNCIL_TAX;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ENTERTAINMENT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_BILLS;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_RENT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MORTGAGE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SHOPPING;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SUPERMARKET;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.TRAVEL;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MainActivityTests  {
@@ -414,5 +426,16 @@ public class MainActivityTests  {
 
     }
 
+    @Test
+    public void testGetDaysBetweenDates() {
+        final Context context = mock(Context.class);
+        MainActivityUtil util = new MainActivityUtil(context);
+        final Activity mMockMainActivity = mock(MainActivity.class);
+        String testDatesFromTo = "01/02/2019-20/02/2019";
+
+        List testReturnedList = util.getDaysBetweenDates(mMockMainActivity, testDatesFromTo);
+        assertTrue(testReturnedList.size() == 20);
+
+    }
 
 }

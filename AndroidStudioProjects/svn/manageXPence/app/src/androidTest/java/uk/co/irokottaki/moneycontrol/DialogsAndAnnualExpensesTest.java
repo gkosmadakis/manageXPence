@@ -218,7 +218,7 @@ public class DialogsAndAnnualExpensesTest {
         appCompatButton8.perform(click());
 
         ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.specificExpensesOfYear), withText("Hom much do I spend on a year for each expense?"),
+                allOf(withId(R.id.specificExpensesOfYear), withText("How much do I spend on a year for each expense?"),
                         childAtPosition(
                                 allOf(withId(R.id.annualChartView),
                                         childAtPosition(
@@ -296,7 +296,7 @@ public class DialogsAndAnnualExpensesTest {
         imageButton.perform(click());
 
         ViewInteraction appCompatTextView3 = onView(
-                allOf(withId(R.id.specificExpensesOfYear), withText("Hom much do I spend on a year for each expense?"),
+                allOf(withId(R.id.specificExpensesOfYear), withText("How much do I spend on a year for each expense?"),
                         childAtPosition(
                                 allOf(withId(R.id.annualChartView),
                                         childAtPosition(

@@ -123,6 +123,7 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
                 .setPositiveButton(SAVE, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
+                        validateEditExpenseField(editExpenseField.getText().toString());
                         /* call the processEdit pass line as it was before and line as it is when the user updated the expense*/
                         processEdit(lineToUpdate, editExpenseField.getText().toString());
 
@@ -139,9 +140,7 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
         alert.show();
     }
 
-
-    @TargetApi(19)
-    private void processEdit(String lineToUpdate, String lineUpdated) {
+    private void validateEditExpenseField(String lineUpdated) {
 
         String amountEdited = lineUpdated.substring(0, lineUpdated.indexOf(' '));
         int lengthTillDate = lineUpdated.lastIndexOf(' ');
@@ -168,79 +167,78 @@ public class CustomAdapter extends BaseAdapter implements ListAdapter {
                     });
             alert1 = builder.create();
             alert1.show();
-
         }
+    }
 
-        // finally if the user has not exceeded the text limiters we process the Edit
-        else if (amountEdited.length() <= 7 && descriptionEdited.length() <= 15 && dateEdited
-                .length() == 10) {
-            FileInputStream fstream = null;
-            BufferedReader br = null;
-            try {
-                fstream = context.openFileInput(EXPENSES_FILE);
-                br = new BufferedReader(new InputStreamReader(fstream));
-                String strLine;
-                StringBuilder fileContent = new StringBuilder();
-                String amount = "";
-                String desc = "";
-                String date = "";
-                String formatStr = "%-8s%-15s%-10s";//formats the columns
-                int lineIndex = 0;
-                while ((strLine = br.readLine()) != null) {
-                    lineIndex++;
-                    if (strLine.replaceAll("\\s+", " ").equals(lineToUpdate.trim()) &&
-                            ++lineIndex > 2) {
-                        amount = lineUpdated.substring(0, lineUpdated.indexOf(' '));//prints the
-                        // amount
-                        int index = lineUpdated.lastIndexOf(' ');
-                        desc = lineUpdated.substring(lineUpdated.indexOf(' '), index).trim();
-                        //prints the description
-                        date = lineUpdated.substring(index, lineUpdated.length()).trim();//prints
-                        // the date
-                        fileContent.append(String.format(formatStr, amount, desc, date).trim());
-                        //write edited line in the file
-                        fileContent.append("\r\n");//write a line
-                    } else {
-                        // update content as it is
-                        fileContent.append(strLine);
-                        fileContent.append("\r\n");
-                    }
+
+    private void processEdit(String lineToUpdate, String lineUpdated) {
+
+        FileInputStream fstream = null;
+        BufferedReader br = null;
+        try {
+            fstream = context.openFileInput(EXPENSES_FILE);
+            br = new BufferedReader(new InputStreamReader(fstream));
+            String strLine;
+            StringBuilder fileContent = new StringBuilder();
+            String amount = "";
+            String desc = "";
+            String date = "";
+            String formatStr = "%-8s%-15s%-10s";//formats the columns
+            int lineIndex = 0;
+            while ((strLine = br.readLine()) != null) {
+                lineIndex++;
+                if (strLine.replaceAll("\\s+", " ").equals(lineToUpdate.trim()) &&
+                        ++lineIndex > 2) {
+                    amount = lineUpdated.substring(0, lineUpdated.indexOf(' '));//prints the
+                    // amount
+                    int index = lineUpdated.lastIndexOf(' ');
+                    desc = lineUpdated.substring(lineUpdated.indexOf(' '), index).trim();
+                    //prints the description
+                    date = lineUpdated.substring(index, lineUpdated.length()).trim();//prints
+                    // the date
+                    fileContent.append(String.format(formatStr, amount, desc, date).trim());
+                    //write edited line in the file
+                    fileContent.append("\r\n");//write a line
+                } else {
+                    // update content as it is
+                    fileContent.append(strLine);
+                    fileContent.append("\r\n");
                 }
-                PrintWriter out = new PrintWriter(context.openFileOutput(EXPENSES_FILE, MODE_PRIVATE));
-                out.write(fileContent.toString());
-
-                out.close();
-                fstream.close();
-
-                yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) util.readTheFile();// call to update the map
-                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog)
-                        .setTitle("Edit Expense")
-                        .setMessage("The expense is successfully edited");
-                builder.setPositiveButton(OK, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        /* Not used */
-                    }
-                });
-                builder.show();
-            } catch (FileNotFoundException e) {
-                Log.e("File not found ", e.toString());
-            } catch (IOException e) {
-                Log.e(IOEXCEPTION, e.toString());
             }
-            finally {
-                if (fstream!= null){
-                    try {
-                        fstream.close();
-                    } catch (IOException e) {
-                        Log.e(IOEXCEPTION, e.getMessage());
-                    }
+            PrintWriter out = new PrintWriter(context.openFileOutput(EXPENSES_FILE, MODE_PRIVATE));
+            out.write(fileContent.toString());
+
+            out.close();
+            fstream.close();
+
+            yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) util.readTheFile();// call to update the map
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog)
+                    .setTitle("Edit Expense")
+                    .setMessage("The expense is successfully edited");
+            builder.setPositiveButton(OK, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    /* Not used */
                 }
-                if (br!= null){
-                    try {
-                        br.close();
-                    } catch (IOException e) {
-                        Log.e(IOEXCEPTION, e.getMessage());
-                    }
+            });
+            builder.show();
+        } catch (FileNotFoundException e) {
+            Log.e("File not found ", e.toString());
+        } catch (IOException e) {
+            Log.e(IOEXCEPTION, e.toString());
+        }
+        finally {
+            if (fstream!= null){
+                try {
+                    fstream.close();
+                } catch (IOException e) {
+                    Log.e(IOEXCEPTION, e.getMessage());
+                }
+            }
+            if (br!= null){
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    Log.e(IOEXCEPTION, e.getMessage());
                 }
             }
         }

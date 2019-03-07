@@ -99,7 +99,7 @@
 
     <string name="year">Year:</string>
     <string name="textview">TextView</string>
-    <string name="year_spending_text">Hom much do I spend on a year for each expense?</string>
+    <string name="year_spending_text">How much do I spend on a year for each expense?</string>
     <string name="set_income_circle">Set Income Circle</string>
     <string name="set_a_budget_warning">Set a Budget Warning</string>
     <string name="_0">0</string>
@@ -112,8 +112,8 @@
     <string name="pound">£</string>
     <string name="percent">%</string>
     <string name="search_by_description">Search by Description</string>
-    <string name="enter_description">Enter description</string>
-    <string name="enter_amount"><font size="13">Enter amount</font></string>
+    <string name="enter_description"><font size="14">Enter description</font></string>
+    <string name="enter_amount"><font size="14">Enter amount</font></string>
     <string name="search">Search</string>
     <string name="results">Results</string>
     <string name="select">Select</string>

@@ -106,18 +106,12 @@ public class BackgroundImageTest {
         UiObject photo = mDevice.findObject(new UiSelector().className("android.view.ViewGroup"));
         try {
             photo.clickAndWaitForNewWindow();
+            System.out.println("PASSED");
         } catch (UiObjectNotFoundException e) {
             Log.e("UiObjectNotFoundException",e.getMessage());
         }
 
         pressBack();
-
-        UiObject openApp = mDevice.findObject(new UiSelector().text("ManageXPence"));
-        try {
-            openApp.clickAndWaitForNewWindow();
-        } catch (UiObjectNotFoundException e) {
-            Log.e("UiObjectNotFoundException",e.getMessage());
-        }
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.editButton), withText("Edit"),
@@ -235,7 +229,7 @@ public class BackgroundImageTest {
         appCompatButton6.perform(click());
 
         ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.specificExpensesOfYear), withText("Hom much do I spend on a year for each expense?"),
+                allOf(withId(R.id.specificExpensesOfYear), withText("How much do I spend on a year for each expense?"),
                         childAtPosition(
                                 allOf(withId(R.id.annualChartView),
                                         childAtPosition(

@@ -207,6 +207,13 @@ public class SettingsActivity extends PreferenceActivity {
             };
 
             list = (ListPreference) findPreference(BACKGROUND_COLOR);
+
+            listPreferenceChangeListener();
+
+        }//end of onCreate
+
+        private void listPreferenceChangeListener() {
+
             list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -225,7 +232,6 @@ public class SettingsActivity extends PreferenceActivity {
                                 }
                             }
                         };
-
                         //check if the user has purchased the PRO version
                         //check if user is Pro by retrieving it from the Shared Preferences
                         //the user has PRO version so proceed to change color
@@ -234,7 +240,7 @@ public class SettingsActivity extends PreferenceActivity {
                         try {
 
                             Intent intent = new Intent(Intent.ACTION_PICK,
-                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(Intent.createChooser(intent, "Select Picture")
                                     , PICK_IMAGE);
 
@@ -244,13 +250,11 @@ public class SettingsActivity extends PreferenceActivity {
                         }
                         // if the userIsPro is false the user has not purchased the PRO version
                         //so prompt to buy PRO version
-
                     }
                     return true;
                 }
             });
-
-        }//end of onCreate
+        }
 
         private void askPermissions() {
 

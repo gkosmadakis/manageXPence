@@ -80,7 +80,6 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.millennialmedia.InlineAd;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,29 +103,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
 
 import hod.api.hodclient.HODApps;
 import hod.api.hodclient.HODClient;
 import hod.api.hodclient.IHODClientCallback;
 import uk.co.irokottaki.moneycontrol.DropboxClient;
+import uk.co.irokottaki.moneycontrol.R;
+import uk.co.irokottaki.moneycontrol.UploadTask;
+import uk.co.irokottaki.moneycontrol.UserAccountTask;
 import uk.co.irokottaki.moneycontrol.inappbilling.IabHelper;
 import uk.co.irokottaki.moneycontrol.inappbilling.IabResult;
 import uk.co.irokottaki.moneycontrol.inappbilling.Inventory;
 import uk.co.irokottaki.moneycontrol.inappbilling.Purchase;
-import uk.co.irokottaki.moneycontrol.R;
-import uk.co.irokottaki.moneycontrol.UploadTask;
-import uk.co.irokottaki.moneycontrol.UserAccountTask;
 import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.utils.MainActivityUtil;
@@ -135,7 +127,56 @@ import uk.co.irokottaki.moneycontrol.utils.Utils;
 
 import static android.content.DialogInterface.OnClickListener;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-import static uk.co.irokottaki.moneycontrol.utils.Constants.*;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ADD;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ADD_EXPENSES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ADSDISABLED;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.AMOUNT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.BALANCE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.BUDGETWARNINGS;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.BUDGET_WARNING;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.CANCEL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.CHART_EXPENSES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.CLOSE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.COUNCIL_TAX;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DATE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DESCRIPTION;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DESCRIPTIONS;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.DESCRIPTIONS_FILE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EMPTY_FIELD;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ENTERTAINMENT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ERROR_DURING_PURCHASE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ERROR_OCCURED_DURING_PURCHASE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXCEPTION;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES_FILE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSE_AMOUNT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSE_DESCRIPTION;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPORT_PDF;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPORT_TO_DROPBOX;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPORT_TXT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.HOME;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_BILLS;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_RENT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.INCOME;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.INFORMATION;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.IOEXCEPTION;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.ISPAYMENTCIRCLE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MANAGE_EXPENSES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.MORTGAGE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.OK;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.PARSE_EXCEPTION;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.PREFERENCES;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.REMINDER_TO_TURN_OFF_NOTIFICATIONS;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.REMOVE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.RESET;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SAVE_TO_FILE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SELECT_DATE;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SET;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SHOPPING;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.SUPERMARKET;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.TRAVEL;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.USERISPRO;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.VALUEFROMNUMPICKER1;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.YEARS_MAPPED_TO_OBJECT_YEARS_MAP;
 
 
 public class MainActivity extends AppCompatActivity implements IHODClientCallback {
@@ -151,8 +192,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     EditText incomeField;
     private Spinner descriptionsItem;
     private Spinner addExpensesByDescription;
-    private ArrayList<Date> dates = new ArrayList<>();
-    final ArrayList<Double> expenses = new ArrayList<>();
     private int yearX;
     private int monthX;
     private int dayX;
@@ -166,8 +205,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private String accessToken;
     private ArrayList<String> allDescriptions;//descriptions
     RelativeLayout layout;
-    private LinkedHashSet<String> uniqueDescriptions;
-    ArrayList<Float> uniqueAmounts;
     private double balance;
     TabHost tabHost;
     private final Handler handler = new Handler();
@@ -555,32 +592,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         yearsMappedToObjectYearsMap = new HashMap<>();
         yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) util.readTheFile();
 
-        saveToFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (expensesField.getText().toString().equals("") || expensesField.getText().toString().equals(" ") || descriptionsItem.getSelectedItem
-                        () == null || dateText.getText().toString().equals("")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
-                            .setTitle(EMPTY_FIELD)
-                            .setMessage("Some of the fields are empty, fill them all and try again");
-                    AlertDialog alert1;
-                    builder.setPositiveButton(OK,
-                            new OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    alert1 = builder.create();
-                    alert1.show();
-                }
-                else {
-                    writeToFile(expensesField.getText().toString(), descriptionsItem.getSelectedItem().toString(), dateText.getText().toString());
-                    /* Is it a repeating expense */
-                    mainUtil.processExpenseRepeatingAmount(expensesField.getText().toString(), descriptionsItem.getSelectedItem().toString(), repeatCheckBox, datesTheRepeatingExpenseOccurs, MainActivity.this);
-                }
-            }
-        });
+        saveToFileClickListener(saveToFile);
 
         addDescrButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -598,87 +610,23 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
         });
 
-        repeatCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        repeatCheckBoxChangeListener();
 
-                if(isChecked){
-                    endDateBtn.setVisibility(View.VISIBLE);
-                }
-                else {
-                    endDateBtn.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        incomeField.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                /* Not used */
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                /* Not used */
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-                if (s.length() >= 2) {
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //call the methods to update balance and the graph
-                            if (isPaymentCircleSet) {
-                                processDateCircle();
-
-                            } else {
-                                String currentMonth = String.format(Locale.UK, "%tB", calendar);
-                                balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
-                                DecimalFormat df = new DecimalFormat("#.0");
-                                balanceLabel.setText(BALANCE + df.format(balance));
-                                showStackedBar();
-                            }
-                        }
-                    }, 3000);//this is a delay of 3 seconds that starts when the user finished
-                    // typing.
-                }
-            }
-        });
+        incomeFieldTextChangedListener();
 
 
         addExpensesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                addTheExpenses();
+                EditText datesField = (EditText) findViewById(R.id.dateFromTo);
+                String datesFromTo = datesField.getText().toString();
+
+                mainUtil.addTheExpenses(MainActivity.this, datesFromTo,addExpensesByDescription);
             }
         });
 
-        photoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // Request for permission if not granted
-                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest
-                        .permission.CAMERA};
-                if (!hasPermissions(getApplicationContext(), permissions)) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission
-                            .CAMERA}, 1);
-                }
-
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.TITLE, "New Picture");
-                values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-                imageUri = getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(intent, TAKE_PICTURE);
-            }
-        });
+        photoBtnClickListener();
 
         infoDateRangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -721,34 +669,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
         };
 
-        budgetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-                    public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-                        if (result.isFailure()) {
-                            Toast.makeText(MainActivity.this, ERROR_DURING_PURCHASE +
-                                    result, Toast.LENGTH_SHORT).show();
-
-                        } else if (purchase.getSku().equals(SKU)) {
-                            //used to call the consume item method here
-                        }
-                    }
-                };
-
-                //check if the user has purchased the PRO version
-                // If the request is successful, the returned Bundle has a response code of 0.
-
-                //check if user id Pro retriecve boolean from SharedPreferences
-
-                //the user has PRO version so start budget activity.
-                Intent intentBudget = new Intent(view.getContext(), BudgetActivity.class);
-                startActivity(intentBudget);
-
-                // if the userIsPro is false the user has not purchased the PRO version
-            }
-        });
+        budgetBtnClickListener(budgetButton);
 
         reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -863,83 +784,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             }
         });
 
-        exportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Creating the instance of PopupMenu
-                PopupMenu popup = new PopupMenu(MainActivity.this, exportButton);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater()
-                        .inflate(R.menu.export_menu, popup.getMenu());
+        exportBtnClickListener();
 
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        if (item.getTitle().equals(EXPORT_TO_DROPBOX)) {
-
-                            accessToken = mainUtil.retrieveAccessToken();
-
-                            getUserAccount();
-                            if (!mainUtil.tokenExists() || invalidToken) {
-                                //No token Back to LoginActivity
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent
-                                        .FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                            //Image URI received
-                            File file = new File("/data/data/uk.co.irokottaki" +
-                                    ".moneycontrol/files/expenses.txt");//get the directory of
-                            // the file
-                            // stored
-                            if (!invalidToken && accessToken!= null) {
-                                //Initialize UploadTask
-                                new UploadTask(DropboxClient.getClient(accessToken), file,
-                                        getApplicationContext()).execute();
-                            }
-
-                        }
-                        if (item.getTitle().equals(EXPORT_TXT)) {
-                            exportExpensesFileToSdCard();
-                            Toast.makeText(MainActivity.this, "You exported to Txt file", Toast
-                                    .LENGTH_SHORT).show();
-                        }
-                        if (item.getTitle().equals(EXPORT_PDF)) {
-                            exportFileToPDF();
-                            Toast.makeText(MainActivity.this, "You exported to Pdf file", Toast
-                                    .LENGTH_SHORT).show();
-                        }
-                        return true;
-                    }
-                });
-
-                popup.show(); //showing popup menu
-            }
-        });
-
-        importButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-                    public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-                        if (result.isFailure()) {
-                            Toast.makeText(MainActivity.this, ERROR_OCCURED_DURING_PURCHASE +
-                                    result, Toast.LENGTH_SHORT).show();
-                        } else if (purchase.getSku().equals(SKU)) {
-                            //used to call the consume item method here
-                        }
-                    }
-                };
-
-                //check if the user has purchased the PRO version
-                //check if the user is Pro retrieve boolean from SharedPreferences
-                //the user has PRO version so make the import
-                readFileFromSdCard();
-                // if userIsPro is false the user has not purchased the PRO version
-
-            }
-        });
+        importBtnClickListener(importButton);
 
         //this is for the Notifications
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -961,7 +808,225 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
     }// end of onCreate method
 
+    private void saveToFileClickListener(Button saveToFile) {
+        saveToFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                if (expensesField.getText().toString().equals("") || expensesField.getText().toString().equals(" ") || descriptionsItem.getSelectedItem
+                        () == null || dateText.getText().toString().equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
+                            .setTitle(EMPTY_FIELD)
+                            .setMessage("Some of the fields are empty, fill them all and try again");
+                    AlertDialog alert1;
+                    builder.setPositiveButton(OK,
+                            new OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    alert1 = builder.create();
+                    alert1.show();
+                }
+                else {
+                    writeToFile(expensesField.getText().toString(), descriptionsItem.getSelectedItem().toString(), dateText.getText().toString());
+                    /* Is it a repeating expense */
+                    mainUtil.processExpenseRepeatingAmount(expensesField.getText().toString(), descriptionsItem.getSelectedItem().toString(), repeatCheckBox, datesTheRepeatingExpenseOccurs, MainActivity.this);
+                }
+            }
+        });
+    }
+
+    private void repeatCheckBoxChangeListener() {
+        repeatCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    endDateBtn.setVisibility(View.VISIBLE);
+                }
+                else {
+                    endDateBtn.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    private void incomeFieldTextChangedListener() {
+        incomeField.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                /* Not used */
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /* Not used */
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (s.length() >= 2) {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //call the methods to update balance and the graph
+                            if (isPaymentCircleSet) {
+                                processDateCircle();
+
+                            } else {
+                                String currentMonth = String.format(Locale.UK, "%tB", calendar);
+                                balance = mainUtil.processBalance(incomeField, yearsMappedToObjectYearsMap,isPaymentCircleSet, currentMonth, yearX);
+                                DecimalFormat df = new DecimalFormat("#.0");
+                                balanceLabel.setText(BALANCE + df.format(balance));
+                                showStackedBar();
+                            }
+                        }
+                    }, 3000);//this is a delay of 3 seconds that starts when the user finished
+                    // typing.
+                }
+            }
+        });
+    }
+
+    private void photoBtnClickListener() {
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Request for permission if not granted
+                String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest
+                        .permission.CAMERA};
+                if (!hasPermissions(getApplicationContext(), permissions)) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission
+                            .CAMERA}, 1);
+                }
+
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+                imageUri = getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(intent, TAKE_PICTURE);
+            }
+        });
+    }
+
+    private void budgetBtnClickListener(Button budgetButton) {
+
+        budgetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+                    public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+                        if (result.isFailure()) {
+                            Toast.makeText(MainActivity.this, ERROR_DURING_PURCHASE +
+                                    result, Toast.LENGTH_SHORT).show();
+
+                        } else if (purchase.getSku().equals(SKU)) {
+                            //used to call the consume item method here
+                        }
+                    }
+                };
+                //check if the user has purchased the PRO version
+                // If the request is successful, the returned Bundle has a response code of 0.
+                //check if user id Pro retrieve boolean from SharedPreferences
+                //the user has PRO version so start budget activity.
+                Intent intentBudget = new Intent(view.getContext(), BudgetActivity.class);
+                startActivity(intentBudget);
+                // if the userIsPro is false the user has not purchased the PRO version
+            }
+        });
+    }
+
+    private void exportBtnClickListener() {
+
+        exportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(MainActivity.this, exportButton);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater()
+                        .inflate(R.menu.export_menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        if (item.getTitle().equals(EXPORT_TO_DROPBOX)) {
+
+                            processExportToDropbox();
+
+                        }
+                        if (item.getTitle().equals(EXPORT_TXT)) {
+                            exportExpensesFileToSdCard();
+                            Toast.makeText(MainActivity.this, "You exported to Txt file", Toast
+                                    .LENGTH_SHORT).show();
+                        }
+                        if (item.getTitle().equals(EXPORT_PDF)) {
+                            exportFileToPDF();
+                            Toast.makeText(MainActivity.this, "You exported to Pdf file", Toast
+                                    .LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+
+                popup.show(); //showing popup menu
+            }
+        });
+    }
+
+    private void processExportToDropbox() {
+
+        accessToken = mainUtil.retrieveAccessToken();
+
+        getUserAccount();
+        if (!mainUtil.tokenExists() || invalidToken) {
+            //No token Back to LoginActivity
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent
+                    .FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        //Image URI received
+        File file = new File("/data/data/uk.co.irokottaki" +
+                ".moneycontrol/files/expenses.txt");//get the directory of the file stored
+        if (!invalidToken && accessToken!= null) {
+            //Initialize UploadTask
+            new UploadTask(DropboxClient.getClient(accessToken), file,
+                    getApplicationContext()).execute();
+        }
+    }
+
+    private void importBtnClickListener(Button importButton) {
+        importButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+                    public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+                        if (result.isFailure()) {
+                            Toast.makeText(MainActivity.this, ERROR_OCCURED_DURING_PURCHASE +
+                                    result, Toast.LENGTH_SHORT).show();
+                        } else if (purchase.getSku().equals(SKU)) {
+                            //used to call the consume item method here
+                        }
+                    }
+                };
+                //check if the user has purchased the PRO version
+                //check if the user is Pro retrieve boolean from SharedPreferences
+                //the user has PRO version so make the import
+                readFileFromSdCard();
+                // if userIsPro is false the user has not purchased the PRO version
+            }
+        });
+    }
 
     public MainActivity() {
     /* Not used*/
@@ -1080,6 +1145,39 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         } else {
             Log.i(TAG, "onActivityResult handled by IABUtil.");
         }
+
+        handlePurchaseResponse(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            String imageurl = null;
+            if (resultCode == Activity.RESULT_OK) {
+
+                    try {
+                        Bitmap thumbnail = MediaStore.Images.Media.getBitmap
+                                (getContentResolver(), imageUri);
+                        imageurl = getRealPathFromURI(imageUri);
+                    } catch (Exception e) {
+                        Log.e(EXCEPTION, e.getMessage());
+                    }
+            }
+            String hodApp = HODApps.OCR_DOCUMENT;
+            Map<String, Object> params = new HashMap<>();
+            params.put("file", imageurl);
+            params.put("mode", "document_photo");
+            hodClient.PostRequest(params, hodApp, HODClient.REQ_MODE.ASYNC);
+        }
+
+        if (requestCode == 2 && resultCode == RESULT_FIRST_USER) {
+
+            yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) data.getSerializableExtra("yearsMappedToObjectYearsMap");
+
+            Log.i("MAP is updated and ", "returned from EditActivity");
+
+        }
+    }
+
+    private void handlePurchaseResponse(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == 1001) {
             int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
             String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
@@ -1121,33 +1219,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 }
 
             }
-        }
-
-        if (requestCode == 1) {
-            String imageurl = null;
-            if (requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
-
-                    try {
-                        Bitmap thumbnail = MediaStore.Images.Media.getBitmap
-                                (getContentResolver(), imageUri);
-                        imageurl = getRealPathFromURI(imageUri);
-                    } catch (Exception e) {
-                        Log.e(EXCEPTION, e.getMessage());
-                    }
-            }
-            String hodApp = HODApps.OCR_DOCUMENT;
-            Map<String, Object> params = new HashMap<>();
-            params.put("file", imageurl);
-            params.put("mode", "document_photo");
-            hodClient.PostRequest(params, hodApp, HODClient.REQ_MODE.ASYNC);
-        }
-
-        if (requestCode == 2 && resultCode == RESULT_FIRST_USER) {
-
-            yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) data.getSerializableExtra("yearsMappedToObjectYearsMap");
-
-            Log.i("MAP is updated and ", "returned from EditActivity");
-
         }
     }
 
@@ -1606,7 +1677,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         try (PrintWriter out = new PrintWriter(openFileOutput(EXPENSES_FILE, MODE_APPEND));
              BufferedReader br = new BufferedReader(new FileReader("/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt"));){
 
-            int length = 22;
             String formatStr = "%-8s%-15s%-10s";
 
             /*That means the first line of the file is empty so write the header*/
@@ -1689,281 +1759,6 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             alert1 = builder.create();
             alert1.show();
         }
-    }
-
-    @TargetApi(19)
-    public void addTheExpenses() {
-
-        getDaysBetweenDates();
-        if (dates.isEmpty()) {
-            return;
-        }
-
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy", Locale.US);
-        Date dateIntheFile = null;
-        Set<Date> datesMatchedUserInput = new TreeSet<>();
-        String expenseAmount = null;
-        expenses.clear();
-        uniqueDescriptions = new LinkedHashSet<>();
-        uniqueAmounts = new ArrayList<>();
-
-        String desc = "";
-        String date = "";
-
-        try ( InputStream inputStream = openFileInput(EXPENSES_FILE);
-              InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-              Scanner in = new Scanner(inputStreamReader);){
-
-            if (inputStream != null) {
-                //read the file
-                int lineIndex = 0;//this is to count the lines
-                while (in.hasNextLine()) {
-                    String line = in.nextLine();
-                    if (++lineIndex > 2 && !line.equals(""))//i need to read after the first line
-                    {
-
-                        expenseAmount = line.substring(0, line.indexOf(' '));//take the amount
-                        // from the file
-                        int index = line.lastIndexOf(' ');
-                        desc = line.substring(line.indexOf(' '), index).trim();//take the
-                        // description
-                        date = line.substring(index, line.length());//take the date
-                        dateIntheFile = getDate(format, dateIntheFile, date);
-
-                        double firstDateAmountNumber;
-                        if (dates.contains(dateIntheFile)) {
-                            datesMatchedUserInput.add(dateIntheFile);//add the Date in a list
-                            // that will maintain them as the while loop checks all the dates.
-                            String firstDateAmount = expenseAmount;//if the dates taken from the
-                            // input are the same
-                            firstDateAmountNumber = Double.parseDouble(firstDateAmount);//with
-                            // those in the file
-                            expenses.add(firstDateAmountNumber);//then look each line and find
-                            // the amount given. Add the amount in the list of expenses.
-
-                            //process the addition of expenses for a description
-                            if (uniqueDescriptions.contains(desc)) {
-                                int i = 0;
-                                for (Iterator<String> s = uniqueDescriptions.iterator(); s
-                                        .hasNext(); i++) {
-                                    String descriptionFound = s.next();
-                                    if (desc.equals(descriptionFound)) {
-                                        Float amountWithDuplicate = uniqueAmounts.get(i) + Float
-                                                .valueOf(expenseAmount);//add up the amounts if
-                                        // there are
-                                        // duplicates
-                                        uniqueAmounts.set(i, amountWithDuplicate);
-                                    }
-                                }
-                            } else {
-                                uniqueDescriptions.add(desc);
-                                uniqueAmounts.add(Float.valueOf(expenseAmount));
-                            }
-                        }
-                    }
-                }// end of while
-                Collections.sort(dates);
-                if (datesMatchedUserInput.isEmpty()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
-                            .setTitle("No matches found")
-                            .setMessage("The are no expenses in the dates you entered! Please try" +
-                                    " with different dates.");
-                    builder.setPositiveButton(OK,
-                            new OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    AlertDialog alert1 = builder.create();
-                    alert1.show();
-                }
-                Date nextValue = null;
-                for (Date aDatesMatchedUserInput : datesMatchedUserInput) {
-                    nextValue = aDatesMatchedUserInput;
-                }
-                if (dates.contains(nextValue) && addExpensesByDescription.getSelectedItemPosition
-                        () == 0) {
-                    sumTheExpenses();//this sums up all the expenses for the date range. it is
-                    // not inside the other if
-                   // because it would pop up all the
-                    // times the while loop is counting
-                } else if (dates.contains(nextValue) && addExpensesByDescription
-                        .getSelectedItemPosition() > 0) {
-                    String descSelected = addExpensesByDescription.getSelectedItem().toString();
-                    sumTheExpensesByDescription(descSelected);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        }
-        catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        }
-    }
-
-    private Date getDate(SimpleDateFormat format, Date dateIntheFile, String date) {
-        try {
-            dateIntheFile = format.parse(date);//convert the date into Date
-
-        } catch (ParseException e) {
-
-            Log.e(PARSE_EXCEPTION, e.getMessage());
-        }
-        return dateIntheFile;
-    }
-
-    public void sumTheExpensesByDescription(String desc) {
-        EditText datesField = (EditText) findViewById(R.id.dateFromTo);
-        String datesFromTo = datesField.getText().toString();
-        Float sumFloat = 0f;
-        if (desc.equals(addExpensesByDescription.getSelectedItem().toString())) {
-            Iterator<String> itr = uniqueDescriptions.iterator();
-            int i = 0;
-            while (itr.hasNext()) {
-                String descIterated = itr.next();
-                if (desc.equals(descIterated)) {
-                    sumFloat += uniqueAmounts.get(i);
-                }
-                i++;
-            }
-        }
-
-        double sum = sumFloat;
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
-                .setTitle(desc + " expenses for: " + datesFromTo)
-                .setMessage("You have spent: " + String.format(Locale.ENGLISH, "%.2f", sum));
-        AlertDialog alert1;
-        builder.setPositiveButton(OK,
-                new OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        alert1 = builder.create();
-        alert1.show();
-
-    }
-
-    public void sumTheExpenses() {
-
-        EditText datesField = (EditText) findViewById(R.id.dateFromTo);
-        String datesFromTo = datesField.getText().toString();
-        double sum = 0;
-        for (int i = 0; i < expenses.size(); i++) {
-            sum += expenses.get(i);
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
-                .setTitle("Expenses for: " + datesFromTo)
-                .setMessage("You have spent: " + String.format(Locale.ENGLISH, "%.2f", sum));
-        AlertDialog alert1;
-        builder.setPositiveButton(OK,
-                new OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        alert1 = builder.create();
-        alert1.show();
-    }
-
-    public void getDaysBetweenDates() {
-
-        EditText datesField = (EditText) findViewById(R.id.dateFromTo);
-        String datesFromTo = datesField.getText().toString();
-        dates = new ArrayList<>();//the arraylist where i store the dates
-
-        if (datesFromTo.equals("")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
-                    .setTitle("Empty Field!")
-                    .setMessage("Add expenses field is empty.Please supply a date range");
-            builder.setPositiveButton(OK,
-                    new OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert1 = builder.create();
-            alert1.show();
-        } else if (!datesFromTo.matches("^[0-9].*") || !datesFromTo.contains("-")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
-                    .setTitle("Wrong Date!")
-                    .setMessage("You entered words for a date or a single date. " +
-                            "Please supply a correct date range in the format dd/MM/yyyy");
-            builder.setPositiveButton(OK,
-                    new OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert1 = builder.create();
-            alert1.show();
-        } else {
-            String[] token = datesFromTo.split("-");//store dates splitted by -
-            String firstdate = token[0];//take the first date entered by the user
-            String lastdate = token[1];//take the second date entered by the user
-
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
-            Date startdate;
-            startdate = null;
-
-            if (!firstdate.matches("^(3[01]|[12][0-9]|0[1-9])/(1[0-2]|0[1-9])/[0-9]{4}$")
-                    || !lastdate.matches("^(3[01]|[12][0-9]|0[1-9])/(1[0-2]|0[1-9])/[0-9]{4}$")) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
-                        R.style.Theme_AppCompat_Light_Dialog)
-                        .setTitle("Wrong Format!")
-                        .setMessage("Dates should be entered in the dd/MM/yyyy format.Please " +
-                                "supply a correct date range");
-                builder.setPositiveButton(OK,
-                        new OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert1 = builder.create();
-                alert1.show();
-            } else {
-                try {
-                    startdate = format.parse(firstdate);
-                } catch (ParseException e) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
-                            R.style.Theme_AppCompat_Light_Dialog)
-                            .setTitle("Wrong Format!")
-                            .setMessage("Please supply a correct date range.");
-                    builder.setPositiveButton(OK,
-                            new OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    AlertDialog alert1 = builder.create();
-                    alert1.show();
-                    Log.e("ParseException" , e.getMessage());
-                }
-                Date endDate;
-                endDate = null;
-                try {
-                    endDate = format.parse(lastdate);//convert the second date into Date
-
-                } catch (ParseException e) {
-
-                    Log.e("ParseException", e.getMessage());
-                }
-
-                Calendar calendarForDate = Calendar.getInstance();
-                calendarForDate.setTime(startdate);
-
-                if (endDate != null) {
-                    while (calendarForDate.getTime().getTime() <= endDate.getTime()) {
-                        Date result = calendarForDate.getTime();//take the date
-                        dates.add(result);//add it to dates arraylist
-                        calendarForDate.add(Calendar.DATE, 1);
-                    }
-                }
-
-            }// end of second else
-        }
-        // 15/09/2015-17/09/2015 dates will store 15/09/2015 16/09/2015 17/09/2015
     }
 
     public static void verifyStoragePermissions(Activity activity) {
@@ -2097,6 +1892,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 Log.e(IOEXCEPTION, e.getMessage());
             }
         }
+        /* update the map with the new data */
+        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) util.readTheFile();
     }
 
     private void showDialogsWithDataFoundFromCapture(final String expenseAmount, final String
@@ -2114,13 +1911,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             builder.setPositiveButton("Yes, Set them and save to file the Expense",
                     new OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            expensesField.setText(expenseAmount);
-                            dateText.setText(date);
-
-                            if (description!=null) {
-                                int spinnerPosition = spinnerAdapter.getPosition(description);
-                                descriptionsItem.setSelection(spinnerPosition + 1);
-                            }
+                            setFields(expenseAmount, date, description);
                             //write the expenses to the file
                             writeToFile(expenseAmount, description, date);
                         }
@@ -2129,12 +1920,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             builder.setNegativeButton("No, I want to edit one of the fields", new OnClickListener
                     () {
                 public void onClick(DialogInterface dialog, int id) {
-                    expensesField.setText(expenseAmount);
-                    dateText.setText(date);
-                    if (description != null) {
-                        int spinnerPosition = spinnerAdapter.getPosition(description);
-                        descriptionsItem.setSelection(spinnerPosition + 1);
-                    }
+                    setFields(expenseAmount, date, description);
                     dialog.cancel();
                 }
             });
@@ -2176,6 +1962,16 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             });
             alert1 = builder.create();
             alert1.show();
+        }
+    }
+
+    private void setFields(String expenseAmount, String date, String description) {
+        expensesField.setText(expenseAmount);
+        dateText.setText(date);
+
+        if (description != null) {
+            int spinnerPosition = spinnerAdapter.getPosition(description);
+            descriptionsItem.setSelection(spinnerPosition + 1);
         }
     }
 

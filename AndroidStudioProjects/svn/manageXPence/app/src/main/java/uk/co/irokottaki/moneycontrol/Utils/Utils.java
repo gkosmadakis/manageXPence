@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -128,69 +129,9 @@ public class Utils {
             ImageView imageView =  activity.findViewById(R.id.ImageView);
 
             imageView.setImageBitmap(bitmap);
-            //adjust the width and height to the layout
-            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-            float widthInPercentage = 0f;
-            float heightInPercentage = 0f;
-            int deviceWidth = metrics.widthPixels;
-            int deviceHeight = metrics.heightPixels;
-            RelativeLayout.LayoutParams marginParams = new RelativeLayout.LayoutParams(imageView.getLayoutParams());
 
-            if (activity instanceof MainActivity) {
-                if (deviceHeight > 1280) {
-                    widthInPercentage = ((float) 505 / 480) * 100;
-                    heightInPercentage = ((float) 800 / 800) * 100;
-                    marginParams.setMargins(-125, -130, 0, 0);
-                    imageView.setLayoutParams(marginParams);
-                }
-                //this is for big tablet 7', 10'
-                else {
-                    widthInPercentage = ((float) 490 / 480) * 100;
-                    heightInPercentage = ((float) 850 / 800) * 100;//was 800
-                }
-            }
+            RelativeLayout.LayoutParams marginParams = setLayoutForActivities(layout, activity, imageView);
 
-            if (activity instanceof ReportActivity || activity instanceof BudgetActivity
-                    || activity instanceof ChartActivity || activity instanceof HorizontalBarChartActivity
-                    || activity instanceof AnnualChartActivity || activity instanceof AnnualSavingsActivity
-                    || activity instanceof CalculateAnnualExpensesActivity) {
-                widthInPercentage = ((float) 625 / 600) * 100;
-                heightInPercentage = ((float) 940 / 1024) * 100;
-            }
-
-            if (activity instanceof EditActivity || activity instanceof LoginActivity) {
-                widthInPercentage = ((float) 625 / 600) * 100;
-                heightInPercentage = ((float) 1380 / 1024) * 100;//height was 980
-            }
-
-            if (activity instanceof HelpActivity || activity instanceof SettingsActivity) {
-                widthInPercentage = ((float) 625 / 600) * 100;
-                heightInPercentage = ((float) 1200 / 1024) * 100;//was 800
-            }
-                //ONLY IN LANDSCAPE VIEW this is for big tablets 7',10'
-            int orientation = context.getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-                if (activity instanceof MainActivity) {
-                    widthInPercentage = ((float) 495 / 480) * 100;
-                    heightInPercentage = ((float) 1380 / 800) * 100;//height was 1200
-                    marginParams.setMargins(-125, -130, -90, 0);
-                    imageView.setLayoutParams(marginParams);
-                }
-                else if (activity instanceof LoginActivity){
-                    marginParams.setMargins(-170, -130, -90, 0);
-                    imageView.setLayoutParams(marginParams);
-                    heightInPercentage = ((float) 2245 / 1024) * 100;//height was 980
-                }
-                else {
-                    marginParams.setMargins(-170, -130, -90, 0);
-                    imageView.setLayoutParams(marginParams);
-                }
-                layout.setBackground(imageView.getDrawable());
-            }
-
-            imageView.getLayoutParams().height = (int) ((heightInPercentage * deviceHeight) / 100);
-            imageView.getLayoutParams().width = (int) ((widthInPercentage * deviceWidth) / 100);
             int sdk = android.os.Build.VERSION.SDK_INT;
             if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 if (activity instanceof LoginActivity) {
@@ -212,6 +153,75 @@ public class Utils {
                 adjustScreenSizeToDevice(layout);
             }
         }
+    }
+
+    @NonNull
+    private RelativeLayout.LayoutParams setLayoutForActivities(RelativeLayout layout, Activity activity, ImageView imageView) {
+        //adjust the width and height to the layout
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        float widthInPercentage = 0f;
+        float heightInPercentage = 0f;
+        int deviceWidth = metrics.widthPixels;
+        int deviceHeight = metrics.heightPixels;
+        RelativeLayout.LayoutParams marginParams = new RelativeLayout.LayoutParams(imageView.getLayoutParams());
+
+
+        if (activity instanceof MainActivity) {
+            if (deviceHeight > 1280) {
+                widthInPercentage = ((float) 505 / 480) * 100;
+                heightInPercentage = ((float) 800 / 800) * 100;
+                marginParams.setMargins(-125, -130, 0, 0);
+                imageView.setLayoutParams(marginParams);
+            }
+            //this is for big tablet 7', 10'
+            else {
+                widthInPercentage = ((float) 490 / 480) * 100;
+                heightInPercentage = ((float) 850 / 800) * 100;//was 800
+            }
+        }
+
+        if (activity instanceof ReportActivity || activity instanceof BudgetActivity
+                || activity instanceof ChartActivity || activity instanceof HorizontalBarChartActivity
+                || activity instanceof AnnualChartActivity || activity instanceof AnnualSavingsActivity
+                || activity instanceof CalculateAnnualExpensesActivity) {
+            widthInPercentage = ((float) 625 / 600) * 100;
+            heightInPercentage = ((float) 940 / 1024) * 100;
+        }
+
+        if (activity instanceof EditActivity || activity instanceof LoginActivity) {
+            widthInPercentage = ((float) 625 / 600) * 100;
+            heightInPercentage = ((float) 1380 / 1024) * 100;//height was 980
+        }
+
+        if (activity instanceof HelpActivity || activity instanceof SettingsActivity) {
+            widthInPercentage = ((float) 625 / 600) * 100;
+            heightInPercentage = ((float) 1200 / 1024) * 100;//was 800
+        }
+        //ONLY IN LANDSCAPE VIEW this is for big tablets 7',10'
+        int orientation = context.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+            if (activity instanceof MainActivity) {
+                widthInPercentage = ((float) 495 / 480) * 100;
+                heightInPercentage = ((float) 1380 / 800) * 100;//height was 1200
+                marginParams.setMargins(-125, -130, -90, 0);
+                imageView.setLayoutParams(marginParams);
+            }
+            else if (activity instanceof LoginActivity){
+                marginParams.setMargins(-170, -130, -90, 0);
+                imageView.setLayoutParams(marginParams);
+                heightInPercentage = ((float) 2245 / 1024) * 100;//height was 980
+            }
+            else {
+                marginParams.setMargins(-170, -130, -90, 0);
+                imageView.setLayoutParams(marginParams);
+            }
+            layout.setBackground(imageView.getDrawable());
+        }
+
+        imageView.getLayoutParams().height = (int) ((heightInPercentage * deviceHeight) / 100);
+        imageView.getLayoutParams().width = (int) ((widthInPercentage * deviceWidth) / 100);
+        return marginParams;
     }
 
 
