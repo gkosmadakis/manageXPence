@@ -622,7 +622,29 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
                 EditText datesField = (EditText) findViewById(R.id.dateFromTo);
                 String datesFromTo = datesField.getText().toString();
 
-                mainUtil.addTheExpenses(MainActivity.this, datesFromTo,addExpensesByDescription);
+                double sumOfExpenses = mainUtil.addTheExpenses(MainActivity.this, datesFromTo,addExpensesByDescription);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog);
+
+                if (addExpensesByDescription.getSelectedItemPosition() > 0) {
+                    builder.setTitle(addExpensesByDescription.getSelectedItem().toString() + " expenses for: " + datesFromTo);
+                }
+                else {
+                    builder.setTitle("Expenses for: " + datesFromTo);
+                }
+
+                builder.setMessage("You have spent: " + String.format(Locale.ENGLISH, "%.2f", sumOfExpenses));
+                AlertDialog alert1;
+                builder.setPositiveButton(OK,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                alert1 = builder.create();
+                if(sumOfExpenses > 0) {
+                    alert1.show();
+                }
             }
         });
 

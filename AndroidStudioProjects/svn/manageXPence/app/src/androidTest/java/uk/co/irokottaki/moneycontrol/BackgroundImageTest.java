@@ -106,7 +106,6 @@ public class BackgroundImageTest {
         UiObject photo = mDevice.findObject(new UiSelector().className("android.view.ViewGroup"));
         try {
             photo.clickAndWaitForNewWindow();
-            System.out.println("PASSED");
         } catch (UiObjectNotFoundException e) {
             Log.e("UiObjectNotFoundException",e.getMessage());
         }

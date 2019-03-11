@@ -10,14 +10,20 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,10 +47,10 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.COUNCIL_TAX;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.ENTERTAINMENT;
+import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSES_FILE;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_BILLS;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.HOUSE_RENT;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.MORTGAGE;
@@ -436,6 +442,65 @@ public class MainActivityTests  {
         List testReturnedList = util.getDaysBetweenDates(mMockMainActivity, testDatesFromTo);
         assertTrue(testReturnedList.size() == 20);
 
+    }
+
+    @Test
+    public void testAddExpenses(){
+        final Context context = mock(Context.class);
+        MainActivityUtil util = new MainActivityUtil(context);
+        final Activity mMockMainActivity = mock(MainActivity.class);
+        String testDatesFromTo = "20/02/2019-25/02/2019";
+
+        final Spinner addExpensesByDescription = mock(Spinner.class);
+        ArrayList itemsAddedByUser = new ArrayList();
+        itemsAddedByUser.add(HOUSE_RENT);
+        itemsAddedByUser.add(SHOPPING);
+        itemsAddedByUser.add(SUPERMARKET);
+        itemsAddedByUser.add(TRAVEL);
+        itemsAddedByUser.add(MORTGAGE);
+        itemsAddedByUser.add(COUNCIL_TAX);
+        itemsAddedByUser.add(HOUSE_BILLS);
+        itemsAddedByUser.add(ENTERTAINMENT);
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, itemsAddedByUser);
+
+        addExpensesByDescription.setAdapter(new NothingSelectedSpinnerAdapter(spinnerAdapter, R.layout.spinnernothingselected, context));
+
+        when(mMockMainActivity.findViewById(R.id.addExpensesByDescSpinner)).thenReturn(addExpensesByDescription);
+        File file = null;
+        FileInputStream input = null;
+
+        readTestFileFromResources(context, file, input);
+         /* Scenario for adding all the expenses for the dates requested */
+        double testResult = util.addTheExpenses(mMockMainActivity,testDatesFromTo, addExpensesByDescription);
+        assertEquals(172.3, testResult, DELTA);
+
+        readTestFileFromResources(context, file, input);
+        /* Scenario for adding expenses for a specific expense i.e Shopping for the dates requested */
+        when(addExpensesByDescription.getSelectedItemPosition()).thenReturn(1);
+        when(addExpensesByDescription.getSelectedItem()).thenReturn(SHOPPING);
+        double testResultByDescription = util.addTheExpenses(mMockMainActivity,testDatesFromTo, addExpensesByDescription);
+        assertEquals(SHOPPING, addExpensesByDescription.getSelectedItem().toString());
+        assertEquals(36,testResultByDescription, DELTA);
+    }
+
+    private void readTestFileFromResources(Context context, File file, FileInputStream input) {
+        URL resource;
+        resource = this.getClass().getClassLoader().getResource("expenses.txt");
+        try {
+            file = new File(resource.toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        try {
+            input = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            when(context.openFileInput(EXPENSES_FILE)).thenReturn(input);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 }

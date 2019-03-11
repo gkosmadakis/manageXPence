@@ -1,0 +1,9 @@
+Amount  Description     Date      
+
+87.5    House Bills    21/02/2019
+5.3     Misc           21/02/2019
+5       Petrol         21/02/2019
+25      Shopping       23/02/2019
+15      Petrol         24/02/2019
+11      Shopping       24/02/2019
+23.5    Travel         24/02/2019

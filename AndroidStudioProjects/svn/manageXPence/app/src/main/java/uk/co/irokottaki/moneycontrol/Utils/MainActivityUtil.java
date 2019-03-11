@@ -730,20 +730,7 @@ public class MainActivityUtil {
                 i++;
             }
         }
-
         double sum = sumFloat;
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.Theme_AppCompat_Light_Dialog)
-                .setTitle(desc + " expenses for: " + datesFromTo)
-                .setMessage("You have spent: " + String.format(Locale.ENGLISH, "%.2f", sum));
-        AlertDialog alert1;
-        builder.setPositiveButton(OK,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        alert1 = builder.create();
-        alert1.show();
 
         return sum;
     }
@@ -754,19 +741,6 @@ public class MainActivityUtil {
         for (int i = 0; i < expensesList.size(); i++) {
             sum += expensesList.get(i);
         }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.Theme_AppCompat_Light_Dialog)
-                .setTitle("Expenses for: " + datesFromTo)
-                .setMessage("You have spent: " + String.format(Locale.ENGLISH, "%.2f", sum));
-        AlertDialog alert1;
-        builder.setPositiveButton(OK,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        alert1 = builder.create();
-        alert1.show();
 
         return sum;
     }
