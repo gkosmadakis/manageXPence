@@ -8,7 +8,12 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -123,6 +128,7 @@ import uk.co.irokottaki.moneycontrol.model.AnyYear;
 import uk.co.irokottaki.moneycontrol.utils.ChartsUtil;
 import uk.co.irokottaki.moneycontrol.utils.MainActivityUtil;
 import uk.co.irokottaki.moneycontrol.utils.NothingSelectedSpinnerAdapter;
+import uk.co.irokottaki.moneycontrol.utils.ReminderJobService;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
 import static android.content.DialogInterface.OnClickListener;
@@ -248,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
     private CheckBox repeatCheckBox;
     private Button endDateBtn;
     private ArrayList datesTheRepeatingExpenseOccurs;
+    private Utils utils;
 
     final ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
@@ -389,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         imageView = (ImageView) this.findViewById(R.id.ImageView);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        Utils utils = new Utils(this);
+        utils = new Utils(this);
         utils.setBackgroundAndAdjustLayout(layout, MainActivity.this);
 
         //add the tabs
@@ -810,25 +817,45 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
 
         importBtnClickListener(importButton);
 
-        //this is for the Notifications
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-        notificationIntent.addCategory("android.intent.category.DEFAULT");
-
-        PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
-                + AlarmManager.INTERVAL_DAY * 2, AlarmManager.INTERVAL_DAY * 2, broadcast);
-
-
+        sendNotificationsEverySecondDay();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
 
     }// end of onCreate method
+
+    private void sendNotificationsEverySecondDay() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            JobInfo.Builder builder = new JobInfo.Builder( 613, new ComponentName(getPackageName(), ReminderJobService.class.getName()));
+            builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_NONE)
+                    .setRequiresDeviceIdle(false)
+                    .setRequiresCharging(false)
+                    .setMinimumLatency(86400000)//set it to fire every day 86400000 ms is one day
+                    .setOverrideDeadline(86401000)
+                    .setPersisted(true);
+            JobScheduler jobScheduler = (JobScheduler) getSystemService( Context.JOB_SCHEDULER_SERVICE );
+            if (jobScheduler.schedule(builder.build()) == JobScheduler.RESULT_FAILURE){
+                Log.w("MainActivity", "Something went wrong when scheduling the reminders");
+            }
+        }
+        else {
+
+            //this is for the Notifications for API<26 before the Oreo
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+            notificationIntent.addCategory("android.intent.category.DEFAULT");
+
+            PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, + AlarmManager.INTERVAL_DAY * 2,
+                    AlarmManager.INTERVAL_DAY * 2, broadcast);
+        }
+    }
 
     private void saveToFileClickListener(Button saveToFile) {
         saveToFile.setOnClickListener(new View.OnClickListener() {

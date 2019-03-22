@@ -224,5 +224,10 @@ public class Utils {
         return marginParams;
     }
 
+    public int getNotificationIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build
+                .VERSION_CODES.LOLLIPOP);
+        return useWhiteIcon ? R.drawable.icon_silhouette : R.drawable.ic_launcher_notification;
+    }
 
 }

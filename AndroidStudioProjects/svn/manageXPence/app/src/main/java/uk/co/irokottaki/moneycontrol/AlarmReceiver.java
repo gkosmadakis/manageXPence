@@ -8,8 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.widget.Toast;
+
+import uk.co.irokottaki.moneycontrol.utils.Utils;
 
 public class AlarmReceiver extends BroadcastReceiver {
+    private Context context;
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent notificationIntent = new Intent(context, SplashScreen.class);
@@ -23,13 +27,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
+        Utils utils = new Utils(context);
         Notification notification = builder
                 .setContentTitle("ManageXPence")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText("Spending too much? Add " +
                         "your expenses on ManageXPence"))
                 .setContentText("Spending too much? Add your expenses on ManageXPence")
                 .setTicker("ManageXPence")
-                .setSmallIcon(getNotificationIcon())
+                .setSmallIcon(utils.getNotificationIcon())
                 .setWhen(System.currentTimeMillis())
                 .setContentIntent(pendingIntent).build();
 
@@ -38,11 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         // Hide the notification after its selected
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify(0, notification);
+        Toast.makeText(context, "Notification is triggered", Toast.LENGTH_LONG).show();
     }
 
-    private int getNotificationIcon() {
-        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build
-                .VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.drawable.icon_silhouette : R.drawable.ic_launcher_notification;
-    }
 }
