@@ -113,6 +113,7 @@ sonarqube {
 
         property "sonar.junit.reportsPath", "build/reports/coverage/debug"
         property "sonar.coverage.exclusions",   "**/src/main/java/uk/co/irokottaki/moneycontrol/AlarmReceiver*," +
+                "**/src/main/java/uk/co/irokottaki/moneycontrol/utils/ReminderJobService*," +
                 "**/src/main/java/uk/co/irokottaki/moneycontrol/inappbilling/*"
 
         property "sonar.jacoco.reportPath", fileTree(dir: project.projectDir, includes: ['**/*.exec'])
