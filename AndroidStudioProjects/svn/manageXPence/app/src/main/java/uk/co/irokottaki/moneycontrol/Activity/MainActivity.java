@@ -833,8 +833,8 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_NONE)
                     .setRequiresDeviceIdle(false)
                     .setRequiresCharging(false)
-                    .setMinimumLatency(86400000)//set it to fire every day 86400000 ms is one day
-                    .setOverrideDeadline(86401000)
+                    .setMinimumLatency(86400000*2)//set it to fire every day 86400000 ms is one day
+                    .setOverrideDeadline(86401000*2)
                     .setPersisted(true);
             JobScheduler jobScheduler = (JobScheduler) getSystemService( Context.JOB_SCHEDULER_SERVICE );
             if (jobScheduler.schedule(builder.build()) == JobScheduler.RESULT_FAILURE){
