@@ -38,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -1139,6 +1140,8 @@ public class ChartsUtil {
             yearsFoundInFile.add(yearKey);
         }
 
+        Collections.sort(yearsFoundInFile);
+
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, yearsFoundInFile);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearList.setAdapter(spinnerAdapter);
@@ -1152,6 +1155,7 @@ public class ChartsUtil {
 
                 break;
             }
+            index++;
         }
         yearList.setSelection(index);
     }

@@ -8,57 +8,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
+        <entry key="/a.dummy">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/Preferences.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/com.example.valdio.dropboxintegration.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/uk.co.irokottaki.moneycontrol_preferences.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/sdcard/Download/expenses.txt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/descriptions.txt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/com.example.valdio.dropboxintegration.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/uk.co.irokottaki.moneycontrol_preferences.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/sdcard/Download/expenses.txt">
+        <entry key="/fragment.java">
           <value>
             <set />
           </value>
@@ -538,12 +493,42 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/app/src/test/java/uk/co/irokottaki/moneycontrol/UtilsTests.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl - PRO local copy/build.gradle">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/AnnualChartActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/AnnualSavingsActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/BudgetActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Activity/CalculateAnnualExpensesActivity.java">
           <value>
             <set />
           </value>
@@ -563,7 +548,117 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/AlarmReceiver.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Model/AnyYear.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Model/YearToSet.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/UploadTask.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/UserAccountTask.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/ChartsUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/Constants.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/MultiMap.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/NothingSelectedSpinnerAdapter.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/Utils/Utils.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/ChartActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/EditActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/HelpActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/HorizontalBarChartActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/LoginActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/MainActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/ReportActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/activity/SettingsActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/fragment/ScreenSlidePageFragment2.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/fragment/ScreenSlidePageFragment3.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/fragment/ScreenSlidePageFragment4.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/fragment/ScreenSlidePageFragment5.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../../MoneyControl local copy/app/src/main/java/uk/co/irokottaki/moneycontrol/utils/ChartsUtil.java">
           <value>
             <set />
           </value>
@@ -1048,12 +1143,57 @@
             <set />
           </value>
         </entry>
-        <entry key="/a.dummy">
+        <entry key="$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/android/app/Activity.class">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="/fragment.java">
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/Preferences.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/com.example.valdio.dropboxintegration.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/uk.co.irokottaki.moneycontrol_preferences.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/Nexus_5_API_26 [emulator-5554]/sdcard/Download/expenses.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/descriptions.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/files/expenses.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/com.example.valdio.dropboxintegration.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/data/data/uk.co.irokottaki.moneycontrol/shared_prefs/uk.co.irokottaki.moneycontrol_preferences.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/emulator-5554/sdcard/Download/expenses.txt">
           <value>
             <set />
           </value>
