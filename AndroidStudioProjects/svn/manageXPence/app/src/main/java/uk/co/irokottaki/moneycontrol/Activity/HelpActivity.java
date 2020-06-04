@@ -2,16 +2,17 @@ package uk.co.irokottaki.moneycontrol.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.NavUtils;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
+import androidx.core.app.NavUtils;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import uk.co.irokottaki.moneycontrol.R;
 import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment;
 import uk.co.irokottaki.moneycontrol.fragment.ScreenSlidePageFragment2;

@@ -2,7 +2,7 @@ package uk.co.irokottaki.moneycontrol.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +33,7 @@ import uk.co.irokottaki.moneycontrol.utils.Utils;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.BAR_CHART;
 import static uk.co.irokottaki.moneycontrol.utils.Constants.EXPENSE;
 
-public class HorizontalBarChartActivity extends ActionBarActivity {
+public class HorizontalBarChartActivity extends AppCompatActivity {
 
     private ArrayList<BarDataSet> dataSets;
     private HorizontalBarChart chart;

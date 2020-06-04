@@ -28,8 +28,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -41,6 +39,9 @@ import com.android.vending.billing.IInAppBillingService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import uk.co.irokottaki.moneycontrol.inappbilling.IabHelper;
 import uk.co.irokottaki.moneycontrol.inappbilling.IabResult;
 import uk.co.irokottaki.moneycontrol.inappbilling.Inventory;

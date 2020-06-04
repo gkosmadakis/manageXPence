@@ -8,12 +8,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import uk.co.irokottaki.moneycontrol.activity.AnnualChartActivity;
 import uk.co.irokottaki.moneycontrol.activity.AnnualSavingsActivity;
 import uk.co.irokottaki.moneycontrol.activity.BudgetActivity;

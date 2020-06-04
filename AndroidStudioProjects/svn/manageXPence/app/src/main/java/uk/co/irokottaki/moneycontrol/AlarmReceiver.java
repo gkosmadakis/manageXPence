@@ -3,13 +3,13 @@ package uk.co.irokottaki.moneycontrol;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
 import uk.co.irokottaki.moneycontrol.utils.Utils;
 
 public class AlarmReceiver extends BroadcastReceiver {

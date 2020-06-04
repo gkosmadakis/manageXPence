@@ -102,6 +102,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="20dp"
+                                    android:inputType="numberDecimal"
                                     android:text="@string/expense_amount"
                                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -111,7 +112,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="end"
                                     android:hint="@string/enter_amount"
-                                    android:inputType="none"
+                                    android:inputType="numberDecimal"
                                     android:maxLength="7" />
 
                                 <CheckBox

@@ -34,9 +34,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -63,7 +63,7 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.vending.billing.IInAppBillingService;
+//import com.android.vending.billing.IInAppBillingService;
 import com.dropbox.core.v2.users.FullAccount;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -113,6 +113,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
 import hod.api.hodclient.HODApps;
 import hod.api.hodclient.HODClient;
 import hod.api.hodclient.IHODClientCallback;
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqcYpXYA3pWCTMjOYJNNC70rNhXmbwxI5i4sGCtmZWN" +
                     "+eVFvrvtBtlwm8Wxwab8wf4CyLUxthccmgSd2Wmb6lHYVHG9/F7VSn+u3f9tnu8x" +
                     "+Oh30fyiSr4Wdesz0yfTwflVipA4wNwcEjxJoO0t8CCEyswQZcAzLAMzkodlMVwcdWx0kJ39qJxxuT8LWFlqwDpUSlLm6sPr+XmbD/vhfmd1h+qNQTteVte2Q5vVLSAk1/hCsqLCzrDp0BJ30w4f0nzEBn3g/7KIn3KQQp+6JE+xJanavahcvAU//PTDmy8t/bYxiFtn8kquBCL9xcHa/2Nw8PTEhzeWx3hCRUAugruwIDAQAB";
-    IInAppBillingService mService;
+    //IInAppBillingService mService;
     Bundle querySkus;
     static final String SKU = "android.test.purchased";
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
@@ -260,13 +262,13 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         @Override
         public void onServiceDisconnected(ComponentName name) {
 
-            mService = null;
+           // mService = null;
         }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
 
-            mService = IInAppBillingService.Stub.asInterface(service);
+            //mService = IInAppBillingService.Stub.asInterface(service);
             Log.e("Service In app:", "Service Connected");
         }
     };
@@ -290,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams
                 .SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        hodClient = new HODClient(APIKEY, this);
+        //hodClient = new HODClient(APIKEY, this);
 
         SharedPreferences sharedprefs = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         adsDisabled = sharedprefs.getBoolean(ADSDISABLED, false);/*retrieve the boolean value for ads*/
@@ -1179,9 +1181,9 @@ public class MainActivity extends AppCompatActivity implements IHODClientCallbac
             mHelper.dispose();
             mHelper = null;
         }
-        if (mService != null) {
+        /*if (mService != null) {
             unbindService(mServiceConn);
-        }
+        }*/
     }
 
     @Override
