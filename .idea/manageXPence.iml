@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/../AndroidStudioProjects/svn/manageXPence/gen" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/../AndroidStudioProjects/svn/manageXPence/gen" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/../AndroidStudioProjects/svn/manageXPence/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/../AndroidStudioProjects/svn/manageXPence/res" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../AndroidStudioProjects/svn/manageXPence/assets" />
+        <option name="LIBS_FOLDER_RELATIVE_PATH" value="/../AndroidStudioProjects/svn/manageXPence/libs" />
+        <option name="PROGUARD_LOGS_FOLDER_RELATIVE_PATH" value="/../AndroidStudioProjects/svn/manageXPence/proguard_logs" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence">
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/library LVL/build/generated/source/buildConfig/debug" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/SwitchCompatLibrary-master/SwitchSampleProject/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/app/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/library LVL/build/generated/not_namespaced_r_class_sources/debug/generateDebugRFile/out" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/SwitchButtonSampleProject/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/app/src/androidTest/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/SwitchButtonSampleProject/gen" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/SwitchCompatLibrary-master/SwitchCompatLibrary/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/app/src/test/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/library LVL/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/gen" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/.gitignore" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/.library LVL" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/.svn" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/Button Styles" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/ManageXPence.jks" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/MoneyControl.iml" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/SwitchButtonSampleProject" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/SwitchCompatLibrary-master" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/actionbar_style_example.zip" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/app" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/build.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/customized-tabs.zip" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/expenses.txt" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/expensesPrototype.txt" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/gradle.properties" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/gradlew" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/gradlew.bat" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/import-summary.txt" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/itext-5.5.9" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/itext-5.5.9.zip" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/library LVL" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/manageXPence.iml" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/mm-ad-sdk" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/mpandroidchartlibrary-2-1-5.jar" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/settings.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/tess-two-master" />
+      <excludeFolder url="file://$MODULE_DIR$/AndroidStudioProjects/svn/manageXPence/tess-two-master.zip" />
+    </content>
+    <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="itext-5.5" level="project" />
+    <orderEntry type="library" name="mpandroidchartlibrary-2-1-5" level="project" />
+  </component>
+</module>

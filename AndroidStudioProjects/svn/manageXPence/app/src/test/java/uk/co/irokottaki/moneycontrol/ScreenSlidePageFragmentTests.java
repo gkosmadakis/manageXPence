@@ -1,7 +1,7 @@
 package uk.co.irokottaki.moneycontrol;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
+import androidx.core.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 

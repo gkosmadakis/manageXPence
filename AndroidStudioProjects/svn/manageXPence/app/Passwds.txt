@@ -3,6 +3,7 @@ key store pass: qazwsx911985
 key pass: qaz911985
 key alias: uk.co.irokottaki.moneycontrol
 
+key alias: key() -> key store password: Q911985q! key password: Q911985q!
 Millenial Media: user-> gkosmadakis
 		pass-> App911985!
 
