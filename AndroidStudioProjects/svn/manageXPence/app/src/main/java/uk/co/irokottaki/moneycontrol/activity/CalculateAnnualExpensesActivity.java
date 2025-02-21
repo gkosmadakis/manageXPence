@@ -44,7 +44,7 @@ public class CalculateAnnualExpensesActivity extends AppCompatActivity {
 
         util = new ChartsUtil(this);
         Intent intent = getIntent();
-        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear> ) intent.getSerializableExtra(YEARS_MAPPED_TO_OBJECT_YEARS_MAP);
+        yearsMappedToObjectYearsMap = (HashMap<String, AnyYear>) util.readTheFile();
         //add it here to be used back in AnnualChartActivity
 
 

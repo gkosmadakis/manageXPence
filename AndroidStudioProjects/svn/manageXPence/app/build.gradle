@@ -8,8 +8,8 @@ android {
         applicationId "uk.co.irokottaki.moneycontrol"
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 56
-        versionName "8.5"
+        versionCode 57
+        versionName "8.6"
 
         // Enabling multidex support.
         multiDexEnabled true

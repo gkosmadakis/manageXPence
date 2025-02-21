@@ -199,7 +199,7 @@ public class AnnualChartActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(view.getContext(), CalculateAnnualExpensesActivity.class);
-                intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
+                //intent.putExtra("yearsMappedToObjectYearsMap", yearsMappedToObjectYearsMap);
                 startActivity(intent);
             }
         });
